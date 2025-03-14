@@ -50,7 +50,7 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
         }
 
         private void AddButtons() {
-            CategorizeButton = new TextButton("Categorize", Sprites.LeftProtrudingTab);
+            CategorizeButton = new TextButton(I18n.Button_Categorize(), Sprites.LeftProtrudingTab);
             CategorizeButton.OnPress += ToggleMenu;
             AddChild(CategorizeButton);
 
@@ -80,8 +80,8 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
 
         private string ChooseStashButtonLabel() {
             return Module.Config.StashKey == SButton.None
-                       ? "Stash"
-                       : $"Stash ({Module.Config.StashKey})";
+                       ? I18n.Button_Stash()
+                       : I18n.Button_Stash() + $" ({Module.Config.StashKey})";
         }
 
         private void ToggleMenu() {

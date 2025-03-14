@@ -50,7 +50,8 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
             Width = width;
 
             Categories = itemDataManager.Categories.Keys.ToList();
-            Categories.Sort();
+            if (Config.EnableSort)
+                Categories.Sort();
 
             BuildWidgets();
 
@@ -68,7 +69,7 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
             NextButton.OnPress += () => CycleCategory(1);
             PrevButton.OnPress += () => CycleCategory(-1);
 
-            SelectAllButton = TopRow.AddChild(new LabeledCheckbox("All"));
+            SelectAllButton = TopRow.AddChild(new LabeledCheckbox(I18n.Categorize_All()));
             SelectAllButton.OnChange += OnToggleSelectAll;
 
             CloseButton = AddChild(new SpriteButton(Sprites.ExitButton));

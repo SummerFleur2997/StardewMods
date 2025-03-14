@@ -62,7 +62,7 @@ namespace ConvenientChests.CategorizeChests.Framework {
             if (remainder == null) {
                 var index = sourceInventory.IndexOf(item);
                 sourceInventory[index] = null;
-                item.Stack = original;
+                // item.Stack = original;
                 return item;
             }
 

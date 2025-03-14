@@ -5,6 +5,7 @@ namespace ConvenientChests
     public class Config
     {
         public bool CategorizeChests { get; set; } = true;
+        public static bool EnableSort { get; set; }
         public bool StashToExistingStacks { get; set; } = true;
 
         public bool StashToNearbyChests { get; set; } = true;
@@ -12,7 +13,7 @@ namespace ConvenientChests
         public SButton StashKey { get; set; } = SButton.Q;
         public SButton? StashButton { get; set; } = SButton.RightStick;
 
-        public bool StashAnywhere { get; set; } = false;
+        public bool StashAnywhere { get; set; }
         public bool StashAnywhereToExistingStacks { get; set; } = false;
         public bool StashAnywhereToFridge { get; set; } = true;
         public SButton StashAnywhereKey { get; set; } = SButton.Z;

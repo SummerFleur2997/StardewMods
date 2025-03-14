@@ -1,12 +1,14 @@
 ﻿using ConvenientChests.CategorizeChests;
+using ConvenientChests.CategorizeChests.Interface.Widgets;
 using ConvenientChests.CraftFromChests;
 using ConvenientChests.StashToChests;
 using StardewModdingAPI;
 
 namespace ConvenientChests {
     /// <summary>The mod entry class loaded by SMAPI.</summary>
-    public class ModEntry : Mod {
-        public static   Config     Config        { get; private set; }
+    public class ModEntry : Mod
+    {
+        public static Config Config = null!;
         internal static IModHelper StaticHelper  { get; private set; }
         internal static IMonitor   StaticMonitor { get; private set; }
 
@@ -20,13 +22,16 @@ namespace ConvenientChests {
         /// <summary>The mod entry point, called after the mod is first loaded.</summary>
         /// <param name="helper">Provides simplified APIs for writing mods.</param>
         public override void Entry(IModHelper helper) {
-            Config = helper.ReadConfig<Config>();
+            I18n.Init(Helper.Translation);
+            
             StaticMonitor = Monitor;
             StaticHelper  = Helper;
 
             helper.Events.GameLoop.GameLaunched    += (_, _) => RegisterSettings();
             helper.Events.GameLoop.SaveLoaded      += (_, _) => LoadModules();
             helper.Events.GameLoop.ReturnedToTitle += (_, _) => UnloadModules();
+            
+            Config = helper.ReadConfig<Config>();
         }
 
         private void LoadModules() {
@@ -79,43 +84,46 @@ namespace ConvenientChests {
                                  save: () => Helper.WriteConfig(Config)
                                 );
 
-                options.AddSection("Categorize chests");
+                options.AddSection(I18n.Config_Categorize_Title(), I18n.Config_Categorize_Desc());
                 options.Add(() => Config.CategorizeChests,
                             value => Config.CategorizeChests = value,
-                            "Active");
+                            I18n.Config_Active());
+                options.Add(() => Config.EnableSort,
+                            value => Config.EnableSort = value,
+                            I18n.Config_Categorize_Sort());
 
-                options.AddSection("Craft from chests");
+                options.AddSection(I18n.Config_CraftFromChest_Title(), I18n.Config_CraftFromChest_Desc());
                 options.Add(() => Config.CraftFromChests,
                             value => Config.CraftFromChests = value,
-                            "Active");
+                            I18n.Config_Active());
                 options.Add(() => Config.CraftRadius,
                             value => Config.CraftRadius = value,
-                            "Radius");
+                            I18n.Config_Radius());
 
-                options.AddSection("Stash to nearby", "Allows for items to be stashed to chests in the player's vicinity.");
+                options.AddSection(I18n.Config_StashToNearby_Title(), I18n.Config_StashToNearby_Desc());
                 options.Add(() => Config.StashToNearbyChests,
                             value => Config.StashToNearbyChests = value,
-                            "Active");
+                            I18n.Config_Active());
                 options.Add(() => Config.StashRadius,
                             value => Config.StashRadius = value,
-                            "Radius");
+                            I18n.Config_Radius());
                 options.Add(() => Config.StashKey,
                             value => Config.StashKey = value,
-                            "Stash to nearby key");
+                            I18n.Config_StashToNearby_Key());
 
-                options.AddSection("Stash from anywhere", "Allows for items to be stashed to any chest accessible to the player.");
+                options.AddSection(I18n.Config_StashAnywhere_Title(), I18n.Config_StashAnywhere_Desc());
                 options.Add(() => Config.StashAnywhere,
                             value => Config.StashAnywhere = value,
-                            "Active");
+                            I18n.Config_Active());
                 options.Add(() => Config.StashAnywhereToFridge,
                             value => Config.StashAnywhereToFridge = value,
-                            "Stash to fridge first?");
+                            I18n.Config_StashAnywhere_Fridge());
                 options.Add(() => Config.StashToExistingStacks,
                             value => Config.StashToExistingStacks = value,
-                            "Stash to existing stacks?");
+                            I18n.Config_StashAnywhere_Exist());
                 options.Add(() => Config.StashAnywhereKey,
                             value => Config.StashAnywhereKey = value,
-                            "Stash from anywhere key");
+                            I18n.Config_StashAnywhere_Key());
             }
         }
     }

@@ -1,0 +1,34 @@
+{
+  "Button.Stash": "堆叠",
+  "Button.Categorize": "分类",
+  
+  "Config.active": "启用",
+  "Config.radius": "搜寻半径",
+  
+  "Config.Categorize.Title": "存储归类",
+  "Config.Categorize.desc": "对箱子的内容物进行归类。",
+  "Config.Categorize.sort": "物品种类排序",
+  
+  "Config.CraftFromChest.Title": "从附近的箱子里打造",
+  "Config.CraftFromChest.desc": "使用附近箱子里的物品进行打造。",
+  
+  "Config.StashToNearby.Title": "堆叠至附近的箱子",
+  "Config.StashToNearby.desc": "将物品快速堆叠至附近的箱子里。",
+  "Config.StashToNearby.key": "快捷键",
+  
+  "Config.StashAnywhere.Title": "堆叠至任意位置的箱子",
+  "Config.StashAnywhere.desc": "将物品快速堆叠至世界任意位置的箱子里。",
+  "Config.StashAnywhere.fridge": "优先堆叠至冰箱中",
+  "Config.StashAnywhere.exist": "优先堆叠至已存在的组",
+  "Config.StashAnywhere.key": "快捷键",
+
+  "Categorize.All": "全选",
+  "Categorize.Hats": "帽子",
+  "Categorize.Pants": "下装",
+  "Categorize.Shirts": "上衣",
+  "Categorize.Weapons": "武器",
+  "Categorize.Machine": "机器",
+  "Categorize.Mannequin": "假人模特",
+  "Categorize.Consumable": "消耗品",
+  "Categorize.Miscellaneous": "未分类"
+}

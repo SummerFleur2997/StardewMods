@@ -46,16 +46,16 @@ namespace ConvenientChests.CategorizeChests.Framework {
                     return Object.GetCategoryDisplayName(Object.toolCategory);
 
                 case "(W)":
-                    return "Weapons";
+                    return I18n.Categorize_Weapons();
 
                 case "(H)":
-                    return "Hats";
+                    return I18n.Categorize_Hats();
 
                 case "(P)":
-                    return "Pants";
+                    return I18n.Categorize_Pants();
 
                 case "(S)":
-                    return "Shirts";
+                    return I18n.Categorize_Shirts();
 
                 case "(FL)":
                     return Game1.content.LoadString("Strings\\StringsFromCSFiles:Wallpaper.cs.13203"); // Flooring
@@ -65,11 +65,11 @@ namespace ConvenientChests.CategorizeChests.Framework {
 
                 case "(BC)":
                     return GetOne<Object>().GetMachineData() != null
-                               ? "Machine"
+                               ? I18n.Categorize_Machine()
                                : Game1.content.LoadString(@"Strings\StringsFromCSFiles:Object.cs.12863"); // Crafting
 
                 case "(M)":
-                    return "Mannequin";
+                    return I18n.Categorize_Mannequin();
 
                 case "(F)":
                     return Game1.content.LoadString("Strings\\StringsFromCSFiles:Object.cs.12847"); // Furniture
@@ -82,8 +82,8 @@ namespace ConvenientChests.CategorizeChests.Framework {
                 return categoryName;
 
             return TypeDefinition == "(O)" && ((Object) item).Edibility > 0
-                       ? "Consumable"
-                       : "Miscellaneous";
+                       ? I18n.Categorize_Consumable()
+                       : I18n.Categorize_Miscellaneous();
         }
     }
 }
