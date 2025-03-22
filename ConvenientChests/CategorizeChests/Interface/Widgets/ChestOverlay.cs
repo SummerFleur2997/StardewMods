@@ -79,9 +79,9 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
         }
 
         private string ChooseStashButtonLabel() {
-            return Module.Config.StashKey == SButton.None
+            return Module.ModConfig.StashKey == SButton.None
                        ? I18n.Button_Stash()
-                       : I18n.Button_Stash() + $" ({Module.Config.StashKey})";
+                       : I18n.Button_Stash() + $" ({Module.ModConfig.StashKey})";
         }
 
         private void ToggleMenu() {
@@ -99,6 +99,8 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
                                               ItemGrabMenu.xPositionOnScreen - GlobalBounds.X - 12,
                                               ItemGrabMenu.yPositionOnScreen - GlobalBounds.Y - 60
                                              );
+            if (Module.ModConfig.EnableSort)
+                CategoryMenu.Categories.Sort();
 
             CategoryMenu.OnClose += CloseCategoryMenu;
             AddChild(CategoryMenu);

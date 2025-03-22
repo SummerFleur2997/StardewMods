@@ -8,6 +8,7 @@
   "Config.Categorize.Title": "存储归类",
   "Config.Categorize.desc": "对箱子的内容物进行归类。",
   "Config.Categorize.sort": "物品种类排序",
+  "Config.Categorize.sort.desc": "按字母顺序对种类进行排序，不建议中文用户启用。",
   
   "Config.CraftFromChest.Title": "从附近的箱子里打造",
   "Config.CraftFromChest.desc": "使用附近箱子里的物品进行打造。",

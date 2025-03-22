@@ -7,7 +7,8 @@
   
   "Config.Categorize.Title": "Categorize chests",
   "Config.Categorize.desc": "Categorize your chests by items.",
-  "Config.Categorize.sort": "Sort categories alphabetical",
+  "Config.Categorize.sort": "Sort categories",
+  "Config.Categorize.sort.desc": "Sort categories alphabetically.",
 
   "Config.CraftFromChest.Title": "Craft from chests",
   "Config.CraftFromChest.desc": "Use items from nearby chests to craft.",

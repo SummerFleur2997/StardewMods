@@ -32,7 +32,7 @@ namespace ConvenientChests.StashToChests {
 
             // try to stash to fridge first
             var success = false;
-            if (Config.StashAnywhereToFridge && ChestExtension.GetFridge(Game1.player) is {} fridge) {
+            if (ModConfig.StashAnywhereToFridge && ChestExtension.GetFridge(Game1.player) is {} fridge) {
                 success |= StackLogic.TryStashToChest(fridge, CategorizedAcceptingFunction);
                 success |= StackLogic.TryStashToChest(fridge, ExistingStacksAcceptingFunction);
             }
@@ -51,7 +51,7 @@ namespace ConvenientChests.StashToChests {
             success |= StackLogic.TryStashToChests(chests, CategorizedAcceptingFunction);
 
             // stash by existing
-            if (Config.StashToExistingStacks)
+            if (ModConfig.StashToExistingStacks)
                 success |= StackLogic.TryStashToChests(chests, ExistingStacksAcceptingFunction);
 
             if (success)
@@ -59,7 +59,7 @@ namespace ConvenientChests.StashToChests {
         }
 
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e) {
-            if (!Config.StashAnywhere || e.Button != Config.StashAnywhereKey)
+            if (!ModConfig.StashAnywhere || e.Button != ModConfig.StashAnywhereKey)
                 return;
 
             StashGlobally();

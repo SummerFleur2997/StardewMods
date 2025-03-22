@@ -37,7 +37,9 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
         private ITooltipManager TooltipManager { get; }
         private ChestData ChestData { get; }
         private int Index { get; set; }
-        private List<string> Categories { get; }
+        public List<string> Categories { get; set; }
+        
+        // private ModConfig Config;
 
         private string ActiveCategory => Categories[Index];
 
@@ -50,9 +52,6 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
             Width = width;
 
             Categories = itemDataManager.Categories.Keys.ToList();
-            if (Config.EnableSort)
-                Categories.Sort();
-
             BuildWidgets();
 
             SetCategory(Index);

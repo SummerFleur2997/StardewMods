@@ -21,13 +21,13 @@ namespace ConvenientChests.StashToChests {
         }
 
         private StackLogic.AcceptingFunction CreateAcceptingFunction() {
-            if (Config.CategorizeChests && Config.StashToExistingStacks)
+            if (ModConfig.CategorizeChests && ModConfig.StashToExistingStacks)
                 return (chest, item) => ModEntry.CategorizeChests.ChestAcceptsItem(chest, item) || chest.ContainsItem(item);
 
-            if (Config.CategorizeChests)
+            if (ModConfig.CategorizeChests)
                 return (chest, item) => ModEntry.CategorizeChests.ChestAcceptsItem(chest, item);
 
-            if (Config.StashToExistingStacks)
+            if (ModConfig.StashToExistingStacks)
                 return (chest, item) => chest.ContainsItem(item);
 
             return (_, _) => false;
@@ -51,12 +51,12 @@ namespace ConvenientChests.StashToChests {
 
             else {
                 ModEntry.Log("Stash to nearby chests");
-                StackLogic.StashToNearbyChests(Config.StashRadius, AcceptingFunction);
+                StackLogic.StashToNearbyChests(ModConfig.StashRadius, AcceptingFunction);
             }
         }
 
         private void OnButtonPressed(object sender, ButtonPressedEventArgs e) {
-            if (e.Button == Config.StashKey || e.Button == Config.StashButton)
+            if (e.Button == ModConfig.StashKey || e.Button == ModConfig.StashButton)
                 TryStashNearby();
         }
     }
