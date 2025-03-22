@@ -1,5 +1,5 @@
 {
-  "Name": "Convenient Chests",
+  "Name": "Convenient Chests Unofficial",
   "Author": "SummerFleur",
   "Version": "1.7.0",
   "Description": "Makes your life easier: Allows crafting from and auto-stashing to chests.",
@@ -7,7 +7,7 @@
   "MinimumApiVersion": "4.0.0",
   "EntryDll": "ConvenientChests.dll",
   "UpdateKeys": [
-    "Nexus:2196",
+    "Nexus:32558",
     "GitHub:SummerFleur/ConvenientChests"
   ],
   "Dependencies": [

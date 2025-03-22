@@ -15,6 +15,24 @@ This is an unofficial fork from [aEnigmatic's Convenient Chests](https://github.
 ## Main features
 Combines features of [StackToNearbyChests](https://www.nexusmods.com/stardewvalley/mods/1787) and [CategorizeChests](https://www.nexusmods.com/stardewvalley/mods/1300), and allows crafting from nearby chests.
 
+## Translating the mods
+The mods can be translated into any language supported by the game, and SMAPI will automatically
+use the right translations.
+
+Contributions are welcome! See [Modding:Translations](https://stardewvalleywiki.com/Modding:Translations)
+on the wiki for help contributing translations.
+
+(❑ = untranslated, ↻ = partly translated, ❑ = fully translated)
+
+| Language      |               Status               | Language       |           Status           |
+|:--------------|:----------------------------------:|:---------------|:--------------------------:|
+| English       | [↻](ConvenientChests/i18n/en.json) | 한국어            | [❑](ConvenientChests/i18n) |
+| Français      |     [❑](ConvenientChests/i18n)     | Português      | [❑](ConvenientChests/i18n) |
+| Deutsch       |     [❑](ConvenientChests/i18n)     | Русский        | [❑](ConvenientChests/i18n) |
+| Magyar        |     [❑](ConvenientChests/i18n)     | Español        | [❑](ConvenientChests/i18n) |
+| Italiano      |     [❑](ConvenientChests/i18n)     | Türkçe         | [❑](ConvenientChests/i18n) |
+| 日本語           |     [❑](ConvenientChests/i18n)     | 中文             |            O.o             |
+
 ## Requirements
 Stardew Valley 1.6  
 [SMAPI 4.0](https://smapi.io)
