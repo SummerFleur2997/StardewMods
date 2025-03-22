@@ -138,18 +138,24 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
                 SelectNone();
         }
 
-        private void SelectAll() {
-            foreach (var toggle in ItemToggles) {
-                if (!toggle.Active)
-                    toggle.Toggle();
+        private void SelectAll()
+        {
+            var allItems = ItemDataManager.Categories[ActiveCategory];
+            foreach (var itemKey in allItems) {
+                if (!ChestData.Accepts(itemKey))
+                    ChestData.Toggle(itemKey);
             }
+            RecreateItemToggles();
         }
 
-        private void SelectNone() {
-            foreach (var toggle in ItemToggles) {
-                if (toggle.Active)
-                    toggle.Toggle();
+        private void SelectNone() 
+        {
+            var allItems = ItemDataManager.Categories[ActiveCategory];
+            foreach (var itemKey in allItems) {
+                if (ChestData.Accepts(itemKey)) 
+                    ChestData.Toggle(itemKey);
             }
+            RecreateItemToggles();
         }
 
         private void CycleCategory(int offset) {

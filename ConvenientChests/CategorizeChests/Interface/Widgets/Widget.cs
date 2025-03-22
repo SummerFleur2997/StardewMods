@@ -14,7 +14,7 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
     public class Widget : IDisposable {
         Widget _Parent;
 
-        public Widget Parent {
+        private Widget Parent {
             get => _Parent;
             set {
                 _Parent = value;
@@ -22,7 +22,7 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
             }
         }
 
-        List<Widget> _Children = new List<Widget>();
+        List<Widget> _Children = new ();
         public IEnumerable<Widget> Children => _Children;
 
         public Point Position { get; set; }
@@ -70,29 +70,24 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
             DrawChildren(batch);
         }
 
-        protected void DrawChildren(SpriteBatch batch) {
+        private void DrawChildren(SpriteBatch batch) {
             foreach (var child in Children) {
                 child.Draw(batch);
             }
         }
 
-        public Point Size => new(Width, Height);
+        private Point Size => new(Width, Height);
         public Rectangle LocalBounds => new(Point.Zero, Size);
-        public Rectangle GlobalBounds => new(GlobalPosition, Size);
+        protected Rectangle GlobalBounds => new(GlobalPosition, Size);
 
-        public Point GlobalPosition => Globalize(Point.Zero);
-
-        public bool Contains(Point point) {
-            return point.X >= Position.X && point.X <= Position.X + Width
-                                         && point.Y >= Position.Y && point.Y <= Position.Y + Height;
-        }
-
-        public Point Globalize(Point point) {
+        protected Point GlobalPosition => Globalize(Point.Zero);
+        
+        protected Point Globalize(Point point) {
             var global = new Point(point.X + Position.X, point.Y + Position.Y);
             return Parent?.Globalize(global) ?? global;
         }
 
-        public virtual bool ReceiveButtonPress(SButton input) {
+        public bool ReceiveButtonPress(SButton input) {
             return PropagateButtonPress(input);
         }
 
@@ -100,7 +95,7 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
             return PropagateLeftClick(point);
         }
 
-        public virtual bool ReceiveCursorHover(Point point) {
+        public bool ReceiveCursorHover(Point point) {
             return PropagateCursorHover(point);
         }
 
@@ -108,7 +103,7 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
             return PropagateScrollWheelAction(amount);
         }
 
-        protected bool PropagateButtonPress(SButton input) {
+        private bool PropagateButtonPress(SButton input) {
             foreach (var child in Children) {
                 var handled = child.ReceiveButtonPress(input);
                 if (handled)
@@ -118,7 +113,7 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
             return false;
         }
 
-        protected bool PropagateScrollWheelAction(int amount) {
+        private bool PropagateScrollWheelAction(int amount) {
             foreach (var child in Children) {
                 var handled = child.ReceiveScrollWheelAction(amount);
                 if (handled)
@@ -142,7 +137,7 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
             return false;
         }
 
-        protected bool PropagateCursorHover(Point point) {
+        private bool PropagateCursorHover(Point point) {
             foreach (var child in Children) {
                 var localPoint = new Point(point.X - child.Position.X, point.Y - child.Position.Y);
 
@@ -165,7 +160,7 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
             return child;
         }
 
-        public void RemoveChild(Widget child) {
+        protected void RemoveChild(Widget child) {
             _Children.Remove(child);
             child.Parent = null;
 
@@ -176,7 +171,7 @@ namespace ConvenientChests.CategorizeChests.Interface.Widgets {
             RemoveChildren(c => true);
         }
 
-        public void RemoveChildren(Predicate<Widget> shouldRemove)
+        private void RemoveChildren(Predicate<Widget> shouldRemove)
         {
             foreach (var child in Children.Where(c => shouldRemove(c)))
             {

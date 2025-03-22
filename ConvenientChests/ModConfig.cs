@@ -19,10 +19,5 @@ namespace ConvenientChests
 
         public bool CraftFromChests { get; set; } = true;
         public int CraftRadius { get; set; } = 5;
-
-        public bool IsSortEnabled()
-        {
-            return EnableSort;
-        }
     }
 }
