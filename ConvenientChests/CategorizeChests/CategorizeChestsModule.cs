@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
-using ConvenientChests.CategorizeChests.Framework;
-using ConvenientChests.CategorizeChests.Framework.Persistence;
-using ConvenientChests.CategorizeChests.Interface;
-using ConvenientChests.CategorizeChests.Interface.Widgets;
+using ConvenientChests.Framework.CategorizeChests.Framework;
+using ConvenientChests.Framework.CategorizeChests.Framework.Persistence;
+using ConvenientChests.Framework.CategorizeChests.Interface;
+using ConvenientChests.Framework.CategorizeChests.Interface.Widgets;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
@@ -11,7 +11,7 @@ using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
 
-namespace ConvenientChests.CategorizeChests {
+namespace ConvenientChests.Framework.CategorizeChests {
     public class CategorizeChestsModule : Module {
         internal IItemDataManager ItemDataManager { get; } = new ItemDataManager();
         internal IChestDataManager ChestDataManager { get; } = new ChestDataManager();

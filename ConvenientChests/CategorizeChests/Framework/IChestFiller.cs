@@ -1,6 +1,6 @@
 using StardewValley.Objects;
 
-namespace ConvenientChests.CategorizeChests.Framework
+namespace ConvenientChests.Framework.CategorizeChests.Framework
 {
     /// <summary>
     /// A tool for moving items in bulk from the player's inventory

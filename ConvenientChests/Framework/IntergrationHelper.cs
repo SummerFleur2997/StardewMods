@@ -1,6 +1,6 @@
 ﻿using StardewModdingAPI;
 
-namespace ConvenientChests;
+namespace ConvenientChests.Framework;
 
 /// <summary>Simplifies validated access to mod APIs.</summary>
 internal static class IntegrationHelper

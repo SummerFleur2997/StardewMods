@@ -4,7 +4,7 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace ConvenientChests.CraftFromChests {
+namespace ConvenientChests.Framework.CraftFromChests {
     public class CraftingMenuArgs : EventArgs {
         public CraftingPage Page { get; private set; }
         public bool IsCookingPage { get; private set; }

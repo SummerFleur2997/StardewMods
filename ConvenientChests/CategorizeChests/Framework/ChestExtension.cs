@@ -7,7 +7,7 @@ using StardewValley.Inventories;
 using StardewValley.Locations;
 using StardewValley.Objects;
 
-namespace ConvenientChests.CategorizeChests.Framework {
+namespace ConvenientChests.Framework.CategorizeChests.Framework {
     internal static class ChestExtension {
         public static Chest? GetFridge(Farmer player) {
             if (Game1.player.IsMainPlayer)

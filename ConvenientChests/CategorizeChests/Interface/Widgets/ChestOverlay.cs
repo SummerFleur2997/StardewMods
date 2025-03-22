@@ -1,5 +1,5 @@
 using System;
-using ConvenientChests.StashToChests;
+using ConvenientChests.Framework.StashToChests;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -8,7 +8,7 @@ using StardewValley.Characters;
 using StardewValley.Menus;
 using StardewValley.Objects;
 
-namespace ConvenientChests.CategorizeChests.Interface.Widgets {
+namespace ConvenientChests.Framework.CategorizeChests.Interface.Widgets {
     internal class ChestOverlay : Widget {
         private ItemGrabMenu ItemGrabMenu { get; }
         private CategorizeChestsModule Module { get; }

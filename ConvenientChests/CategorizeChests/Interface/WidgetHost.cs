@@ -1,11 +1,11 @@
-using ConvenientChests.CategorizeChests.Interface.Widgets;
+using ConvenientChests.Framework.CategorizeChests.Interface.Widgets;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 
-namespace ConvenientChests.CategorizeChests.Interface {
+namespace ConvenientChests.Framework.CategorizeChests.Interface {
     class WidgetHost : BaseOverlay {
         public readonly Widget RootWidget;
         public readonly ITooltipManager TooltipManager;

@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using ConvenientChests.StashToChests;
+using ConvenientChests.Framework.StashToChests;
 using StardewValley;
 using StardewValley.Inventories;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
 
-namespace ConvenientChests.CraftFromChests {
+namespace ConvenientChests.Framework.CraftFromChests {
     public class CraftFromChestsModule : Module {
         private readonly MenuListener MenuListener;
 

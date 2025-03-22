@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ConvenientChests.CategorizeChests.Framework;
+using ConvenientChests.Framework.CategorizeChests.Framework;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
@@ -10,7 +10,7 @@ using StardewValley.Locations;
 using StardewValley.Objects;
 using Object = StardewValley.Object;
 
-namespace ConvenientChests.StashToChests {
+namespace ConvenientChests.Framework.StashToChests {
     public static class StackLogic {
         internal static string StashCueName => Game1.soundBank.GetCue("pickUpItem").Name;
 

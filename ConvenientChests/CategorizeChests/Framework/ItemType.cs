@@ -1,4 +1,4 @@
-﻿namespace ConvenientChests.CategorizeChests.Framework {
+﻿namespace ConvenientChests.Framework.CategorizeChests.Framework {
     public enum ItemType {
         BigCraftable,
         Boots,

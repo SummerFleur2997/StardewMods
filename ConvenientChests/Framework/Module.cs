@@ -1,7 +1,7 @@
 ﻿using StardewModdingAPI;
 using StardewModdingAPI.Events;
 
-namespace ConvenientChests {
+namespace ConvenientChests.Framework {
     public abstract class Module {
         public bool IsActive { get; protected set; } = false;
         public ModEntry ModEntry { get; }

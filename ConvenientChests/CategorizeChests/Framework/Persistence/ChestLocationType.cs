@@ -1,4 +1,4 @@
-﻿namespace ConvenientChests.CategorizeChests.Framework.Persistence
+﻿namespace ConvenientChests.Framework.CategorizeChests.Framework.Persistence
 {
     enum ChestLocationType
     {

@@ -1,6 +1,6 @@
 ﻿using StardewModdingAPI;
 
-namespace ConvenientChests.CategorizeChests.Framework.Persistence {
+namespace ConvenientChests.Framework.CategorizeChests.Framework.Persistence {
     /// <summary>
     /// The class responsible for saving and loading the mod state.
     /// </summary>

@@ -1,11 +1,11 @@
 using System.Linq;
-using ConvenientChests.CategorizeChests.Framework;
+using ConvenientChests.Framework.CategorizeChests.Framework;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Objects;
-using Utility = ConvenientChests.CategorizeChests.Utility;
+using Utility = ConvenientChests.Framework.CategorizeChests.Utility;
 
-namespace ConvenientChests.StashToChests {
+namespace ConvenientChests.Framework.StashToChests {
     public class StashFromAnywhereModule : Module {
         private static StackLogic.AcceptingFunction CategorizedAcceptingFunction =>
             (chest, item) => ModEntry.CategorizeChests.ChestAcceptsItem(chest, item);
@@ -41,7 +41,7 @@ namespace ConvenientChests.StashToChests {
             if (Game1.player.currentLocation == null)
                 return;
 
-            var chests = Utility.GetLocations()
+            var chests = CategorizeChests.Utility.GetLocations()
                                 .SelectMany(location => location.Objects.Pairs)
                                 .Select(pair => pair.Value)
                                 .OfType<Chest>()

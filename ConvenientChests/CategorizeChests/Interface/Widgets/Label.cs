@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 
-namespace ConvenientChests.CategorizeChests.Interface.Widgets
+namespace ConvenientChests.Framework.CategorizeChests.Interface.Widgets
 {
     /// <summary>
     /// A simple text element.

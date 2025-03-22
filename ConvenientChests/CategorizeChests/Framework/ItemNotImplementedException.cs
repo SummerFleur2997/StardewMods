@@ -1,7 +1,7 @@
 using System;
 using StardewValley;
 
-namespace ConvenientChests.CategorizeChests.Framework
+namespace ConvenientChests.Framework.CategorizeChests.Framework
 {
     /// <summary>
     /// An exception to be raised when some code attempts to perform an

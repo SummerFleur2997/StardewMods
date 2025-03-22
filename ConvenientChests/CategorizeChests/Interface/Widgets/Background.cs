@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ConvenientChests.CategorizeChests.Interface.Widgets
+namespace ConvenientChests.Framework.CategorizeChests.Interface.Widgets
 {
     /// <summary>
     /// A resizable nine-slice background.

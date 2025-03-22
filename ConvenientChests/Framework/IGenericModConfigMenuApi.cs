@@ -5,7 +5,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 
-namespace ConvenientChests;
+namespace ConvenientChests.Framework;
 
 public interface IGenericModConfigMenuApi {
     /*********

@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace ConvenientChests.CategorizeChests.Framework {
+namespace ConvenientChests.Framework.CategorizeChests.Framework {
     /// <summary>
     /// A repository of item data that maps item keys to representative items
     /// and vice versa.

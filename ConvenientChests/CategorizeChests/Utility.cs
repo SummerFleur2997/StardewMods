@@ -4,7 +4,7 @@ using System.Linq;
 using StardewValley;
 using StardewValley.Locations;
 
-namespace ConvenientChests.CategorizeChests
+namespace ConvenientChests.Framework.CategorizeChests
 {
     static class Utility
     {

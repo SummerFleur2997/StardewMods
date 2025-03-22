@@ -1,10 +1,10 @@
-﻿using ConvenientChests.CategorizeChests;
-using ConvenientChests.CraftFromChests;
-using ConvenientChests.StashToChests;
+﻿using ConvenientChests.Framework.CategorizeChests;
+using ConvenientChests.Framework.CraftFromChests;
+using ConvenientChests.Framework.StashToChests;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 
-namespace ConvenientChests;
+namespace ConvenientChests.Framework;
     /// <summary>The mod entry class loaded by SMAPI.</summary>
 public class ModEntry : Mod
 {
@@ -64,10 +64,6 @@ public class ModEntry : Mod
         
         StashFromAnywhere.Deactivate();
         StashFromAnywhere = null;
-    }
-    
-    public override object GetApi() {
-        return new ModAPI();
     }
     
     private void OnGameLaunched(object sender, GameLaunchedEventArgs e) {

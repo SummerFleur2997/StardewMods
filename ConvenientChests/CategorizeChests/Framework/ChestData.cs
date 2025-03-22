@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using StardewValley.Objects;
 
-namespace ConvenientChests.CategorizeChests.Framework
+namespace ConvenientChests.Framework.CategorizeChests.Framework
 {
     /// <summary>
     /// The extra data associated with a chest object, such as the list of

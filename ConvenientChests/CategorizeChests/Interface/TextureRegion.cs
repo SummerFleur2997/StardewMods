@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 
-namespace ConvenientChests.CategorizeChests.Interface {
+namespace ConvenientChests.Framework.CategorizeChests.Interface {
     class TextureRegion {
         public readonly Texture2D Texture;
         public readonly Rectangle Region;

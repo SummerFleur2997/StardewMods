@@ -8,7 +8,7 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace ConvenientChests.CategorizeChests.Interface.Widgets {
+namespace ConvenientChests.Framework.CategorizeChests.Interface.Widgets {
     public class ScrollBar : Widget {
         private ScrollBarRunner Runner;
 

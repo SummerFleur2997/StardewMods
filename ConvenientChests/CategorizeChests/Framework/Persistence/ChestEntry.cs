@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace ConvenientChests.CategorizeChests.Framework.Persistence
+namespace ConvenientChests.Framework.CategorizeChests.Framework.Persistence
 {
     /// <summary>
     /// A piece of saved data describing the location of a chest and what items

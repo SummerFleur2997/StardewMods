@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ConvenientChests.CategorizeChests.Interface.Widgets
+namespace ConvenientChests.Framework.CategorizeChests.Interface.Widgets
 {
     /// <summary>
     /// A checkbox with a label next to it, like so: [x] Foo

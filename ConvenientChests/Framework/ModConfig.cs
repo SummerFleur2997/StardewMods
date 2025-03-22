@@ -1,6 +1,6 @@
 using StardewModdingAPI;
 
-namespace ConvenientChests
+namespace ConvenientChests.Framework
 {
     public class ModConfig
     {

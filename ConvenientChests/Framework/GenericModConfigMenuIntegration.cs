@@ -2,7 +2,7 @@
 using System.Linq;
 using StardewModdingAPI;
 
-namespace ConvenientChests;
+namespace ConvenientChests.Framework;
 
 internal class GenericModConfigMenuIntegration
 {

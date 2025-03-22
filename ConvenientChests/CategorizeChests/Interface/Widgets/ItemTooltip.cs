@@ -2,7 +2,7 @@
 using StardewValley;
 using System;
 
-namespace ConvenientChests.CategorizeChests.Interface.Widgets
+namespace ConvenientChests.Framework.CategorizeChests.Interface.Widgets
 {
     /// <summary>
     /// A tooltip showing information about a particular item.

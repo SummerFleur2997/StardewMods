@@ -1,9 +1,9 @@
-﻿using ConvenientChests.CategorizeChests.Interface.Widgets;
+﻿using ConvenientChests.Framework.CategorizeChests.Interface.Widgets;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 
-namespace ConvenientChests.CategorizeChests.Interface {
+namespace ConvenientChests.Framework.CategorizeChests.Interface {
     class TooltipManager : ITooltipManager {
         private Widget Tooltip;
 

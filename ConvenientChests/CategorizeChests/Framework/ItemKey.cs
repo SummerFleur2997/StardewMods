@@ -6,7 +6,7 @@ using StardewValley.Menus;
 using StardewValley.Tools;
 using Object = StardewValley.Object;
 
-namespace ConvenientChests.CategorizeChests.Framework {
+namespace ConvenientChests.Framework.CategorizeChests.Framework {
     public readonly struct ItemKey {
         public string ItemId { get; }
         public string TypeDefinition { get; }

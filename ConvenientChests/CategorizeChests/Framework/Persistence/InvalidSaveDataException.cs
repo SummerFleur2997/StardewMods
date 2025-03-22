@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConvenientChests.CategorizeChests.Framework.Persistence
+namespace ConvenientChests.Framework.CategorizeChests.Framework.Persistence
 {
     /// <summary>
     /// An exception to be raised when save data is malformed or fails to

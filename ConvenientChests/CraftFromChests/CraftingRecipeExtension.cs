@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 
-namespace ConvenientChests.CraftFromChests {
+namespace ConvenientChests.Framework.CraftFromChests {
     public static class CraftingRecipeExtension {
         public static Dictionary<int, int> GetIngredients(this CraftingRecipe recipe)
             => ModEntry.StaticHelper.Reflection.GetField<Dictionary<int, int>>(recipe, "recipeList").GetValue();
