@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
 
-namespace ConvenientChests.Framework.CategorizeChests.Interface.Widgets {
+namespace ConvenientChests.CategorizeChests.Interface.Widgets {
     /// <summary>
     /// A positioned, resizable element in the interface
     /// that can also contain other elements.

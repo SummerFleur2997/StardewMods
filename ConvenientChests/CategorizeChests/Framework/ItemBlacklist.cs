@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewValley;
-using StardewValley.ItemTypeDefinitions;
+﻿using System.Collections.Generic;
 using Object = StardewValley.Object;
 
-namespace ConvenientChests.Framework.CategorizeChests.Framework {
+namespace ConvenientChests.CategorizeChests.Framework {
     /// <summary>
     /// Maintains the list of items that should be excluded from the available
     /// items to use for categorization, e.g. unobtainable items and bug items.

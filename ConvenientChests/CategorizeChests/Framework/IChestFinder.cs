@@ -1,7 +1,7 @@
-﻿using ConvenientChests.Framework.CategorizeChests.Framework.Persistence;
+﻿using ConvenientChests.CategorizeChests.Framework.Persistence;
 using StardewValley.Objects;
 
-namespace ConvenientChests.Framework.CategorizeChests.Framework
+namespace ConvenientChests.CategorizeChests.Framework
 {
     /// <summary>
     /// A helper for finding the chest object corresponding to a given chest address.

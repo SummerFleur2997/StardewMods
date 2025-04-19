@@ -1,7 +1,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ConvenientChests.Framework.CategorizeChests.Interface
+namespace ConvenientChests.CategorizeChests.Interface
 {
     class NineSlice
     {

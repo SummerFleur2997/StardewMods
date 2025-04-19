@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework;
 
-namespace ConvenientChests.Framework.CategorizeChests.Interface.Widgets
+namespace ConvenientChests.CategorizeChests.Interface.Widgets
 {
     /// <summary>
     /// A button shown as text on a background.

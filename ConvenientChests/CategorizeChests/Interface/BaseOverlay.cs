@@ -12,7 +12,7 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using Rectangle = xTile.Dimensions.Rectangle;
 
-namespace ConvenientChests.Framework.CategorizeChests.Interface {
+namespace ConvenientChests.CategorizeChests.Interface {
     /// <summary>An interface which supports user interaction and overlays the active menu (if any).</summary>
     internal abstract class BaseOverlay : IDisposable {
         /*********

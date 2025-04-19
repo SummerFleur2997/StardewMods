@@ -1,10 +1,9 @@
 using System;
-using ConvenientChests.Framework.CategorizeChests.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 
-namespace ConvenientChests.Framework.CategorizeChests.Interface.Widgets {
+namespace ConvenientChests.CategorizeChests.Interface.Widgets {
     /// <summary>
     /// A toggle button corresponding to a given kind of item, appearing as
     /// the icon for that item with an appropriate tooltip.

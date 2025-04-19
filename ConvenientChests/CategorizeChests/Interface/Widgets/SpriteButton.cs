@@ -1,6 +1,6 @@
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ConvenientChests.Framework.CategorizeChests.Interface.Widgets {
+namespace ConvenientChests.CategorizeChests.Interface.Widgets {
     /// <summary>
     /// A button that uses a single TextureRegion to display itself.
     /// </summary>

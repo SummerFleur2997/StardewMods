@@ -1,6 +1,6 @@
 using StardewValley.Objects;
 
-namespace ConvenientChests.Framework.CategorizeChests.Framework
+namespace ConvenientChests.CategorizeChests.Framework
 {
     /// <summary>
     /// An interface for retrieving the mod-specific data associated with a

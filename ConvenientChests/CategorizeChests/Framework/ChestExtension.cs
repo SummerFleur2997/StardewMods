@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ConvenientChests.Framework;
 using StardewValley;
 using StardewValley.Inventories;
 using StardewValley.Locations;
 using StardewValley.Objects;
 
-namespace ConvenientChests.Framework.CategorizeChests.Framework {
+namespace ConvenientChests.CategorizeChests.Framework {
     internal static class ChestExtension {
         public static Chest? GetFridge(Farmer player) {
             if (Game1.player.IsMainPlayer)

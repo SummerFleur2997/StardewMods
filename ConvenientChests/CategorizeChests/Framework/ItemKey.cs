@@ -1,12 +1,10 @@
 using System.Diagnostics.Contracts;
 using StardewValley;
-using StardewValley.GameData.Objects;
 using StardewValley.ItemTypeDefinitions;
-using StardewValley.Menus;
 using StardewValley.Tools;
 using Object = StardewValley.Object;
 
-namespace ConvenientChests.Framework.CategorizeChests.Framework {
+namespace ConvenientChests.CategorizeChests.Framework {
     public readonly struct ItemKey {
         public string ItemId { get; }
         public string TypeDefinition { get; }

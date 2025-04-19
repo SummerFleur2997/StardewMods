@@ -1,7 +1,7 @@
-﻿using ConvenientChests.Framework.CategorizeChests.Interface.Widgets;
+﻿using ConvenientChests.CategorizeChests.Interface.Widgets;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace ConvenientChests.Framework.CategorizeChests.Interface
+namespace ConvenientChests.CategorizeChests.Interface
 {
     interface ITooltipManager
     {

@@ -1,10 +1,10 @@
 ﻿using System;
-using StardewModdingAPI;
+using ConvenientChests.Framework;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace ConvenientChests.Framework.CraftFromChests {
+namespace ConvenientChests.CraftFromChests {
     public class CraftingMenuArgs : EventArgs {
         public CraftingPage Page { get; private set; }
         public bool IsCookingPage { get; private set; }

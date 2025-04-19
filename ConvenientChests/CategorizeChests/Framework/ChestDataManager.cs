@@ -1,7 +1,7 @@
 using System.Runtime.CompilerServices;
 using StardewValley.Objects;
 
-namespace ConvenientChests.Framework.CategorizeChests.Framework
+namespace ConvenientChests.CategorizeChests.Framework
 {
     class ChestDataManager : IChestDataManager
     {

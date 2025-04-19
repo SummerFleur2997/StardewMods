@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ConvenientChests.Framework.CategorizeChests.Framework.Persistence;
+using ConvenientChests.CategorizeChests.Framework.Persistence;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Objects;
 
-namespace ConvenientChests.Framework.CategorizeChests.Framework {
+namespace ConvenientChests.CategorizeChests.Framework {
     /// <summary>
     /// The class responsible for producing data to be saved.
     /// </summary>

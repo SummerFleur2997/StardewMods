@@ -1,14 +1,13 @@
 using System;
-using ConvenientChests.Framework.StashToChests;
+using ConvenientChests.StashToChests;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
 using StardewValley;
-using StardewValley.Characters;
 using StardewValley.Menus;
 using StardewValley.Objects;
 
-namespace ConvenientChests.Framework.CategorizeChests.Interface.Widgets {
+namespace ConvenientChests.CategorizeChests.Interface.Widgets {
     internal class ChestOverlay : Widget {
         private ItemGrabMenu ItemGrabMenu { get; }
         private CategorizeChestsModule Module { get; }
@@ -22,8 +21,14 @@ namespace ConvenientChests.Framework.CategorizeChests.Interface.Widgets {
         private TextButton CategorizeButton { get; set; }
         private TextButton StashButton { get; set; }
         private CategoryMenu CategoryMenu { get; set; }
+        
+        private bool ShouldAddCategoryKey { get; set; }
+        private bool ShouldAddStashKey { get; set; }
+        
 
-        public ChestOverlay(CategorizeChestsModule module, Chest chest, ItemGrabMenu menu) {
+        public ChestOverlay(CategorizeChestsModule module, Chest chest, ItemGrabMenu menu, 
+            bool shouldAddCategoryKey, bool shouldAddStashKey) 
+        {
             Module = module;
             Chest = chest;
             ItemGrabMenu = menu;
@@ -32,6 +37,9 @@ namespace ConvenientChests.Framework.CategorizeChests.Interface.Widgets {
 
             DefaultChestHighlighter = ItemGrabMenu.inventory.highlightMethod;
             DefaultInventoryHighlighter = InventoryMenu.highlightMethod;
+            
+            ShouldAddCategoryKey = shouldAddCategoryKey;
+            ShouldAddStashKey = shouldAddStashKey;
 
             AddButtons();
         }
@@ -49,14 +57,16 @@ namespace ConvenientChests.Framework.CategorizeChests.Interface.Widgets {
             TooltipManager.Draw(batch);
         }
 
-        private void AddButtons() {
+        private void AddButtons() 
+        {
+            
             CategorizeButton = new TextButton(I18n.Button_Categorize(), Sprites.LeftProtrudingTab);
             CategorizeButton.OnPress += ToggleMenu;
-            AddChild(CategorizeButton);
-
+            if (ShouldAddCategoryKey) AddChild(CategorizeButton);
+            
             StashButton = new TextButton(ChooseStashButtonLabel(), Sprites.LeftProtrudingTab);
             StashButton.OnPress += StashItems;
-            AddChild(StashButton);
+            if (ShouldAddStashKey) AddChild(StashButton);
 
             PositionButtons();
         }
@@ -64,18 +74,18 @@ namespace ConvenientChests.Framework.CategorizeChests.Interface.Widgets {
         private void PositionButtons() {
             var delta = Chest.SpecialChestType == Chest.SpecialChestTypes.BigChest ? -128 : -112;
 
-            StashButton.Width = CategorizeButton.Width = Math.Max(StashButton.Width, CategorizeButton.Width);
-
-            CategorizeButton.Position = new Point(
-                                                  ItemGrabMenu.xPositionOnScreen + ItemGrabMenu.width / 2 - CategorizeButton.Width +
-                                                  delta * Game1.pixelZoom,
-                                                  ItemGrabMenu.yPositionOnScreen + 22 * Game1.pixelZoom
-                                                 );
-
-            StashButton.Position = new Point(
-                                             CategorizeButton.Position.X + CategorizeButton.Width - StashButton.Width,
-                                             CategorizeButton.Position.Y + CategorizeButton.Height - 0
-                                            );
+            // if (ShouldAddStashKey)
+                StashButton.Width = CategorizeButton.Width = Math.Max(StashButton.Width, CategorizeButton.Width);
+            
+            // if (ShouldAddCategoryKey)
+                CategorizeButton.Position = new Point(
+                    ItemGrabMenu.xPositionOnScreen + ItemGrabMenu.width / 2 - CategorizeButton.Width + delta * Game1.pixelZoom,
+                    ItemGrabMenu.yPositionOnScreen + 22 * Game1.pixelZoom);
+            
+            // if (ShouldAddStashKey)
+                StashButton.Position = new Point(
+                    CategorizeButton.Position.X + CategorizeButton.Width - StashButton.Width,
+                    CategorizeButton.Position.Y + CategorizeButton.Height - 0);
         }
 
         private string ChooseStashButtonLabel() {
@@ -96,9 +106,8 @@ namespace ConvenientChests.Framework.CategorizeChests.Interface.Widgets {
             var chestData = Module.ChestDataManager.GetChestData(Chest);
             CategoryMenu = new CategoryMenu(chestData, Module.ItemDataManager, TooltipManager, ItemGrabMenu.width - 24);
             CategoryMenu.Position = new Point(
-                                              ItemGrabMenu.xPositionOnScreen - GlobalBounds.X - 12,
-                                              ItemGrabMenu.yPositionOnScreen - GlobalBounds.Y - 60
-                                             );
+                ItemGrabMenu.xPositionOnScreen - GlobalBounds.X - 12, 
+                ItemGrabMenu.yPositionOnScreen - GlobalBounds.Y - 60);
             if (Module.ModConfig.EnableSort)
                 CategoryMenu.Categories.Sort();
 

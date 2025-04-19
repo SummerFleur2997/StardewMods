@@ -1,8 +1,8 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using StardewValley;
-using System;
 
-namespace ConvenientChests.Framework.CategorizeChests.Interface.Widgets
+namespace ConvenientChests.CategorizeChests.Interface.Widgets
 {
     /// <summary>
     /// A tooltip showing information about a particular item.

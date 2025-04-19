@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 
-namespace ConvenientChests.Framework.CategorizeChests.Interface.Widgets
+namespace ConvenientChests.CategorizeChests.Interface.Widgets
 {
     /// <summary>
     /// A simple non-interactive sprite.

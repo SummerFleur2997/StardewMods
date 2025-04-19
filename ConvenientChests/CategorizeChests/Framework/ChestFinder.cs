@@ -1,10 +1,10 @@
 ﻿using System.Linq;
-using ConvenientChests.Framework.CategorizeChests.Framework.Persistence;
+using ConvenientChests.CategorizeChests.Framework.Persistence;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Objects;
 
-namespace ConvenientChests.Framework.CategorizeChests.Framework
+namespace ConvenientChests.CategorizeChests.Framework
 {
     class ChestFinder : IChestFinder
     {

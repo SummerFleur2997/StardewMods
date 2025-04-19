@@ -1,6 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 
-namespace ConvenientChests.Framework.CategorizeChests.Framework.Persistence
+namespace ConvenientChests.CategorizeChests.Framework.Persistence
 {
     /// <summary>
     /// A key that uniquely identifies a spot in the world where a chest exists.

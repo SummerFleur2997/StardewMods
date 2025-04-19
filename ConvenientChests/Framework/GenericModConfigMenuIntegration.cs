@@ -59,6 +59,12 @@ internal class GenericModConfigMenuIntegration
             getValue: () => getConfig().StashRadius,
             setValue: value => getConfig().StashRadius = value
         );
+        api.AddBoolOption(
+            manifest,
+            name: I18n.Config_StashAnywhere_Exist,
+            getValue: () => getConfig().StashToExistingStacks,
+            setValue: value => getConfig().StashToExistingStacks = value
+        );
         api.AddKeybind(
             manifest,
             name: I18n.Config_StashToNearby_Key,
@@ -78,12 +84,6 @@ internal class GenericModConfigMenuIntegration
             name: I18n.Config_StashAnywhere_Fridge,
             getValue: () => getConfig().StashAnywhereToFridge,
             setValue: value => getConfig().StashAnywhereToFridge = value
-        );
-        api.AddBoolOption(
-            manifest,
-            name: I18n.Config_StashAnywhere_Exist,
-            getValue: () => getConfig().StashToExistingStacks,
-            setValue: value => getConfig().StashToExistingStacks = value
         );
         api.AddKeybind(
             manifest,

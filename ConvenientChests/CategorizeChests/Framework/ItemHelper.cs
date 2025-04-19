@@ -7,7 +7,7 @@ using StardewValley.ItemTypeDefinitions;
 using StardewValley.Tools;
 using Object = StardewValley.Object;
 
-namespace ConvenientChests.Framework.CategorizeChests.Framework {
+namespace ConvenientChests.CategorizeChests.Framework {
     static class ItemHelper {
         public static bool IsCraftable(this Item item) => CraftingRecipe.craftingRecipes.ContainsKey(item.Name);
         public static bool IsCraftable(this Item item, Farmer player) => player.craftingRecipes.ContainsKey(item.Name);

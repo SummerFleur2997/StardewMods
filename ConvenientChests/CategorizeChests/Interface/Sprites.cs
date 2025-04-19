@@ -2,7 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 
-namespace ConvenientChests.Framework.CategorizeChests.Interface
+namespace ConvenientChests.CategorizeChests.Interface
 {
     static class Sprites
     {

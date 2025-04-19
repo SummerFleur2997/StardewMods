@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ConvenientChests.Framework.CategorizeChests.Framework;
+using ConvenientChests.CategorizeChests.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 
-namespace ConvenientChests.Framework.CategorizeChests.Interface.Widgets {
+namespace ConvenientChests.CategorizeChests.Interface.Widgets {
     class CategoryMenu : Widget {
         // Styling settings
         private const int MaxItemRows = 7;

@@ -3,7 +3,7 @@ using System.Linq;
 using StardewValley;
 using StardewValley.Tools;
 
-namespace ConvenientChests.Framework.CategorizeChests.Framework {
+namespace ConvenientChests.CategorizeChests.Framework {
     internal class ItemDataManager : IItemDataManager {
         /// <summary>
         /// A mapping of category names to the item keys belonging to that category.

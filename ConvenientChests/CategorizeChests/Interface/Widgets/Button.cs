@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Xna.Framework;
 
-namespace ConvenientChests.Framework.CategorizeChests.Interface.Widgets
+namespace ConvenientChests.CategorizeChests.Interface.Widgets
 {
     /// <summary>
     /// A simple clickable widget.
