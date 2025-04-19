@@ -22,7 +22,7 @@ use the right translations.
 Contributions are welcome! See [Modding:Translations](https://stardewvalleywiki.com/Modding:Translations)
 on the wiki for help contributing translations.
 
-(❑ = untranslated, ↻ = partly translated, ❑ = fully translated)
+(❑ = untranslated, ↻ = partly translated, ✓ = fully translated)
 
 | Language      |               Status               | Language       |           Status           |
 |:--------------|:----------------------------------:|:---------------|:--------------------------:|
