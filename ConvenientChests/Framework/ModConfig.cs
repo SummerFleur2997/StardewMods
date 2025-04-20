@@ -1,23 +1,25 @@
 using StardewModdingAPI;
 
-namespace ConvenientChests.Framework
+namespace ConvenientChests.Framework;
+
+public class ModConfig
 {
-    public class ModConfig
-    {
-        public bool CategorizeChests { get; set; } = true;
-        public bool EnableSort { get; set; }
-        public bool StashToExistingStacks { get; set; } = true;
+    public bool CategorizeChests { get; set; } = true;
+    public bool EnableSort { get; set; }
 
-        public bool StashToNearbyChests { get; set; } = true;
-        public int StashRadius { get; set; } = 5;
-        public SButton StashKey { get; set; } = SButton.Q;
-        public SButton? StashButton { get; set; } = SButton.RightStick;
+    public bool CraftFromChests { get; set; } = true;
+    public int CraftRadius { get; set; } = 5;
 
-        public bool StashAnywhere { get; set; }
-        public bool StashAnywhereToFridge { get; set; } = true;
-        public SButton StashAnywhereKey { get; set; } = SButton.Z;
+    public bool StashToNearby { get; set; } = true;
+    public bool StashAnywhere { get; set; }
 
-        public bool CraftFromChests { get; set; } = true;
-        public int CraftRadius { get; set; } = 5;
-    }
+    public int StashRadius { get; set; } = 5;
+
+    public SButton StashToNearbyKey { get; set; } = SButton.Q;
+    public SButton StashAnywhereKey { get; set; } = SButton.Z;
+    public SButton? StashButton = SButton.RightStick;
+
+    public bool StashToExistingStacks { get; set; } = true;
+    public bool StashAnywhereToFridge { get; set; } = true;
+    public bool NeverStashTools { get; set; } = true;
 }

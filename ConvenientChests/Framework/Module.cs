@@ -3,7 +3,7 @@ using StardewModdingAPI.Events;
 
 namespace ConvenientChests.Framework;
 
-public abstract class Module 
+public abstract class Module
 {
     public bool IsActive { get; protected set; }
     public ModEntry ModEntry { get; }
@@ -11,9 +11,11 @@ public abstract class Module
     public IMonitor Monitor => ModEntry.Monitor;
     public IModEvents Events => ModEntry.Helper.Events;
 
-    public Module(ModEntry modEntry) => ModEntry = modEntry;
+    public Module(ModEntry modEntry)
+    {
+        ModEntry = modEntry;
+    }
 
     public abstract void Activate();
     public abstract void Deactivate();
 }
-

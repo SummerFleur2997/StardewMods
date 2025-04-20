@@ -1,31 +1,28 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <DeployModFolderName>$(MSBuildProjectName)</DeployModFolderName>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-  </PropertyGroup>
-  <PropertyGroup>
-    <OutputType>Library</OutputType>
-    <AssemblyTitle>ConvenientChests</AssemblyTitle>
-    <Product>ConvenientChests</Product>
-    <Copyright>Copyright © aEnigmatic 2018</Copyright>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
-  </PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <DeployModFolderName>$(MSBuildProjectName)</DeployModFolderName>
+        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    </PropertyGroup>
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <AssemblyTitle>ConvenientChests</AssemblyTitle>
+        <Product>ConvenientChests</Product>
+        <Copyright>Copyright © SummerFleur 2025</Copyright>
+        <AssemblyVersion>1.0.0.0</AssemblyVersion>
+        <FileVersion>1.0.0.0</FileVersion>
+    </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1" />
-    <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.2.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Update="manifest.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="CategorizeChests\LICENSE" />
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Remove="CraftFromChests\InventoryHelper.cs" />
-  </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1"/>
+        <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.2.0"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="manifest.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+    <ItemGroup>
+        <Content Include="CategorizeChests\LICENSE"/>
+    </ItemGroup>
 </Project>

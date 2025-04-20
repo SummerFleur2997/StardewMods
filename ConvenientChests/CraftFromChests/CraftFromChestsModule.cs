@@ -1,26 +1,28 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using ConvenientChests.StashToChests;
+using ConvenientChests.CraftFromChests.Framework;
+using ConvenientChests.Framework;
+using ConvenientChests.Framework.ChestService;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Inventories;
 using StardewValley.Locations;
 using StardewValley.Objects;
-using Module = ConvenientChests.Framework.Module;
+using Utility = StardewValley.Utility;
 
 namespace ConvenientChests.CraftFromChests;
 
-public class CraftFromChestsModule : Module 
+public class CraftFromChestsModule : Module
 {
     private readonly MenuListener MenuListener;
-    
-    public CraftFromChestsModule(ModEntry modEntry) : base(modEntry) 
+
+    public CraftFromChestsModule(ModEntry modEntry) : base(modEntry)
     {
         MenuListener = new MenuListener(Events);
         modEntry.Helper.Events.Display.MenuChanged += OnMenuChanged;
     }
 
-    public override void Activate() 
+    public override void Activate()
     {
         IsActive = true;
 
@@ -29,7 +31,7 @@ public class CraftFromChestsModule : Module
         MenuListener.CraftingMenuShown += CraftingMenuShown;
     }
 
-    public override void Deactivate() 
+    public override void Deactivate()
     {
         IsActive = false;
 
@@ -38,7 +40,7 @@ public class CraftFromChestsModule : Module
         MenuListener.UnregisterEvents();
     }
 
-    private void CraftingMenuShown(object sender, CraftingMenuArgs e) 
+    private void CraftingMenuShown(object sender, CraftingMenuArgs e)
     {
         var page = e.Page;
         if (page == null)
@@ -59,7 +61,7 @@ public class CraftFromChestsModule : Module
             page._materialContainers.AddRange(inventories);
     }
 
-    private IEnumerable<Chest> GetChests(bool isCookingScreen) 
+    private IEnumerable<Chest> GetChests(bool isCookingScreen)
     {
         // nearby chests
         var chests = Game1.player.GetNearbyChests(ModConfig.CraftRadius).Where(c => c.Items.Any(i => i != null))
@@ -79,7 +81,7 @@ public class CraftFromChestsModule : Module
         if (!chests.Contains(fridge))
             yield return fridge;
     }
-    
+
     private void OnMenuChanged(object sender, MenuChangedEventArgs e)
     {
         ModEntry.ReloadConfig(ModConfig.CraftFromChests, this);

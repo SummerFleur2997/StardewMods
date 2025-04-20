@@ -3,7 +3,6 @@
   "Button.Categorize": "Categorize",
   
   "Config.active": "active",
-  "Config.radius": "radius",
   
   "Config.Categorize.Title": "Categorize chests",
   "Config.Categorize.desc": "Categorize your chests by items.",
@@ -12,24 +11,41 @@
 
   "Config.CraftFromChest.Title": "Craft from chests",
   "Config.CraftFromChest.desc": "Use items from nearby chests to craft.",
+  "Config.CraftFromChest.radius": "Craft from chests radius.",
+  
+  "Config.StashToChests.Title": "Stash to chests",
+  "Config.StashToChests.desc": "Stash items to chests using a hot key.",
   
   "Config.StashToNearby.Title": "Stash to nearby",
   "Config.StashToNearby.desc": "Allows for items to be stashed to chests in the player's vicinity.",
-  "Config.StashToNearby.key": "Stash to nearby key-bind",
-  
   "Config.StashAnywhere.Title": "Stash from anywhere",
   "Config.StashAnywhere.desc": "Allows for items to be stashed to any chest accessible to the player.",
-  "Config.StashAnywhere.fridge": "Stash to fridge first?",
-  "Config.StashAnywhere.exist": "Stash to existing stacks?",
+  "Config.StashToNearby.radius": "Stash to nearby chests radius.",
+
+  "Config.KeyBind.Title": "Key bind",
+  "Config.StashToChests.key": "Stash to chests key-bind",
   "Config.StashAnywhere.key": "Stash from anywhere key-bind",
+  
+  "Config.StashLogic.exist": "Stash to existing stacks?",
+  "Config.StashLogic.fridge": "Stash to fridge first?",
+
+  "Config.StashRule.LockItems": "Never stash tools",
+  "Config.StashRule.LockItems.desc": "Prevent tools from stash into chests, may useful in multiplayer.",
 
   "Categorize.All": "All",
+  "Categorize.Consumable": "Consumable",
+  "Categorize.Crafting": "Crafting",
+  "Categorize.Flooring": "Flooring",
+  "Categorize.Furniture": "Furniture",
   "Categorize.Hats": "Hats",
-  "Categorize.Pants": "Pants",
-  "Categorize.Shirts": "Shirts",
-  "Categorize.Weapons": "Weapons",
   "Categorize.Machine": "Machine",
   "Categorize.Mannequin": "Mannequin",
-  "Categorize.Consumable": "Consumable",
-  "Categorize.Miscellaneous": "Miscellaneous"
+  "Categorize.Miscellaneous": "Miscellaneous",
+  "Categorize.Pants": "Pants",
+  "Categorize.Shirts": "Shirts",
+  "Categorize.Trinket": "Trinket",
+  "Categorize.Wallpaper": "Wallpaper",
+  "Categorize.Weapons": "Weapons",
+  
+  "LockItems.Title": "Lock items"
 }

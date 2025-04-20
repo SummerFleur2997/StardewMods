@@ -3,7 +3,6 @@
   "Button.Categorize": "分类",
   
   "Config.active": "启用",
-  "Config.radius": "搜寻半径",
   
   "Config.Categorize.Title": "存储归类",
   "Config.Categorize.desc": "对箱子的内容物进行归类。",
@@ -12,24 +11,41 @@
   
   "Config.CraftFromChest.Title": "从附近的箱子里打造",
   "Config.CraftFromChest.desc": "使用附近箱子里的物品进行打造。",
+  "Config.CraftFromChest.radius": "搜寻半径",
   
+  "Config.StashToChests.Title": "堆叠至箱子",
+  "Config.StashToChests.desc": "使用快捷键将物品堆叠至箱子中。",
+
   "Config.StashToNearby.Title": "堆叠至附近的箱子",
   "Config.StashToNearby.desc": "将物品快速堆叠至附近的箱子里。",
-  "Config.StashToNearby.key": "快捷键",
-  
   "Config.StashAnywhere.Title": "堆叠至任意位置的箱子",
   "Config.StashAnywhere.desc": "将物品快速堆叠至世界任意位置的箱子里。",
-  "Config.StashAnywhere.fridge": "优先堆叠至冰箱中",
-  "Config.StashAnywhere.exist": "优先堆叠至已存在的组",
-  "Config.StashAnywhere.key": "快捷键",
+  "Config.StashToNearby.radius": "搜寻半径",
+  
+  "Config.KeyBind.Title": "按键绑定",
+  "Config.StashToChests.key": "堆叠至箱子",
+  "Config.StashAnywhere.key": "堆叠至任意位置的箱子",
+  
+  "Config.StashLogic.exist": "优先堆叠至已存在的组",
+  "Config.StashLogic.fridge": "优先堆叠至冰箱中",
 
+  "Config.StashRule.LockItems": "禁用工具堆叠",
+  "Config.StashRule.LockItems.desc": "禁止将任何工具堆叠至箱子中，在多人游戏中较为实用。",
+  
   "Categorize.All": "全选",
+  "Categorize.Consumable": "消耗品",
+  "Categorize.Crafting": "制造品",
+  "Categorize.Flooring": "地板",
+  "Categorize.Furniture": "家具",
   "Categorize.Hats": "帽子",
-  "Categorize.Pants": "下装",
-  "Categorize.Shirts": "上衣",
-  "Categorize.Weapons": "武器",
   "Categorize.Machine": "机器",
   "Categorize.Mannequin": "假人模特",
-  "Categorize.Consumable": "消耗品",
-  "Categorize.Miscellaneous": "未分类"
+  "Categorize.Miscellaneous": "未分类",
+  "Categorize.Pants": "下装",
+  "Categorize.Shirts": "上衣",
+  "Categorize.Trinket": "饰品",
+  "Categorize.Wallpaper": "壁纸",
+  "Categorize.Weapons": "武器",
+
+  "LockItems.Title": "锁定物品"
 }
