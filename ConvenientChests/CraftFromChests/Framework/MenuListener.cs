@@ -19,26 +19,26 @@ public class CraftingMenuArgs : EventArgs
 
 public class MenuListener
 {
-    private readonly IModEvents Events;
+    private readonly IModEvents _events;
     public event EventHandler<CraftingMenuArgs> CraftingMenuShown;
 
-    private int PreviousTab = -1;
+    private int _previousTab = -1;
 
     public MenuListener(IModEvents events)
     {
-        Events = events;
+        _events = events;
     }
 
     public void RegisterEvents()
     {
         ModEntry.Log("Register");
-        Events.Display.MenuChanged += OnMenuChanged;
+        _events.Display.MenuChanged += OnMenuChanged;
     }
 
     public void UnregisterEvents()
     {
         ModEntry.Log("UnRegister");
-        Events.Display.MenuChanged -= OnMenuChanged;
+        _events.Display.MenuChanged -= OnMenuChanged;
     }
 
     /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
@@ -59,7 +59,7 @@ public class MenuListener
         switch (e.NewMenu)
         {
             case GameMenu _:
-                Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
+                _events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
                 break;
 
             case object m when m.GetType().ToString() == "CookingSkill.NewCraftingPage":
@@ -88,7 +88,7 @@ public class MenuListener
                 return;
 
             case GameMenu gameMenu:
-                if (gameMenu.currentTab == PreviousTab)
+                if (gameMenu.currentTab == _previousTab)
                     // Nothing changed
                     return;
 
@@ -100,7 +100,7 @@ public class MenuListener
                 if (currentPage is CraftingPage p)
                     CraftingMenuShown?.Invoke(sender, new CraftingMenuArgs(p, false));
 
-                PreviousTab = gameMenu.currentTab;
+                _previousTab = gameMenu.currentTab;
                 break;
 
             default:
@@ -113,7 +113,7 @@ public class MenuListener
 
     private void UnregisterTabEvent()
     {
-        Events.Display.RenderedActiveMenu -= OnRenderedActiveMenu;
-        PreviousTab = -1;
+        _events.Display.RenderedActiveMenu -= OnRenderedActiveMenu;
+        _previousTab = -1;
     }
 }

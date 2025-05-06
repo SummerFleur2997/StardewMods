@@ -7,24 +7,24 @@ namespace ConvenientChests.Framework.UserInterfacService;
 /// </summary>
 internal class TextButton : Button
 {
-    private readonly Background Background;
-    private readonly Label Label;
+    private readonly Background _background;
+    private readonly Label _label;
 
-    private int LeftPadding => Background.Graphic.LeftBorderThickness;
-    private int RightPadding => Background.Graphic.RightBorderThickness;
-    private int TopPadding => Background.Graphic.TopBorderThickness;
-    private int BottomPadding => Background.Graphic.BottomBorderThickness;
+    private int LeftPadding => _background.Graphic.LeftBorderThickness;
+    private int RightPadding => _background.Graphic.RightBorderThickness;
+    private int TopPadding => _background.Graphic.TopBorderThickness;
+    private int BottomPadding => _background.Graphic.BottomBorderThickness;
 
     public TextButton(string text, NineSlice backgroundTexture)
     {
-        Label = new Label(text, Color.Black);
-        Background = new Background(backgroundTexture);
+        _label = new Label(text, Color.Black);
+        _background = new Background(backgroundTexture);
 
-        Width = Background.Width = Label.Width + LeftPadding + RightPadding;
-        Height = Background.Height = Label.Height + TopPadding + BottomPadding;
+        Width = _background.Width = _label.Width + LeftPadding + RightPadding;
+        Height = _background.Height = _label.Height + TopPadding + BottomPadding;
 
-        AddChild(Background);
-        AddChild(Label);
+        AddChild(_background);
+        AddChild(_label);
 
         CenterLabel();
     }
@@ -33,21 +33,21 @@ internal class TextButton : Button
     {
         base.OnDimensionsChanged();
 
-        if (Background != null)
+        if (_background != null)
         {
-            Background.Width = Width;
-            Background.Height = Height;
+            _background.Width = Width;
+            _background.Height = Height;
         }
 
-        if (Label != null)
+        if (_label != null)
             CenterLabel();
     }
 
     private void CenterLabel()
     {
-        Label.Position = new Point(
-            LeftPadding + (Width - RightPadding - LeftPadding) / 2 - Label.Width / 2,
-            TopPadding + (Height - BottomPadding - TopPadding) / 2 - Label.Height / 2
+        _label.Position = new Point(
+            LeftPadding + (Width - RightPadding - LeftPadding) / 2 - _label.Width / 2,
+            TopPadding + (Height - BottomPadding - TopPadding) / 2 - _label.Height / 2
         );
     }
 }

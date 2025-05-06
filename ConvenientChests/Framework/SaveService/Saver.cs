@@ -15,19 +15,34 @@ namespace ConvenientChests.Framework.SaveService;
 /// </summary>
 internal class Saver
 {
-    private readonly ISemanticVersion Version;
-    private readonly ChestDataManager ChestDataManager;
-    private readonly InventoryDataManager InventoryDataManager;
+    /// <summary>
+    /// The version of the mod.
+    /// 模组版本信息。
+    /// </summary>
+    private ISemanticVersion Version { get; }
 
-    public Saver(ISemanticVersion version, ChestDataManager chestDataManager, InventoryDataManager inventoryDataManager)
+    /// <summary>
+    /// The chest manager responsible for handling chest data.
+    /// 负责处理箱子数据的箱子管理器。
+    /// </summary>
+    private ChestManager ChestManager { get; }
+
+    /// <summary>
+    /// The inventory manager responsible for handling inventory data.
+    /// 负责处理背包数据的背包管理器。
+    /// </summary>
+    private InventoryManager InventoryManager { get; }
+
+    public Saver(ISemanticVersion version, ChestManager chestManager, InventoryManager inventoryManager)
     {
         Version = version;
-        ChestDataManager = chestDataManager;
-        InventoryDataManager = inventoryDataManager;
+        ChestManager = chestManager;
+        InventoryManager = inventoryManager;
     }
 
     /// <summary>
     /// Build save data for the current game state.
+    /// 构建当前游戏状态的存档数据。
     /// </summary>
     public SaveData GetSerializableData()
     {
@@ -46,13 +61,13 @@ internal class Saver
             // chests
             foreach (var pair in GetLocationChests(location))
                 yield return new ChestEntry(
-                    ChestDataManager.GetChestData(pair.Value),
+                    ChestManager.GetChestData(pair.Value),
                     new ChestAddress(location.Name, pair.Key));
 
             // fridges
             if (location is FarmHouse { upgradeLevel: >= 1 } farmHouse)
                 yield return new ChestEntry(
-                    ChestDataManager.GetChestData(farmHouse.fridge.Value),
+                    ChestManager.GetChestData(farmHouse.fridge.Value),
                     new ChestAddress
                     {
                         LocationName = farmHouse.uniqueName?.Value ?? farmHouse.Name,
@@ -64,7 +79,7 @@ internal class Saver
                 foreach (var building in location.buildings.Where(b => b.indoors.Value != null))
                 foreach (var pair in GetLocationChests(building.indoors.Value))
                     yield return new ChestEntry(
-                        ChestDataManager.GetChestData(pair.Value),
+                        ChestManager.GetChestData(pair.Value),
                         new ChestAddress(location.Name, pair.Key, ChestLocationType.Building, building.GetIndoorsName())
                     );
             }
@@ -73,10 +88,9 @@ internal class Saver
 
     private IEnumerable<InventoryEntry> BuildInventoryEntries()
     {
-        foreach (var farmer in Game1.getAllFarmers())
+        foreach (var player in Game1.getAllFarmers())
         {
-            var playerName = farmer.Name;
-            yield return new InventoryEntry(InventoryDataManager.GetInventoryData(playerName));
+            yield return new InventoryEntry(InventoryManager.GetInventoryData(player));
         }
     }
 

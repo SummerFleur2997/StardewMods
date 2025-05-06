@@ -28,7 +28,7 @@ Combines features of [StackToNearbyChests](https://www.nexusmods.com/stardewvall
 
 **New Features**
 - Added internationalization (i18n) support
-- Added configuration option to toggle alphabetical sorting for tab headers in "Categorize Chest" feature, mainly designed for CJK users. .
+- Added configuration option to toggle alphabetical sorting for tab headers in "Categorize Chest" feature, mainly designed for CJK users.
 
 ## Translating the mods
 The mods can be translated into any language supported by the game, and SMAPI will automatically

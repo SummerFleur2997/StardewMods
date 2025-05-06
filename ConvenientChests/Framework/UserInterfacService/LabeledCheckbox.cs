@@ -10,26 +10,26 @@ namespace ConvenientChests.Framework.UserInterfacService;
 internal class LabeledCheckbox : Widget
 {
     public event Action<bool> OnChange;
-    public bool Checked { get; set; } = false;
+    public bool Checked { get; set; }
 
-    private readonly Widget CheckedBox;
-    private readonly Widget UncheckedBox;
-    private readonly Label Label;
+    private readonly Widget _checkedBox;
+    private readonly Widget _uncheckedBox;
+    private readonly Label _label;
 
     public LabeledCheckbox(string labelText)
     {
-        CheckedBox = AddChild(new Stamp(Sprites.FilledCheckbox));
-        UncheckedBox = AddChild(new Stamp(Sprites.EmptyCheckbox));
+        _checkedBox = AddChild(new Stamp(Sprites.FilledCheckbox));
+        _uncheckedBox = AddChild(new Stamp(Sprites.EmptyCheckbox));
 
-        Label = AddChild(new Label(labelText, Color.Black));
-        var padding = (int)Label.Font.MeasureString(" ").X;
+        _label = AddChild(new Label(labelText, Color.Black));
+        var padding = (int)_label.Font.MeasureString(" ").X;
 
-        Height = Math.Max(CheckedBox.Height, Label.Height);
-        CheckedBox.CenterVertically();
-        UncheckedBox.CenterVertically();
-        Label.CenterVertically();
-        Label.X = CheckedBox.X + CheckedBox.Width + padding;
-        Width = Label.X + Label.Width;
+        Height = Math.Max(_checkedBox.Height, _label.Height);
+        _checkedBox.CenterVertically();
+        _uncheckedBox.CenterVertically();
+        _label.CenterVertically();
+        _label.X = _checkedBox.X + _checkedBox.Width + padding;
+        Width = _label.X + _label.Width;
     }
 
     public override bool ReceiveLeftClick(Point point)
@@ -41,8 +41,8 @@ internal class LabeledCheckbox : Widget
 
     public override void Draw(SpriteBatch batch)
     {
-        var box = Checked ? CheckedBox : UncheckedBox;
+        var box = Checked ? _checkedBox : _uncheckedBox;
         box.Draw(batch);
-        Label.Draw(batch);
+        _label.Draw(batch);
     }
 }

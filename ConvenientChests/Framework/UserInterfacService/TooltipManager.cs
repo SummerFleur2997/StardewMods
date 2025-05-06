@@ -6,7 +6,7 @@ namespace ConvenientChests.Framework.UserInterfacService;
 
 internal class TooltipManager
 {
-    private Widget Tooltip;
+    private Widget Tooltip { get; set; }
 
     public void ShowTooltipThisFrame(Widget tooltip)
     {

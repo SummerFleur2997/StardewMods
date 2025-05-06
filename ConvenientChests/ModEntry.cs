@@ -14,6 +14,7 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
+using Module = ConvenientChests.Framework.Module;
 
 namespace ConvenientChests;
 
@@ -36,7 +37,7 @@ public class ModEntry : Mod
         StaticMonitor.Log(s, l);
     }
 
-    private readonly PerScreen<WidgetHost> ScreenWidgetHost = new();
+    private readonly PerScreen<WidgetHost> _screenWidgetHost = new();
 
     /// <summary>
     /// <see cref="CategorizeChestsModule"/> mod.
@@ -219,31 +220,31 @@ public class ModEntry : Mod
 
     private void OnButtonChanged(object sender, ButtonsChangedEventArgs e)
     {
-        if (Game1.activeClickableMenu is not GameMenu { currentTab: 0 } && ScreenWidgetHost.Value != null)
+        if (Game1.activeClickableMenu is not GameMenu { currentTab: 0 } && _screenWidgetHost.Value != null)
             ClearMenu();
-        else if (Game1.activeClickableMenu is GameMenu { currentTab: 0 } && ScreenWidgetHost.Value == null)
+        else if (Game1.activeClickableMenu is GameMenu { currentTab: 0 } && _screenWidgetHost.Value == null)
             CreateMenu(Game1.activeClickableMenu as GameMenu);
     }
 
     private void CreateMenu(ItemGrabMenu itemGrabMenu)
     {
         if (itemGrabMenu.context is not Chest chest) return;
-        ScreenWidgetHost.Value = new WidgetHost(CategorizeChests.Events, Helper.Input, Helper.Reflection);
+        _screenWidgetHost.Value = new WidgetHost(CategorizeChests.Events, Helper.Input, Helper.Reflection);
         var overlay = new ChestOverlay(CategorizeChests, StashToChests, chest, itemGrabMenu, Config.CategorizeChests);
-        ScreenWidgetHost.Value.RootWidget.AddChild(overlay);
+        _screenWidgetHost.Value.RootWidget.AddChild(overlay);
     }
 
     private void CreateMenu(GameMenu gameMenu)
     {
-        ScreenWidgetHost.Value = new WidgetHost(CategorizeChests.Events, Helper.Input, Helper.Reflection);
+        _screenWidgetHost.Value = new WidgetHost(CategorizeChests.Events, Helper.Input, Helper.Reflection);
         var overlay = new MenuOverlay(StashToChests, gameMenu);
-        ScreenWidgetHost.Value.RootWidget.AddChild(overlay);
+        _screenWidgetHost.Value.RootWidget.AddChild(overlay);
     }
 
     private void ClearMenu()
     {
-        ScreenWidgetHost.Value?.Dispose();
-        ScreenWidgetHost.Value = null;
+        _screenWidgetHost.Value?.Dispose();
+        _screenWidgetHost.Value = null;
     }
 
     private void LoadSaveData()
@@ -267,12 +268,13 @@ public class ModEntry : Mod
     /// </summary>
     private void UpdateSaveData()
     {
-        var newSaveData = new SaveData();
         var oldSaveData = Helper.Data.ReadJsonFile<SaveData>(SavePath);
         if (oldSaveData is null) return;
 
         var saveDataVersion = new SemanticVersion(oldSaveData.Version);
-        if (!saveDataVersion.IsOlderThan("1.8.0")) return;
+        if (!saveDataVersion.IsOlderThan("1.8.1")) return;
+        
+        var newSaveData = new SaveData();
 
         try
         {

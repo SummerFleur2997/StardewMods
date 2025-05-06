@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using ConvenientChests.Framework.ChestService;
 using StardewValley;
@@ -29,16 +28,6 @@ public static class StashLogic
         var toBeMoved = Game1.player.Items
             .Where(i => i != null && af(chest, i) && !rf(i))
             .ToList();
-
-        foreach (var item in Game1.player.Items)
-        {
-            if (item == null) continue;
-            Console.WriteLine(item.DisplayName);
-            Console.WriteLine(af(chest, item).ToString());
-            Console.WriteLine(rf(item).ToString());
-            var a = item is Tool;
-            Console.WriteLine(a.ToString());
-        }
 
         // try to move items to chest
         return toBeMoved.Any() && Game1.player.Items.DumpItemsToChest(chest, toBeMoved).Any();

@@ -12,7 +12,7 @@ namespace ConvenientChests.Framework.UserInterfacService;
 
 public class ScrollBar : Widget
 {
-    private ScrollBarRunner Runner;
+    private ScrollBarRunner Runner { get; }
 
     private int _scrollPosition;
 
@@ -27,14 +27,14 @@ public class ScrollBar : Widget
     }
 
 
-    private int scrollMax;
+    private int _scrollMax;
 
     public int ScrollMax
     {
-        get => scrollMax;
+        get => _scrollMax;
         set
         {
-            scrollMax = value;
+            _scrollMax = value;
             UpdateScroller();
         }
     }
@@ -45,7 +45,7 @@ public class ScrollBar : Widget
 
     private SpriteButton ScrollUpButton { get; }
     private SpriteButton ScrollDownButton { get; }
-    private Rectangle ScrollBackground;
+    private Rectangle _scrollBackground;
 
     public ScrollBar()
     {
@@ -95,14 +95,14 @@ public class ScrollBar : Widget
         ScrollDownButton.X = 0;
         ScrollDownButton.Y = Height - ScrollDownButton.Height;
 
-        ScrollBackground.X = 20;
-        ScrollBackground.Y = ScrollUpButton.Height - 4;
-        ScrollBackground.Height = Height - ScrollUpButton.Height - ScrollDownButton.Height + 8;
-        ScrollBackground.Width = Runner.Width;
-        Runner.X = ScrollBackground.X;
+        _scrollBackground.X = 20;
+        _scrollBackground.Y = ScrollUpButton.Height - 4;
+        _scrollBackground.Height = Height - ScrollUpButton.Height - ScrollDownButton.Height + 8;
+        _scrollBackground.Width = Runner.Width;
+        Runner.X = _scrollBackground.X;
 
 
-        ScrollBackground.Location = Globalize(ScrollBackground.Location);
+        _scrollBackground.Location = Globalize(_scrollBackground.Location);
         UpdateScroller();
     }
 
@@ -111,8 +111,8 @@ public class ScrollBar : Widget
         if (Step == 0)
             return;
 
-        Runner.Height = (int)(ScrollBackground.Height * (Step / (float)ScrollMax));
-        Runner.Y = 60 + (int)((ScrollBackground.Height - Runner.Height) *
+        Runner.Height = (int)(_scrollBackground.Height * (Step / (float)ScrollMax));
+        Runner.Y = 60 + (int)((_scrollBackground.Height - Runner.Height) *
                               Math.Min(1, ScrollPosition / (float)(ScrollMax - Step)));
     }
 
@@ -125,7 +125,7 @@ public class ScrollBar : Widget
         // draw background
         IClickableMenu.drawTextureBox(batch, Game1.mouseCursors,
             new Rectangle(403, 383, 6, 6),
-            ScrollBackground.X, ScrollBackground.Y, ScrollBackground.Width, ScrollBackground.Height,
+            _scrollBackground.X, _scrollBackground.Y, _scrollBackground.Width, _scrollBackground.Height,
             Color.White, 4f, false);
 
         base.Draw(batch);
@@ -137,12 +137,12 @@ public class ScrollBar : Widget
             return;
 
         ScrollPosition = Math.Max(0, Math.Min(ScrollMax, ScrollPosition + direction * Step));
-        OnScroll?.Invoke(this, new ScrollBarEventArgs(ScrollPosition, direction));
+        OnScroll?.Invoke(this, new ScrollBarEventArgs(ScrollPosition));
         UpdateScroller();
     }
 
 
-    protected bool _scrolling = false;
+    private bool _scrolling;
 
     public override bool ReceiveLeftClick(Point point)
     {
@@ -172,10 +172,10 @@ public class ScrollBar : Widget
         }
 
         var mouseY = Game1.getMouseY(true);
-        var progress = Math.Min(Math.Max(0f, mouseY - ScrollBackground.Y) / Height, 1);
+        var progress = Math.Min(Math.Max(0f, mouseY - _scrollBackground.Y) / Height, 1);
         ScrollPosition = (int)(progress * ScrollMax);
 
-        OnScroll?.Invoke(this, new ScrollBarEventArgs(ScrollPosition, mouseY < GlobalBounds.Y ? -1 : 1));
+        OnScroll?.Invoke(this, new ScrollBarEventArgs(ScrollPosition));
     }
 
     /// <summary>
@@ -190,27 +190,19 @@ public class ScrollBar : Widget
         _scrolling = false;
     }
 
-
-    public override bool ReceiveScrollWheelAction(int amount)
-    {
-        return base.ReceiveScrollWheelAction(amount);
-    }
-
     public event EventHandler<ScrollBarEventArgs> OnScroll;
 
     public class ScrollBarEventArgs : EventArgs
     {
-        public ScrollBarEventArgs(int position, int direction)
+        public ScrollBarEventArgs(int position)
         {
             Position = position;
-            Direction = direction;
         }
 
-        public int Position { get; set; }
-        public int Direction { get; set; }
+        public int Position { get; }
     }
 
-    protected class ScrollBarRunner : Widget
+    private class ScrollBarRunner : Widget
     {
         private static readonly TextureRegion TextureTop = new(Game1.mouseCursors, new Rectangle(435, 463, 6, 3), true);
 
@@ -218,7 +210,7 @@ public class ScrollBar : Widget
 
         private static readonly TextureRegion TextureBot = new(Game1.mouseCursors, new Rectangle(435, 470, 6, 3), true);
 
-        public bool Visible { get; set; } = true;
+        private bool Visible { get; } = true;
 
         public override void Draw(SpriteBatch batch)
         {

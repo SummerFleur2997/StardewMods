@@ -6,49 +6,32 @@ using StardewValley.Tools;
 
 namespace ConvenientChests.CategorizeChests.Framework;
 
-internal class CategoryDataManager
+public class CategoryDataManager
 {
     /// <summary>
     /// A mapping of category names to the item keys belonging to that category.
     /// </summary>
-    public Dictionary<string, IList<ItemKey>> Categories { get; } = CreateCategoriesByDisplayName();
+    public Dictionary<ItemCategoryName, IList<ItemKey>> Categories { get; } = CreateCategoriesByDisplayName();
 
     public List<ItemCategoryName> ItemCategories => NewCategories();
 
     private List<ItemCategoryName> NewCategories()
     {
-        var displayName = Categories.Keys.ToList();
-        var baseName = CreateCategoriesByBaseName();
-        if (displayName.Count != baseName.Count) return null;
+        var itemCategories = Categories.Keys.ToList();
 
-        var categories = displayName
-            .Zip(baseName, (dn, bn) => new ItemCategoryName(dn, bn))
-            .ToList();
-
-        return categories;
+        return itemCategories;
     }
-
-
-    private static Dictionary<string, IList<ItemKey>> CreateCategoriesByDisplayName()
+    
+    private static Dictionary<ItemCategoryName, IList<ItemKey>> CreateCategoriesByDisplayName()
     {
         return DiscoverItems()
             .Select(item => item.ToItemKey())
             .Where(key => !CategoryItemBlacklist.Includes(key))
-            .GroupBy(key => key.GetCategory().CategoryDisplayName)
+            .GroupBy(key => key.GetCategory())
             .ToDictionary(
                 g => g.Key,
                 g => (IList<ItemKey>)g.ToList()
             );
-    }
-
-    private static List<string> CreateCategoriesByBaseName()
-    {
-        return DiscoverItems()
-            .Select(item => item.ToItemKey())
-            .Where(key => !CategoryItemBlacklist.Includes(key))
-            .GroupBy(key => key.GetCategory().CategoryBaseName)
-            .Select(g => g.Key)
-            .ToList();
     }
 
     /// <summary>
@@ -56,7 +39,8 @@ internal class CategoryDataManager
     /// </summary>
     private static IEnumerable<Item> DiscoverItems()
     {
-        return ItemRegistry.ItemTypes.SelectMany(ItemHelper.GetAllItems)
+        return ItemRegistry.ItemTypes
+            .SelectMany(ItemHelper.GetAllItems)
             .Where(FilterTools);
     }
 

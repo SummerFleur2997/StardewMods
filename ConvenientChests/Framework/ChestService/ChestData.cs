@@ -20,6 +20,7 @@ internal class ChestData
 
     /// <summary>
     /// Set this chest to accept the specified kind of item.
+    /// 设置这个箱子接受指定类型的物品。
     /// </summary>
     private void AddAccepted(ItemKey itemKey)
     {
@@ -28,6 +29,7 @@ internal class ChestData
 
     /// <summary>
     /// Set this chest to not accept the specified kind of item.
+    /// 移除这个箱子接受的指定类型的物品。
     /// </summary>
     private void RemoveAccepted(ItemKey itemKey)
     {
@@ -37,6 +39,7 @@ internal class ChestData
 
     /// <summary>
     /// Toggle whether this chest accepts the specified kind of item.
+    /// 切换这个箱子是否接受指定类型的物品。
     /// </summary>
     public void Toggle(ItemKey itemKey)
     {
@@ -49,6 +52,7 @@ internal class ChestData
 
     /// <summary>
     /// Return whether this chest accepts the given kind of item.
+    /// 返回这个箱子是否接受指定类型的物品。
     /// </summary>
     public bool Accepts(ItemKey itemKey)
     {

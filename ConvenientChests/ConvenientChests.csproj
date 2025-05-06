@@ -23,6 +23,12 @@
         </None>
     </ItemGroup>
     <ItemGroup>
+        <Content Include="..\README.md">
+          <Link>README.md</Link>
+        </Content>
+        <Content Include="..\README_zh.md">
+          <Link>README_zh.md</Link>
+        </Content>
         <Content Include="CategorizeChests\LICENSE"/>
     </ItemGroup>
 </Project>

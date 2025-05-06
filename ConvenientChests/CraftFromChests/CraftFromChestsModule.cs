@@ -14,11 +14,11 @@ namespace ConvenientChests.CraftFromChests;
 
 public class CraftFromChestsModule : Module
 {
-    private readonly MenuListener MenuListener;
+    private readonly MenuListener _menuListener;
 
     public CraftFromChestsModule(ModEntry modEntry) : base(modEntry)
     {
-        MenuListener = new MenuListener(Events);
+        _menuListener = new MenuListener(Events);
         modEntry.Helper.Events.Display.MenuChanged += OnMenuChanged;
     }
 
@@ -27,8 +27,8 @@ public class CraftFromChestsModule : Module
         IsActive = true;
 
         // Register Events
-        MenuListener.RegisterEvents();
-        MenuListener.CraftingMenuShown += CraftingMenuShown;
+        _menuListener.RegisterEvents();
+        _menuListener.CraftingMenuShown += CraftingMenuShown;
     }
 
     public override void Deactivate()
@@ -36,8 +36,8 @@ public class CraftFromChestsModule : Module
         IsActive = false;
 
         // Unregister Events
-        MenuListener.CraftingMenuShown -= CraftingMenuShown;
-        MenuListener.UnregisterEvents();
+        _menuListener.CraftingMenuShown -= CraftingMenuShown;
+        _menuListener.UnregisterEvents();
     }
 
     private void CraftingMenuShown(object sender, CraftingMenuArgs e)

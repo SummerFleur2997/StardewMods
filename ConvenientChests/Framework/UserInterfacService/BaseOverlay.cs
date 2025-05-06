@@ -18,25 +18,25 @@ internal abstract class BaseOverlay : IDisposable
      ** Fields
      *********/
     /// <summary>The SMAPI events available for mods.</summary>
-    private readonly IModEvents Events;
+    private readonly IModEvents _events;
 
     /// <summary>An API for checking and changing input state.</summary>
-    protected readonly IInputHelper InputHelper;
+    private readonly IInputHelper _inputHelper;
 
     /// <summary>Simplifies access to private code.</summary>
-    protected readonly IReflectionHelper Reflection;
+    private readonly IReflectionHelper _reflection;
 
     /// <summary>The screen ID for which the overlay was created, to support split-screen mode.</summary>
-    private readonly int ScreenId;
+    private readonly int _screenId;
 
     /// <summary>The last viewport bounds.</summary>
-    private Rectangle LastViewport;
+    private Rectangle _lastViewport;
 
     /// <summary>Indicates whether to keep the overlay active. If <c>null</c>, the overlay is kept until explicitly disposed.</summary>
-    private readonly Func<bool>? KeepAliveCheck;
+    private readonly Func<bool>? _keepAliveCheck;
 
     /// <summary>The UI mode to use for pixel coordinates in <see cref="ReceiveLeftClick"/> and <see cref="ReceiveCursorHover"/>, or <c>null</c> to use the current UI mode at the time the event is raised.</summary>
-    private readonly bool? AssumeUiMode;
+    private readonly bool? _assumeUiMode;
 
 
     /*********
@@ -45,13 +45,13 @@ internal abstract class BaseOverlay : IDisposable
     /// <summary>Release all resources.</summary>
     public virtual void Dispose()
     {
-        Events.Display.RenderedActiveMenu -= OnRendered;
-        Events.Display.RenderedWorld -= OnRenderedWorld;
-        Events.GameLoop.UpdateTicked -= OnUpdateTicked;
-        Events.Input.ButtonPressed -= OnButtonPressed;
-        Events.Input.ButtonsChanged -= OnButtonsChanged;
-        Events.Input.CursorMoved -= OnCursorMoved;
-        Events.Input.MouseWheelScrolled -= OnMouseWheelScrolled;
+        _events.Display.RenderedActiveMenu -= OnRendered;
+        _events.Display.RenderedWorld -= OnRenderedWorld;
+        _events.GameLoop.UpdateTicked -= OnUpdateTicked;
+        _events.Input.ButtonPressed -= OnButtonPressed;
+        _events.Input.ButtonsChanged -= OnButtonsChanged;
+        _events.Input.CursorMoved -= OnCursorMoved;
+        _events.Input.MouseWheelScrolled -= OnMouseWheelScrolled;
     }
 
 
@@ -70,14 +70,14 @@ internal abstract class BaseOverlay : IDisposable
     protected BaseOverlay(IModEvents events, IInputHelper inputHelper, IReflectionHelper reflection,
         Func<bool>? keepAlive = null, bool? assumeUiMode = null)
     {
-        Events = events;
-        InputHelper = inputHelper;
-        Reflection = reflection;
-        KeepAliveCheck = keepAlive;
-        LastViewport = new Rectangle(Game1.uiViewport.X, Game1.uiViewport.Y, Game1.uiViewport.Width,
+        _events = events;
+        _inputHelper = inputHelper;
+        _reflection = reflection;
+        _keepAliveCheck = keepAlive;
+        _lastViewport = new Rectangle(Game1.uiViewport.X, Game1.uiViewport.Y, Game1.uiViewport.Width,
             Game1.uiViewport.Height);
-        ScreenId = Context.ScreenId;
-        AssumeUiMode = assumeUiMode;
+        _screenId = Context.ScreenId;
+        _assumeUiMode = assumeUiMode;
 
         events.GameLoop.UpdateTicked += OnUpdateTicked;
 
@@ -158,7 +158,7 @@ internal abstract class BaseOverlay : IDisposable
         var cursorPos = new Vector2(Game1.getMouseX(), Game1.getMouseY());
         if (Constants.TargetPlatform == GamePlatform.Android)
             cursorPos *= Game1.options.zoomLevel /
-                         Reflection.GetProperty<float>(typeof(Game1), "NativeZoomLevel").GetValue();
+                         _reflection.GetProperty<float>(typeof(Game1), "NativeZoomLevel").GetValue();
 
         Game1.spriteBatch.Draw(Game1.mouseCursors, cursorPos,
             Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, Game1.options.SnappyMenus ? 44 : 0, 16, 16),
@@ -174,7 +174,7 @@ internal abstract class BaseOverlay : IDisposable
     /// <param name="e">The event data.</param>
     private void OnRendered(object? sender, RenderedActiveMenuEventArgs e)
     {
-        if (Context.ScreenId != ScreenId)
+        if (Context.ScreenId != _screenId)
             return;
 
         DrawUi(Game1.spriteBatch);
@@ -185,7 +185,7 @@ internal abstract class BaseOverlay : IDisposable
     /// <param name="e">The event data.</param>
     private void OnRenderedWorld(object? sender, RenderedWorldEventArgs e)
     {
-        if (Context.ScreenId != ScreenId)
+        if (Context.ScreenId != _screenId)
             return;
 
         DrawWorld(e.SpriteBatch);
@@ -196,10 +196,10 @@ internal abstract class BaseOverlay : IDisposable
     /// <param name="e">The event data.</param>
     private void OnUpdateTicked(object? sender, UpdateTickedEventArgs e)
     {
-        if (Context.ScreenId == ScreenId)
+        if (Context.ScreenId == _screenId)
         {
             // detect end of life
-            if (KeepAliveCheck != null && !KeepAliveCheck())
+            if (_keepAliveCheck != null && !_keepAliveCheck())
             {
                 Dispose();
                 return;
@@ -207,14 +207,14 @@ internal abstract class BaseOverlay : IDisposable
 
             // trigger window resize event
             var newViewport = Game1.uiViewport;
-            if (LastViewport.Width != newViewport.Width || LastViewport.Height != newViewport.Height)
+            if (_lastViewport.Width != newViewport.Width || _lastViewport.Height != newViewport.Height)
             {
                 newViewport = new Rectangle(newViewport.X, newViewport.Y, newViewport.Width, newViewport.Height);
                 ReceiveGameWindowResized();
-                LastViewport = newViewport;
+                _lastViewport = newViewport;
             }
         }
-        else if (!Context.HasScreenId(ScreenId))
+        else if (!Context.HasScreenId(_screenId))
         {
             Dispose();
         }
@@ -225,7 +225,7 @@ internal abstract class BaseOverlay : IDisposable
     /// <param name="e">The event data.</param>
     private void OnButtonsChanged(object? sender, ButtonsChangedEventArgs e)
     {
-        if (Context.ScreenId != ScreenId)
+        if (Context.ScreenId != _screenId)
             return;
 
         ReceiveButtonsChanged(sender, e);
@@ -236,17 +236,17 @@ internal abstract class BaseOverlay : IDisposable
     /// <param name="e">The event data.</param>
     private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
     {
-        if (Context.ScreenId != ScreenId)
+        if (Context.ScreenId != _screenId)
             return;
 
         if (e.Button != SButton.MouseLeft && !e.Button.IsUseToolButton())
             return;
 
-        var uiMode = AssumeUiMode ?? Game1.uiMode;
+        var uiMode = _assumeUiMode ?? Game1.uiMode;
         bool handled;
         if (Constants.TargetPlatform == GamePlatform.Android)
         {
-            var nativeZoomLevel = Reflection.GetProperty<float>(typeof(Game1), "NativeZoomLevel").GetValue();
+            var nativeZoomLevel = _reflection.GetProperty<float>(typeof(Game1), "NativeZoomLevel").GetValue();
             handled = ReceiveLeftClick((int)(Game1.getMouseX() * Game1.options.zoomLevel / nativeZoomLevel),
                 (int)(Game1.getMouseY() * Game1.options.zoomLevel / nativeZoomLevel));
         }
@@ -256,7 +256,7 @@ internal abstract class BaseOverlay : IDisposable
         }
 
         if (handled)
-            InputHelper.Suppress(e.Button);
+            _inputHelper.Suppress(e.Button);
     }
 
     /// <inheritdoc cref="IInputEvents.MouseWheelScrolled"/>
@@ -264,7 +264,7 @@ internal abstract class BaseOverlay : IDisposable
     /// <param name="e">The event data.</param>
     private void OnMouseWheelScrolled(object? sender, MouseWheelScrolledEventArgs e)
     {
-        if (Context.ScreenId != ScreenId)
+        if (Context.ScreenId != _screenId)
             return;
 
         var scrollHandled = ReceiveScrollWheelAction(e.Delta);
@@ -289,10 +289,10 @@ internal abstract class BaseOverlay : IDisposable
     /// <param name="e">The event data.</param>
     private void OnCursorMoved(object? sender, CursorMovedEventArgs e)
     {
-        if (Context.ScreenId != ScreenId)
+        if (Context.ScreenId != _screenId)
             return;
 
-        var uiMode = AssumeUiMode ?? Game1.uiMode;
+        var uiMode = _assumeUiMode ?? Game1.uiMode;
         var hoverHandled = ReceiveCursorHover(Game1.getMouseX(uiMode), Game1.getMouseY(uiMode));
         if (hoverHandled)
             Game1.InvalidateOldMouseMovement();

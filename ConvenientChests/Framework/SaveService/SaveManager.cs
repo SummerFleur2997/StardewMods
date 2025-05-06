@@ -2,7 +2,6 @@
 using ConvenientChests.Framework.ExceptionService;
 using ConvenientChests.StashToChests;
 using StardewModdingAPI;
-using StardewValley;
 
 namespace ConvenientChests.Framework.SaveService;
 
@@ -11,10 +10,10 @@ namespace ConvenientChests.Framework.SaveService;
 /// </summary>
 internal class SaveManager
 {
-    private readonly ModEntry ModEntry;
-    private readonly CategorizeChestsModule CategorizeModule;
-    private readonly StashToChestsModule StashModule;
-    private readonly ISemanticVersion Version;
+    private ModEntry ModEntry { get; }
+    private CategorizeChestsModule CategorizeModule { get; }
+    private StashToChestsModule StashModule { get; }
+    private ISemanticVersion Version { get; }
 
     public SaveManager(ISemanticVersion version, ModEntry modEntry,
         CategorizeChestsModule categorizeModule, StashToChestsModule stashModule)
@@ -32,7 +31,7 @@ internal class SaveManager
     /// <param name="saveData">The save data file relative to the mod folder.</param>
     public void Save(string relativePath, SaveData saveData = null)
     {
-        var saver = new Saver(Version, CategorizeModule.ChestDataManager, StashModule.InventoryDataManager);
+        var saver = new Saver(Version, CategorizeModule.ChestManager, StashModule.InventoryManager);
         saveData ??= saver.GetSerializableData();
         ModEntry.Helper.Data.WriteJsonFile(relativePath, saveData);
     }
@@ -49,8 +48,8 @@ internal class SaveManager
         {
             try
             {
-                var chest = CategorizeModule.ChestFinder.GetChestByAddress(entry.Address);
-                var chestData = CategorizeModule.ChestDataManager.GetChestData(chest);
+                var chest = CategorizeModule.ChestManager.GetChestByAddress(entry.Address);
+                var chestData = CategorizeModule.ChestManager.GetChestData(chest);
 
                 chestData.AcceptedItemKinds = entry.GetItemSet();
             }
@@ -64,8 +63,8 @@ internal class SaveManager
         {
             try
             {
-                var playerName = Game1.player.Name;
-                var invtyData = StashModule.InventoryDataManager.GetInventoryData(playerName);
+                var player = StashModule.InventoryManager.GetPlayerByID(entry.PlayerID);
+                var invtyData = StashModule.InventoryManager.GetInventoryData(player);
 
                 invtyData.LockedItemKinds = entry.GetItemSet();
             }

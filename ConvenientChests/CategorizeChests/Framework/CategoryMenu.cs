@@ -25,7 +25,9 @@ internal class CategoryMenu : Widget
 
     // pagination
     private int Row { get; set; }
-    private int NumItems => ActiveCategory == "" ? 0 : CategoryDataManager.Categories[ActiveCategory].Count;
+    private int NumItems => ActiveCategory.CategoryDisplayName == "" 
+        ? 0 
+        : CategoryDataManager.Categories[ActiveCategory].Count;
 
     // Elements
     private Widget Body { get; set; }
@@ -46,7 +48,7 @@ internal class CategoryMenu : Widget
     private int Index { get; set; }
     public List<ItemCategoryName> Categories { get; set; }
 
-    private string ActiveCategory => Categories[Index].CategoryDisplayName;
+    private ItemCategoryName ActiveCategory => Categories[Index];
 
     public event Action OnClose;
 
@@ -117,7 +119,7 @@ internal class CategoryMenu : Widget
 
         SelectAllButton.X = Padding;
 
-        CategoryLabel.Text = ActiveCategory;
+        CategoryLabel.Text = ActiveCategory.CategoryDisplayName;
         CategoryLabel.CenterHorizontally();
 
         TopRow.Height = TopRow.Children.Max(c => c.Height);

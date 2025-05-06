@@ -14,12 +14,12 @@ internal class MenuOverlay : Widget
     private TooltipManager TooltipManager { get; }
     private TextButton LockButton { get; set; }
     private LockMenu LockMenu { get; set; }
-    private string PlayerName { get; }
+    private Farmer Player { get; }
 
     public MenuOverlay(StashToChestsModule stashModule, GameMenu menu)
     {
         StashModule = stashModule;
-        PlayerName = Game1.player.Name;
+        Player = Game1.player;
         GameMenu = menu;
         TooltipManager = new TooltipManager();
         AddButtons();
@@ -67,7 +67,7 @@ internal class MenuOverlay : Widget
 
     private void OpenLockMenu()
     {
-        var inventoryData = StashModule.InventoryDataManager.GetInventoryData(PlayerName);
+        var inventoryData = StashModule.InventoryManager.GetInventoryData(Player);
         LockMenu = new LockMenu(inventoryData, TooltipManager, GameMenu.width - 24);
         LockMenu.Position = new Point(
             GameMenu.xPositionOnScreen - GlobalBounds.X - 12,

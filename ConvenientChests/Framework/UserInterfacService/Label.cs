@@ -9,14 +9,14 @@ namespace ConvenientChests.Framework.UserInterfacService;
 /// </summary>
 public class Label : Widget
 {
-    private string _Text;
+    private string _text;
 
     public string Text
     {
-        get => _Text;
+        get => _text;
         set
         {
-            _Text = value;
+            _text = value;
             RecalculateDimensions();
         }
     }

@@ -3,19 +3,19 @@ using Microsoft.Xna.Framework.Graphics;
 namespace ConvenientChests.Framework.UserInterfacService;
 
 /// <summary>
-/// A button that uses a single TextureRegion to display itself.
+/// A button that uses a single textureRegion to display itself.
 /// </summary>
 internal class SpriteButton : Button
 {
-    private readonly TextureRegion TextureRegion;
+    private readonly TextureRegion _textureRegion;
 
     public bool Visible { get; set; } = true;
 
     public SpriteButton(TextureRegion textureRegion)
     {
-        TextureRegion = textureRegion;
-        Width = TextureRegion.Width;
-        Height = TextureRegion.Height;
+        _textureRegion = textureRegion;
+        Width = _textureRegion.Width;
+        Height = _textureRegion.Height;
     }
 
     public override void Draw(SpriteBatch batch)
@@ -23,7 +23,7 @@ internal class SpriteButton : Button
         if (!Visible)
             return;
 
-        batch.Draw(TextureRegion.Texture, TextureRegion.Region, GlobalPosition.X, GlobalPosition.Y,
-            TextureRegion.Width, TextureRegion.Height);
+        batch.Draw(_textureRegion.Texture, _textureRegion.Region, GlobalPosition.X, GlobalPosition.Y,
+            _textureRegion.Width, _textureRegion.Height);
     }
 }

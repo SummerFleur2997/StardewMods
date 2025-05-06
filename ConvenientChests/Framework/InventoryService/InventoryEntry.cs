@@ -11,16 +11,21 @@ internal class InventoryEntry
     /// The current player's name.
     /// </summary>
     public string PlayerName { get; set; }
+    
+    /// <summary>
+    /// 当前玩家的 ID。
+    /// The current player's ID.
+    /// </summary>
+    public long PlayerID { get; set; }
 
     public Dictionary<ItemType, string> LockedItems { get; set; }
 
-    public InventoryEntry()
-    {
-    }
+    public InventoryEntry() { }
 
     public InventoryEntry(InventoryData data)
     {
-        PlayerName = data.PlayerName;
+        PlayerName = data.Player.Name;
+        PlayerID = data.Player.UniqueMultiplayerID;
         LockedItems = data.LockedItemKinds
             .GroupBy(i => ItemHelper.GetItemType(i))
             .ToDictionary(

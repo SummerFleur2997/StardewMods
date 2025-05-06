@@ -7,18 +7,18 @@ namespace ConvenientChests.Framework.UserInterfacService;
 /// </summary>
 internal class Stamp : Widget
 {
-    private readonly TextureRegion TextureRegion;
+    private readonly TextureRegion _textureRegion;
 
     public Stamp(TextureRegion textureRegion)
     {
-        TextureRegion = textureRegion;
-        Width = TextureRegion.Width;
-        Height = TextureRegion.Height;
+        _textureRegion = textureRegion;
+        Width = _textureRegion.Width;
+        Height = _textureRegion.Height;
     }
 
     public override void Draw(SpriteBatch batch)
     {
-        batch.Draw(TextureRegion.Texture, TextureRegion.Region, GlobalPosition.X, GlobalPosition.Y,
-            TextureRegion.Width, TextureRegion.Height);
+        batch.Draw(_textureRegion.Texture, _textureRegion.Region, GlobalPosition.X, GlobalPosition.Y,
+            _textureRegion.Width, _textureRegion.Height);
     }
 }

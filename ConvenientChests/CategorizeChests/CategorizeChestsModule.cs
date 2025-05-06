@@ -11,13 +11,12 @@ namespace ConvenientChests.CategorizeChests;
 public class CategorizeChestsModule : Module
 {
     internal CategoryDataManager CategoryDataManager { get; } = new();
-    internal ChestDataManager ChestDataManager { get; } = new();
-    internal ChestFinder ChestFinder { get; } = new();
+    internal ChestManager ChestManager { get; } = new();
 
     public bool ChestAcceptsItem(Chest chest, Item item)
     {
         var itemKey = item.ToBase().ToItemKey();
-        return !CategoryItemBlacklist.Includes(itemKey) && ChestDataManager.GetChestData(chest).Accepts(itemKey);
+        return !CategoryItemBlacklist.Includes(itemKey) && ChestManager.GetChestData(chest).Accepts(itemKey);
     }
 
     public CategorizeChestsModule(ModEntry modEntry) : base(modEntry)

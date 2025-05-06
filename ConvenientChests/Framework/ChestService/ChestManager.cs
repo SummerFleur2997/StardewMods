@@ -1,13 +1,25 @@
-﻿using System.Linq;
+using System.Runtime.CompilerServices;
+using StardewValley.Objects;
+using System.Linq;
 using ConvenientChests.Framework.ExceptionService;
 using StardewValley;
 using StardewValley.Locations;
-using StardewValley.Objects;
 
 namespace ConvenientChests.Framework.ChestService;
 
-internal class ChestFinder
+/// <summary>
+/// The chest manager responsible for handling chest data.
+/// 负责处理箱子数据的箱子管理器。
+/// </summary>
+internal class ChestManager
 {
+    private readonly ConditionalWeakTable<Chest, ChestData> _table = new();
+
+    public ChestData GetChestData(Chest chest)
+    {
+        return _table.GetValue(chest, c => new ChestData(c));
+    }
+    
     public Chest GetChestByAddress(ChestAddress address)
     {
         if (address.LocationType == ChestLocationType.Refrigerator)
@@ -35,10 +47,8 @@ internal class ChestFinder
 
     private GameLocation GetLocationFromAddress(ChestAddress address)
     {
-        var location = Game1.locations.FirstOrDefault(l => l.Name == address.LocationName);
-
-        if (location == null)
-            throw new InvalidSaveDataException($"Can't find location named {address.LocationName}");
+        var location = Game1.locations.FirstOrDefault(l => l.Name == address.LocationName) 
+            ?? throw new InvalidSaveDataException($"Can't find location named {address.LocationName}");
 
         if (address.LocationType != ChestLocationType.Building)
             return location;
@@ -46,11 +56,9 @@ internal class ChestFinder
         if (location.buildings.ToList() == null)
             throw new InvalidSaveDataException($"Can't find any buildings in location named {location.Name}");
 
-        var building = location.buildings.SingleOrDefault(b => b.GetIndoorsName() == address.BuildingName);
-        if (building == null)
-            throw new InvalidSaveDataException(
-                $"Save data contains building data in {address.BuildingName} but building does not exist");
-
+        var building = location.buildings.SingleOrDefault(b => b.GetIndoorsName() == address.BuildingName) 
+            ?? throw new InvalidSaveDataException($"Save data contains building data in {address.BuildingName} but building does not exist");
+            
         return building.indoors.Value;
     }
 }

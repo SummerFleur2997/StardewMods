@@ -1,4 +1,3 @@
-using System;
 using System.Linq;
 using ConvenientChests.Framework;
 using ConvenientChests.Framework.ChestService;
@@ -15,17 +14,17 @@ namespace ConvenientChests.StashToChests;
 
 public class StashToChestsModule : Module
 {
-    internal InventoryDataManager InventoryDataManager { get; } = new();
+    internal InventoryManager InventoryManager { get; } = new();
     public AcceptingFunc AcceptingFunc { get; private set; }
     public RejectingFunc RejectingFunc { get; private set; }
     private bool IsStashToNearbyActive { get; set; }
     private bool IsStashAnyweherActive { get; set; }
-    private static string PlayerName => Game1.player.Name;
+    private static Farmer Player => Game1.player;
 
     private bool InventoryLocksItem(Item item)
     {
         var itemKey = item.ToBase().ToItemKey();
-        return InventoryDataManager.GetInventoryData(PlayerName).Locks(itemKey);
+        return InventoryManager.GetInventoryData(Player).Locks(itemKey);
     }
 
     public StashToChestsModule(ModEntry modEntry) : base(modEntry)
@@ -112,9 +111,6 @@ public class StashToChestsModule : Module
         // While no chests is opening, stash items into nearby chests.
         else if (IsStashToNearbyActive)
             StashToNearbyChests(ModConfig.StashRadius, AcceptingFunc, RejectingFunc);
-
-        var a = InventoryDataManager.GetInventoryData(PlayerName).LockedItemKinds.ToString();
-        Console.WriteLine(a);
     }
 
     private void StashAnywhereKeyPressed()

@@ -22,9 +22,9 @@ internal class ChestOverlay : Widget
     private Chest Chest { get; }
     private TooltipManager TooltipManager { get; }
 
-    private readonly InventoryMenu InventoryMenu;
-    private readonly InventoryMenu.highlightThisItem DefaultChestHighlighter;
-    private readonly InventoryMenu.highlightThisItem DefaultInventoryHighlighter;
+    private readonly InventoryMenu _inventoryMenu;
+    private readonly InventoryMenu.highlightThisItem _defaultChestHighlighter;
+    private readonly InventoryMenu.highlightThisItem _defaultInventoryHighlighter;
 
     private TextButton CategorizeButton { get; set; }
     private TextButton StashButton { get; set; }
@@ -44,13 +44,14 @@ internal class ChestOverlay : Widget
 
         Chest = chest;
         ItemGrabMenu = menu;
-        InventoryMenu = menu.ItemsToGrabMenu;
+        _inventoryMenu = menu.ItemsToGrabMenu;
         TooltipManager = new TooltipManager();
 
-        DefaultChestHighlighter = ItemGrabMenu.inventory.highlightMethod;
-        DefaultInventoryHighlighter = InventoryMenu.highlightMethod;
+        _defaultChestHighlighter = ItemGrabMenu.inventory.highlightMethod;
+        _defaultInventoryHighlighter = _inventoryMenu.highlightMethod;
 
         ShouldAddCategoryKey = shouldAddCategoryKey;
+        if (Chest.SpecialChestType == Chest.SpecialChestTypes.Enricher) return;
         AddButtons();
     }
 
@@ -106,7 +107,11 @@ internal class ChestOverlay : Widget
             Chest.SpecialChestTypes.BigChest => -128,
             Chest.SpecialChestTypes.MiniShippingBin => -34,
             Chest.SpecialChestTypes.JunimoChest => -34,
-            _ => -112
+            _ => Chest.Name switch
+            {
+                "__Auto_!_Eats__" => -34,
+                _ => -112
+            }
         };
 
         StashButton.Width = CategorizeButton.Width = Math.Max(StashButton.Width, CategorizeButton.Width);
@@ -150,7 +155,7 @@ internal class ChestOverlay : Widget
     /// </summary>
     private void OpenCategoryMenu()
     {
-        var chestData = CategorizeModule.ChestDataManager.GetChestData(Chest);
+        var chestData = CategorizeModule.ChestManager.GetChestData(Chest);
         CategoryMenu = new CategoryMenu(chestData, CategorizeModule.CategoryDataManager, TooltipManager,
             ItemGrabMenu.width - 24);
         CategoryMenu.Position = new Point(
@@ -246,13 +251,13 @@ internal class ChestOverlay : Widget
     {
         if (clickable)
         {
-            ItemGrabMenu.inventory.highlightMethod = DefaultChestHighlighter;
-            InventoryMenu.highlightMethod = DefaultInventoryHighlighter;
+            ItemGrabMenu.inventory.highlightMethod = _defaultChestHighlighter;
+            _inventoryMenu.highlightMethod = _defaultInventoryHighlighter;
         }
         else
         {
             ItemGrabMenu.inventory.highlightMethod = i => false;
-            InventoryMenu.highlightMethod = i => false;
+            _inventoryMenu.highlightMethod = i => false;
         }
     }
 }

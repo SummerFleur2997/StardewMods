@@ -19,7 +19,6 @@ public class Widget : IDisposable
     private int _width;
     private int _height;
 
-
     private Widget Parent
     {
         get => _parent;
