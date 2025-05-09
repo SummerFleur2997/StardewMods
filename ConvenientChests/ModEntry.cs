@@ -1,10 +1,7 @@
-﻿using System;
-using System.IO;
-using ConvenientChests.CategorizeChests;
+﻿using ConvenientChests.CategorizeChests;
 using ConvenientChests.CraftFromChests;
 using ConvenientChests.Framework;
 using ConvenientChests.Framework.ConfigurationService;
-using ConvenientChests.Framework.InventoryService;
 using ConvenientChests.Framework.SaveService;
 using ConvenientChests.Framework.UserInterfacService;
 using ConvenientChests.StashToChests;
@@ -14,7 +11,6 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
-using Module = ConvenientChests.Framework.Module;
 
 namespace ConvenientChests;
 
@@ -23,18 +19,18 @@ namespace ConvenientChests;
 /// </summary>
 public class ModEntry : Mod
 {
-    /// <summary>
-    /// 模组配置。
-    /// Mod configuration.
-    /// </summary>
-    public ModConfig Config;
-
-    internal static IModHelper StaticHelper { get; private set; }
-    internal static IMonitor StaticMonitor { get; private set; }
+    internal static ModConfig Config { get; private set; }
+    internal static IManifest Manifest { get; private set; }
+    internal static IModHelper ModHelper { get; private set; }
+    private static IMonitor ModMonitor { get; set; }
+    private static IMultiplayerHelper MultiplayerHelper { get; set; }
+    
+    private Saver Saver 
+        => new (ModManifest.Version, CategorizeModule.ChestManager, StashModule.InventoryManager);
 
     internal static void Log(string s, LogLevel l = LogLevel.Trace)
     {
-        StaticMonitor.Log(s, l);
+        ModMonitor.Log(s, l);
     }
 
     private readonly PerScreen<WidgetHost> _screenWidgetHost = new();
@@ -42,35 +38,17 @@ public class ModEntry : Mod
     /// <summary>
     /// <see cref="CategorizeChestsModule"/> mod.
     /// </summary>
-    public static CategorizeChestsModule CategorizeChests { get; private set; }
+    internal static CategorizeChestsModule CategorizeModule { get; private set; }
 
     /// <summary>
     /// <see cref="CraftFromChestsModule"/> mod.
     /// </summary>
-    private static CraftFromChestsModule CraftFromChests { get; set; }
+    internal static CraftFromChestsModule CraftModule { get; private set; }
 
     /// <summary>
     /// <see cref="StashToChestsModule"/> mod.
     /// </summary>
-    private static StashToChestsModule StashToChests { get; set; }
-
-    /// <summary>
-    /// 存档数据的存储路径，位于 mod 文件夹下的 savedata 文件夹中。
-    /// The path to the mod's save data file, relative to the mod folder.
-    /// </summary>
-    private static string SavePath => Path.Combine("savedata", $"{Constants.SaveFolderName}.json");
-
-    /// <summary>
-    /// 存档数据的绝对路径。
-    /// The absolute path to the mod's save data file.
-    /// </summary>
-    private string AbsoluteSavePath => Path.Combine(Helper.DirectoryPath, SavePath);
-
-    /// <summary>
-    /// 模组存档数据的管理器。
-    /// The manager responsible for handling the mod's save data.
-    /// </summary>
-    private SaveManager SaveManager { get; set; }
+    internal static StashToChestsModule StashModule { get; private set; }
 
     /// <summary>
     /// 模组入口点，在模组首次加载后调用。
@@ -80,15 +58,19 @@ public class ModEntry : Mod
     {
         I18n.Init(Helper.Translation);
 
-        StaticMonitor = Monitor;
-        StaticHelper = Helper;
+        Manifest = ModManifest;
+        ModMonitor = Monitor;
+        ModHelper = Helper;
+        MultiplayerHelper = helper.Multiplayer;
 
         helper.Events.GameLoop.GameLaunched += OnGameLaunched;
         helper.Events.GameLoop.SaveLoaded += OnGameLoaded;
         helper.Events.GameLoop.ReturnedToTitle += OnGameUnload;
         helper.Events.GameLoop.Saving += OnSaving;
         helper.Events.Display.MenuChanged += OnMenuChanged;
-
+        
+        helper.Events.Multiplayer.PeerConnected += OnPeerConnected;
+        
         Config = helper.ReadConfig<ModConfig>();
     }
 
@@ -98,19 +80,19 @@ public class ModEntry : Mod
     /// </summary>
     /// <param name="configStatus">配置选项状态</param>
     /// <param name="module">需要重新载入配置的模组</param>
-    public void ReloadConfig(bool configStatus, Module module)
+    public static void ReloadConfig(bool configStatus, IModule module)
     {
-        Config = Helper.ReadConfig<ModConfig>();
+        Config = ModHelper.ReadConfig<ModConfig>();
 
         switch (configStatus, module.IsActive)
         {
             case (true, false):
                 module.Activate();
-                if (module == CategorizeChests) StashToChests.RefreshJudgementFunction();
+                if (module == CategorizeModule) StashModule.RefreshJudgementFunction();
                 break;
             case (false, true):
                 module.Deactivate();
-                if (module == CategorizeChests) StashToChests.RefreshJudgementFunction();
+                if (module == CategorizeModule) StashModule.RefreshJudgementFunction();
                 break;
         }
     }
@@ -119,50 +101,48 @@ public class ModEntry : Mod
     /// 在载入游戏存档时加载模组。
     /// Load modules when loading a game save.
     /// </summary>
-    private void OnGameLoaded(object sender, SaveLoadedEventArgs e)
+    private static void OnGameLoaded(object sender, SaveLoadedEventArgs e)
     {
-        CategorizeChests = new CategorizeChestsModule(this);
+        CategorizeModule = new CategorizeChestsModule();
         if (Config.CategorizeChests)
-            CategorizeChests.Activate();
+            CategorizeModule.Activate();
 
-        CraftFromChests = new CraftFromChestsModule(this);
+        CraftModule = new CraftFromChestsModule();
         if (Config.CraftFromChests)
-            CraftFromChests.Activate();
+            CraftModule.Activate();
 
-        StashToChests = new StashToChestsModule(this);
+        StashModule = new StashToChestsModule();
         if (Config.StashAnywhere || Config.StashToNearby)
-            StashToChests.Activate();
-
-        SaveManager = new SaveManager(ModManifest.Version, this, CategorizeChests, StashToChests);
-        LoadSaveData();
+            StashModule.Activate();
+        SaveManager.Load();
     }
 
     /// <summary>
     /// 在返回游戏标题界面时卸载模组。
     /// Unload modules when back to the title page.
     /// </summary>
-    private void OnGameUnload(object sender, ReturnedToTitleEventArgs e)
+    private static void OnGameUnload(object sender, ReturnedToTitleEventArgs e)
     {
-        CategorizeChests.Deactivate();
-        CategorizeChests = null;
+        CategorizeModule.Deactivate();
+        CategorizeModule = null;
 
-        CraftFromChests.Deactivate();
-        CraftFromChests = null;
+        CraftModule.Deactivate();
+        CraftModule = null;
 
-        StashToChests.Deactivate();
-        StashToChests = null;
+        StashModule.Deactivate();
+        StashModule = null;
     }
 
     /// <summary>
     /// 在游戏加载时读取配置选项
     /// Read configs when loading the game.
     /// </summary>
-    private void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+    private static void OnGameLaunched(object sender, GameLaunchedEventArgs e)
     {
-        GenericModConfigMenuIntegration.Register(ModManifest, Helper.ModRegistry, Monitor,
+        GenericModConfigMenuIntegration.Register(Manifest, ModHelper.ModRegistry, 
             () => Config,
             () => Config = new ModConfig(),
-            () => Helper.WriteConfig(Config)
+            () => ModHelper.WriteConfig(Config)
         );
     }
 
@@ -172,8 +152,8 @@ public class ModEntry : Mod
     /// </summary>
     private void OnMenuChanged(object sender, MenuChangedEventArgs e)
     {
-        if (CategorizeChests is not null)
-            ReloadConfig(Config.CategorizeChests, CategorizeChests);
+        if (CategorizeModule is not null)
+            ReloadConfig(Config.CategorizeChests, CategorizeModule);
 
         if (e.NewMenu == e.OldMenu)
             return;
@@ -181,7 +161,7 @@ public class ModEntry : Mod
         switch (e.OldMenu)
         {
             case GameMenu:
-                Helper.Events.Input.ButtonsChanged -= OnButtonChanged;
+                ModHelper.Events.Input.ButtonsChanged -= OnButtonChanged;
                 ClearMenu();
                 break;
             case ItemGrabMenu:
@@ -193,7 +173,7 @@ public class ModEntry : Mod
         {
             case GameMenu gameMenu:
                 CreateMenu(gameMenu);
-                Helper.Events.Input.ButtonsChanged += OnButtonChanged;
+                ModHelper.Events.Input.ButtonsChanged += OnButtonChanged;
                 break;
             case ItemGrabMenu itemGrabMenu:
                 CreateMenu(itemGrabMenu);
@@ -205,17 +185,9 @@ public class ModEntry : Mod
     /// 在游戏开始对存档进行保存之前触发。
     /// Raised before the game begins writes data to the save file (except the initial save creation).
     /// </summary>
-    private void OnSaving(object sender, SavingEventArgs e)
+    private static void OnSaving(object sender, SavingEventArgs e)
     {
-        try
-        {
-            SaveManager.Save(SavePath);
-        }
-        catch (Exception ex)
-        {
-            Monitor.Log($"Error saving chest data to {SavePath}", LogLevel.Error);
-            Monitor.Log(ex.ToString());
-        }
+        SaveManager.Save();
     }
 
     private void OnButtonChanged(object sender, ButtonsChangedEventArgs e)
@@ -225,19 +197,28 @@ public class ModEntry : Mod
         else if (Game1.activeClickableMenu is GameMenu { currentTab: 0 } && _screenWidgetHost.Value == null)
             CreateMenu(Game1.activeClickableMenu as GameMenu);
     }
+    
+    private void OnPeerConnected(object sender, PeerConnectedEventArgs e)
+    {
+        if (!Context.IsMultiplayer || !Context.IsMainPlayer) return;
+        
+        var saveData = Saver.GetSerializableData();
+        MultiplayerHelper.SendMessage(saveData, "MultiplayerSync", 
+            new []{ ModManifest.UniqueID }, new []{ e.Peer.PlayerID });
+    }
 
     private void CreateMenu(ItemGrabMenu itemGrabMenu)
     {
         if (itemGrabMenu.context is not Chest chest) return;
-        _screenWidgetHost.Value = new WidgetHost(CategorizeChests.Events, Helper.Input, Helper.Reflection);
-        var overlay = new ChestOverlay(CategorizeChests, StashToChests, chest, itemGrabMenu, Config.CategorizeChests);
+        _screenWidgetHost.Value = new WidgetHost(CategorizeModule.Events, ModHelper.Input, ModHelper.Reflection);
+        var overlay = new ChestOverlay(itemGrabMenu, chest, Config.CategorizeChests);
         _screenWidgetHost.Value.RootWidget.AddChild(overlay);
     }
 
     private void CreateMenu(GameMenu gameMenu)
     {
-        _screenWidgetHost.Value = new WidgetHost(CategorizeChests.Events, Helper.Input, Helper.Reflection);
-        var overlay = new MenuOverlay(StashToChests, gameMenu);
+        _screenWidgetHost.Value = new WidgetHost(CategorizeModule.Events, ModHelper.Input, ModHelper.Reflection);
+        var overlay = new MenuOverlay(gameMenu);
         _screenWidgetHost.Value.RootWidget.AddChild(overlay);
     }
 
@@ -245,48 +226,5 @@ public class ModEntry : Mod
     {
         _screenWidgetHost.Value?.Dispose();
         _screenWidgetHost.Value = null;
-    }
-
-    private void LoadSaveData()
-    {
-        if (!File.Exists(AbsoluteSavePath)) return;
-        UpdateSaveData();
-        try
-        {
-            SaveManager.Load(SavePath);
-        }
-        catch (Exception ex)
-        {
-            Monitor.Log($"Error loading chest data from {SavePath}", LogLevel.Error);
-            Monitor.Log(ex.ToString());
-        }
-    }
-
-    /// <summary>
-    /// 更新 1.8.0 之前的存档文件结构。
-    /// Updates legacy save files (pre-1.8.0) to the current format.
-    /// </summary>
-    private void UpdateSaveData()
-    {
-        var oldSaveData = Helper.Data.ReadJsonFile<SaveData>(SavePath);
-        if (oldSaveData is null) return;
-
-        var saveDataVersion = new SemanticVersion(oldSaveData.Version);
-        if (!saveDataVersion.IsOlderThan("1.8.1")) return;
-        
-        var newSaveData = new SaveData();
-
-        try
-        {
-            newSaveData.Version = ModManifest.Version.ToString();
-            newSaveData.ChestEntries = oldSaveData.ChestEntries;
-            newSaveData.InventoryEntries = Array.Empty<InventoryEntry>();
-            SaveManager.Save(SavePath, newSaveData);
-        }
-        catch (Exception ex)
-        {
-            Monitor.Log($"Error update data from {SavePath}", LogLevel.Error);
-            Monitor.Log(ex.ToString());
-        }
     }
 }

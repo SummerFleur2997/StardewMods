@@ -1,4 +1,5 @@
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 
 namespace ConvenientChests.Framework;
 
@@ -15,8 +16,8 @@ public class ModConfig
 
     public int StashRadius { get; set; } = 5;
 
-    public SButton StashToNearbyKey { get; set; } = SButton.Q;
-    public SButton StashAnywhereKey { get; set; } = SButton.Z;
+    public KeybindList StashToNearbyKey { get; set; } = KeybindList.Parse("Q");
+    public KeybindList StashAnywhereKey { get; set; } = KeybindList.Parse("Z");
     public SButton? StashButton = SButton.RightStick;
 
     public bool StashToExistingStacks { get; set; } = true;

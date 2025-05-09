@@ -3,15 +3,18 @@ using ConvenientChests.Framework;
 using ConvenientChests.Framework.ChestService;
 using ConvenientChests.Framework.ItemService;
 using StardewModdingAPI;
+using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Objects;
 
 namespace ConvenientChests.CategorizeChests;
 
-public class CategorizeChestsModule : Module
+public class CategorizeChestsModule : IModule
 {
+    public bool IsActive { get; private set; }
     internal CategoryDataManager CategoryDataManager { get; } = new();
     internal ChestManager ChestManager { get; } = new();
+    public IModEvents Events => ModEntry.ModHelper.Events;
 
     public bool ChestAcceptsItem(Chest chest, Item item)
     {
@@ -19,11 +22,7 @@ public class CategorizeChestsModule : Module
         return !CategoryItemBlacklist.Includes(itemKey) && ChestManager.GetChestData(chest).Accepts(itemKey);
     }
 
-    public CategorizeChestsModule(ModEntry modEntry) : base(modEntry)
-    {
-    }
-
-    public override void Activate()
+    public void Activate()
     {
         IsActive = true;
 
@@ -33,7 +32,7 @@ public class CategorizeChestsModule : Module
                 LogLevel.Warn);
     }
 
-    public override void Deactivate()
+    public void Deactivate()
     {
         IsActive = false;
     }

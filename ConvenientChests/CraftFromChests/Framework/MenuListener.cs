@@ -1,4 +1,5 @@
 ﻿using System;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
@@ -105,7 +106,7 @@ public class MenuListener
 
             default:
                 // How did we get here?
-                ModEntry.StaticMonitor.Log($"Unexpected menu: {Game1.activeClickableMenu.GetType()}");
+                ModEntry.Log($"Unexpected menu: {Game1.activeClickableMenu.GetType()}", LogLevel.Warn);
                 UnregisterTabEvent();
                 return;
         }

@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ConvenientChests.CategorizeChests;
 using ConvenientChests.CategorizeChests.Framework;
-using ConvenientChests.StashToChests;
 using ConvenientChests.StashToChests.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
@@ -17,8 +14,6 @@ namespace ConvenientChests.Framework.UserInterfacService;
 internal class ChestOverlay : Widget
 {
     private ItemGrabMenu ItemGrabMenu { get; }
-    private CategorizeChestsModule CategorizeModule { get; }
-    private StashToChestsModule StashModule { get; }
     private Chest Chest { get; }
     private TooltipManager TooltipManager { get; }
 
@@ -29,18 +24,14 @@ internal class ChestOverlay : Widget
     private TextButton CategorizeButton { get; set; }
     private TextButton StashButton { get; set; }
     private CategoryMenu CategoryMenu { get; set; }
-
     private bool ShouldAddCategoryKey { get; }
 
     /// <summary>
     /// 构造函数，初始化 ChestOverlay 类。
     /// Constructor to initialize the ChestOverlay class.
     /// </summary>
-    public ChestOverlay(CategorizeChestsModule categorizeModule, StashToChestsModule stashModule, Chest chest,
-        ItemGrabMenu menu, bool shouldAddCategoryKey)
+    public ChestOverlay(ItemGrabMenu menu, Chest chest, bool shouldAddCategoryKey)
     {
-        CategorizeModule = categorizeModule;
-        StashModule = stashModule;
 
         Chest = chest;
         ItemGrabMenu = menu;
@@ -88,7 +79,7 @@ internal class ChestOverlay : Widget
         CategorizeButton.OnPress += ToggleMenu;
         if (ShouldAddCategoryKey) AddChild(CategorizeButton);
 
-        StashButton = new TextButton(ChooseStashButtonLabel(), Sprites.LeftProtrudingTab);
+        StashButton = new TextButton(I18n.Button_Stash(), Sprites.LeftProtrudingTab);
         StashButton.OnPress += StashItems;
         AddChild(StashButton);
 
@@ -126,17 +117,6 @@ internal class ChestOverlay : Widget
     }
 
     /// <summary>
-    /// 选择堆叠按钮的标签文本。
-    /// Choose the label text for the stash button.
-    /// </summary>
-    private string ChooseStashButtonLabel()
-    {
-        return CategorizeModule.ModConfig.StashToNearbyKey == SButton.None || StashModule.ModConfig.StashToNearby
-            ? I18n.Button_Stash()
-            : I18n.Button_Stash() + $" ({CategorizeModule.ModConfig.StashToNearbyKey})";
-    }
-
-    /// <summary>
     /// 切换分类菜单的显示状态。
     /// Toggle the visibility of the category menu.
     /// </summary>
@@ -155,8 +135,8 @@ internal class ChestOverlay : Widget
     /// </summary>
     private void OpenCategoryMenu()
     {
-        var chestData = CategorizeModule.ChestManager.GetChestData(Chest);
-        CategoryMenu = new CategoryMenu(chestData, CategorizeModule.CategoryDataManager, TooltipManager,
+        var chestData = ModEntry.CategorizeModule.ChestManager.GetChestData(Chest);
+        CategoryMenu = new CategoryMenu(chestData, ModEntry.CategorizeModule.CategoryDataManager, TooltipManager,
             ItemGrabMenu.width - 24);
         CategoryMenu.Position = new Point(
             ItemGrabMenu.xPositionOnScreen - GlobalBounds.X - 12,
@@ -164,7 +144,7 @@ internal class ChestOverlay : Widget
 
         // 根据配置文件决定列表排序方式
         // Determine list sorting method based on configuration settings
-        if (CategorizeModule.ModConfig.EnableSort)
+        if (ModEntry.Config.EnableSort)
         {
             // 按字母顺序排序
             // Sort in alphabetical order
@@ -226,7 +206,8 @@ internal class ChestOverlay : Widget
     /// </summary>
     private void StashItems()
     {
-        StashLogic.StashToCurrentChest(Chest, StashModule.AcceptingFunc, StashModule.RejectingFunc);
+        var stashModule = ModEntry.StashModule;
+        StashLogic.StashToCurrentChest(Chest, stashModule.AcceptingFunc, stashModule.RejectingFunc);
     }
 
     /// <summary>

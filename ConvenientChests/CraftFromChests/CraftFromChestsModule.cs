@@ -12,17 +12,20 @@ using Utility = StardewValley.Utility;
 
 namespace ConvenientChests.CraftFromChests;
 
-public class CraftFromChestsModule : Module
+public class CraftFromChestsModule : IModule
 {
+    public bool IsActive { get; private set; }
+    
     private readonly MenuListener _menuListener;
 
-    public CraftFromChestsModule(ModEntry modEntry) : base(modEntry)
+    public CraftFromChestsModule()
     {
-        _menuListener = new MenuListener(Events);
-        modEntry.Helper.Events.Display.MenuChanged += OnMenuChanged;
+        var events = ModEntry.ModHelper.Events;
+        _menuListener = new MenuListener(events);
+        ModEntry.ModHelper.Events.Display.MenuChanged += OnMenuChanged;
     }
 
-    public override void Activate()
+    public void Activate()
     {
         IsActive = true;
 
@@ -31,7 +34,7 @@ public class CraftFromChestsModule : Module
         _menuListener.CraftingMenuShown += CraftingMenuShown;
     }
 
-    public override void Deactivate()
+    public void Deactivate()
     {
         IsActive = false;
 
@@ -64,7 +67,7 @@ public class CraftFromChestsModule : Module
     private IEnumerable<Chest> GetChests(bool isCookingScreen)
     {
         // nearby chests
-        var chests = Game1.player.GetNearbyChests(ModConfig.CraftRadius).Where(c => c.Items.Any(i => i != null))
+        var chests = Game1.player.GetNearbyChests(ModEntry.Config.CraftRadius).Where(c => c.Items.Any(i => i != null))
             .ToList();
         foreach (var c in chests)
             yield return c;
@@ -84,6 +87,6 @@ public class CraftFromChestsModule : Module
 
     private void OnMenuChanged(object sender, MenuChangedEventArgs e)
     {
-        ModEntry.ReloadConfig(ModConfig.CraftFromChests, this);
+        ModEntry.ReloadConfig(ModEntry.Config.CraftFromChests, this);
     }
 }

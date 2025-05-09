@@ -12,8 +12,9 @@ using Utility = ConvenientChests.Framework.Utility;
 
 namespace ConvenientChests.StashToChests;
 
-public class StashToChestsModule : Module
+public class StashToChestsModule : IModule
 {
+    public bool IsActive { get; private set; }
     internal InventoryManager InventoryManager { get; } = new();
     public AcceptingFunc AcceptingFunc { get; private set; }
     public RejectingFunc RejectingFunc { get; private set; }
@@ -27,12 +28,12 @@ public class StashToChestsModule : Module
         return InventoryManager.GetInventoryData(Player).Locks(itemKey);
     }
 
-    public StashToChestsModule(ModEntry modEntry) : base(modEntry)
+    public StashToChestsModule()
     {
-        modEntry.Helper.Events.Input.ButtonPressed += OnButtonPressed;
+        ModEntry.ModHelper.Events.Input.ButtonPressed += OnButtonPressed;
     }
 
-    public override void Activate()
+    public void Activate()
     {
         IsActive = true;
         RefreshConfig();
@@ -42,7 +43,7 @@ public class StashToChestsModule : Module
         RejectingFunc = CreateRejectingFunction();
     }
 
-    public override void Deactivate()
+    public void Deactivate()
     {
         IsActive = false;
         RefreshConfig();
@@ -66,13 +67,13 @@ public class StashToChestsModule : Module
     /// <returns>判断逻辑函数</returns>
     private AcceptingFunc CreateAcceptingFunction()
     {
-        if (ModConfig.CategorizeChests && ModConfig.StashToExistingStacks)
-            return (chest, item) => ModEntry.CategorizeChests.ChestAcceptsItem(chest, item) || chest.ContainsItem(item);
+        if (ModEntry.Config.CategorizeChests && ModEntry.Config.StashToExistingStacks)
+            return (chest, item) => ModEntry.CategorizeModule.ChestAcceptsItem(chest, item) || chest.ContainsItem(item);
 
-        if (ModConfig.CategorizeChests)
-            return (chest, item) => ModEntry.CategorizeChests.ChestAcceptsItem(chest, item);
+        if (ModEntry.Config.CategorizeChests)
+            return (chest, item) => ModEntry.CategorizeModule.ChestAcceptsItem(chest, item);
 
-        if (ModConfig.StashToExistingStacks)
+        if (ModEntry.Config.StashToExistingStacks)
             return (chest, item) => chest.ContainsItem(item);
 
         return (_, _) => false;
@@ -80,15 +81,15 @@ public class StashToChestsModule : Module
 
     private RejectingFunc CreateRejectingFunction()
     {
-        if (ModConfig.NeverStashTools)
+        if (ModEntry.Config.NeverStashTools)
             return item => item is Tool || InventoryLocksItem(item);
         return InventoryLocksItem;
     }
 
     private void RefreshConfig()
     {
-        IsStashToNearbyActive = ModConfig.StashToNearby;
-        IsStashAnyweherActive = ModConfig.StashAnywhere;
+        IsStashToNearbyActive = ModEntry.Config.StashToNearby;
+        IsStashAnyweherActive = ModEntry.Config.StashAnywhere;
     }
 
     /// <summary>
@@ -110,14 +111,14 @@ public class StashToChestsModule : Module
         // 未打开箱子时，将物品堆叠至附近的箱子。
         // While no chests is opening, stash items into nearby chests.
         else if (IsStashToNearbyActive)
-            StashToNearbyChests(ModConfig.StashRadius, AcceptingFunc, RejectingFunc);
+            StashToNearbyChests(ModEntry.Config.StashRadius, AcceptingFunc, RejectingFunc);
     }
 
     private void StashAnywhereKeyPressed()
     {
         // try to stash to fridge first
         var success = false;
-        if (ModConfig.StashAnywhereToFridge && ChestExtension.GetFridge(Game1.player) is { } fridge)
+        if (ModEntry.Config.StashAnywhereToFridge && ChestExtension.GetFridge(Game1.player) is { } fridge)
             success |= StashToChest(fridge, AcceptingFunc, RejectingFunc);
 
         // try to find all chests by location
@@ -145,16 +146,15 @@ public class StashToChestsModule : Module
     /// </summary>
     private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
     {
-        switch (e.Button)
+        if (ModEntry.Config.StashAnywhereKey.JustPressed())
         {
-            case var _ when e.Button == ModConfig.StashAnywhereKey:
-                ModEntry.ReloadConfig(ModConfig.StashAnywhere, this);
-                if (IsStashAnyweherActive) StashAnywhereKeyPressed();
-                break;
-            case var _ when e.Button == ModConfig.StashToNearbyKey || e.Button == ModConfig.StashButton:
-                ModEntry.ReloadConfig(ModConfig.StashToNearby, this);
-                StashToNearbyKeyPressed();
-                break;
+            ModEntry.ReloadConfig(ModEntry.Config.StashAnywhere, this);
+            if (IsStashAnyweherActive) StashAnywhereKeyPressed();
+        }
+        if (ModEntry.Config.StashToNearbyKey.JustPressed() || e.Button == ModEntry.Config.StashButton)
+        {
+            ModEntry.ReloadConfig(ModEntry.Config.StashToNearby, this);
+            StashToNearbyKeyPressed();
         }
     }
 }

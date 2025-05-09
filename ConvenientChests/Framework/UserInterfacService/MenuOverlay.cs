@@ -1,4 +1,3 @@
-using ConvenientChests.StashToChests;
 using ConvenientChests.StashToChests.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -10,15 +9,13 @@ namespace ConvenientChests.Framework.UserInterfacService;
 internal class MenuOverlay : Widget
 {
     private GameMenu GameMenu { get; }
-    private StashToChestsModule StashModule { get; }
     private TooltipManager TooltipManager { get; }
     private TextButton LockButton { get; set; }
     private LockMenu LockMenu { get; set; }
     private Farmer Player { get; }
 
-    public MenuOverlay(StashToChestsModule stashModule, GameMenu menu)
+    public MenuOverlay(GameMenu menu)
     {
-        StashModule = stashModule;
         Player = Game1.player;
         GameMenu = menu;
         TooltipManager = new TooltipManager();
@@ -67,7 +64,7 @@ internal class MenuOverlay : Widget
 
     private void OpenLockMenu()
     {
-        var inventoryData = StashModule.InventoryManager.GetInventoryData(Player);
+        var inventoryData = ModEntry.StashModule.InventoryManager.GetInventoryData(Player);
         LockMenu = new LockMenu(inventoryData, TooltipManager, GameMenu.width - 24);
         LockMenu.Position = new Point(
             GameMenu.xPositionOnScreen - GlobalBounds.X - 12,

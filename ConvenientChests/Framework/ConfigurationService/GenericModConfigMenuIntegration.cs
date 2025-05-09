@@ -5,11 +5,11 @@ namespace ConvenientChests.Framework.ConfigurationService;
 
 public static class GenericModConfigMenuIntegration
 {
-    public static void Register(IManifest manifest, IModRegistry modRegistry, IMonitor monitor,
+    public static void Register(IManifest manifest, IModRegistry modRegistry, 
         Func<ModConfig> getConfig, Action reset, Action save)
     {
         // get API
-        var api = IntegrationHelper.GetGenericModConfigMenu(modRegistry, monitor);
+        var api = IntegrationHelper.GetGenericModConfigMenu(modRegistry);
         if (api == null)
             return;
 
@@ -88,13 +88,13 @@ public static class GenericModConfigMenuIntegration
         );
 
         api.AddSectionTitle(manifest, I18n.Config_KeyBind_Title);
-        api.AddKeybind(
+        api.AddKeybindList(
             manifest,
             name: I18n.Config_StashToChests_Key,
             getValue: () => getConfig().StashToNearbyKey,
             setValue: value => getConfig().StashToNearbyKey = value
         );
-        api.AddKeybind(
+        api.AddKeybindList(
             manifest,
             name: I18n.Config_StashAnywhere_Key,
             getValue: () => getConfig().StashAnywhereKey,

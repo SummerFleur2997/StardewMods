@@ -8,7 +8,7 @@ public static class CraftingRecipeExtension
 {
     public static Dictionary<int, int> GetIngredients(this CraftingRecipe recipe)
     {
-        return ModEntry.StaticHelper.Reflection.GetField<Dictionary<int, int>>(recipe, "recipeList").GetValue();
+        return ModEntry.ModHelper.Reflection.GetField<Dictionary<int, int>>(recipe, "recipeList").GetValue();
     }
 
     public static bool ConsumeIngredients(this CraftingRecipe recipe, IList<IList<Item>> extraInventories)

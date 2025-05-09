@@ -62,14 +62,14 @@ public class ScrollBar : Widget
         ScrollUpButton.OnPress += () => Scroll(-1);
         ScrollDownButton.OnPress += () => Scroll(+1);
 
-        ModEntry.StaticHelper.Events.Input.ButtonReleased += InputOnButtonReleased;
-        ModEntry.StaticHelper.Events.GameLoop.UpdateTicked += GameLoopOnUpdateTicked;
+        ModEntry.ModHelper.Events.Input.ButtonReleased += InputOnButtonReleased;
+        ModEntry.ModHelper.Events.GameLoop.UpdateTicked += GameLoopOnUpdateTicked;
     }
 
     public override void Dispose()
     {
-        ModEntry.StaticHelper.Events.Input.ButtonReleased -= InputOnButtonReleased;
-        ModEntry.StaticHelper.Events.GameLoop.UpdateTicked -= GameLoopOnUpdateTicked;
+        ModEntry.ModHelper.Events.Input.ButtonReleased -= InputOnButtonReleased;
+        ModEntry.ModHelper.Events.GameLoop.UpdateTicked -= GameLoopOnUpdateTicked;
 
         base.Dispose();
     }
@@ -165,7 +165,7 @@ public class ScrollBar : Widget
         var buttons = new List<SButton> { SButton.MouseLeft }
             .Concat(Game1.options.useToolButton.Select(SButtonExtensions.ToSButton));
 
-        if (!buttons.Any(b => ModEntry.StaticHelper.Input.IsDown(b) || ModEntry.StaticHelper.Input.IsSuppressed(b)))
+        if (!buttons.Any(b => ModEntry.ModHelper.Input.IsDown(b) || ModEntry.ModHelper.Input.IsSuppressed(b)))
         {
             _scrolling = false;
             return;

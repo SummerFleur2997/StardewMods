@@ -1,5 +1,6 @@
 ﻿using System;
 using StardewModdingAPI;
+using StardewModdingAPI.Utilities;
 
 namespace ConvenientChests.Framework.ConfigurationService;
 
@@ -17,5 +18,8 @@ public interface IGenericModConfigMenuApi
         Func<int, string> formatValue = null, string fieldId = null);
 
     void AddKeybind(IManifest mod, Func<SButton> getValue, Action<SButton> setValue, Func<string> name,
+        Func<string> tooltip = null, string fieldId = null);
+    
+    void AddKeybindList(IManifest mod, Func<KeybindList> getValue, Action<KeybindList> setValue, Func<string> name, 
         Func<string> tooltip = null, string fieldId = null);
 }
