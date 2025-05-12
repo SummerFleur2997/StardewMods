@@ -1,9 +1,9 @@
-using System.Runtime.CompilerServices;
-using StardewValley.Objects;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using ConvenientChests.Framework.ExceptionService;
 using StardewValley;
 using StardewValley.Locations;
+using StardewValley.Objects;
 
 namespace ConvenientChests.Framework.ChestService;
 
@@ -11,16 +11,29 @@ namespace ConvenientChests.Framework.ChestService;
 /// The chest manager responsible for handling chest data.
 /// 负责处理箱子数据的箱子管理器。
 /// </summary>
-internal class ChestManager
+internal static class ChestManager
 {
-    private readonly ConditionalWeakTable<Chest, ChestData> _table = new();
+    private static readonly ConditionalWeakTable<Chest, ChestData> Table = new();
 
-    public ChestData GetChestData(Chest chest)
+    /// <summary>
+    /// Gets the <see cref="ChestData"/> for the specified chest.
+    /// 获取指定箱子的 <see cref="ChestData"/> 数据。
+    /// </summary>
+    public static ChestData GetChestData(Chest chest)
     {
-        return _table.GetValue(chest, c => new ChestData(c));
+        return Table.GetValue(chest, _ => new ChestData());
     }
-    
-    public Chest GetChestByAddress(ChestAddress address)
+
+    /// <summary>
+    /// Clear ConditionalWeakTable
+    /// 清理 ConditionalWeakTable
+    /// </summary>
+    public static void ClearChestData()
+    {
+        Table.Clear();
+    }
+
+    public static Chest GetChestByAddress(ChestAddress address)
     {
         if (address.LocationType == ChestLocationType.Refrigerator)
         {
@@ -45,10 +58,10 @@ internal class ChestManager
         throw new InvalidSaveDataException($"Can't find chest in {location.Name} at {address.Tile}");
     }
 
-    private GameLocation GetLocationFromAddress(ChestAddress address)
+    private static GameLocation GetLocationFromAddress(ChestAddress address)
     {
-        var location = Game1.locations.FirstOrDefault(l => l.Name == address.LocationName) 
-            ?? throw new InvalidSaveDataException($"Can't find location named {address.LocationName}");
+        var location = Game1.locations.FirstOrDefault(l => l.Name == address.LocationName)
+                       ?? throw new InvalidSaveDataException($"Can't find location named {address.LocationName}");
 
         if (address.LocationType != ChestLocationType.Building)
             return location;
@@ -56,9 +69,10 @@ internal class ChestManager
         if (location.buildings.ToList() == null)
             throw new InvalidSaveDataException($"Can't find any buildings in location named {location.Name}");
 
-        var building = location.buildings.SingleOrDefault(b => b.GetIndoorsName() == address.BuildingName) 
-            ?? throw new InvalidSaveDataException($"Save data contains building data in {address.BuildingName} but building does not exist");
-            
+        var building = location.buildings.SingleOrDefault(b => b.GetIndoorsName() == address.BuildingName)
+                       ?? throw new InvalidSaveDataException(
+                           $"Save data contains building data in {address.BuildingName} but building does not exist");
+
         return building.indoors.Value;
     }
 }

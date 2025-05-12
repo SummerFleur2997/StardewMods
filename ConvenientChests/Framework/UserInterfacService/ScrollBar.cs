@@ -10,7 +10,7 @@ using StardewValley.Menus;
 
 namespace ConvenientChests.Framework.UserInterfacService;
 
-public class ScrollBar : Widget
+internal class ScrollBar : Widget
 {
     private ScrollBarRunner Runner { get; }
 

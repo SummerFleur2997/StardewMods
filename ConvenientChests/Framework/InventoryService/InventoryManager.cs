@@ -8,21 +8,29 @@ namespace ConvenientChests.Framework.InventoryService;
 /// The inventory manager responsible for handling inventory data.
 /// 负责处理背包数据的背包管理器。
 /// </summary>
-public class InventoryManager
+internal static class InventoryManager
 {
-    private readonly ConditionalWeakTable<Farmer, InventoryData> _table = new();
+    private static readonly ConditionalWeakTable<Farmer, InventoryData> Table = new();
 
-    public InventoryData GetInventoryData(Farmer playerName)
+    public static InventoryData GetInventoryData(Farmer playerName)
     {
-        return _table.GetValue(playerName, p => new InventoryData(p));
+        return Table.GetValue(playerName, _ => new InventoryData());
     }
 
-    public Farmer GetPlayerByID(long playerID)
+    /// <summary>
+    /// Clear ConditionalWeakTable
+    /// 清理 ConditionalWeakTable
+    /// </summary>
+    public static void ClearInventoryData()
     {
-        
+        Table.Clear();
+    }
+
+    public static Farmer GetPlayerByID(long playerID)
+    {
         var player = Game1.getAllFarmers()
             .FirstOrDefault(p => p.UniqueMultiplayerID == playerID);
-        
+
         return player;
     }
 }

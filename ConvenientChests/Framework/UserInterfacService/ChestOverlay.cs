@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using ConvenientChests.CategorizeChests.Framework;
+using ConvenientChests.Framework.ChestService;
 using ConvenientChests.StashToChests.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -13,26 +14,23 @@ namespace ConvenientChests.Framework.UserInterfacService;
 
 internal class ChestOverlay : Widget
 {
-    private ItemGrabMenu ItemGrabMenu { get; }
     private Chest Chest { get; }
+    private ItemGrabMenu ItemGrabMenu { get; }
+    private TextButton CategorizeButton { get; set; }
+    private TextButton StashButton { get; set; }
+    private CategoryMenu CategoryMenu { get; set; }
     private TooltipManager TooltipManager { get; }
 
     private readonly InventoryMenu _inventoryMenu;
     private readonly InventoryMenu.highlightThisItem _defaultChestHighlighter;
     private readonly InventoryMenu.highlightThisItem _defaultInventoryHighlighter;
 
-    private TextButton CategorizeButton { get; set; }
-    private TextButton StashButton { get; set; }
-    private CategoryMenu CategoryMenu { get; set; }
-    private bool ShouldAddCategoryKey { get; }
-
     /// <summary>
     /// 构造函数，初始化 ChestOverlay 类。
     /// Constructor to initialize the ChestOverlay class.
     /// </summary>
-    public ChestOverlay(ItemGrabMenu menu, Chest chest, bool shouldAddCategoryKey)
+    public ChestOverlay(ItemGrabMenu menu, Chest chest)
     {
-
         Chest = chest;
         ItemGrabMenu = menu;
         _inventoryMenu = menu.ItemsToGrabMenu;
@@ -41,7 +39,6 @@ internal class ChestOverlay : Widget
         _defaultChestHighlighter = ItemGrabMenu.inventory.highlightMethod;
         _defaultInventoryHighlighter = _inventoryMenu.highlightMethod;
 
-        ShouldAddCategoryKey = shouldAddCategoryKey;
         if (Chest.SpecialChestType == Chest.SpecialChestTypes.Enricher) return;
         AddButtons();
     }
@@ -77,7 +74,7 @@ internal class ChestOverlay : Widget
     {
         CategorizeButton = new TextButton(I18n.Button_Categorize(), Sprites.LeftProtrudingTab);
         CategorizeButton.OnPress += ToggleMenu;
-        if (ShouldAddCategoryKey) AddChild(CategorizeButton);
+        if (ModEntry.CategorizeModule.IsActive) AddChild(CategorizeButton);
 
         StashButton = new TextButton(I18n.Button_Stash(), Sprites.LeftProtrudingTab);
         StashButton.OnPress += StashItems;
@@ -135,7 +132,7 @@ internal class ChestOverlay : Widget
     /// </summary>
     private void OpenCategoryMenu()
     {
-        var chestData = ModEntry.CategorizeModule.ChestManager.GetChestData(Chest);
+        var chestData = ChestManager.GetChestData(Chest);
         CategoryMenu = new CategoryMenu(chestData, ModEntry.CategorizeModule.CategoryDataManager, TooltipManager,
             ItemGrabMenu.width - 24);
         CategoryMenu.Position = new Point(
@@ -237,8 +234,8 @@ internal class ChestOverlay : Widget
         }
         else
         {
-            ItemGrabMenu.inventory.highlightMethod = i => false;
-            _inventoryMenu.highlightMethod = i => false;
+            ItemGrabMenu.inventory.highlightMethod = _ => false;
+            _inventoryMenu.highlightMethod = _ => false;
         }
     }
 }

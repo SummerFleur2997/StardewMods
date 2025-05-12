@@ -13,38 +13,19 @@ namespace ConvenientChests.Framework.SaveService;
 /// <summary>
 /// The class responsible for producing data to be saved.
 /// </summary>
-internal class Saver
+internal static class Saver
 {
     /// <summary>
     /// The version of the mod.
     /// 模组版本信息。
     /// </summary>
-    private ISemanticVersion Version { get; }
-
-    /// <summary>
-    /// The chest manager responsible for handling chest data.
-    /// 负责处理箱子数据的箱子管理器。
-    /// </summary>
-    private ChestManager ChestManager { get; }
-
-    /// <summary>
-    /// The inventory manager responsible for handling inventory data.
-    /// 负责处理背包数据的背包管理器。
-    /// </summary>
-    private InventoryManager InventoryManager { get; }
-
-    public Saver(ISemanticVersion version, ChestManager chestManager, InventoryManager inventoryManager)
-    {
-        Version = version;
-        ChestManager = chestManager;
-        InventoryManager = inventoryManager;
-    }
+    private static ISemanticVersion Version { get; } = ModEntry.Manifest.Version;
 
     /// <summary>
     /// Build save data for the current game state.
     /// 构建当前游戏状态的存档数据。
     /// </summary>
-    public SaveData GetSerializableData()
+    public static SaveData GetSerializableData()
     {
         return new SaveData
         {
@@ -54,7 +35,7 @@ internal class Saver
         };
     }
 
-    private IEnumerable<ChestEntry> BuildChestEntries()
+    private static IEnumerable<ChestEntry> BuildChestEntries()
     {
         foreach (var location in Game1.locations)
         {
@@ -75,23 +56,23 @@ internal class Saver
                     }
                 );
             else
-            {
                 foreach (var building in location.buildings.Where(b => b.indoors.Value != null))
                 foreach (var pair in GetLocationChests(building.indoors.Value))
                     yield return new ChestEntry(
                         ChestManager.GetChestData(pair.Value),
                         new ChestAddress(location.Name, pair.Key, ChestLocationType.Building, building.GetIndoorsName())
                     );
-            }
         }
     }
 
-    private IEnumerable<InventoryEntry> BuildInventoryEntries()
+    private static IEnumerable<InventoryEntry> BuildInventoryEntries()
     {
-        foreach (var player in Game1.getAllFarmers())
-        {
-            yield return new InventoryEntry(InventoryManager.GetInventoryData(player));
-        }
+        return Game1.getAllFarmers()
+            .Select(player => new InventoryEntry(
+                InventoryManager.GetInventoryData(player),
+                player.Name,
+                player.UniqueMultiplayerID
+            ));
     }
 
     /// <summary>

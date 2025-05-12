@@ -6,7 +6,7 @@ using StardewValley.Menus;
 
 namespace ConvenientChests.CraftFromChests.Framework;
 
-public class CraftingMenuArgs : EventArgs
+internal class CraftingMenuArgs : EventArgs
 {
     public CraftingPage Page { get; private set; }
     public bool IsCookingPage { get; private set; }
@@ -18,7 +18,7 @@ public class CraftingMenuArgs : EventArgs
     }
 }
 
-public class MenuListener
+internal class MenuListener
 {
     private readonly IModEvents _events;
     public event EventHandler<CraftingMenuArgs> CraftingMenuShown;

@@ -4,7 +4,7 @@ using StardewModdingAPI.Utilities;
 
 namespace ConvenientChests.Framework.ConfigurationService;
 
-public interface IGenericModConfigMenuApi
+internal interface IGenericModConfigMenuApi
 {
     void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
 
@@ -17,9 +17,6 @@ public interface IGenericModConfigMenuApi
         Func<string> tooltip = null, int? min = null, int? max = null, int? interval = null,
         Func<int, string> formatValue = null, string fieldId = null);
 
-    void AddKeybind(IManifest mod, Func<SButton> getValue, Action<SButton> setValue, Func<string> name,
-        Func<string> tooltip = null, string fieldId = null);
-    
-    void AddKeybindList(IManifest mod, Func<KeybindList> getValue, Action<KeybindList> setValue, Func<string> name, 
+    void AddKeybindList(IManifest mod, Func<KeybindList> getValue, Action<KeybindList> setValue, Func<string> name,
         Func<string> tooltip = null, string fieldId = null);
 }

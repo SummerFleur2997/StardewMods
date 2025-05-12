@@ -1,6 +1,6 @@
 ﻿namespace ConvenientChests.Framework.ItemService;
 
-public enum ItemType
+internal enum ItemType
 {
     BigCraftable,
     Boots,

@@ -1,6 +1,6 @@
 ﻿namespace ConvenientChests.Framework;
 
-public interface IModule
+internal interface IModule
 {
     public bool IsActive { get; }
     public void Activate();

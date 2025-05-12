@@ -11,7 +11,7 @@ namespace ConvenientChests.Framework.UserInterfacService;
 /// </summary>
 internal class ItemToggle : Widget
 {
-    public Item Item { get; }
+    private Item Item { get; }
     private TooltipManager TooltipManager { get; }
     private Widget Tooltip { get; }
     public bool Active;
@@ -38,7 +38,7 @@ internal class ItemToggle : Widget
             TooltipManager.ShowTooltipThisFrame(Tooltip);
     }
 
-    public void Toggle()
+    private void Toggle()
     {
         Active = !Active;
         OnToggle?.Invoke();

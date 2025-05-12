@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewModdingAPI;
@@ -12,7 +11,7 @@ namespace ConvenientChests.Framework.UserInterfacService;
 /// A positioned, resizable element in the interface
 /// that can also contain other elements.
 /// </summary>
-public class Widget : IDisposable
+internal class Widget : IDisposable
 {
     private Widget _parent;
     private readonly List<Widget> _children = new();
@@ -199,14 +198,10 @@ public class Widget : IDisposable
 
     public void RemoveChildren()
     {
-        RemoveChildren(c => true);
-    }
+        foreach (var child in Children)
+            child.Parent = null;
 
-    private void RemoveChildren(Predicate<Widget> shouldRemove)
-    {
-        foreach (var child in Children.Where(c => shouldRemove(c))) child.Parent = null;
-
-        _children.RemoveAll(shouldRemove);
+        _children.Clear();
 
         OnContentsChanged();
     }

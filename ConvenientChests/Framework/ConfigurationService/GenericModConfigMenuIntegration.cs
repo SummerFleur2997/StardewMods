@@ -3,9 +3,9 @@ using StardewModdingAPI;
 
 namespace ConvenientChests.Framework.ConfigurationService;
 
-public static class GenericModConfigMenuIntegration
+internal static class GenericModConfigMenuIntegration
 {
-    public static void Register(IManifest manifest, IModRegistry modRegistry, 
+    public static void Register(IManifest manifest, IModRegistry modRegistry,
         Func<ModConfig> getConfig, Action reset, Action save)
     {
         // get API

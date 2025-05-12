@@ -1,16 +1,16 @@
 ﻿using ConvenientChests.CategorizeChests;
 using ConvenientChests.CraftFromChests;
 using ConvenientChests.Framework;
+using ConvenientChests.Framework.ChestService;
 using ConvenientChests.Framework.ConfigurationService;
+using ConvenientChests.Framework.InventoryService;
 using ConvenientChests.Framework.SaveService;
 using ConvenientChests.Framework.UserInterfacService;
 using ConvenientChests.StashToChests;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
-using StardewValley.Objects;
 
 namespace ConvenientChests;
 
@@ -19,21 +19,16 @@ namespace ConvenientChests;
 /// </summary>
 public class ModEntry : Mod
 {
-    internal static ModConfig Config { get; private set; }
-    internal static IManifest Manifest { get; private set; }
+    public static ModConfig Config { get; private set; }
+    public static IManifest Manifest { get; private set; }
     internal static IModHelper ModHelper { get; private set; }
     private static IMonitor ModMonitor { get; set; }
     private static IMultiplayerHelper MultiplayerHelper { get; set; }
-    
-    private Saver Saver 
-        => new (ModManifest.Version, CategorizeModule.ChestManager, StashModule.InventoryManager);
 
     internal static void Log(string s, LogLevel l = LogLevel.Trace)
     {
         ModMonitor.Log(s, l);
     }
-
-    private readonly PerScreen<WidgetHost> _screenWidgetHost = new();
 
     /// <summary>
     /// <see cref="CategorizeChestsModule"/> mod.
@@ -68,9 +63,9 @@ public class ModEntry : Mod
         helper.Events.GameLoop.ReturnedToTitle += OnGameUnload;
         helper.Events.GameLoop.Saving += OnSaving;
         helper.Events.Display.MenuChanged += OnMenuChanged;
-        
+
         helper.Events.Multiplayer.PeerConnected += OnPeerConnected;
-        
+
         Config = helper.ReadConfig<ModConfig>();
     }
 
@@ -80,7 +75,7 @@ public class ModEntry : Mod
     /// </summary>
     /// <param name="configStatus">配置选项状态</param>
     /// <param name="module">需要重新载入配置的模组</param>
-    public static void ReloadConfig(bool configStatus, IModule module)
+    internal static void ReloadConfig(bool configStatus, IModule module)
     {
         Config = ModHelper.ReadConfig<ModConfig>();
 
@@ -114,6 +109,7 @@ public class ModEntry : Mod
         StashModule = new StashToChestsModule();
         if (Config.StashAnywhere || Config.StashToNearby)
             StashModule.Activate();
+
         SaveManager.Load();
     }
 
@@ -131,6 +127,9 @@ public class ModEntry : Mod
 
         StashModule.Deactivate();
         StashModule = null;
+
+        ChestManager.ClearChestData();
+        InventoryManager.ClearInventoryData();
     }
 
     /// <summary>
@@ -139,7 +138,7 @@ public class ModEntry : Mod
     /// </summary>
     private static void OnGameLaunched(object sender, GameLaunchedEventArgs e)
     {
-        GenericModConfigMenuIntegration.Register(Manifest, ModHelper.ModRegistry, 
+        GenericModConfigMenuIntegration.Register(Manifest, ModHelper.ModRegistry,
             () => Config,
             () => Config = new ModConfig(),
             () => ModHelper.WriteConfig(Config)
@@ -150,7 +149,7 @@ public class ModEntry : Mod
     /// 当游戏菜单打开、关闭或替换时触发。
     /// Raised after a game menu is opened, closed, or replaced.
     /// </summary>
-    private void OnMenuChanged(object sender, MenuChangedEventArgs e)
+    private static void OnMenuChanged(object sender, MenuChangedEventArgs e)
     {
         if (CategorizeModule is not null)
             ReloadConfig(Config.CategorizeChests, CategorizeModule);
@@ -162,21 +161,21 @@ public class ModEntry : Mod
         {
             case GameMenu:
                 ModHelper.Events.Input.ButtonsChanged -= OnButtonChanged;
-                ClearMenu();
+                MenuManager.ClearMenu();
                 break;
             case ItemGrabMenu:
-                ClearMenu();
+                MenuManager.ClearMenu();
                 break;
         }
 
         switch (e.NewMenu)
         {
             case GameMenu gameMenu:
-                CreateMenu(gameMenu);
+                MenuManager.CreateMenu(gameMenu);
                 ModHelper.Events.Input.ButtonsChanged += OnButtonChanged;
                 break;
             case ItemGrabMenu itemGrabMenu:
-                CreateMenu(itemGrabMenu);
+                MenuManager.CreateMenu(itemGrabMenu);
                 break;
         }
     }
@@ -190,41 +189,25 @@ public class ModEntry : Mod
         SaveManager.Save();
     }
 
-    private void OnButtonChanged(object sender, ButtonsChangedEventArgs e)
+    private static void OnButtonChanged(object sender, ButtonsChangedEventArgs e)
     {
-        if (Game1.activeClickableMenu is not GameMenu { currentTab: 0 } && _screenWidgetHost.Value != null)
-            ClearMenu();
-        else if (Game1.activeClickableMenu is GameMenu { currentTab: 0 } && _screenWidgetHost.Value == null)
-            CreateMenu(Game1.activeClickableMenu as GameMenu);
+        switch (Game1.activeClickableMenu)
+        {
+            case GameMenu { currentTab: 0 } when MenuManager.ScreenWidgetHost.Value == null:
+                MenuManager.CreateMenu((GameMenu)Game1.activeClickableMenu);
+                break;
+            case GameMenu { currentTab: not 0 } when MenuManager.ScreenWidgetHost.Value != null:
+                MenuManager.ClearMenu();
+                break;
+        }
     }
-    
-    private void OnPeerConnected(object sender, PeerConnectedEventArgs e)
+
+    private static void OnPeerConnected(object sender, PeerConnectedEventArgs e)
     {
-        if (!Context.IsMultiplayer || !Context.IsMainPlayer) return;
-        
+        if (!Context.IsMainPlayer) return;
+
         var saveData = Saver.GetSerializableData();
-        MultiplayerHelper.SendMessage(saveData, "MultiplayerSync", 
-            new []{ ModManifest.UniqueID }, new []{ e.Peer.PlayerID });
-    }
-
-    private void CreateMenu(ItemGrabMenu itemGrabMenu)
-    {
-        if (itemGrabMenu.context is not Chest chest) return;
-        _screenWidgetHost.Value = new WidgetHost(CategorizeModule.Events, ModHelper.Input, ModHelper.Reflection);
-        var overlay = new ChestOverlay(itemGrabMenu, chest, Config.CategorizeChests);
-        _screenWidgetHost.Value.RootWidget.AddChild(overlay);
-    }
-
-    private void CreateMenu(GameMenu gameMenu)
-    {
-        _screenWidgetHost.Value = new WidgetHost(CategorizeModule.Events, ModHelper.Input, ModHelper.Reflection);
-        var overlay = new MenuOverlay(gameMenu);
-        _screenWidgetHost.Value.RootWidget.AddChild(overlay);
-    }
-
-    private void ClearMenu()
-    {
-        _screenWidgetHost.Value?.Dispose();
-        _screenWidgetHost.Value = null;
+        MultiplayerHelper.SendMessage(saveData, "MultiplayerSync",
+            new[] { Manifest.UniqueID }, new[] { e.Peer.PlayerID });
     }
 }

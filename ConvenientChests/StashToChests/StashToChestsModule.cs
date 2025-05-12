@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using ConvenientChests.Framework;
 using ConvenientChests.Framework.ChestService;
@@ -8,25 +9,16 @@ using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using static ConvenientChests.StashToChests.Framework.StashLogic;
-using Utility = ConvenientChests.Framework.Utility;
 
 namespace ConvenientChests.StashToChests;
 
-public class StashToChestsModule : IModule
+internal class StashToChestsModule : IModule
 {
     public bool IsActive { get; private set; }
-    internal InventoryManager InventoryManager { get; } = new();
     public AcceptingFunc AcceptingFunc { get; private set; }
     public RejectingFunc RejectingFunc { get; private set; }
     private bool IsStashToNearbyActive { get; set; }
     private bool IsStashAnyweherActive { get; set; }
-    private static Farmer Player => Game1.player;
-
-    private bool InventoryLocksItem(Item item)
-    {
-        var itemKey = item.ToBase().ToItemKey();
-        return InventoryManager.GetInventoryData(Player).Locks(itemKey);
-    }
 
     public StashToChestsModule()
     {
@@ -61,25 +53,58 @@ public class StashToChestsModule : IModule
     }
 
     /// <summary>
+    /// Whether the given item is accepted by the given chest. 
+    /// 判断给定的箱子是否接受给定的物品。
+    /// <seealso cref="CreateAcceptingFunction"/>
+    /// </summary>
+    private static bool ChestAcceptsItem(Chest chest, Item item)
+    {
+        var itemKey = item.ToBase().ToItemKey();
+        return ChestManager.GetChestData(chest).Accepts(itemKey);
+    }
+
+    /// <summary>
+    /// Whether the given item is contained in the given chest.
+    /// 判断给定的箱子内是否包含给定的物品。
+    /// <seealso cref="CreateAcceptingFunction"/>
+    /// </summary>
+    private static bool ChestContainsItem(Chest chest, Item item)
+    {
+        return chest.Items.Any(item.canStackWith);
+    }
+
+    /// <summary>
+    /// Whether the given item is locked in the current player's inventory.
+    /// 判断给定的物品是否在当前玩家的背包中被锁定。
+    /// <seealso cref="CreateRejectingFunction"/>
+    /// </summary>
+    private static bool InventoryLocksItem(Item item)
+    {
+        var itemKey = item.ToBase().ToItemKey();
+        return InventoryManager.GetInventoryData(Game1.player).Locks(itemKey);
+    }
+
+    /// <summary>
     /// 根据配置选项设置将物品堆叠至箱子时的判断逻辑函数。
     /// Set the stack logic function based on modconfig.
     /// </summary>
     /// <returns>判断逻辑函数</returns>
-    private AcceptingFunc CreateAcceptingFunction()
+    private static AcceptingFunc CreateAcceptingFunction()
     {
-        if (ModEntry.Config.CategorizeChests && ModEntry.Config.StashToExistingStacks)
-            return (chest, item) => ModEntry.CategorizeModule.ChestAcceptsItem(chest, item) || chest.ContainsItem(item);
-
-        if (ModEntry.Config.CategorizeChests)
-            return (chest, item) => ModEntry.CategorizeModule.ChestAcceptsItem(chest, item);
-
-        if (ModEntry.Config.StashToExistingStacks)
-            return (chest, item) => chest.ContainsItem(item);
-
-        return (_, _) => false;
+        return (ModEntry.Config.CategorizeChests, ModEntry.Config.StashToExistingStacks) switch
+        {
+            (true, true)
+                => (chest, item) => ChestAcceptsItem(chest, item) || ChestContainsItem(chest, item),
+            (true, false)
+                => ChestAcceptsItem,
+            (false, true)
+                => ChestContainsItem,
+            (false, false)
+                => (_, _) => false
+        };
     }
 
-    private RejectingFunc CreateRejectingFunction()
+    private static RejectingFunc CreateRejectingFunction()
     {
         if (ModEntry.Config.NeverStashTools)
             return item => item is Tool || InventoryLocksItem(item);
@@ -90,6 +115,21 @@ public class StashToChestsModule : IModule
     {
         IsStashToNearbyActive = ModEntry.Config.StashToNearby;
         IsStashAnyweherActive = ModEntry.Config.StashAnywhere;
+    }
+
+    /// <summary>
+    /// Get all game locations.
+    /// </summary>
+    private static IEnumerable<GameLocation> GetLocations()
+    {
+        return Game1.locations
+            .Concat(
+                from location in Game1.locations
+                where location is not null
+                from building in location.buildings
+                where building.indoors.Value != null
+                select building.indoors.Value
+            );
     }
 
     /// <summary>
@@ -125,7 +165,7 @@ public class StashToChestsModule : IModule
         if (Game1.player.currentLocation == null)
             return;
 
-        var chests = Utility.GetLocations()
+        var chests = GetLocations()
             .SelectMany(location => location.Objects.Pairs)
             .Select(pair => pair.Value)
             .OfType<Chest>()
@@ -151,6 +191,7 @@ public class StashToChestsModule : IModule
             ModEntry.ReloadConfig(ModEntry.Config.StashAnywhere, this);
             if (IsStashAnyweherActive) StashAnywhereKeyPressed();
         }
+
         if (ModEntry.Config.StashToNearbyKey.JustPressed() || e.Button == ModEntry.Config.StashButton)
         {
             ModEntry.ReloadConfig(ModEntry.Config.StashToNearby, this);

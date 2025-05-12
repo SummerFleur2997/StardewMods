@@ -1,10 +1,9 @@
-﻿using ConvenientChests.CategorizeChests;
+﻿using System;
+using System.IO;
+using ConvenientChests.Framework.ChestService;
 using ConvenientChests.Framework.ExceptionService;
 using ConvenientChests.Framework.InventoryService;
-using ConvenientChests.StashToChests;
 using StardewModdingAPI;
-using System;
-using System.IO;
 
 namespace ConvenientChests.Framework.SaveService;
 
@@ -14,10 +13,6 @@ namespace ConvenientChests.Framework.SaveService;
 /// </summary>
 internal static class SaveManager
 {
-    private static CategorizeChestsModule CategorizeModule { get; }
-    private static StashToChestsModule StashModule { get; }
-    private static ISemanticVersion Version { get; }
-    
     /// <summary>
     /// 存档数据的存储路径，位于 mod 文件夹下的 savedata 文件夹中。
     /// The path to the mod's save data file, relative to the mod folder.
@@ -30,13 +25,6 @@ internal static class SaveManager
     /// </summary>
     private static string AbsoluteSavePath => Path.Combine(ModEntry.ModHelper.DirectoryPath, SavePath);
 
-    static SaveManager()
-    {
-        Version = ModEntry.Manifest.Version;
-        CategorizeModule = ModEntry.CategorizeModule;
-        StashModule = ModEntry.StashModule;
-    }
-
     /// <summary>
     /// Generate save data and write it to the save path.
     /// </summary>
@@ -44,8 +32,7 @@ internal static class SaveManager
     {
         try
         {
-            var saver = new Saver(Version, CategorizeModule.ChestManager, StashModule.InventoryManager);
-            saveData ??= saver.GetSerializableData();
+            saveData ??= Saver.GetSerializableData();
             ModEntry.ModHelper.Data.WriteJsonFile(SavePath, saveData);
         }
         catch (InvalidSaveDataException ex)
@@ -54,7 +41,7 @@ internal static class SaveManager
             ModEntry.Log(ex.ToString(), LogLevel.Error);
         }
     }
-    
+
     /// <summary>
     /// Load save data from the save path.
     /// </summary>
@@ -72,23 +59,23 @@ internal static class SaveManager
             ModEntry.Log(ex.ToString(), LogLevel.Error);
         }
     }
-    
+
     private static void LoadSaveData()
     {
         var saveData = ModEntry.ModHelper.Data.ReadJsonFile<SaveData>(SavePath) ?? new SaveData();
 
         foreach (var entry in saveData.ChestEntries)
         {
-            var chest = CategorizeModule.ChestManager.GetChestByAddress(entry.Address);
-            var chestData = CategorizeModule.ChestManager.GetChestData(chest);
+            var chest = ChestManager.GetChestByAddress(entry.Address);
+            var chestData = ChestManager.GetChestData(chest);
 
             chestData.AcceptedItemKinds = entry.GetItemSet();
         }
 
         foreach (var entry in saveData.InventoryEntries)
         {
-            var player = StashModule.InventoryManager.GetPlayerByID(entry.PlayerID);
-            var invtyData = StashModule.InventoryManager.GetInventoryData(player);
+            var player = InventoryManager.GetPlayerByID(entry.PlayerID);
+            var invtyData = InventoryManager.GetInventoryData(player);
 
             invtyData.LockedItemKinds = entry.GetItemSet();
         }
@@ -105,7 +92,7 @@ internal static class SaveManager
 
         var saveDataVersion = new SemanticVersion(oldSaveData.Version);
         if (!saveDataVersion.IsOlderThan("1.8.1")) return;
-        
+
         var newSaveData = new SaveData();
 
         try

@@ -7,7 +7,7 @@ namespace ConvenientChests.Framework.UserInterfacService;
 /// <summary>
 /// A simple text element.
 /// </summary>
-public class Label : Widget
+internal class Label : Widget
 {
     private string _text;
 

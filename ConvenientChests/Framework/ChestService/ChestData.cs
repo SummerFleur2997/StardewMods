@@ -1,22 +1,15 @@
 using System.Collections.Generic;
 using ConvenientChests.Framework.ItemService;
-using StardewValley.Objects;
 
 namespace ConvenientChests.Framework.ChestService;
 
 /// <summary>
-/// The extra data associated with a chest object, such as the list of
-/// items it should accept.
+/// The extra data associated with a chest, contains the list of items it accepts.
+/// 箱子的额外属性，包含该箱子所接受的物品列表。
 /// </summary>
 internal class ChestData
 {
-    public Chest Chest { get; }
     public HashSet<ItemKey> AcceptedItemKinds { get; set; } = new();
-
-    public ChestData(Chest chest)
-    {
-        Chest = chest;
-    }
 
     /// <summary>
     /// Set this chest to accept the specified kind of item.

@@ -6,7 +6,7 @@ namespace ConvenientChests.Framework.UserInterfacService;
 /// <summary>
 /// A simple clickable widget.
 /// </summary>
-public abstract class Button : Widget
+internal abstract class Button : Widget
 {
     public event Action OnPress;
 

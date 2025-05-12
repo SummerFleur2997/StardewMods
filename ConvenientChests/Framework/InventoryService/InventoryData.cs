@@ -1,18 +1,15 @@
 ﻿using System.Collections.Generic;
 using ConvenientChests.Framework.ItemService;
-using StardewValley;
 
 namespace ConvenientChests.Framework.InventoryService;
 
-public class InventoryData
+/// <summary>
+/// The extra data associated with a player, contains the list of items they locks.
+/// 玩家的额外属性，包含该玩家物品栏锁定的物品列表。
+/// </summary>
+internal class InventoryData
 {
-    public Farmer Player { get; }
     public HashSet<ItemKey> LockedItemKinds { get; set; } = new();
-
-    public InventoryData(Farmer playerName)
-    {
-        Player = playerName;
-    }
 
     /// <summary>
     /// Set this player's inventory to lock the specified kind of item.

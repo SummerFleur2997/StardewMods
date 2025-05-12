@@ -6,7 +6,7 @@ using StardewValley.Tools;
 
 namespace ConvenientChests.CategorizeChests.Framework;
 
-public class CategoryDataManager
+internal class CategoryDataManager
 {
     /// <summary>
     /// A mapping of category names to the item keys belonging to that category.
@@ -21,7 +21,7 @@ public class CategoryDataManager
 
         return itemCategories;
     }
-    
+
     private static Dictionary<ItemCategoryName, IList<ItemKey>> CreateCategoriesByDisplayName()
     {
         return DiscoverItems()

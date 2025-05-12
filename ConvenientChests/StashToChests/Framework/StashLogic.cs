@@ -6,9 +6,9 @@ using StardewValley.Objects;
 
 namespace ConvenientChests.StashToChests.Framework;
 
-public static class StashLogic
+internal static class StashLogic
 {
-    internal static string StashCueName => Game1.soundBank.GetCue("pickUpItem").Name;
+    public static string StashCueName => Game1.soundBank.GetCue("pickUpItem").Name;
 
     public delegate bool AcceptingFunc(Chest c, Item i);
 
@@ -22,7 +22,7 @@ public static class StashLogic
     /// <param name="af">物品接受条件 Accepting rules</param>
     /// <param name="rf">物品拒绝条件 Rejecting rules</param>
     /// <returns>是否堆叠成功 Stashed successfully?</returns>
-    internal static bool StashToChest(Chest chest, AcceptingFunc af, RejectingFunc rf)
+    public static bool StashToChest(Chest chest, AcceptingFunc af, RejectingFunc rf)
     {
         // find items to be moved
         var toBeMoved = Game1.player.Items
@@ -40,7 +40,7 @@ public static class StashLogic
     /// <param name="chest">当前的箱子 Selected chest</param>
     /// <param name="af">物品接受条件 Accepting rules</param>
     /// <param name="rf">物品拒绝条件 Rejecting rules</param>
-    internal static void StashToCurrentChest(Chest chest, AcceptingFunc af, RejectingFunc rf)
+    public static void StashToCurrentChest(Chest chest, AcceptingFunc af, RejectingFunc rf)
     {
         if (!StashToChest(chest, af, rf)) return;
         Game1.playSound(StashCueName);
@@ -54,7 +54,7 @@ public static class StashLogic
     /// <param name="radius">搜寻半径 Searching radius</param>
     /// <param name="af">物品接受条件 Accepting rules</param>
     /// <param name="rf">物品拒绝条件 Rejecting rules</param>
-    internal static void StashToNearbyChests(int radius, AcceptingFunc af, RejectingFunc rf)
+    public static void StashToNearbyChests(int radius, AcceptingFunc af, RejectingFunc rf)
     {
         if (!StashToGivenChests(Game1.player.GetNearbyChests(radius), af, rf)) return;
         Game1.playSound(StashCueName);
@@ -69,7 +69,7 @@ public static class StashLogic
     /// <param name="af">物品接受条件 Accepting rules</param>
     /// <param name="rf">物品拒绝条件 Rejecting rules</param>
     /// <returns>是否堆叠成功 Stashed successfully?</returns>
-    internal static bool StashToGivenChests(IEnumerable<Chest> chests, AcceptingFunc af, RejectingFunc rf)
+    public static bool StashToGivenChests(IEnumerable<Chest> chests, AcceptingFunc af, RejectingFunc rf)
     {
         var movedAtLeastOne = false;
 

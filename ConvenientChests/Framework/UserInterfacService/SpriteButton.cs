@@ -9,7 +9,7 @@ internal class SpriteButton : Button
 {
     private readonly TextureRegion _textureRegion;
 
-    public bool Visible { get; set; } = true;
+    private bool Visible { get; set; } = true;
 
     public SpriteButton(TextureRegion textureRegion)
     {

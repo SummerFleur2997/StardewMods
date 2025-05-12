@@ -7,23 +7,23 @@ namespace ConvenientChests.Framework.ChestService;
 /// </summary>
 internal class ChestAddress
 {
-    public ChestLocationType LocationType { get; set; }
+    public ChestLocationType LocationType { get; init; }
 
     /// <summary>
     /// The name of the GameLocation where the chest is.
     /// </summary>
-    public string LocationName { get; set; }
+    public string LocationName { get; init; }
 
     /// <summary>
     /// The name of the building the chest is in, if the location is a
     /// buildable location.
     /// </summary>
-    public string BuildingName { get; set; }
+    public string BuildingName { get; }
 
     /// <summary>
     /// The tile the chest is found on.
     /// </summary>
-    public Vector2 Tile { get; set; }
+    public Vector2 Tile { get; }
 
     public ChestAddress()
     {

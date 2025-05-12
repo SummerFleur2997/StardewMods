@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using ConvenientChests.Framework.ChestService;
 using ConvenientChests.Framework.ItemService;
@@ -9,7 +8,6 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using Background = ConvenientChests.Framework.UserInterfacService.Background;
-using Utility = ConvenientChests.Framework.Utility;
 
 namespace ConvenientChests.CategorizeChests.Framework;
 
@@ -25,8 +23,9 @@ internal class CategoryMenu : Widget
 
     // pagination
     private int Row { get; set; }
-    private int NumItems => ActiveCategory.CategoryDisplayName == "" 
-        ? 0 
+
+    private int NumItems => ActiveCategory.CategoryDisplayName == ""
+        ? 0
         : CategoryDataManager.Categories[ActiveCategory].Count;
 
     // Elements
@@ -177,7 +176,13 @@ internal class CategoryMenu : Widget
 
     private void CycleCategory(int offset)
     {
-        SetCategory(Utility.Mod(Index + offset, Categories.Count));
+        SetCategory(Mod(Index + offset, Categories.Count));
+        return;
+
+        int Mod(int x, int m)
+        {
+            return (x % m + m) % m;
+        }
     }
 
     private void SetCategory(int index)
@@ -209,11 +214,6 @@ internal class CategoryMenu : Widget
                 ToggleBag.AddChild(new ItemToggle(TooltipManager, entry.Item, ChestData.Accepts(entry.ItemKey)));
             toggle.OnToggle += () => ToggleItem(entry.ItemKey);
         }
-    }
-
-    private static bool TryParseInt(string input, out int result)
-    {
-        return int.TryParse(input, NumberStyles.Any, CultureInfo.InvariantCulture, out result);
     }
 
     private void ToggleItem(ItemKey itemKey)

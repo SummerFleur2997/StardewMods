@@ -12,10 +12,10 @@ using Utility = StardewValley.Utility;
 
 namespace ConvenientChests.CraftFromChests;
 
-public class CraftFromChestsModule : IModule
+internal class CraftFromChestsModule : IModule
 {
     public bool IsActive { get; private set; }
-    
+
     private readonly MenuListener _menuListener;
 
     public CraftFromChestsModule()

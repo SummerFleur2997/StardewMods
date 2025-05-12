@@ -1,3 +1,4 @@
+using ConvenientChests.Framework.InventoryService;
 using ConvenientChests.StashToChests.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -6,15 +7,15 @@ using StardewValley.Menus;
 
 namespace ConvenientChests.Framework.UserInterfacService;
 
-internal class MenuOverlay : Widget
+internal class InventoryOverlay : Widget
 {
+    private Farmer Player { get; }
     private GameMenu GameMenu { get; }
-    private TooltipManager TooltipManager { get; }
     private TextButton LockButton { get; set; }
     private LockMenu LockMenu { get; set; }
-    private Farmer Player { get; }
+    private TooltipManager TooltipManager { get; }
 
-    public MenuOverlay(GameMenu menu)
+    public InventoryOverlay(GameMenu menu)
     {
         Player = Game1.player;
         GameMenu = menu;
@@ -41,7 +42,7 @@ internal class MenuOverlay : Widget
     {
         LockButton = new TextButton(I18n.LockItems_Title(), Sprites.LeftProtrudingTab);
         LockButton.OnPress += ToggleMenu;
-        AddChild(LockButton);
+        if (ModEntry.StashModule.IsActive || ModEntry.CategorizeModule.IsActive) AddChild(LockButton);
 
         PositionButtons();
     }
@@ -64,7 +65,7 @@ internal class MenuOverlay : Widget
 
     private void OpenLockMenu()
     {
-        var inventoryData = ModEntry.StashModule.InventoryManager.GetInventoryData(Player);
+        var inventoryData = InventoryManager.GetInventoryData(Player);
         LockMenu = new LockMenu(inventoryData, TooltipManager, GameMenu.width - 24);
         LockMenu.Position = new Point(
             GameMenu.xPositionOnScreen - GlobalBounds.X - 12,

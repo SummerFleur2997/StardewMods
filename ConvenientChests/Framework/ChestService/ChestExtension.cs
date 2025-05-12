@@ -23,7 +23,7 @@ internal static class ChestExtension
     public static Chest? GetFridge(Farmer player)
     {
         if (Game1.player.IsMainPlayer)
-            return StardewValley.Utility.getHomeOfFarmer(player).fridge.Value;
+            return Utility.getHomeOfFarmer(player).fridge.Value;
 
         return Game1.locations.OfType<Cabin>()
             .FirstOrDefault(c => c.owner == player)?
@@ -62,11 +62,6 @@ internal static class ChestExtension
 
         foreach (var chest in buildings.SelectMany(building => building.buildingChests))
             yield return chest;
-    }
-
-    public static bool ContainsItem(this Chest chest, Item i)
-    {
-        return chest.Items.Any(i.canStackWith);
     }
 
     ///  <summary>
