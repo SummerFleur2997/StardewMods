@@ -4,7 +4,7 @@ using StardewModdingAPI.Utilities;
 
 namespace ConvenientChests.Framework.ConfigurationService;
 
-internal interface IGenericModConfigMenuApi
+public interface IGenericModConfigMenuApi
 {
     void Register(IManifest mod, Action reset, Action save, bool titleScreenOnly = false);
 

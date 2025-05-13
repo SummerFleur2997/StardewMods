@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ConvenientChests.Framework.ItemService;
+using StardewValley;
 
 namespace ConvenientChests.Framework.InventoryService;
 
@@ -34,6 +35,18 @@ internal class InventoryEntry
         PlayerName = playerName;
         PlayerID = playerID;
         LockedItems = data.LockedItemKinds
+            .GroupBy(ItemHelper.GetItemType)
+            .ToDictionary(
+                g => g.Key,
+                g => string.Join(",", g.Select(i => i.ItemId))
+            );
+    }
+
+    public InventoryEntry(HashSet<ItemKey> itemKeys, Farmer player)
+    {
+        PlayerName = player.Name;
+        PlayerID = player.UniqueMultiplayerID;
+        LockedItems = itemKeys
             .GroupBy(ItemHelper.GetItemType)
             .ToDictionary(
                 g => g.Key,

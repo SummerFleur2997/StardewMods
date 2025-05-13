@@ -1,5 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ConvenientChests.Framework.ItemService;
+using ConvenientChests.Framework.MultiplayerService;
+using StardewModdingAPI;
+using StardewValley.Locations;
 
 namespace ConvenientChests.Framework.InventoryService;
 
@@ -9,7 +13,13 @@ namespace ConvenientChests.Framework.InventoryService;
 /// </summary>
 internal class InventoryData
 {
+    private readonly WeakReference<FarmHouse> _farmHouseRef;
     public HashSet<ItemKey> LockedItemKinds { get; set; } = new();
+
+    public InventoryData(FarmHouse farmHouse)
+    {
+        _farmHouseRef = new WeakReference<FarmHouse>(farmHouse);
+    }
 
     /// <summary>
     /// Set this player's inventory to lock the specified kind of item.
@@ -34,13 +44,16 @@ internal class InventoryData
     /// Toggle whether this player's inventory accepts the specified kind of item.
     /// 切换这个玩家的背包是否锁定指定类型的物品。
     /// </summary>
-    public void Toggle(ItemKey itemKey)
+    public void Toggle(ItemKey itemKey, bool receiver=false)
     {
         if (Locks(itemKey))
             RemoveLocked(itemKey);
-
         else
             AddLocked(itemKey);
+
+        if (receiver) return;
+        if (Context.IsMultiplayer && _farmHouseRef.TryGetTarget(out var farmHouse))
+            MultiplayerServer.SendInventoryData(farmHouse, itemKey);
     }
 
     /// <summary>

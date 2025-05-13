@@ -4,6 +4,7 @@ using ConvenientChests.Framework;
 using ConvenientChests.Framework.ChestService;
 using ConvenientChests.Framework.ConfigurationService;
 using ConvenientChests.Framework.InventoryService;
+using ConvenientChests.Framework.MultiplayerService;
 using ConvenientChests.Framework.SaveService;
 using ConvenientChests.Framework.UserInterfacService;
 using ConvenientChests.StashToChests;
@@ -23,7 +24,6 @@ public class ModEntry : Mod
     public static IManifest Manifest { get; private set; }
     internal static IModHelper ModHelper { get; private set; }
     private static IMonitor ModMonitor { get; set; }
-    private static IMultiplayerHelper MultiplayerHelper { get; set; }
 
     internal static void Log(string s, LogLevel l = LogLevel.Trace)
     {
@@ -56,15 +56,12 @@ public class ModEntry : Mod
         Manifest = ModManifest;
         ModMonitor = Monitor;
         ModHelper = Helper;
-        MultiplayerHelper = helper.Multiplayer;
 
         helper.Events.GameLoop.GameLaunched += OnGameLaunched;
         helper.Events.GameLoop.SaveLoaded += OnGameLoaded;
         helper.Events.GameLoop.ReturnedToTitle += OnGameUnload;
         helper.Events.GameLoop.Saving += OnSaving;
         helper.Events.Display.MenuChanged += OnMenuChanged;
-
-        helper.Events.Multiplayer.PeerConnected += OnPeerConnected;
 
         Config = helper.ReadConfig<ModConfig>();
     }
@@ -111,6 +108,9 @@ public class ModEntry : Mod
             StashModule.Activate();
 
         SaveManager.Load();
+        
+        if (Context.IsMultiplayer)
+            MultiplayerServer.Activate();
     }
 
     /// <summary>
@@ -127,6 +127,9 @@ public class ModEntry : Mod
 
         StashModule.Deactivate();
         StashModule = null;
+        
+        if (MultiplayerServer.IsActive)
+            MultiplayerServer.Deactivate();
 
         ChestManager.ClearChestData();
         InventoryManager.ClearInventoryData();
@@ -200,14 +203,5 @@ public class ModEntry : Mod
                 MenuManager.ClearMenu();
                 break;
         }
-    }
-
-    private static void OnPeerConnected(object sender, PeerConnectedEventArgs e)
-    {
-        if (!Context.IsMainPlayer) return;
-
-        var saveData = Saver.GetSerializableData();
-        MultiplayerHelper.SendMessage(saveData, "MultiplayerSync",
-            new[] { Manifest.UniqueID }, new[] { e.Peer.PlayerID });
     }
 }

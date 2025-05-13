@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using ConvenientChests.Framework.ChestService;
 using ConvenientChests.Framework.InventoryService;
 
 namespace ConvenientChests.Framework.SaveService;
 
+[Serializable]
 internal class SaveData
 {
     /// <summary>

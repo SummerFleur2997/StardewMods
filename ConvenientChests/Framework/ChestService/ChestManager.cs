@@ -1,6 +1,7 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using ConvenientChests.Framework.ExceptionService;
+using ConvenientChests.Framework.ItemService;
 using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Objects;
@@ -14,6 +15,17 @@ namespace ConvenientChests.Framework.ChestService;
 internal static class ChestManager
 {
     private static readonly ConditionalWeakTable<Chest, ChestData> Table = new();
+    private static readonly object Lock = new();
+
+    public static void ModifyChest(ChestAddress chestAddress, ItemKey itemKey)
+    {
+        lock (Lock)
+        {
+            var chest = GetChestByAddress(chestAddress);
+            var data = GetChestData(chest);
+            data.Toggle(itemKey, true);
+        }
+    }
 
     /// <summary>
     /// Gets the <see cref="ChestData"/> for the specified chest.
@@ -21,7 +33,7 @@ internal static class ChestManager
     /// </summary>
     public static ChestData GetChestData(Chest chest)
     {
-        return Table.GetValue(chest, _ => new ChestData());
+        return Table.GetValue(chest, c => new ChestData(c));
     }
 
     /// <summary>

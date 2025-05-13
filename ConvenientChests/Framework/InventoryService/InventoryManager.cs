@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using System.Runtime.CompilerServices;
+using ConvenientChests.Framework.ItemService;
 using StardewValley;
+using StardewValley.Locations;
 
 namespace ConvenientChests.Framework.InventoryService;
 
@@ -10,11 +12,22 @@ namespace ConvenientChests.Framework.InventoryService;
 /// </summary>
 internal static class InventoryManager
 {
-    private static readonly ConditionalWeakTable<Farmer, InventoryData> Table = new();
+    private static readonly ConditionalWeakTable<FarmHouse, InventoryData> Table = new();
+    private static readonly object Lock = new();
 
-    public static InventoryData GetInventoryData(Farmer playerName)
+    public static void ModifyInventory(long playerID, ItemKey itemKey)
     {
-        return Table.GetValue(playerName, _ => new InventoryData());
+        lock (Lock)
+        {
+            var player = GetPlayerByID(playerID);
+            var data = GetInventoryData(player);
+            data.Toggle(itemKey, true);
+        }
+    }
+
+    public static InventoryData GetInventoryData(Farmer player)
+    {
+        return Table.GetValue(Utility.getHomeOfFarmer(player), p => new InventoryData(p));
     }
 
     /// <summary>

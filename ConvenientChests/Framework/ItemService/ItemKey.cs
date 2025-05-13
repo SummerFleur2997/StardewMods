@@ -1,29 +1,34 @@
+using System;
 using System.Diagnostics.Contracts;
 using StardewValley;
 using StardewValley.ItemTypeDefinitions;
 using StardewValley.Tools;
+using Object = StardewValley.Object;
 
 namespace ConvenientChests.Framework.ItemService;
 
+[Serializable]
 internal class ItemKey
 {
     /// <summary>
     /// 物品的 ID，例如 279。
     /// The ID of the item, e.g., 279.
     /// </summary>
-    public string ItemId { get; }
+    public string ItemId { get; set; }
 
     /// <summary>
     /// 物品的分类标识符，例如 (O)。
     /// The classification identifier of the item, e.g., (O).
     /// </summary>
-    public string TypeDefinition { get; }
+    public string TypeDefinition { get; set; }
 
     /// <summary>
     /// 获取完整的物品唯一标识符，例如 (O)279。
     /// Get the fully qualified unique identifier for the item, e.g., (O)279.
     /// </summary>
     public string QualifiedItemId => $"{TypeDefinition}{ItemId}";
+    
+    public ItemKey() { }
 
     /// <summary>
     /// 构造函数，使用类型定义和物品 ID 初始化 ItemKey。

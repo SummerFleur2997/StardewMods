@@ -30,6 +30,7 @@ internal static class SaveManager
     /// </summary>
     public static void Save(SaveData saveData = null)
     {
+        if (!Context.IsMainPlayer) return;
         try
         {
             saveData ??= Saver.GetSerializableData();
@@ -47,7 +48,7 @@ internal static class SaveManager
     /// </summary>
     public static void Load()
     {
-        if (!File.Exists(AbsoluteSavePath)) return;
+        if (!Context.IsMainPlayer || !File.Exists(AbsoluteSavePath)) return;
         UpdateSaveData();
         try
         {
@@ -60,11 +61,11 @@ internal static class SaveManager
         }
     }
 
-    private static void LoadSaveData()
+    public static void LoadSaveData(SaveData saveData = null)
     {
-        var saveData = ModEntry.ModHelper.Data.ReadJsonFile<SaveData>(SavePath) ?? new SaveData();
+        saveData ??= ModEntry.ModHelper.Data.ReadJsonFile<SaveData>(SavePath);
 
-        foreach (var entry in saveData.ChestEntries)
+        foreach (var entry in saveData!.ChestEntries)
         {
             var chest = ChestManager.GetChestByAddress(entry.Address);
             var chestData = ChestManager.GetChestData(chest);
@@ -72,7 +73,7 @@ internal static class SaveManager
             chestData.AcceptedItemKinds = entry.GetItemSet();
         }
 
-        foreach (var entry in saveData.InventoryEntries)
+        foreach (var entry in saveData!.InventoryEntries)
         {
             var player = InventoryManager.GetPlayerByID(entry.PlayerID);
             var invtyData = InventoryManager.GetInventoryData(player);

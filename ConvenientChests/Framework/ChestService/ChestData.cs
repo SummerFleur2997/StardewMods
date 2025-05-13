@@ -1,5 +1,9 @@
+using System;
 using System.Collections.Generic;
 using ConvenientChests.Framework.ItemService;
+using ConvenientChests.Framework.MultiplayerService;
+using StardewModdingAPI;
+using StardewValley.Objects;
 
 namespace ConvenientChests.Framework.ChestService;
 
@@ -9,7 +13,13 @@ namespace ConvenientChests.Framework.ChestService;
 /// </summary>
 internal class ChestData
 {
+    private readonly WeakReference<Chest> _chestRef;
     public HashSet<ItemKey> AcceptedItemKinds { get; set; } = new();
+
+    public ChestData(Chest chest)
+    {
+        _chestRef = new WeakReference<Chest>(chest);
+    }
 
     /// <summary>
     /// Set this chest to accept the specified kind of item.
@@ -34,13 +44,16 @@ internal class ChestData
     /// Toggle whether this chest accepts the specified kind of item.
     /// 切换这个箱子是否接受指定类型的物品。
     /// </summary>
-    public void Toggle(ItemKey itemKey)
+    public void Toggle(ItemKey itemKey, bool receiver=false)
     {
         if (Accepts(itemKey))
             RemoveAccepted(itemKey);
-
         else
             AddAccepted(itemKey);
+        
+        if (receiver) return;
+        if (Context.IsMultiplayer && _chestRef.TryGetTarget(out var chest))
+            MultiplayerServer.SendChestData(chest, itemKey);
     }
 
     /// <summary>
