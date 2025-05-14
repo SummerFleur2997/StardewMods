@@ -31,4 +31,7 @@
         </Content>
         <Content Include="CategorizeChests\LICENSE"/>
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="VersionHistories\" />
+    </ItemGroup>
 </Project>
