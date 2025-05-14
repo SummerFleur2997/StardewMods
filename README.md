@@ -33,14 +33,17 @@ on the wiki for help contributing translations.
 
 (❑ = untranslated, ↻ = partly translated, ✓ = fully translated)
 
-| Language      |               Status               | Language       |           Status           |
-|:--------------|:----------------------------------:|:---------------|:--------------------------:|
-| English       | [↻](ConvenientChests/i18n/en.json) | 한국어            | [❑](ConvenientChests/i18n) |
-| Français      |     [❑](ConvenientChests/i18n)     | Português      | [❑](ConvenientChests/i18n) |
-| Deutsch       |     [❑](ConvenientChests/i18n)     | Русский        | [❑](ConvenientChests/i18n) |
-| Magyar        |     [❑](ConvenientChests/i18n)     | Español        | [❑](ConvenientChests/i18n) |
-| Italiano      |     [❑](ConvenientChests/i18n)     | Türkçe         | [❑](ConvenientChests/i18n) |
-| 日本語           |     [❑](ConvenientChests/i18n)     | 中文             |            O.o             |
+| Language      |               Status               | Language       |               Status               |
+|:--------------|:----------------------------------:|:---------------|:----------------------------------:|
+| English       | [↻](ConvenientChests/i18n/en.json) | 한국어            |     [❑](ConvenientChests/i18n)     |
+| Français      |     [❑](ConvenientChests/i18n)     | Português      | [✓](ConvenientChests/i18n/pt.json) |
+| Deutsch       |     [❑](ConvenientChests/i18n)     | Русский        |     [❑](ConvenientChests/i18n)     |
+| Magyar        |     [❑](ConvenientChests/i18n)     | Español        |     [❑](ConvenientChests/i18n)     |
+| Italiano      |     [❑](ConvenientChests/i18n)     | Türkçe         |     [❑](ConvenientChests/i18n)     |
+| 日本語           |     [❑](ConvenientChests/i18n)     | 中文             |                O.o                 |
+
+#### Translation Authors
+* Thanks to [Kiyara99](https://next.nexusmods.com/profile/Kiyara99) for Português translation
 
 ## Requirements
 Stardew Valley 1.6  
@@ -51,3 +54,4 @@ Stardew Valley 1.6
 * [Ilyaki](https://github.com/Ilyaki) for [StackToNearbyChests](https://github.com/Ilyaki/StackToNearbyChests)
 * [doncollins](https://github.com/doncollins) for [CategorizeChests](https://github.com/doncollins/StardewValleyMods)
 * [aEnigmatic](https://github.com/aEnigmatic) for the old version of [Convenient Chests](https://github.com/aEnigmatic/ConvenientChests)
+* 11

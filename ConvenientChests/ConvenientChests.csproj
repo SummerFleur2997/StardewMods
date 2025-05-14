@@ -3,6 +3,7 @@
         <TargetFramework>net6.0</TargetFramework>
         <DeployModFolderName>$(MSBuildProjectName)</DeployModFolderName>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+        <Authors>SummerFleur</Authors>
     </PropertyGroup>
     <PropertyGroup>
         <OutputType>Library</OutputType>
@@ -12,7 +13,11 @@
         <AssemblyVersion>1.0.0.0</AssemblyVersion>
         <FileVersion>1.0.0.0</FileVersion>
     </PropertyGroup>
-
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>embedded</DebugType>
+        <PathMap>$(SolutionDir)=.</PathMap>
+    </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.1.1"/>
         <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.2.0"/>
@@ -23,15 +28,21 @@
         </None>
     </ItemGroup>
     <ItemGroup>
+        <Content Include="..\LICENSE">
+          <Link>LICENSE</Link>
+        </Content>
         <Content Include="..\README.md">
           <Link>README.md</Link>
         </Content>
         <Content Include="..\README_zh.md">
           <Link>README_zh.md</Link>
         </Content>
+        <Content Include="..\VersionHistories\VersionHistory.md">
+          <Link>VersionHistories\VersionHistory.md</Link>
+        </Content>
+        <Content Include="..\VersionHistories\VersionHistory_zh.md">
+          <Link>VersionHistories\VersionHistory_zh.md</Link>
+        </Content>
         <Content Include="CategorizeChests\LICENSE"/>
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="VersionHistories\" />
     </ItemGroup>
 </Project>
