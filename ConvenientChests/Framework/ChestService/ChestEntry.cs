@@ -38,7 +38,6 @@ internal class ChestEntry
             );
     }
 
-
     public HashSet<ItemKey> GetItemSet()
     {
         return AcceptedItems
