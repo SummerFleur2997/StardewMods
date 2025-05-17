@@ -8,6 +8,7 @@ using ConvenientChests.Framework.MultiplayerService;
 using ConvenientChests.Framework.SaveService;
 using ConvenientChests.Framework.UserInterfacService;
 using ConvenientChests.StashToChests;
+using JetBrains.Annotations; 
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -18,17 +19,20 @@ namespace ConvenientChests;
 /// <summary>
 /// The mod entry class loaded by SMAPI.
 /// </summary>
-public class ModEntry : Mod
+[UsedImplicitly] 
+// If your IDE cannot recognize this attribute above, just delete it, and the using namespace in line 11.
+internal class ModEntry : Mod
 {
+    /****
+     ** 属性
+     ** Fields
+     ****/
+    #region Fields
     public static ModConfig Config { get; private set; }
     public static IManifest Manifest { get; private set; }
-    internal static IModHelper ModHelper { get; private set; }
+    public static IModHelper ModHelper { get; private set; }
     private static IMonitor ModMonitor { get; set; }
-
-    internal static void Log(string s, LogLevel l = LogLevel.Trace)
-    {
-        ModMonitor.Log(s, l);
-    }
+    public static void Log(string s, LogLevel l = LogLevel.Trace) => ModMonitor.Log(s, l);
 
     /// <summary>
     /// <see cref="CategorizeChestsModule"/> mod.
@@ -44,6 +48,7 @@ public class ModEntry : Mod
     /// <see cref="StashToChestsModule"/> mod.
     /// </summary>
     internal static StashToChestsModule StashModule { get; private set; }
+    #endregion
 
     /// <summary>
     /// 模组入口点，在模组首次加载后调用。
@@ -66,29 +71,49 @@ public class ModEntry : Mod
         Config = helper.ReadConfig<ModConfig>();
     }
 
+    /****
+     ** 私有方法
+     ** Private Methods
+     ****/
+    #region Private Methods
     /// <summary>
     /// 读取模组配置更新并重新载入配置。
     /// Read the update of modconfig and reload them.
     /// </summary>
-    /// <param name="configStatus">配置选项状态</param>
-    /// <param name="module">需要重新载入配置的模组</param>
-    internal static void ReloadConfig(bool configStatus, IModule module)
+    private static void ReloadConfig()
     {
+        ModHelper.WriteConfig(Config);
         Config = ModHelper.ReadConfig<ModConfig>();
 
-        switch (configStatus, module.IsActive)
+        UpdateModule(Config.CategorizeChests, CategorizeModule);
+        UpdateModule(Config.CraftFromChests, CraftModule);
+        UpdateModule(Config.StashToNearby || Config.StashAnywhere, StashModule);
+        StashModule.CreateJudgementFunction();
+        
+        return;
+        
+        void UpdateModule(bool configStatus, IModule module)
         {
-            case (true, false):
-                module.Activate();
-                if (module == CategorizeModule) StashModule.RefreshJudgementFunction();
-                break;
-            case (false, true):
-                module.Deactivate();
-                if (module == CategorizeModule) StashModule.RefreshJudgementFunction();
-                break;
+            if (configStatus == module.IsActive) return;
+        
+            switch (configValue: configStatus, module.IsActive)
+            {
+                case (true, false):
+                    module.Activate();
+                    break;
+                case (false, true):
+                    module.Deactivate();
+                    break;
+            }
         }
     }
+    #endregion
 
+    /****
+     ** 事件处理函数
+     ** Event handlers
+     ****/
+    #region Event handlers
     /// <summary>
     /// 在载入游戏存档时加载模组。
     /// Load modules when loading a game save.
@@ -136,7 +161,7 @@ public class ModEntry : Mod
     }
 
     /// <summary>
-    /// 在游戏加载时读取配置选项
+    /// 在游戏加载时读取配置选项。
     /// Read configs when loading the game.
     /// </summary>
     private static void OnGameLaunched(object sender, GameLaunchedEventArgs e)
@@ -144,7 +169,7 @@ public class ModEntry : Mod
         GenericModConfigMenuIntegration.Register(Manifest, ModHelper.ModRegistry,
             () => Config,
             () => Config = new ModConfig(),
-            () => ModHelper.WriteConfig(Config)
+            ReloadConfig
         );
     }
 
@@ -154,9 +179,6 @@ public class ModEntry : Mod
     /// </summary>
     private static void OnMenuChanged(object sender, MenuChangedEventArgs e)
     {
-        if (CategorizeModule is not null)
-            ReloadConfig(Config.CategorizeChests, CategorizeModule);
-
         if (e.NewMenu == e.OldMenu)
             return;
 
@@ -204,4 +226,5 @@ public class ModEntry : Mod
                 break;
         }
     }
+    #endregion
 }

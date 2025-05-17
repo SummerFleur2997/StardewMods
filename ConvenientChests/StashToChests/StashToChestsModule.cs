@@ -15,9 +15,29 @@ namespace ConvenientChests.StashToChests;
 internal class StashToChestsModule : IModule
 {
     public bool IsActive { get; private set; }
+
+    /// <summary>
+    /// 判断箱子接受物品的函数。
+    /// The function to determine whether the chest accepts the item.
+    /// </summary>
     public AcceptingFunc AcceptingFunc { get; private set; }
+
+    /// <summary>
+    /// 判断箱子拒绝物品的函数。
+    /// The function to determine whether the chest rejects the item.
+    /// </summary>
     public RejectingFunc RejectingFunc { get; private set; }
+
+    /// <summary>
+    /// 堆叠至附近的箱子功能是否启用。
+    /// Whether stash to nearby function is enabled.
+    /// </summary>
     private bool IsStashToNearbyActive { get; set; }
+
+    /// <summary>
+    /// 堆叠至附近的箱子功能是否启用。
+    /// Whether stash anywhere function is enabled.
+    /// </summary>
     private bool IsStashAnyweherActive { get; set; }
 
     public StashToChestsModule()
@@ -31,8 +51,7 @@ internal class StashToChestsModule : IModule
         RefreshConfig();
         // 初始化堆叠逻辑函数
         // Init the stack logic function.
-        AcceptingFunc = CreateAcceptingFunction();
-        RejectingFunc = CreateRejectingFunction();
+        CreateJudgementFunction();
     }
 
     public void Deactivate()
@@ -44,17 +63,18 @@ internal class StashToChestsModule : IModule
     }
 
     /// <summary>
-    /// 更新判断逻辑函数
+    /// 创建/更新判断逻辑函数
+    /// Create/Update the judgement function.
     /// </summary>
-    public void RefreshJudgementFunction()
+    public void CreateJudgementFunction()
     {
         AcceptingFunc = CreateAcceptingFunction();
         RejectingFunc = CreateRejectingFunction();
     }
 
     /// <summary>
-    /// Whether the given item is accepted by the given chest. 
     /// 判断给定的箱子是否接受给定的物品。
+    /// Whether the given item is accepted by the given chest. 
     /// <seealso cref="CreateAcceptingFunction"/>
     /// </summary>
     private static bool ChestAcceptsItem(Chest chest, Item item)
@@ -64,8 +84,8 @@ internal class StashToChestsModule : IModule
     }
 
     /// <summary>
-    /// Whether the given item is contained in the given chest.
     /// 判断给定的箱子内是否包含给定的物品。
+    /// Whether the given item is contained in the given chest.
     /// <seealso cref="CreateAcceptingFunction"/>
     /// </summary>
     private static bool ChestContainsItem(Chest chest, Item item)
@@ -74,8 +94,8 @@ internal class StashToChestsModule : IModule
     }
 
     /// <summary>
-    /// Whether the given item is locked in the current player's inventory.
     /// 判断给定的物品是否在当前玩家的背包中被锁定。
+    /// Whether the given item is locked in the current player's inventory.
     /// <seealso cref="CreateRejectingFunction"/>
     /// </summary>
     private static bool InventoryLocksItem(Item item)
@@ -85,10 +105,10 @@ internal class StashToChestsModule : IModule
     }
 
     /// <summary>
-    /// 根据配置选项设置将物品堆叠至箱子时的判断逻辑函数。
-    /// Set the stack logic function based on modconfig.
+    /// 根据配置选项设置将物品堆叠至箱子时的接受物品判断函数。
+    /// Set the accepting function based on modconfig.
     /// </summary>
-    /// <returns>判断逻辑函数</returns>
+    /// <returns>接受物品判断逻辑函数 Accepting function to determine whether the item is accepted by the chest</returns>
     private static AcceptingFunc CreateAcceptingFunction()
     {
         return (ModEntry.Config.CategorizeChests, ModEntry.Config.StashToExistingStacks) switch
@@ -104,6 +124,11 @@ internal class StashToChestsModule : IModule
         };
     }
 
+    /// <summary>
+    /// 根据配置选项设置将物品堆叠至箱子时的拒绝物品判断函数。
+    /// Set the rejecting function based on modconfig.
+    /// </summary>
+    /// <returns>拒绝物品判断逻辑函数 Rejecting function to determine whether the item is rejected by the chest</returns>
     private static RejectingFunc CreateRejectingFunction()
     {
         if (ModEntry.Config.NeverStashTools)
@@ -188,13 +213,13 @@ internal class StashToChestsModule : IModule
     {
         if (ModEntry.Config.StashAnywhereKey.JustPressed())
         {
-            ModEntry.ReloadConfig(ModEntry.Config.StashAnywhere, this);
+            //ModEntry.ReloadConfig(ModEntry.Config.StashAnywhere, this);
             if (IsStashAnyweherActive) StashAnywhereKeyPressed();
         }
 
         if (ModEntry.Config.StashToNearbyKey.JustPressed() || e.Button == ModEntry.Config.StashButton)
         {
-            ModEntry.ReloadConfig(ModEntry.Config.StashToNearby, this);
+            //ModEntry.ReloadConfig(ModEntry.Config.StashToNearby, this);
             StashToNearbyKeyPressed();
         }
     }

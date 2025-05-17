@@ -26,7 +26,7 @@
   "Config.StashToChests.key": "堆叠至箱子",
   "Config.StashAnywhere.key": "堆叠至任意位置的箱子",
   
-  "Config.StashLogic.exist": "优先堆叠至已存在的组",
+  "Config.StashLogic.exist": "堆叠至已存在的组",
   "Config.StashLogic.fridge": "优先堆叠至冰箱中",
 
   "Config.StashRule.LockItems": "禁用工具堆叠",

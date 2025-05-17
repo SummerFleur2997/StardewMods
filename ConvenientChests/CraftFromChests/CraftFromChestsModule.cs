@@ -3,7 +3,6 @@ using System.Linq;
 using ConvenientChests.CraftFromChests.Framework;
 using ConvenientChests.Framework;
 using ConvenientChests.Framework.ChestService;
-using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Inventories;
 using StardewValley.Locations;
@@ -22,7 +21,6 @@ internal class CraftFromChestsModule : IModule
     {
         var events = ModEntry.ModHelper.Events;
         _menuListener = new MenuListener(events);
-        ModEntry.ModHelper.Events.Display.MenuChanged += OnMenuChanged;
     }
 
     public void Activate()
@@ -83,10 +81,5 @@ internal class CraftFromChestsModule : IModule
         var fridge = house.fridge.Value;
         if (!chests.Contains(fridge))
             yield return fridge;
-    }
-
-    private void OnMenuChanged(object sender, MenuChangedEventArgs e)
-    {
-        ModEntry.ReloadConfig(ModEntry.Config.CraftFromChests, this);
     }
 }
