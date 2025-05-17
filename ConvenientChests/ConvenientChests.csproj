@@ -20,9 +20,9 @@
     </PropertyGroup>
     <PropertyGroup>
         <ModFolderName>ConvenientChestsUnofficial</ModFolderName>
-        <EnableModDeploy>false</EnableModDeploy>
     </PropertyGroup>
     <ItemGroup>
+        <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
         <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.4.0" />
         <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.2.0"/>
     </ItemGroup>
