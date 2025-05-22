@@ -5,39 +5,16 @@ using ConvenientChests.Framework.InventoryService;
 using ConvenientChests.Framework.ItemService;
 using ConvenientChests.Framework.UserInterfacService;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using Background = ConvenientChests.Framework.UserInterfacService.Background;
 
 namespace ConvenientChests.StashToChests.Framework;
 
-internal class LockMenu : Widget
+internal class LockMenu : ModMenu
 {
-    // Styling settings
-    private const int MaxItemRows = 7;
-    private const int MaxItemColumns = 12;
-    private const int MaxItemsPage = MaxItemColumns * MaxItemRows;
-
-    private static int Padding => 2 * Game1.pixelZoom;
-    private static SpriteFont HeaderFont => Game1.dialogueFont;
-
-    // pagination
-    private int Row { get; set; }
     private static int NumItems => Game1.player.Items.Count;
-
-    // Elements
-    private Widget Body { get; set; }
-    private Widget TopRow { get; set; }
-    private SpriteButton CloseButton { get; set; }
-    private ScrollBar ScrollBar { get; set; }
-    private Background Background { get; set; }
-    private Label CategoryLabel { get; set; }
-    private WrapBag ToggleBag { get; set; }
-    private ItemKey[] BackpackItems { get; }
-
-    private TooltipManager TooltipManager { get; }
     private InventoryData InventoryData { get; }
-
+    private ItemKey[] BackpackItems { get; }
     public event Action OnClose;
 
     public LockMenu(InventoryData inventoryData, TooltipManager tooltipManager, int width)
@@ -74,7 +51,7 @@ internal class LockMenu : Widget
         CloseButton = AddChild(new SpriteButton(Sprites.ExitButton));
         CloseButton.OnPress += () => OnClose?.Invoke();
 
-        CategoryLabel = TopRow.AddChild(new Label("", Color.Black, HeaderFont));
+        TitleLabel = TopRow.AddChild(new Label("", Color.Black, HeaderFont));
 
         ScrollBar = AddChild(new ScrollBar());
         ScrollBar.OnScroll += (_, args) => UpdateScrollPosition(args.Position);
@@ -100,8 +77,8 @@ internal class LockMenu : Widget
         // Width        = Body.Width + Background.Graphic.LeftBorderThickness + Background.Graphic.RightBorderThickness + Padding * 2;
 
         // Build the top row
-        CategoryLabel.Text = I18n.LockItems_Title();
-        CategoryLabel.CenterHorizontally();
+        TitleLabel.Text = I18n.LockItems_Title();
+        TitleLabel.CenterHorizontally();
 
         TopRow.Height = TopRow.Children.Max(c => c.Height);
 

@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using ConvenientChests.CategorizeChests.Framework;
 using ConvenientChests.Framework.ChestService;
 using ConvenientChests.StashToChests.Framework;
@@ -133,51 +131,10 @@ internal class ChestOverlay : Widget
     private void OpenCategoryMenu()
     {
         var chestData = ChestManager.GetChestData(Chest);
-        CategoryMenu = new CategoryMenu(chestData, ModEntry.CategorizeModule.CategoryDataManager, TooltipManager,
-            ItemGrabMenu.width - 24);
+        CategoryMenu = new CategoryMenu(chestData, TooltipManager, ItemGrabMenu.width - 24);
         CategoryMenu.Position = new Point(
             ItemGrabMenu.xPositionOnScreen - GlobalBounds.X - 12,
             ItemGrabMenu.yPositionOnScreen - GlobalBounds.Y - 60);
-
-        // 根据配置文件决定列表排序方式
-        // Determine list sorting method based on configuration settings
-        if (ModEntry.Config.EnableSort)
-        {
-            // 按字母顺序排序
-            // Sort in alphabetical order
-            CategoryMenu.Categories = CategoryMenu.Categories
-                .OrderBy(c => c.CategoryBaseName)
-                .ToList();
-        }
-        else
-        {
-            // 定义自定义排序顺序的基准名称列表
-            // Define custom sorting order using base names
-            var customOrder = new List<string>
-            {
-                "Vegetable", "Fruit", "Flower", "Animal Product", "Artisan Goods", "Seed", "Fertilizer",
-                "Fish", "Bait", "Fishing Tackle", "Crafting", "Machine", "Book", "Skill Book", "Trash",
-                "Tool", "Weapons", "Ring", "Hats", "Shirts", "Pants", "Footwear", "Mannequin", "Decor",
-                "Wallpaper", "Flooring", "Consumable", "Cooking", "Miscellaneous", "Trinket", "Monster Loot",
-                "Artifact", "Mineral", "Resource", "Forage"
-            };
-
-            // 创建基准名称到排序索引的字典
-            // Create lookup dictionary: base name -> predefined sorting index
-            var orderDictionary = customOrder
-                .Select((name, index) => new { name, index })
-                .ToDictionary(item => item.name, item => item.index);
-
-            // 根据自定义顺序排序
-            // Sort in custom rules
-            CategoryMenu.Categories = CategoryMenu.Categories
-                .OrderBy(c => orderDictionary.GetValueOrDefault(c.CategoryBaseName, int.MaxValue))
-                .ToList();
-        }
-
-        // 刷新类别列表以应用更改
-        // Refresh category menu to apply changes
-        CategoryMenu.RefreshMenu();
 
         CategoryMenu.OnClose += CloseCategoryMenu;
         AddChild(CategoryMenu);

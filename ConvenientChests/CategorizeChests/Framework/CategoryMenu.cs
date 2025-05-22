@@ -5,68 +5,74 @@ using ConvenientChests.Framework.ChestService;
 using ConvenientChests.Framework.ItemService;
 using ConvenientChests.Framework.UserInterfacService;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using Background = ConvenientChests.Framework.UserInterfacService.Background;
 
 namespace ConvenientChests.CategorizeChests.Framework;
 
-internal class CategoryMenu : Widget
+internal class CategoryMenu : ModMenu
 {
-    // Styling settings
-    private const int MaxItemRows = 7;
-    private const int MaxItemColumns = 12;
-    private const int MaxItemsPage = MaxItemColumns * MaxItemRows;
-
-    private static int Padding => 2 * Game1.pixelZoom;
-    private static SpriteFont HeaderFont => Game1.dialogueFont;
-
-    // pagination
-    private int Row { get; set; }
-
     private int NumItems => ActiveCategory.CategoryDisplayName == ""
         ? 0
         : CategoryDataManager.Categories[ActiveCategory].Count;
-
-    // Elements
-    private Widget Body { get; set; }
-    private Widget TopRow { get; set; }
+    private ChestData ChestData { get; }
     private LabeledCheckbox SelectAllButton { get; set; }
-    private SpriteButton CloseButton { get; set; }
-    private ScrollBar ScrollBar { get; set; }
-    private Background Background { get; set; }
-    private Label CategoryLabel { get; set; }
     private SpriteButton PrevButton { get; set; }
     private SpriteButton NextButton { get; set; }
-    private WrapBag ToggleBag { get; set; }
-    private IEnumerable<ItemToggle> ItemToggles => ToggleBag.Children.OfType<ItemToggle>();
-
-    private CategoryDataManager CategoryDataManager { get; }
-    private TooltipManager TooltipManager { get; }
-    private ChestData ChestData { get; }
     private int Index { get; set; }
-    public List<ItemCategoryName> Categories { get; set; }
-
+    private List<ItemCategoryName> Categories { get; set; }
     private ItemCategoryName ActiveCategory => Categories[Index];
-
     public event Action OnClose;
 
-    public void RefreshMenu()
+    public CategoryMenu(ChestData chestData, TooltipManager tooltipManager, int width)
     {
-        SetCategory(0);
-    }
-
-    public CategoryMenu(ChestData chestData, CategoryDataManager categoryDataManager, TooltipManager tooltipManager,
-        int width)
-    {
-        CategoryDataManager = categoryDataManager;
         TooltipManager = tooltipManager;
         ChestData = chestData;
         Width = width;
 
-        Categories = categoryDataManager.ItemCategories;
-        BuildWidgets();
+        Categories = CategoryDataManager.ItemCategories;
 
+        BuildWidgets();
+        SortCategories();
+    }
+
+    private void SortCategories()
+    {
+        // 根据配置文件决定列表排序方式
+        // Determine list sorting method based on configuration settings
+        if (ModEntry.Config.EnableSort)
+        {
+            // 按字母顺序排序
+            // Sort in alphabetical order
+            Categories = Categories
+                .OrderBy(c => c.CategoryBaseName)
+                .ToList();
+        }
+        else
+        {
+            // 定义自定义排序顺序的基准名称列表
+            // Define custom sorting order using base names
+            var customOrder = new List<string>
+            {
+                "Vegetable", "Fruit", "Flower", "Animal Product", "Artisan Goods", "Seed", "Fertilizer",
+                "Fish", "Bait", "Fishing Tackle", "Crafting", "Machine", "Book", "Skill Book", "Trash",
+                "Tool", "Weapons", "Ring", "Hats", "Shirts", "Pants", "Footwear", "Mannequin", "Decor",
+                "Wallpaper", "Flooring", "Consumable", "Cooking", "Miscellaneous", "Trinket", "Monster Loot",
+                "Artifact", "Mineral", "Resource", "Forage"
+            };
+
+            // 创建基准名称到排序索引的字典
+            // Create lookup dictionary: base name -> predefined sorting index
+            var orderDictionary = customOrder
+                .Select((name, index) => new { name, index })
+                .ToDictionary(item => item.name, item => item.index);
+
+            // 根据自定义顺序排序
+            // Sort in custom rules
+            Categories = Categories
+                .OrderBy(c => orderDictionary.GetValueOrDefault(c.CategoryBaseName, int.MaxValue))
+                .ToList();
+        }
         SetCategory(Index);
     }
 
@@ -88,7 +94,7 @@ internal class CategoryMenu : Widget
         CloseButton = AddChild(new SpriteButton(Sprites.ExitButton));
         CloseButton.OnPress += () => OnClose?.Invoke();
 
-        CategoryLabel = TopRow.AddChild(new Label("", Color.Black, HeaderFont));
+        TitleLabel = TopRow.AddChild(new Label("", Color.Black, HeaderFont));
 
         ScrollBar = AddChild(new ScrollBar());
         ScrollBar.OnScroll += (_, args) => UpdateScrollPosition(args.Position);
@@ -118,8 +124,8 @@ internal class CategoryMenu : Widget
 
         SelectAllButton.X = Padding;
 
-        CategoryLabel.Text = ActiveCategory.CategoryDisplayName;
-        CategoryLabel.CenterHorizontally();
+        TitleLabel.Text = ActiveCategory.CategoryDisplayName;
+        TitleLabel.CenterHorizontally();
 
         TopRow.Height = TopRow.Children.Max(c => c.Height);
 
@@ -224,7 +230,7 @@ internal class CategoryMenu : Widget
 
     private bool AreAllSelected()
     {
-        return ItemToggles.Count(t => !t.Active) == 0;
+        return ToggleBag.Children.OfType<ItemToggle>().Count(t => !t.Active) == 0;
     }
 
     public override bool ReceiveLeftClick(Point point)

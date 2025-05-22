@@ -1,12 +1,10 @@
-﻿using ConvenientChests.CategorizeChests.Framework;
-using ConvenientChests.Framework;
+﻿using ConvenientChests.Framework;
 
 namespace ConvenientChests.CategorizeChests;
 
 internal class CategorizeChestsModule : IModule
 {
     public bool IsActive { get; private set; }
-    public CategoryDataManager CategoryDataManager { get; } = new();
 
     public void Activate()
     {

@@ -6,21 +6,14 @@ using StardewValley.Tools;
 
 namespace ConvenientChests.CategorizeChests.Framework;
 
-internal class CategoryDataManager
+internal static class CategoryDataManager
 {
     /// <summary>
     /// A mapping of category names to the item keys belonging to that category.
     /// </summary>
-    public Dictionary<ItemCategoryName, IList<ItemKey>> Categories { get; } = CreateCategoriesByDisplayName();
+    public static Dictionary<ItemCategoryName, IList<ItemKey>> Categories { get; } = CreateCategoriesByDisplayName();
 
-    public List<ItemCategoryName> ItemCategories => NewCategories();
-
-    private List<ItemCategoryName> NewCategories()
-    {
-        var itemCategories = Categories.Keys.ToList();
-
-        return itemCategories;
-    }
+    public static List<ItemCategoryName> ItemCategories => Categories.Keys.ToList();
 
     private static Dictionary<ItemCategoryName, IList<ItemKey>> CreateCategoriesByDisplayName()
     {
