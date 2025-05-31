@@ -9,6 +9,10 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using Rectangle = xTile.Dimensions.Rectangle;
 
+// This code is copied and modified from Pathoschild.Stardew.Common.UI
+// in https://github.com/Pathoschild/StardewMods, available under the
+// MIT License. See that repository for the latest version.
+
 namespace ConvenientChests.Framework.UserInterfacService;
 
 /// <summary>An interface which supports user interaction and overlays the active menu (if any).</summary>
@@ -95,17 +99,16 @@ internal abstract class BaseOverlay : IDisposable
             events.Input.MouseWheelScrolled += OnMouseWheelScrolled;
     }
 
+    /// <summary>Update the menu state each tick if needed.</summary>
+    protected virtual void Update() { }
+
     /// <summary>Draw the overlay to the screen over the UI.</summary>
     /// <param name="batch">The sprite batch being drawn.</param>
-    protected virtual void DrawUi(SpriteBatch batch)
-    {
-    }
+    protected virtual void DrawUi(SpriteBatch batch) { }
 
     /// <summary>Draw the overlay to the screen under the UI.</summary>
     /// <param name="batch">The sprite batch being drawn.</param>
-    protected virtual void DrawWorld(SpriteBatch batch)
-    {
-    }
+    protected virtual void DrawWorld(SpriteBatch batch) { }
 
     /// <summary>The method invoked when the player left-clicks.</summary>
     /// <param name="x">The X-position of the cursor.</param>
@@ -119,9 +122,7 @@ internal abstract class BaseOverlay : IDisposable
     /// <inheritdoc cref="IInputEvents.ButtonsChanged"/>
     /// <param name="sender">The event sender.</param>
     /// <param name="e">The event data.</param>
-    protected virtual void ReceiveButtonsChanged(object? sender, ButtonsChangedEventArgs e)
-    {
-    }
+    protected virtual void ReceiveButtonsChanged(object? sender, ButtonsChangedEventArgs e) { }
 
     /// <summary>The method invoked when the player uses the mouse scroll wheel.</summary>
     /// <param name="amount">The scroll amount.</param>
@@ -141,9 +142,7 @@ internal abstract class BaseOverlay : IDisposable
     }
 
     /// <summary>The method invoked when the player resizes the game window.</summary>
-    protected virtual void ReceiveGameWindowResized()
-    {
-    }
+    protected virtual void ReceiveGameWindowResized() { }
 
     /****
      ** Helpers

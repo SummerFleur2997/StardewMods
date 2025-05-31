@@ -154,5 +154,20 @@ internal static class GenericModConfigMenuIntegration
             getValue: () => getConfig().StashAnywhereKey,
             setValue: value => getConfig().StashAnywhereKey = value
         );
+
+        if (!ModEntry.IsAndroid) return;
+
+        // 【标题】移动端适配
+        // [Title] Mobile Adaptation
+        api.AddSectionTitle(manifest, I18n.Config_Mobile_Title);
+        api.AddNumberOption(
+            manifest,
+            name: I18n.Config_Mobile_Offset,
+            tooltip: I18n.Config_Mobile_Offset_Desc,
+            getValue: () => getConfig().MobileOffset,
+            setValue: value => getConfig().MobileOffset = value,
+            min: 0,
+            max: 80
+        );
     }
 }

@@ -13,6 +13,11 @@ namespace ConvenientChests.Framework.UserInterfacService;
 /// </summary>
 internal class Widget : IDisposable
 {
+    /****
+     ** 字段与属性
+     ** Fields & Properties
+     ****/
+    # region Fields & Properties
     private Widget _parent;
     private readonly List<Widget> _children = new();
     private int _width;
@@ -64,6 +69,7 @@ internal class Widget : IDisposable
             OnDimensionsChanged();
         }
     }
+    #endregion
 
     public Widget()
     {
@@ -72,15 +78,12 @@ internal class Widget : IDisposable
         Height = 1;
     }
 
-    protected virtual void OnParent(Widget parent)
-    {
-    }
+    protected virtual void OnParent(Widget parent) { }
+    protected virtual void OnContentsChanged() { }
+    protected virtual void OnDimensionsChanged() { }
 
     public virtual void Draw(SpriteBatch batch)
-    {
-        DrawChildren(batch);
-    }
-
+        => DrawChildren(batch);
 
     private void DrawChildren(SpriteBatch batch)
     {
@@ -91,7 +94,6 @@ internal class Widget : IDisposable
     private Point Size => new(Width, Height);
     public Rectangle LocalBounds => new(Point.Zero, Size);
     protected Rectangle GlobalBounds => new(GlobalPosition, Size);
-
     protected Point GlobalPosition => Globalize(Point.Zero);
 
     protected Point Globalize(Point point)
@@ -101,65 +103,20 @@ internal class Widget : IDisposable
     }
 
     public bool ReceiveButtonPress(SButton input)
-    {
-        return PropagateButtonPress(input);
-    }
-
-    public virtual bool ReceiveLeftClick(Point point)
-    {
-        return PropagateLeftClick(point);
-    }
-
-    public bool ReceiveCursorHover(Point point)
-    {
-        return PropagateCursorHover(point);
-    }
-
-    public virtual bool ReceiveScrollWheelAction(int amount)
-    {
-        return PropagateScrollWheelAction(amount);
-    }
+        => PropagateButtonPress(input);
 
     private bool PropagateButtonPress(SButton input)
     {
         foreach (var child in Children)
         {
             var handled = child.ReceiveButtonPress(input);
-            if (handled)
-                return true;
+            if (handled) return true;
         }
-
         return false;
     }
 
-    private bool PropagateScrollWheelAction(int amount)
-    {
-        foreach (var child in Children)
-        {
-            var handled = child.ReceiveScrollWheelAction(amount);
-            if (handled)
-                return true;
-        }
-
-        return false;
-    }
-
-    protected bool PropagateLeftClick(Point point)
-    {
-        foreach (var child in Children)
-        {
-            var localPoint = new Point(point.X - child.Position.X, point.Y - child.Position.Y);
-
-            if (child.LocalBounds.Contains(localPoint))
-            {
-                var handled = child.ReceiveLeftClick(localPoint);
-                if (handled)
-                    return true;
-            }
-        }
-
-        return false;
-    }
+    public bool ReceiveCursorHover(Point point)
+        => PropagateCursorHover(point);
 
     private bool PropagateCursorHover(Point point)
     {
@@ -170,11 +127,40 @@ internal class Widget : IDisposable
             if (child.LocalBounds.Contains(localPoint))
             {
                 var handled = child.ReceiveCursorHover(localPoint);
-                if (handled)
-                    return true;
+                if (handled) return true;
             }
         }
+        return false;
+    }
 
+    public virtual bool ReceiveLeftClick(Point point)
+        => PropagateLeftClick(point);
+
+    protected bool PropagateLeftClick(Point point)
+    {
+        foreach (var child in Children)
+        {
+            var localPoint = new Point(point.X - child.Position.X, point.Y - child.Position.Y);
+
+            if (child.LocalBounds.Contains(localPoint))
+            {
+                var handled = child.ReceiveLeftClick(localPoint);
+                if (handled) return true;
+            }
+        }
+        return false;
+    }
+
+    public virtual bool ReceiveScrollWheelAction(int amount)
+        => PropagateScrollWheelAction(amount);
+
+    private bool PropagateScrollWheelAction(int amount)
+    {
+        foreach (var child in Children)
+        {
+            var handled = child.ReceiveScrollWheelAction(amount);
+            if (handled) return true;
+        }
         return false;
     }
 
@@ -204,14 +190,6 @@ internal class Widget : IDisposable
         _children.Clear();
 
         OnContentsChanged();
-    }
-
-    protected virtual void OnContentsChanged()
-    {
-    }
-
-    protected virtual void OnDimensionsChanged()
-    {
     }
 
     public void CenterHorizontally()

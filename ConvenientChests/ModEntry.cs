@@ -25,9 +25,10 @@ internal class ModEntry : Mod
 {
     /****
      ** 属性
-     ** Fields
+     ** Properties
      ****/
-    #region Fields
+    #region Properties
+    public static bool IsAndroid => Constants.TargetPlatform == GamePlatform.Android;
     public static ModConfig Config { get; private set; }
     public static IManifest Manifest { get; private set; }
     public static IModHelper ModHelper { get; private set; }

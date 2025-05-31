@@ -45,7 +45,7 @@ internal class CategoryMenu : ModMenu
             // 按字母顺序排序
             // Sort in alphabetical order
             Categories = Categories
-                .OrderBy(c => c.CategoryBaseName)
+                .OrderBy(c => c.CategoryDisplayName)
                 .ToList();
         }
         else

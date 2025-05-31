@@ -31,7 +31,11 @@
 
   "Config.StashRule.LockItems": "禁用工具堆叠",
   "Config.StashRule.LockItems.desc": "禁止将任何工具堆叠至箱子中，在多人游戏中较为实用。",
-  
+
+  "Config.Mobile.Title": "移动端适配",
+  "Config.Mobile.Offset": "侧边按钮偏移量",
+  "Config.Mobile.Offset.desc": "调整物品栏左侧按钮的位置，以适配移动端设备。",
+
   "Categorize.All": "全选",
   "Categorize.Consumable": "消耗品",
   "Categorize.Crafting": "制造品",

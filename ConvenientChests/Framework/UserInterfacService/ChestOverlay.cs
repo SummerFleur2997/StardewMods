@@ -88,22 +88,24 @@ internal class ChestOverlay : Widget
     /// </summary>
     private void PositionButtons()
     {
-        var delta = Chest.SpecialChestType switch
-        {
-            Chest.SpecialChestTypes.BigChest => -128,
-            Chest.SpecialChestTypes.MiniShippingBin => -34,
-            Chest.SpecialChestTypes.JunimoChest => -34,
-            _ => Chest.Name switch
+        var delta = ModEntry.IsAndroid 
+            ? 100 + ModEntry.Config.MobileOffset
+            : Chest.SpecialChestType switch 
             {
-                "__Auto_!_Eats__" => -34,
-                _ => -112
-            }
-        };
+                Chest.SpecialChestTypes.BigChest => 128,
+                Chest.SpecialChestTypes.MiniShippingBin => 34,
+                Chest.SpecialChestTypes.JunimoChest => 34,
+                _ => Chest.Name switch
+                {
+                    "__Auto_!_Eats__" => 34,
+                    _ => 112
+                }
+            };
 
         StashButton.Width = CategorizeButton.Width = Math.Max(StashButton.Width, CategorizeButton.Width);
 
         CategorizeButton.Position = new Point(
-            ItemGrabMenu.xPositionOnScreen + ItemGrabMenu.width / 2 - CategorizeButton.Width + delta * Game1.pixelZoom,
+            ItemGrabMenu.xPositionOnScreen + ItemGrabMenu.width / 2 - CategorizeButton.Width - delta * Game1.pixelZoom,
             ItemGrabMenu.yPositionOnScreen + 22 * Game1.pixelZoom);
 
         StashButton.Position = new Point(

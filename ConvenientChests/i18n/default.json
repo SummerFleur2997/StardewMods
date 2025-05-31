@@ -32,6 +32,10 @@
   "Config.StashRule.LockItems": "Never stash tools",
   "Config.StashRule.LockItems.desc": "Prevent tools from stash into chests, may useful in multiplayer.",
 
+  "Config.Mobile.Title": "Mobile adaptation",
+  "Config.Mobile.Offset": "Buttons offset",
+  "Config.Mobile.Offset.desc": "Adjust the offset of buttons besides the inventory menus on mobile devices.",
+
   "Categorize.All": "All",
   "Categorize.Consumable": "Consumable",
   "Categorize.Crafting": "Crafting",

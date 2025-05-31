@@ -50,8 +50,10 @@ internal class InventoryOverlay : Widget
 
     private void PositionButtons()
     {
+        var delta = ModEntry.IsAndroid ? 100 + ModEntry.Config.MobileOffset : 106;
+
         LockButton.Position = new Point(
-            GameMenu.xPositionOnScreen + GameMenu.width / 2 - LockButton.Width - 106 * Game1.pixelZoom,
+            GameMenu.xPositionOnScreen + GameMenu.width / 2 - LockButton.Width - delta * Game1.pixelZoom,
             GameMenu.yPositionOnScreen + 30 * Game1.pixelZoom);
     }
 
