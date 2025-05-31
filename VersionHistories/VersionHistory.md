@@ -2,6 +2,19 @@
 
 English | [简体中文](VersionHistory_zh.md)
 
+### 1.8.1
+
+**New Features**
+- Added multiplayer services, now the mod's data will be sync to everyone. (In previous versions, categorize data can't be synced across players, farmhands' modification to chest categorize can't be saved either)
+
+**Optimizations & Improvements**
+- Buttons now compatible to mod [AutoHealAndEnergize](https://www.nexusmods.com/stardewvalley/mods/29035)'s food bag layout.
+- Added key-bind list support.
+
+**Bug Fixes**
+- Fix the bug which caused the unavailable of Category button.
+- Fix some potential bugs.
+
 ### 1.8.0
 
 **New Features**

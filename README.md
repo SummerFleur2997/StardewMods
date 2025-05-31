@@ -9,18 +9,16 @@ Combines features of [StackToNearbyChests](https://www.nexusmods.com/stardewvall
 
 ## Update logs
 
-### 1.8.1
+### 1.8.2
 
 **New Features**
-- Added multiplayer services, now the mod's data will be sync to everyone. (In previous versions, categorize data can't be synced across players, farmhands' modification to chest categorize can't be saved either)
+- Added Portuguese translation. (Thanks to [Kiyara99](https://next.nexusmods.com/profile/Kiyara99))
 
-**Optimizations & Improvements**
-- Buttons now compatible to mod [AutoHealAndEnergize](https://www.nexusmods.com/stardewvalley/mods/29035)'s food bag layout.
-- Added key-bind list support.
+**Optimizations**
+- Add a config to set the offset of side buttons for Android players.
 
 **Bug Fixes**
-- Fix the bug which caused the unavailable of Category button.
-- Fix some potential bugs.
+- Fixed the issue with incorrect alphabetical sorting.
 
 > For earlier update logs, see [Version History](VersionHistories/VersionHistory.md).
 
