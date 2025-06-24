@@ -1,0 +1,25 @@
+﻿name: New Feature Request
+description: Would you like to suggest new features for this mod? Please use this template to provide details.
+title: "[Feat]: "
+labels: ["enhancement"]
+
+body:
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Before submitting a new feature request, please carefully read the following options and check the confirmation boxes
+      options:
+        - label: I understand and agree that this is for new feature suggestions only. Issues unrelated to this topic may be closed and/or locked without notice.
+          required: true
+        - label: I've noticed and agreed that if I do not follow the instructions provided in the template, my issue may be deleted without condition.
+          required: true
+
+  - type: textarea
+    id: feature-to-add
+    attributes:
+      label: Feature description
+      description: |
+        Clearly describe the feature you want to add, including implementation examples (if any)
+        Do similar features already exist? If yes, specify how this differs or what improvements you propose.
+    validations:
+      required: true

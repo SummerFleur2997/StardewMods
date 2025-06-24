@@ -1,0 +1,25 @@
+﻿name: 新功能提议
+description: 希望在该模组中加入新的功能吗？请使用该模板详细说明。
+title: "[Feat]: "
+labels: ["enhancement"]
+
+body:
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 在填写 New Feature 之前，请先详细阅读以下选项并勾选确认框：
+      options:
+        - label: 我已知晓并同意，此处仅用于建议新功能。若这个 Issue 是关于其他非主题的问题，则我的 Issue 可能会被无条件自动关闭或/并锁定。
+          required: true
+        - label: 我已知晓并同意，如果我不按照模板提供的指示进行填写，则我的 Issue 可能会被无条件删除。
+          required: true
+
+  - type: textarea
+    id: feature-to-add
+    attributes:
+      label: 需要添加的功能内容
+      description: |
+        请具体提出想添加的功能，包括实现的模拟（如有）
+        是否有类似的功能已经实现？如有请肯定地提出与该功能不同的地方/想改进/添加该功能的哪一部分。
+    validations:
+      required: true

@@ -7,7 +7,7 @@ body:
   - type: checkboxes
     id: terms
     attributes:
-      label: Before filling out the bug report, please first check these choices based on your situation
+      label: Before filling out the bug report, please confirm the following based on your situation
       options:
         - label: I've noticed and agreed that if I do not follow the instructions provided in the template, my issue may be deleted without condition.
           required: true

@@ -1,0 +1,79 @@
+name: 报告 Bug
+description: 发现 Bug 了吗？请使用该模板填写您遇到的 Bug。
+title: "[Bug]: "
+labels: ["bug"]
+
+body:
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: 在填写 Bug Report 之前，请根据您的实际情况填写以下确认框
+      options:
+        - label: 我已知晓并同意，如果我不按照模板提供的指示进行填写，则我的 Issue 可能会被无条件删除。
+          required: true
+        - label: 我认为该 Bug 是由于与其他模组的不兼容导致的
+          required: false
+        - label: 我使用了非常多的 Mod（多于 100 个）
+          required: false
+        - label: 我使用的是游戏的早期版本（1.6.0 之前）
+          required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ## 环境信息
+        请提供以下环境信息以帮助我更好地解决问题。
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: 操作系统
+      description: 请选择您正在使用的操作系统。
+      options:
+        - Windows
+        - Linux
+        - MacOS
+        - Android
+        - 其他（请在下面详细说明）
+    validations:
+      required: true
+
+  - type: input
+    id: smapi-version
+    attributes:
+      label: SMAPI 版本
+    validations:
+      required: true
+
+  - type: dropdown
+    id: mod-version
+    attributes:
+      label: 模组版本
+      description: 请选择您正在使用的模组版本。
+      options:
+        - 1.8.2
+        - 1.8.1
+        - 1.8.0
+        - 1.7.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望的结果
+      description: 请详细描述您期望看到的结果。
+    validations:
+      required: true
+
+  - type: textarea
+    id: logging
+    attributes:
+      label: 错误报告
+      description: 请提供您的错误报告。如果您不知晓该如何提交，可以参考[这里](https://wiki.biligame.com/stardewvalley/%E6%A8%A1%E7%BB%84:%E5%B8%AE%E5%8A%A9#%E5%88%86%E4%BA%AB%E6%82%A8%E7%9A%84%E6%97%A5%E5%BF%97)，国内环境建议上传至百度网盘或其他平台。
+
+  - type: textarea
+    id: extra-desc
+    attributes:
+      label: 其它描述
+      description: 如果您还有其他可以提供的信息，请在下面填写以帮助我更好的了解问题的原因。这些信息包括但不限于屏幕截图、复现该 Bug 的详细操作等。
