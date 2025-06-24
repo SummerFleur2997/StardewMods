@@ -1,0 +1,79 @@
+name: Report a Bug
+description: Found a bug? Please report it here.
+title: "[Bug]: "
+labels: ["bug"]
+
+body:
+  - type: checkboxes
+    id: terms
+    attributes:
+      label: Before filling out the bug report, please first check these choices based on your situation:
+      options:
+        - label: I've noticed and agreed that if I do not follow the instructions provided in the template, my issue may be deleted without condition.
+          required: true
+        - label: I think this issue is caused by incompatibility with other mods
+          required: false
+        - label: I'm using a lot of mods (more than 100)
+          required: false
+        - label: I'm using an earlier game version (before 1.6.0)
+          required: false
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Environment Information
+        Please provide the following information about your environment to help us diagnose the issue.
+
+  - type: dropdown
+    id: os
+    attributes:
+      label: operating system
+      description: choose your operating system
+      options:
+        - Windows
+        - Linux
+        - MacOS
+        - Android
+        - Others (please specify below)
+    validations:
+      required: true
+
+  - type: input
+    id: smapi-version
+    attributes:
+      label: SMAPI version
+    validations:
+      required: true
+
+  - type: dropdown
+    id: mod-version
+    attributes:
+      label: Mod version
+      description: choose the version of the mod you are using
+      options:
+        - 1.8.2
+        - 1.8.1
+        - 1.8.0
+        - 1.7.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+
+  - type: textarea
+    id: logging
+    attributes:
+      label: Error Logs
+      description: Please provide the error logs related to this issue. If you are not sure how to get the logs, please refer to [this](https://stardewvalleywiki.com/Modding:Help#Share_your_log).
+
+  - type: textarea
+    id: extra-desc
+    attributes:
+      label: Extra Description
+      description: Please provide any additional information that may help us understand the issue better. This could include steps to reproduce the issue, screenshots, or any other relevant details.
