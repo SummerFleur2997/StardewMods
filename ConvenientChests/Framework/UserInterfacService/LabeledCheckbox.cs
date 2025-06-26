@@ -18,8 +18,8 @@ internal class LabeledCheckbox : Widget
 
     public LabeledCheckbox(string labelText)
     {
-        _checkedBox = AddChild(new Stamp(Sprites.FilledCheckbox));
-        _uncheckedBox = AddChild(new Stamp(Sprites.EmptyCheckbox));
+        _checkedBox = AddChild(new Stamp(Sprites.FilledChkbox));
+        _uncheckedBox = AddChild(new Stamp(Sprites.EmptyChkbox));
 
         _label = AddChild(new Label(labelText, Color.Black));
         var padding = (int)_label.Font.MeasureString(" ").X;

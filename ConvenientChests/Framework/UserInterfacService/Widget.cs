@@ -22,6 +22,10 @@ internal class Widget : IDisposable
     private readonly List<Widget> _children = new();
     private int _width;
     private int _height;
+    private Point Size => new(Width, Height);
+    public Rectangle LocalBounds => new(Point.Zero, Size);
+    protected Rectangle GlobalBounds => new(GlobalPosition, Size);
+    protected Point GlobalPosition => Globalize(Point.Zero);
 
     private Widget Parent
     {
@@ -91,21 +95,16 @@ internal class Widget : IDisposable
             child.Draw(batch);
     }
 
-    private Point Size => new(Width, Height);
-    public Rectangle LocalBounds => new(Point.Zero, Size);
-    protected Rectangle GlobalBounds => new(GlobalPosition, Size);
-    protected Point GlobalPosition => Globalize(Point.Zero);
-
     protected Point Globalize(Point point)
     {
         var global = new Point(point.X + Position.X, point.Y + Position.Y);
         return Parent?.Globalize(global) ?? global;
     }
 
-    public bool ReceiveButtonPress(SButton input)
+    public virtual bool ReceiveButtonPress(SButton input)
         => PropagateButtonPress(input);
 
-    private bool PropagateButtonPress(SButton input)
+    protected bool PropagateButtonPress(SButton input)
     {
         foreach (var child in Children)
         {
@@ -115,10 +114,10 @@ internal class Widget : IDisposable
         return false;
     }
 
-    public bool ReceiveCursorHover(Point point)
+    public virtual bool ReceiveCursorHover(Point point)
         => PropagateCursorHover(point);
 
-    private bool PropagateCursorHover(Point point)
+    protected bool PropagateCursorHover(Point point)
     {
         foreach (var child in Children)
         {
@@ -154,7 +153,7 @@ internal class Widget : IDisposable
     public virtual bool ReceiveScrollWheelAction(int amount)
         => PropagateScrollWheelAction(amount);
 
-    private bool PropagateScrollWheelAction(int amount)
+    protected bool PropagateScrollWheelAction(int amount)
     {
         foreach (var child in Children)
         {
@@ -174,7 +173,7 @@ internal class Widget : IDisposable
         return child;
     }
 
-    protected void RemoveChild(Widget child)
+    public void RemoveChild(Widget child)
     {
         _children.Remove(child);
         child.Parent = null;
