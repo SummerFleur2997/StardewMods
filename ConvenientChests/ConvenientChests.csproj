@@ -32,21 +32,6 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-        <Content Include="..\LICENSE">
-          <Link>LICENSE</Link>
-        </Content>
-        <Content Include="..\README.md">
-          <Link>README.md</Link>
-        </Content>
-        <Content Include="..\README_zh.md">
-          <Link>README_zh.md</Link>
-        </Content>
-        <Content Include="..\VersionHistories\VersionHistory.md">
-          <Link>VersionHistories\VersionHistory.md</Link>
-        </Content>
-        <Content Include="..\VersionHistories\VersionHistory_zh.md">
-          <Link>VersionHistories\VersionHistory_zh.md</Link>
-        </Content>
         <Content Include="CategorizeChests\LICENSE"/>
     </ItemGroup>
 </Project>

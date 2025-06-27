@@ -80,7 +80,7 @@ internal class StashToChestsModule : IModule
     private static bool ChestAcceptsItem(Chest chest, Item item)
     {
         var itemKey = item.ToBase().ToItemKey();
-        return ChestManager.GetChestData(chest).Accepts(itemKey);
+        return chest.GetChestData().Accepts(itemKey);
     }
 
     /// <summary>
@@ -183,7 +183,7 @@ internal class StashToChestsModule : IModule
     {
         // try to stash to fridge first
         var success = false;
-        if (ModEntry.Config.StashAnywhereToFridge && ChestExtension.GetFridge(Game1.player) is { } fridge)
+        if (ModEntry.Config.StashAnywhereToFridge && Game1.player.GetFridge() is { } fridge)
             success |= StashToChest(fridge, AcceptingFunc, RejectingFunc);
 
         // try to find all chests by location

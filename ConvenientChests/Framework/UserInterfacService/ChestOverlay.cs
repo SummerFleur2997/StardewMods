@@ -82,13 +82,12 @@ internal class ChestOverlay : Widget
     }
 
     /// <summary>
-    /// 确定分类按钮和堆叠按钮的位置，使它们在箱子界面左侧对齐。
-    /// Determine the position of the categorize and stash buttons to
-    /// align them on the left side of the chest interface.
+    /// 计算分类按钮和堆叠按钮的偏移量。
+    /// Calculate the offset of the categorize and stash buttons
     /// </summary>
-    private void PositionButtons()
+    private int GetOffset()
     {
-        var delta = ModEntry.IsAndroid 
+        return ModEntry.IsAndroid 
             ? 100 + ModEntry.Config.MobileOffset
             : Chest.SpecialChestType switch 
             {
@@ -101,7 +100,16 @@ internal class ChestOverlay : Widget
                     _ => 112
                 }
             };
+    }
 
+    /// <summary>
+    /// 确定分类按钮和堆叠按钮的位置，使它们在箱子界面左侧对齐。
+    /// Determine the position of the categorize and stash buttons to
+    /// align them on the left side of the chest interface.
+    /// </summary>
+    private void PositionButtons()
+    {
+        var delta = GetOffset();
         StashButton.Width = CategorizeButton.Width = Math.Max(StashButton.Width, CategorizeButton.Width);
 
         CategorizeButton.Position = new Point(
@@ -132,7 +140,7 @@ internal class ChestOverlay : Widget
     /// </summary>
     private void OpenCategoryMenu()
     {
-        var chestData = ChestManager.GetChestData(Chest);
+        var chestData = Chest.GetChestData();
         CategoryMenu = new CategoryMenu(chestData, TooltipManager, ItemGrabMenu.width - 24);
         CategoryMenu.Position = new Point(
             ItemGrabMenu.xPositionOnScreen - GlobalBounds.X - 12,

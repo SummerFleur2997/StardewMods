@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using ConvenientChests.Framework.ExceptionService;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Locations;
@@ -68,5 +70,48 @@ internal class ChestAddress
             LocationType = ChestLocationType.Building;
             BuildingName = location.ParentBuilding.GetIndoorsName();
         }
+    }
+
+    public GameLocation GetLocationFromAddress()
+    {
+        var location = Game1.locations.FirstOrDefault(l => l.Name == LocationName)
+                       ?? throw new InvalidSaveDataException($"Can't find location named {LocationName}");
+
+        if (LocationType != ChestLocationType.Building)
+            return location;
+
+        if (location.buildings.ToList() == null)
+            throw new InvalidSaveDataException($"Can't find any buildings in location named {location.Name}");
+
+        var building = location.buildings.SingleOrDefault(b => b.GetIndoorsName() == BuildingName)
+                       ?? throw new InvalidSaveDataException(
+                           $"Save data contains building data in {BuildingName} but building does not exist");
+
+        return building.indoors.Value;
+    }
+
+    public Chest GetChestByAddress()
+    {
+        if (LocationType == ChestLocationType.Refrigerator)
+        {
+            var house = (FarmHouse)Game1.locations.SingleOrDefault(l =>
+                l is FarmHouse f && LocationName == (f.uniqueName?.Value ?? f.Name));
+
+            if (house == null)
+                throw new InvalidSaveDataException(
+                    $"Save data contains refrigerator data in {LocationName} but location does not exist");
+
+            if (house.upgradeLevel < 1)
+                throw new InvalidSaveDataException(
+                    $"Save data contains refrigerator data in {LocationName} but refrigerator does not exist");
+
+            return house.fridge.Value;
+        }
+
+        var location = GetLocationFromAddress();
+        if (location.objects.ContainsKey(Tile) && location.objects[Tile] is Chest chest)
+            return chest;
+
+        throw new InvalidSaveDataException($"Can't find chest in {location.Name} at {Tile}");
     }
 }

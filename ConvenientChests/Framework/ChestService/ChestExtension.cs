@@ -12,7 +12,7 @@ using Object = StardewValley.Object;
 
 namespace ConvenientChests.Framework.ChestService;
 
-internal static class ChestExtension
+public static class ChestExtension
 {
     /// <summary>
     /// 寻找当前玩家房子里的冰箱。
@@ -20,7 +20,7 @@ internal static class ChestExtension
     /// </summary>
     /// <param name="player">玩家 The player</param>
     /// <returns>玩家房子里的冰箱 The frige in player's house</returns>
-    public static Chest? GetFridge(Farmer player)
+    public static Chest? GetFridge(this Farmer player)
     {
         if (Game1.player.IsMainPlayer)
             return Utility.getHomeOfFarmer(player).fridge.Value;
@@ -28,6 +28,38 @@ internal static class ChestExtension
         return Game1.locations.OfType<Cabin>()
             .FirstOrDefault(c => c.owner == player)?
             .fridge.Value;
+    }
+
+    /// <summary>
+    /// 检查给定的箱子是否是特殊的箱子。
+    /// Checks if the given chest is special chest.
+    /// </summary>
+    public static ChestTypes? CC_SpecialChestType(this Chest? chest)
+    {
+        return chest switch
+        {
+            { fridge.Value: true } => chest.GetFridgeType(),
+            { specialChestType.Value: Chest.SpecialChestTypes.JunimoChest } => ChestTypes.JunimoChest,
+            _ => ChestTypes.None
+        };
+    }
+
+    /// <summary>
+    /// 获取给定冰箱的类型。
+    /// Gets the type of fridge for the given fridge.
+    /// </summary>
+    /// <returns><see cref="ChestTypes"/></returns>
+    public static ChestTypes? GetFridgeType(this Chest chest)
+    {
+        // Judge whether the farmhouse has a fridge
+        // 判断当前农舍内有没有冰箱
+        var location = Game1.player.currentLocation;
+        if (location is not FarmHouse { upgradeLevel: >= 1 }) return null;
+        // 冰箱在农舍中的坐标位置为 (0, 0)
+        // Fridges' tile location in farmhouse is always (0, 0)
+        return chest.TileLocation == Vector2.Zero 
+            ? ChestTypes.Fridge 
+            : ChestTypes.MiniFridge;
     }
 
     /// <summary>

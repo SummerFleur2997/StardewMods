@@ -67,9 +67,7 @@ internal static class SaveManager
 
         foreach (var entry in saveData!.ChestEntries)
         {
-            var chest = ChestManager.GetChestByAddress(entry.Address);
-            var chestData = ChestManager.GetChestData(chest);
-
+            var chestData = entry.Address.GetChestByAddress().GetChestData();
             chestData.AcceptedItemKinds = entry.GetItemSet();
         }
 

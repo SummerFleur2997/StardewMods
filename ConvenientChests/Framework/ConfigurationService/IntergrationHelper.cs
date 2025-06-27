@@ -3,7 +3,7 @@
 namespace ConvenientChests.Framework.ConfigurationService;
 
 /// <summary>Simplifies validated access to mod APIs.</summary>
-internal static class IntegrationHelper
+public static class IntegrationHelper
 {
     /// <summary>Get a mod API if it's installed and valid.</summary>
     /// <param name="label">A human-readable name for the mod.</param>

@@ -8,7 +8,7 @@ using ConvenientChests.Framework.MultiplayerService;
 using ConvenientChests.Framework.SaveService;
 using ConvenientChests.Framework.UserInterfacService;
 using ConvenientChests.StashToChests;
-using JetBrains.Annotations; 
+using JetBrains.Annotations;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
@@ -19,7 +19,7 @@ namespace ConvenientChests;
 /// <summary>
 /// The mod entry class loaded by SMAPI.
 /// </summary>
-[UsedImplicitly] 
+[UsedImplicitly]
 // If your IDE cannot recognize this attribute above, just delete it, and the using namespace in line 11.
 internal class ModEntry : Mod
 {
@@ -49,6 +49,11 @@ internal class ModEntry : Mod
     /// <see cref="StashToChestsModule"/> mod.
     /// </summary>
     internal static StashToChestsModule StashModule { get; private set; }
+
+    /// <summary>
+    /// <see cref="MultiplayerServer"/> module.
+    /// </summary>
+    private static MultiplayerServer MultiplayerServer { get; set; }
     #endregion
 
     /// <summary>
@@ -85,18 +90,19 @@ internal class ModEntry : Mod
     {
         ModHelper.WriteConfig(Config);
         Config = ModHelper.ReadConfig<ModConfig>();
+        if (!Game1.hasLoadedGame) return;
 
         UpdateModule(Config.CategorizeChests, CategorizeModule);
         UpdateModule(Config.CraftFromChests, CraftModule);
         UpdateModule(Config.StashToNearby || Config.StashAnywhere, StashModule);
         StashModule.CreateJudgementFunction();
-        
+
         return;
-        
+
         void UpdateModule(bool configStatus, IModule module)
         {
             if (configStatus == module.IsActive) return;
-        
+
             switch (configValue: configStatus, module.IsActive)
             {
                 case (true, false):
@@ -134,7 +140,8 @@ internal class ModEntry : Mod
             StashModule.Activate();
 
         SaveManager.Load();
-        
+
+        MultiplayerServer = new MultiplayerServer();
         if (Context.IsMultiplayer)
             MultiplayerServer.Activate();
     }
@@ -153,7 +160,7 @@ internal class ModEntry : Mod
 
         StashModule.Deactivate();
         StashModule = null;
-        
+
         if (MultiplayerServer.IsActive)
             MultiplayerServer.Deactivate();
 

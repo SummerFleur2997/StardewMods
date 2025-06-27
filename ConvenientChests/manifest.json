@@ -1,7 +1,7 @@
 {
   "Name": "Convenient Chests Unofficial",
   "Author": "SummerFleur",
-  "Version": "1.8.2",
+  "Version": "1.8.3-alpha",
   "Description": "Makes your life easier: Allows crafting from and auto-stashing to chests.",
   "UniqueID": "SummerFleur.ConvenientChests",
   "MinimumApiVersion": "4.0.0",

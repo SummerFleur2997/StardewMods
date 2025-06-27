@@ -42,13 +42,13 @@ internal static class Saver
             // chests
             foreach (var pair in GetLocationChests(location))
                 yield return new ChestEntry(
-                    ChestManager.GetChestData(pair.Value),
+                    pair.Value.GetChestData(),
                     new ChestAddress(location.Name, pair.Key));
 
             // fridges
             if (location is FarmHouse { upgradeLevel: >= 1 } farmHouse)
                 yield return new ChestEntry(
-                    ChestManager.GetChestData(farmHouse.fridge.Value),
+                    farmHouse.fridge.Value.GetChestData(),
                     new ChestAddress
                     (farmHouse.uniqueName?.Value ?? farmHouse.Name, Vector2.Zero, ChestLocationType.Refrigerator)
                 );
@@ -56,7 +56,7 @@ internal static class Saver
                 foreach (var building in location.buildings.Where(b => b.indoors.Value != null))
                 foreach (var pair in GetLocationChests(building.indoors.Value))
                     yield return new ChestEntry(
-                        ChestManager.GetChestData(pair.Value),
+                        pair.Value.GetChestData(),
                         new ChestAddress(location.Name, pair.Key, ChestLocationType.Building, building.GetIndoorsName())
                     );
         }

@@ -10,22 +10,22 @@ using StardewValley.Objects;
 
 namespace ConvenientChests.Framework.MultiplayerService;
 
-internal static class MultiplayerServer
+internal class MultiplayerServer : IModule
 {
-    public static bool IsActive { get; private set; }
+    public bool IsActive { get; private set; }
 
     private static IMultiplayerHelper MultiplayerHelper => ModEntry.ModHelper.Multiplayer;
-    
-    public static void Activate()
+
+    public void Activate()
     {
         IsActive = true;
         ModEntry.ModHelper.Events.Multiplayer.ModMessageReceived += OnMessageReceived;
-        
+
         if (!Context.IsMainPlayer)
             ModEntry.ModHelper.Events.Display.MenuChanged += OnMenuChanged;
     }
 
-    public static void Deactivate()
+    public void Deactivate()
     {
         IsActive = false;
         ModEntry.ModHelper.Events.Multiplayer.ModMessageReceived -= OnMessageReceived;
@@ -36,7 +36,7 @@ internal static class MultiplayerServer
         var playerID = Game1.player.UniqueMultiplayerID;
         var chestAddress = new ChestAddress(chest);
         var syncData = new MultiplayerChestSync(chestAddress, itemKey, playerID);
-        
+
         MultiplayerHelper.SendMessage(syncData, "MultiplayerChestSync",
             new[] { ModEntry.Manifest.UniqueID });
     }
@@ -45,7 +45,7 @@ internal static class MultiplayerServer
     {
         var playerID = playerHouse.owner.UniqueMultiplayerID;
         var syncData = new MultiplayerInventorySync(playerID, itemKey);
-        
+
         MultiplayerHelper.SendMessage(syncData, "MultiplayerInventorySync",
             new[] { ModEntry.Manifest.UniqueID });
     }
@@ -55,23 +55,23 @@ internal static class MultiplayerServer
         if (multiplayerChestSyncData.SenderID == Game1.player.UniqueMultiplayerID) return;
         var chestAddress = multiplayerChestSyncData.ChestAddress;
         var itemKey = multiplayerChestSyncData.ItemKey;
-        
+
         ChestManager.ModifyChest(chestAddress, itemKey);
     }
-    
+
     private static void ReceiveInventoryData(MultiplayerInventorySync multiplayerInventorySyncData)
     {
         if (multiplayerInventorySyncData.SenderID == Game1.player.UniqueMultiplayerID) return;
         var playerID = multiplayerInventorySyncData.PlayerID;
         var itemKey = multiplayerInventorySyncData.ItemKey;
-        
+
         InventoryManager.ModifyInventory(playerID, itemKey);
     }
 
     private static void SendSaveData(long toPlayerID)
     {
         var sentSaveData = Saver.GetSerializableData();
-        MultiplayerHelper.SendMessage(sentSaveData, "MultiplayerInit", 
+        MultiplayerHelper.SendMessage(sentSaveData, "MultiplayerInit",
             new[] { ModEntry.Manifest.UniqueID }, new[] { toPlayerID });
     }
 
@@ -83,7 +83,7 @@ internal static class MultiplayerServer
 
     private static void OnMenuChanged(object sender, MenuChangedEventArgs e)
     {
-        MultiplayerHelper.SendMessage("null", "MultiplayerInit", 
+        MultiplayerHelper.SendMessage("null", "MultiplayerInit",
             new[] { ModEntry.Manifest.UniqueID }, new[] { Game1.MasterPlayer.UniqueMultiplayerID });
     }
 

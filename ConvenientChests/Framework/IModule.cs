@@ -1,6 +1,6 @@
 ﻿namespace ConvenientChests.Framework;
 
-internal interface IModule
+public interface IModule
 {
     /// <summary>
     /// 模块启用状态。
