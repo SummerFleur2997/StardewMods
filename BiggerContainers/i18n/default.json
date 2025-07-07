@@ -1,0 +1,15 @@
+﻿{
+    "Config.FridgeModule": "Bigger fridge module",
+    "Config.BiggerFridge.Title": "Bigger fridges",
+    "Config.BiggerFridge.desc": "Enable bigger fridges.",
+    "Config.BiggerMiniFridge.Title": "Bigger mini fridges",
+    "Config.BiggerMiniFridge.desc": "Enable bigger mini fridges.",
+
+    "Config.JunimoChestModule": "Bigger junimo chests module",
+    "Config.BiggerJunimoChest.Title": "Junimo chest capacity",
+    "Config.BiggerJunimoChest.desc": "Choose the max capacity for your junimo chests.\n- Disable: Disable this module\n- 36: Same as common chests\n- 70: Same as big chests",
+    "Config.BiggerJunimoChest.E": "Error",
+    "Config.BiggerJunimoChest.0": "Disable",
+    "Config.BiggerJunimoChest.1": "36",
+    "Config.BiggerJunimoChest.2": "70",
+}

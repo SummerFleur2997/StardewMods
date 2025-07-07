@@ -1,0 +1,15 @@
+﻿{
+    "Config.FridgeModule": "更大的冰箱",
+    "Config.BiggerFridge.Title": "更大的冰箱",
+    "Config.BiggerFridge.desc": "让冰箱变得更大。",
+    "Config.BiggerMiniFridge.Title": "更大的迷你冰箱",
+    "Config.BiggerMiniFridge.desc": "让迷你冰箱变得更大。",
+
+    "Config.JunimoChestModule": "更大的祝尼魔箱",
+    "Config.BiggerJunimoChest.Title": "祝尼魔箱容量",
+    "Config.BiggerJunimoChest.desc": "设置祝尼魔箱的最大容量。\n- 禁用：禁用该模块\n- 36：相当于普通箱子\n- 70：相当于大箱子",
+    "Config.BiggerJunimoChest.E": "Error",
+    "Config.BiggerJunimoChest.0": "禁用",
+    "Config.BiggerJunimoChest.1": "36",
+    "Config.BiggerJunimoChest.2": "70"
+}

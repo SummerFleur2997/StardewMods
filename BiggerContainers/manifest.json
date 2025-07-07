@@ -1,0 +1,18 @@
+{
+  "Name": "Bigger Containers",
+  "Author": "SummerFleur",
+  "Version": "1.0.0-beta",
+  "Description": "Make your junimo chests and fridges bigger.",
+  "UniqueID": "SummerFleur.BiggerContainers",
+  "MinimumApiVersion": "4.0.0",
+  "EntryDll": "BiggerContainers.dll",
+  "UpdateKeys": [
+    "Nexus:32558",
+  ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu", 
+      "IsRequired": false
+    }
+  ]
+}
