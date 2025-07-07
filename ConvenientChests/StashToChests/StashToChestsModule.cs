@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
-using ConvenientChests.Framework;
+using Common;
 using ConvenientChests.Framework.ChestService;
 using ConvenientChests.Framework.InventoryService;
 using ConvenientChests.Framework.ItemService;

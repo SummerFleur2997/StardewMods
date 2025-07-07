@@ -31,38 +31,6 @@ public static class ChestExtension
     }
 
     /// <summary>
-    /// 检查给定的箱子是否是特殊的箱子。
-    /// Checks if the given chest is special chest.
-    /// </summary>
-    public static ChestTypes? CC_SpecialChestType(this Chest? chest)
-    {
-        return chest switch
-        {
-            { fridge.Value: true } => chest.GetFridgeType(),
-            { specialChestType.Value: Chest.SpecialChestTypes.JunimoChest } => ChestTypes.JunimoChest,
-            _ => ChestTypes.None
-        };
-    }
-
-    /// <summary>
-    /// 获取给定冰箱的类型。
-    /// Gets the type of fridge for the given fridge.
-    /// </summary>
-    /// <returns><see cref="ChestTypes"/></returns>
-    public static ChestTypes? GetFridgeType(this Chest chest)
-    {
-        // Judge whether the farmhouse has a fridge
-        // 判断当前农舍内有没有冰箱
-        var location = Game1.player.currentLocation;
-        if (location is not FarmHouse { upgradeLevel: >= 1 }) return null;
-        // 冰箱在农舍中的坐标位置为 (0, 0)
-        // Fridges' tile location in farmhouse is always (0, 0)
-        return chest.TileLocation == Vector2.Zero 
-            ? ChestTypes.Fridge 
-            : ChestTypes.MiniFridge;
-    }
-
-    /// <summary>
     /// 寻找搜寻半径范围内的箱子。
     /// Search for chests within the search radius.
     /// </summary>

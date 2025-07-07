@@ -1,4 +1,5 @@
-﻿using ConvenientChests.Framework.ChestService;
+﻿using Common;
+using ConvenientChests.Framework.ChestService;
 using ConvenientChests.Framework.InventoryService;
 using ConvenientChests.Framework.ItemService;
 using ConvenientChests.Framework.SaveService;

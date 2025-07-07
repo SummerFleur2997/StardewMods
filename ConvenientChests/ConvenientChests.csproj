@@ -22,10 +22,12 @@
         <ModFolderName>ConvenientChestsUnofficial</ModFolderName>
     </PropertyGroup>
     <ItemGroup>
-        <PackageReference Include="JetBrains.Annotations" Version="2024.3.0" />
-        <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" Version="4.4.0" />
-        <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" Version="2.2.0"/>
+        <PackageReference Include="JetBrains.Annotations"/>
+        <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" />
+        <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" />
     </ItemGroup>
+    <Import Project="..\Common\Common.projitems" Label="Shared" />
+    <Import Project="..\UI\UI.projitems" Label="Shared" />
     <ItemGroup>
         <None Update="manifest.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>

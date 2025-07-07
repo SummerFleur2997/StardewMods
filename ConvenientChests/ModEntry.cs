@@ -1,12 +1,12 @@
-﻿using ConvenientChests.CategorizeChests;
+﻿using Common;
+using ConvenientChests.CategorizeChests;
 using ConvenientChests.CraftFromChests;
 using ConvenientChests.Framework;
 using ConvenientChests.Framework.ChestService;
-using ConvenientChests.Framework.ConfigurationService;
 using ConvenientChests.Framework.InventoryService;
 using ConvenientChests.Framework.MultiplayerService;
 using ConvenientChests.Framework.SaveService;
-using ConvenientChests.Framework.UserInterfacService;
+using ConvenientChests.Framework.UserInterfaceService;
 using ConvenientChests.StashToChests;
 using JetBrains.Annotations;
 using StardewModdingAPI;
@@ -177,7 +177,8 @@ internal class ModEntry : Mod
         GenericModConfigMenuIntegration.Register(Manifest, ModHelper.ModRegistry,
             () => Config,
             () => Config = new ModConfig(),
-            ReloadConfig
+            ReloadConfig,
+            ModMonitor
         );
     }
 

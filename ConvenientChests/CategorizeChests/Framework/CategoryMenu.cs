@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using ConvenientChests.Framework.ChestService;
 using ConvenientChests.Framework.ItemService;
-using ConvenientChests.Framework.UserInterfacService;
+using ConvenientChests.Framework.UserInterfaceService;
 using Microsoft.Xna.Framework;
 using StardewValley;
-using Background = ConvenientChests.Framework.UserInterfacService.Background;
+using UI.UserInterface;
+using Background = UI.UserInterface.Background;
 
 namespace ConvenientChests.CategorizeChests.Framework;
 

@@ -1,4 +1,4 @@
-﻿using ConvenientChests.Framework;
+﻿using Common;
 
 namespace ConvenientChests.CategorizeChests;
 
