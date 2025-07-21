@@ -12,6 +12,7 @@ internal static class PatchChestOverlay
     {
         try
         {
+            if (ModEntry.ModHelper.ModRegistry.Get("SummerFleur.ConvenientChests") is null) return;
             var type = Type.GetType("ConvenientChests.Framework.UserInterfaceService.ChestOverlay, ConvenientChests");
             var originalM2 = AccessTools.Method(type, "GetOffset");
             var prefixM2 = AccessTools.Method(typeof(PatchChestOverlay), nameof(SetOffset));
