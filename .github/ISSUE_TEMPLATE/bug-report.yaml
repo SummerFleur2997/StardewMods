@@ -21,8 +21,27 @@ body:
   - type: markdown
     attributes:
       value: |
-        ## Environment Information
-        Please provide the following information about your environment to help us diagnose the issue.
+        ## Basic Information
+        Please provide the following information about your basic to help us diagnose the issue.
+
+  - type: dropdown
+    id: mod-name
+    attributes:
+      label: Mod name
+      description: please provide the mod that has the issue
+      options:
+        - Bigger Containers
+        - Convenient Chests
+    validations:
+      required: true
+
+  - type: input
+    id: mod-version
+    attributes:
+      label: Mod version
+      description: choose the version of the mod you are using
+    validations:
+      required: true
 
   - type: dropdown
     id: os
@@ -42,19 +61,6 @@ body:
     id: smapi-version
     attributes:
       label: SMAPI version
-    validations:
-      required: true
-
-  - type: dropdown
-    id: mod-version
-    attributes:
-      label: Mod version
-      description: choose the version of the mod you are using
-      options:
-        - 1.8.2
-        - 1.8.1
-        - 1.8.0
-        - 1.7.0
     validations:
       required: true
 
