@@ -1,0 +1,7 @@
+﻿{
+    "String.WaterRemain": "Water can remain {{0}} days.",
+    "Config.BasicSoilRemainDays.Title": "Basic Retaining Soil remain",
+    "Config.BasicSoilRemainDays.desc": "Set the number of days Basic Retaining Soil keeps soil watered",
+    "Config.QualitySoilRemainDays.Title": "Quality Retaining Soil remain",
+    "Config.QualitySoilRemainDays.desc": "Set the number of days Quality Retaining Soil keeps soil watered"
+}

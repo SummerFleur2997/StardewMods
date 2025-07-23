@@ -1,0 +1,18 @@
+﻿{
+  "Name": "Better Retaining Soils",
+  "Author": "SummerFleur",
+  "Version": "1.0.0",
+  "Description": "Make retaining-soils more useful.",
+  "UniqueID": "SummerFleur.BetterRetainingSoils",
+  "MinimumApiVersion": "4.0.0",
+  "EntryDll": "BetterRetainingSoils.dll",
+  "UpdateKeys": [
+    "Nexus:???",
+  ],
+  "Dependencies": [
+    {
+      "UniqueID": "spacechase0.GenericModConfigMenu",
+      "IsRequired": false
+    }
+  ]
+}
