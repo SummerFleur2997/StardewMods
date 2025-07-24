@@ -11,16 +11,16 @@ namespace ConvenientChests.Framework.UserInterfaceService;
 
 internal class InventoryOverlay : Widget
 {
-    private Farmer Player { get; }
-    private GameMenu GameMenu { get; }
+    private readonly Farmer _player;
+    private readonly GameMenu _gameMenu;
     private TextButton LockButton { get; set; }
     private LockMenu LockMenu { get; set; }
     private TooltipManager TooltipManager { get; }
 
     public InventoryOverlay(GameMenu menu)
     {
-        Player = Game1.player;
-        GameMenu = menu;
+        _player = Game1.player;
+        _gameMenu = menu;
         TooltipManager = new TooltipManager();
         AddButtons();
     }
@@ -54,8 +54,8 @@ internal class InventoryOverlay : Widget
         var delta = ModEntry.IsAndroid ? 100 + ModEntry.Config.MobileOffset : 106;
 
         LockButton.Position = new Point(
-            GameMenu.xPositionOnScreen + GameMenu.width / 2 - LockButton.Width - delta * Game1.pixelZoom,
-            GameMenu.yPositionOnScreen + 30 * Game1.pixelZoom);
+            _gameMenu.xPositionOnScreen + _gameMenu.width / 2 - LockButton.Width - delta * Game1.pixelZoom,
+            _gameMenu.yPositionOnScreen + 30 * Game1.pixelZoom);
     }
 
     private void ToggleMenu()
@@ -69,11 +69,11 @@ internal class InventoryOverlay : Widget
 
     private void OpenLockMenu()
     {
-        var inventoryData = InventoryManager.GetInventoryData(Player);
-        LockMenu = new LockMenu(inventoryData, TooltipManager, GameMenu.width - 24);
+        var inventoryData = InventoryManager.GetInventoryData(_player);
+        LockMenu = new LockMenu(inventoryData, TooltipManager, _gameMenu.width - 24);
         LockMenu.Position = new Point(
-            GameMenu.xPositionOnScreen - GlobalBounds.X - 12,
-            GameMenu.yPositionOnScreen - GlobalBounds.Y - 60);
+            _gameMenu.xPositionOnScreen - GlobalBounds.X - 12,
+            _gameMenu.yPositionOnScreen - GlobalBounds.Y - 60);
 
         LockMenu.OnClose += CloseLockMenu;
         AddChild(LockMenu);

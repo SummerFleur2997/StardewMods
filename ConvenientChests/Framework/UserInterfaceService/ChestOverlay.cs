@@ -13,8 +13,8 @@ namespace ConvenientChests.Framework.UserInterfaceService;
 
 internal class ChestOverlay : Widget
 {
-    private Chest Chest { get; }
-    private ItemGrabMenu ItemGrabMenu { get; }
+    private readonly Chest _chest;
+    private readonly ItemGrabMenu _itemGrabMenu;
     private TextButton CategorizeButton { get; set; }
     private TextButton StashButton { get; set; }
     private CategoryMenu CategoryMenu { get; set; }
@@ -30,15 +30,15 @@ internal class ChestOverlay : Widget
     /// </summary>
     public ChestOverlay(ItemGrabMenu menu, Chest chest)
     {
-        Chest = chest;
-        ItemGrabMenu = menu;
+        _chest = chest;
+        _itemGrabMenu = menu;
         _inventoryMenu = menu.ItemsToGrabMenu;
         TooltipManager = new TooltipManager();
 
-        _defaultChestHighlighter = ItemGrabMenu.inventory.highlightMethod;
+        _defaultChestHighlighter = _itemGrabMenu.inventory.highlightMethod;
         _defaultInventoryHighlighter = _inventoryMenu.highlightMethod;
 
-        if (Chest.SpecialChestType == Chest.SpecialChestTypes.Enricher) return;
+        if (_chest.SpecialChestType == Chest.SpecialChestTypes.Enricher) return;
         AddButtons();
     }
 
@@ -90,12 +90,12 @@ internal class ChestOverlay : Widget
     {
         return ModEntry.IsAndroid 
             ? 100 + ModEntry.Config.MobileOffset
-            : Chest.SpecialChestType switch 
+            : _chest.SpecialChestType switch 
             {
                 Chest.SpecialChestTypes.BigChest => 128,
                 Chest.SpecialChestTypes.MiniShippingBin => 34,
                 Chest.SpecialChestTypes.JunimoChest => 34,
-                _ => Chest.Name switch
+                _ => _chest.Name switch
                 {
                     "__Auto_!_Eats__" => 34,
                     _ => 112
@@ -114,8 +114,8 @@ internal class ChestOverlay : Widget
         StashButton.Width = CategorizeButton.Width = Math.Max(StashButton.Width, CategorizeButton.Width);
 
         CategorizeButton.Position = new Point(
-            ItemGrabMenu.xPositionOnScreen + ItemGrabMenu.width / 2 - CategorizeButton.Width - delta * Game1.pixelZoom,
-            ItemGrabMenu.yPositionOnScreen + 22 * Game1.pixelZoom);
+            _itemGrabMenu.xPositionOnScreen + _itemGrabMenu.width / 2 - CategorizeButton.Width - delta * Game1.pixelZoom,
+            _itemGrabMenu.yPositionOnScreen + 22 * Game1.pixelZoom);
 
         StashButton.Position = new Point(
             CategorizeButton.Position.X + CategorizeButton.Width - StashButton.Width,
@@ -141,11 +141,11 @@ internal class ChestOverlay : Widget
     /// </summary>
     private void OpenCategoryMenu()
     {
-        var chestData = Chest.GetChestData();
-        CategoryMenu = new CategoryMenu(chestData, TooltipManager, ItemGrabMenu.width - 24);
+        var chestData = _chest.GetChestData();
+        CategoryMenu = new CategoryMenu(chestData, TooltipManager, _itemGrabMenu.width - 24);
         CategoryMenu.Position = new Point(
-            ItemGrabMenu.xPositionOnScreen - GlobalBounds.X - 12,
-            ItemGrabMenu.yPositionOnScreen - GlobalBounds.Y - 60);
+            _itemGrabMenu.xPositionOnScreen - GlobalBounds.X - 12,
+            _itemGrabMenu.yPositionOnScreen - GlobalBounds.Y - 60);
 
         CategoryMenu.OnClose += CloseCategoryMenu;
         AddChild(CategoryMenu);
@@ -172,7 +172,7 @@ internal class ChestOverlay : Widget
     private void StashItems()
     {
         var stashModule = ModEntry.StashModule;
-        StashLogic.StashToCurrentChest(Chest, stashModule.AcceptingFunc, stashModule.RejectingFunc);
+        StashLogic.StashToCurrentChest(_chest, stashModule.AcceptingFunc, stashModule.RejectingFunc);
     }
 
     /// <summary>
@@ -197,12 +197,12 @@ internal class ChestOverlay : Widget
     {
         if (clickable)
         {
-            ItemGrabMenu.inventory.highlightMethod = _defaultChestHighlighter;
+            _itemGrabMenu.inventory.highlightMethod = _defaultChestHighlighter;
             _inventoryMenu.highlightMethod = _defaultInventoryHighlighter;
         }
         else
         {
-            ItemGrabMenu.inventory.highlightMethod = _ => false;
+            _itemGrabMenu.inventory.highlightMethod = _ => false;
             _inventoryMenu.highlightMethod = _ => false;
         }
     }
