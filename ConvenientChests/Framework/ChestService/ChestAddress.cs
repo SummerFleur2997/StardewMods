@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using ConvenientChests.Framework.ExceptionService;
+using Common.ExceptionService;
 using Microsoft.Xna.Framework;
 using StardewValley;
 using StardewValley.Locations;

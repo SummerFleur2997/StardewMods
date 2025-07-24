@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace ConvenientChests.Framework.ExceptionService;
+namespace Common.ExceptionService;
 
 /// <summary>
 /// An exception to be raised when save data is malformed or fails to

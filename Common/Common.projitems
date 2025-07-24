@@ -12,6 +12,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Chests\ChestTypes.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ConfigurationServices\IGenericModConfigMenuApi.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ConfigurationServices\IntergrationHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ExceptionService\InvalidSaveDataException.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)IModule.cs" />
   </ItemGroup>
 </Project>
