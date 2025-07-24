@@ -22,6 +22,7 @@ internal static class UI2Patches
         // Add custom strings.
         // 添加自定义文本。
         var waterRemain = hoeDirt.GetHoeDirtData().WaterRemainDays;
+        if (waterRemain < 1) return;
         entries.Add(I18n.String_WaterRemain(waterRemain));
     }
 

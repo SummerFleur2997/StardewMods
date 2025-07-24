@@ -2,6 +2,7 @@
 using BetterRetainingSoils.DirtService;
 using BetterRetainingSoils.Framework;
 using BetterRetainingSoils.Framework.MultiplayerService;
+using BetterRetainingSoils.Framework.SaveService;
 using BetterRetainingSoils.Patcher;
 using HarmonyLib;
 using JetBrains.Annotations;
@@ -49,6 +50,7 @@ internal class ModEntry : Mod
         helper.Events.GameLoop.SaveLoaded += OnGameLoaded;
         helper.Events.GameLoop.ReturnedToTitle += OnGameUnload;
         helper.Events.GameLoop.DayStarted += OnDayStarted;
+        helper.Events.GameLoop.Saving += OnSaving;
 
         Config = helper.ReadConfig<ModConfig>();
     }
@@ -77,6 +79,8 @@ internal class ModEntry : Mod
         Harmony = new Harmony(Manifest.UniqueID);
         WaterRetentionPatches.RegisterHarmonyPatches(Harmony);
         UI2Patches.RegisterHarmonyPatches(Harmony);
+
+        SaveManager.Load();
 
         MultiplayerServer = new MultiplayerServer();
         if (Context.IsMultiplayer)
@@ -119,16 +123,24 @@ internal class ModEntry : Mod
         if (!Context.IsMainPlayer) return;
         Utility.ForEachLocation(delegate(GameLocation location)
         {
-            if (!location.IsOutdoors) return true;
-
             var hoeDirts = location.terrainFeatures.Pairs
                 .Select(pair => pair.Value)
                 .OfType<HoeDirt>()
-                .Where(h => h.state.Value != 2);
+                .Where(h => h.state.Value != 2)
+                .Where(h => h.IsAvailable());
 
             foreach (var hoeDirt in hoeDirts) hoeDirt.DayUpdate();
             return true;
         });
+    }
+
+    /// <summary>
+    /// 在游戏开始对存档进行保存之前触发。
+    /// Raised before the game begins writes data to the save file (except the initial save creation).
+    /// </summary>
+    private static void OnSaving(object sender, SavingEventArgs e)
+    {
+        SaveManager.Save();
     }
     #endregion
 }
