@@ -10,6 +10,12 @@ This mod is inspired by Entoarox's [Bigger Fridges](https://www.nexusmods.com/st
 
 ## Update logs
 
+### 1.1.0
+
+**Optimizations & Improvements**
+- Compatible with ChestAnywhere
+- Available in island farmhouse fridge
+
 ### 1.0.0
 
 First upload
