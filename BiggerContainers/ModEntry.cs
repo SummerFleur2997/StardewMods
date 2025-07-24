@@ -61,6 +61,7 @@ internal class ModEntry : Mod
         JunimoChestsModule.Activate();
 
         PatchChestOverlay.RegisterHarmonyPatches(Harmony);
+        // PatchShowMenu.RegisterHarmonyPatches(Harmony);
     }
 
     /// <summary>

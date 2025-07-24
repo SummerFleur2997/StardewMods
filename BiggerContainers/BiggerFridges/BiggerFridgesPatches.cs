@@ -2,9 +2,6 @@
 using Common.ChestServices;
 using StardewValley.Objects;
 
-// using StardewValley;
-// using StardewValley.Menus;
-
 namespace BiggerContainers.BiggerFridges;
 
 internal static class BiggerFridgesPatches
@@ -37,41 +34,4 @@ internal static class BiggerFridgesPatches
                 return true;
         }
     }
-
-    /* Abandoned method
-    public static bool Patch_ShowMenu(Chest __instance)
-    {
-        if (!ModEntry.FridgesModule.IsActive || !__instance.IsValidFridge()) return true;
-
-        ModEntry.Log("Checking for Big Fridge...");
-        switch (__instance.GetFridgeType())
-        {
-            case ChestTypes.Fridge when ModEntry.Config.BiggerFridge:
-            case ChestTypes.MiniFridge when ModEntry.Config.BiggerMiniFridge:
-                ModEntry.Log("Big Fridge found, overriding menu.");
-                ShowMenu();
-                return false;
-            default:
-                ModEntry.Log("Big Fridge not found, using vanilla logic.");
-                return true;
-        }
-
-        void ShowMenu()
-        {
-            Game1.activeClickableMenu = new ItemGrabMenu(
-                __instance.GetItemsForPlayer(),
-                reverseGrab: false,
-                showReceivingMenu: true,
-                InventoryMenu.highlightAllItems,
-                __instance.grabItemFromInventory,
-                null,
-                __instance.grabItemFromChest,
-                snapToBottom: false,
-                canBeExitedWithKey: true,
-                playRightClickSound: true,
-                allowRightClick: true,
-                showOrganizeButton: true,
-                1, __instance, -1, __instance);
-        }
-    }*/
 }

@@ -14,18 +14,24 @@ internal static class PatchChestOverlay
         {
             if (ModEntry.ModHelper.ModRegistry.Get("SummerFleur.ConvenientChests") is null) return;
             var type = Type.GetType("ConvenientChests.Framework.UserInterfaceService.ChestOverlay, ConvenientChests");
-            var originalM2 = AccessTools.Method(type, "GetOffset");
-            var prefixM2 = AccessTools.Method(typeof(PatchChestOverlay), nameof(SetOffset));
-            harmony.Patch(original: originalM2, prefix: new HarmonyMethod(prefixM2));
+            var originalM4 = AccessTools.Method(type, "GetOffset");
+            var prefixM4 = AccessTools.Method(typeof(PatchChestOverlay), nameof(Patch_SetOffset));
+            harmony.Patch(original: originalM4, prefix: new HarmonyMethod(prefixM4));
             ModEntry.Log("Patched ChestOverlay.Getoffset for fridges successfully.", LogLevel.Debug);
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed to patch method: {ex.Message}", LogLevel.Error);
+            ModEntry.Log($"Failed to patch method: {ex.Message}", LogLevel.Warn);
         }
     }
 
-    public static bool SetOffset(ref int __result)
+    /// <summary>
+    /// Patches ConvenientChests.Framework.UserInterfaceService.ChestOverlay method.
+    /// </summary>
+    /// <param name="__result">原函数的返回值。The return value of the original method.</param>
+    /// <returns>是否需要使用原方法进一步处理，若为 true 则使用原方法继续处理。
+    /// Whether it needs to be proceeded with the original method.</returns>
+    public static bool Patch_SetOffset(ref int __result)
     {
         if (BiggerFridgesPatches.ShouldPatchCCChestOverlay)
         {

@@ -30,13 +30,6 @@ internal class BiggerFridgesModule : IModule
                 typeof(BiggerFridgesPatches), nameof(BiggerFridgesPatches.Patch_GetActualCapacity));
             harmony.Patch(original: originalM1, prefix: new HarmonyMethod(prefixM1));
             ModEntry.Log("Patched Chest.GetActualCapacity for fridges successfully.", LogLevel.Debug);
-
-            // var type = Type.GetType("ConvenientChests.Framework.UserInterfacService.ChestOverlay, ConvenientChests");
-            // var originalM2 = AccessTools.Method(type, "GetOffset");
-            // var prefixM2 = AccessTools.Method(
-            //     typeof(BiggerFridgesPatches), nameof(BiggerFridgesPatches.Patch_CC_ChestOverlay_GetOffset));
-            // harmony.Patch(original: originalM2, prefix: new HarmonyMethod(prefixM2));
-            // ModEntry.Log("Patched ChestOverlay.Getoffset for fridges successfully.", LogLevel.Debug);
         }
         catch (Exception ex)
         {

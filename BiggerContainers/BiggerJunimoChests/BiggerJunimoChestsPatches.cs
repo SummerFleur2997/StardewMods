@@ -10,13 +10,13 @@ internal static class BiggerJunimoChestsPatches
 
     /// <summary>
     /// Patches <see cref="StardewValley.Objects.Chest.GetActualCapacity"/> method.
-    /// 如果箱子是一个有效的祝尼魔，并且相应的配置被启用，则修改其容量。If the chest is a valid junimo chest 
+    /// 如果箱子是一个有效的祝尼魔箱，并且相应的配置被启用，则修改其容量。If the chest is a valid junimo chest 
     /// and the corresponding configuration is enabled, modifies its capacity.
     /// </summary>
     /// <param name="__instance">要检查和调整容量的箱子。 The chest to check and potentially modify.</param>
     /// <param name="__result">原函数的返回值。The return value of the original method.</param>
-    /// <returns>始终需要进一步处理，因此总是返回 true 并使用原方法。
-    /// Always true to proceed with the original method.</returns>
+    /// <returns>是否需要使用原方法进一步处理，若为 true 则使用原方法继续处理。
+    /// Whether it needs to be proceeded with the original method.</returns>
     public static bool Patch_GetActualCapacity(Chest __instance, ref int __result)
     {
         ShouldPatchCCChestOverlay = false;
