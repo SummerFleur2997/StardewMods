@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using BetterRetainingSoils.DirtService;
+﻿using BetterRetainingSoils.DirtService;
 using BetterRetainingSoils.Framework;
 using BetterRetainingSoils.Framework.MultiplayerService;
 using BetterRetainingSoils.Framework.SaveService;
@@ -9,7 +8,6 @@ using JetBrains.Annotations;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
-using StardewValley.TerrainFeatures;
 
 namespace BetterRetainingSoils;
 
@@ -77,8 +75,9 @@ internal class ModEntry : Mod
     private static void OnGameLoaded(object sender, SaveLoadedEventArgs e)
     {
         Harmony = new Harmony(Manifest.UniqueID);
-        WaterRetentionPatches.RegisterHarmonyPatches(Harmony);
-        UI2Patches.RegisterHarmonyPatches(Harmony);
+        PatchWaterRetention.RegisterHarmonyPatches(Harmony);
+        PatchOtherMods.RegisterHarmonyPatchesToUI2(Harmony);
+        PatchOtherMods.RegisterHarmonyPatchesToBetterSprinkler(Harmony);
 
         SaveManager.Load();
 
@@ -112,6 +111,8 @@ internal class ModEntry : Mod
 
         if (MultiplayerServer.IsActive)
             MultiplayerServer.Deactivate();
+
+        HoeDirtManager.ClearHoeDirtData();
     }
 
     /// <summary>
@@ -123,12 +124,9 @@ internal class ModEntry : Mod
         if (!Context.IsMainPlayer) return;
         Utility.ForEachLocation(delegate(GameLocation location)
         {
-            var hoeDirts = location.terrainFeatures.Pairs
-                .Select(pair => pair.Value)
-                .OfType<HoeDirt>()
-                .Where(h => h.state.Value != 2)
-                .Where(h => h.IsAvailable());
-
+            // 获取所有耕地，根据模组逻辑保持水分
+            // Get all hoedirts, then maintain moisture by mod logic.
+            var hoeDirts = location.GetHoeDirt();
             foreach (var hoeDirt in hoeDirts) hoeDirt.DayUpdate();
             return true;
         });

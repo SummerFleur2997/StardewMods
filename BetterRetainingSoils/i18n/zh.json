@@ -1,0 +1,8 @@
+﻿{
+    "String.WaterRemain": "水分还可维持 {{days}} 天",
+    "Config.WaterMaintain": "水分维持时长（天）",
+    "Config.BasicSoilRemainDays.Title": "初级保湿土壤",
+    "Config.BasicSoilRemainDays.desc": "初级保湿土壤能维持水分的天数。",
+    "Config.QualitySoilRemainDays.Title": "高级保湿土壤",
+    "Config.QualitySoilRemainDays.desc": "高级保湿土壤能维持水分的天数。"
+}

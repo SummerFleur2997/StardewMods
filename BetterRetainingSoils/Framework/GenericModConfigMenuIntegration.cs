@@ -28,6 +28,29 @@ internal static class GenericModConfigMenuIntegration
         // 注册可视化界面
         // register config UI
         api.Register(manifest, reset, save);
-        
+
+        // 【标题】水分保持时间 
+        // [Title] Water maintaining days
+        api.AddSectionTitle(manifest, I18n.Config_WaterMaintain);
+
+        // 【数值输入框】初级保湿土壤
+        // [Number inputbox] Basic Retaining Soil
+        api.AddNumberOption(
+            manifest,
+            name: I18n.Config_BasicSoilRemainDays_Title,
+            tooltip: I18n.Config_BasicSoilRemainDays_Desc,
+            getValue: () => getConfig().BasicSoilRemainDays,
+            setValue: value => getConfig().BasicSoilRemainDays = value
+        );
+
+        // 【数值输入框】高级保湿土壤
+        // [Number inputbox] Quality Retaining Soil
+        api.AddNumberOption(
+            manifest,
+            name: I18n.Config_QualitySoilRemainDays_Title,
+            tooltip: I18n.Config_QualitySoilRemainDays_Desc,
+            getValue: () => getConfig().QualitySoilRemainDays,
+            setValue: value => getConfig().QualitySoilRemainDays = value
+        );
     }
 }

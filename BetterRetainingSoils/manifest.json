@@ -13,6 +13,10 @@
     {
       "UniqueID": "spacechase0.GenericModConfigMenu",
       "IsRequired": false
+    },
+    {
+      "UniqueID": "Annosz.UiInfoSuite2",
+      "IsRequired": false
     }
   ]
 }

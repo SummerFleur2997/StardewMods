@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using BetterRetainingSoils.DirtService;
@@ -19,13 +20,15 @@ internal static class SaveManager
     /// 存档数据的存储路径，位于 mod 文件夹下的 savedata 文件夹中。
     /// The path to the mod's save data file, relative to the mod folder.
     /// </summary>
-    private static string SavePath => Path.Combine("savedata", $"{Constants.SaveFolderName}.json");
+    private static string SavePath(string date)
+        => Path.Combine("savedata", Constants.SaveFolderName??"error", $"{date}.json");
 
     /// <summary>
     /// 存档数据的绝对路径。
     /// The absolute path to the mod's save data file.
     /// </summary>
-    private static string AbsoluteSavePath => Path.Combine(ModEntry.ModHelper.DirectoryPath, SavePath);
+    private static string AbsoluteSavePath(string date)
+        => Path.Combine(ModEntry.ModHelper.DirectoryPath, SavePath(date));
 
     /// <summary>
     /// Generate save data and write it to the save path.
@@ -33,14 +36,16 @@ internal static class SaveManager
     public static void Save()
     {
         if (!Context.IsMainPlayer) return;
+        var date = Util.ConvertToDate(Game1.stats.DaysPlayed);
         try
         {
             var saveData = GetSerializableData();
-            ModEntry.ModHelper.Data.WriteJsonFile(SavePath, saveData);
+            ModEntry.ModHelper.Data.WriteJsonFile(SavePath(date), saveData);
+            CleanCache(date);
         }
         catch (InvalidSaveDataException ex)
         {
-            ModEntry.Log($"Error saving chest data to {SavePath}", LogLevel.Error);
+            ModEntry.Log($"Error saving chest data to {SavePath(date)}", LogLevel.Error);
             ModEntry.Log(ex.ToString(), LogLevel.Error);
         }
     }
@@ -50,10 +55,11 @@ internal static class SaveManager
     /// </summary>
     public static void Load()
     {
-        if (!Context.IsMainPlayer || !File.Exists(AbsoluteSavePath)) return;
+        var date = Util.ConvertToDate(Game1.stats.DaysPlayed);
+        if (!Context.IsMainPlayer || !File.Exists(AbsoluteSavePath(date))) return;
         try
         {
-            var saveData = ModEntry.ModHelper.Data.ReadJsonFile<SaveData>(SavePath);
+            var saveData = ModEntry.ModHelper.Data.ReadJsonFile<SaveData>(SavePath(date));
             foreach (var entry in saveData!.DirtEntries)
             {
                 var location = Game1.getLocationFromName(entry.Key);
@@ -69,17 +75,21 @@ internal static class SaveManager
                 foreach (var hoeDirt in hoeDirts.Keys)
                 {
                     var data = hoeDirt.GetHoeDirtData();
-                    data.Initialize(hoeDirts[hoeDirt]);
+                    data.OnLoad(hoeDirts[hoeDirt]);
                 }
             }
         }
         catch (InvalidSaveDataException ex)
         {
-            ModEntry.Log($"Error loading chest data from {SavePath}", LogLevel.Error);
+            ModEntry.Log($"Error loading chest data from {SavePath(date)}", LogLevel.Error);
             ModEntry.Log(ex.ToString(), LogLevel.Error);
         }
     }
 
+    /// <summary>
+    /// Build save data for the current game state.
+    /// 构建当前游戏状态的存档数据。
+    /// </summary>
     private static SaveData GetSerializableData()
     {
         return new SaveData
@@ -99,5 +109,63 @@ internal static class SaveManager
                 .Where(item => item.DirtDataList.Count > 0)
                 .ToDictionary(item => item.Name, item => item.DirtDataList)
         };
+    }
+
+    /// <summary>
+    /// 清理指定日期的缓存文件，只保留最近 14 个文件。
+    /// Clean up savedata files for the specified date, keeping only the most recent 14 files.
+    /// </summary>
+    /// <param name="date">日期，用于构建缓存路径。The date used to build the savedata path.</param>
+    /// <seealso cref="Util.ConvertToDaysPlayed"/>
+    private static void CleanCache(string date)
+    {
+        if (!Directory.Exists(SavePath(date)))
+        {
+            ModEntry.Log($"Directory not found: {SavePath(date)}");
+            return;
+        }
+        try
+        {
+            // 获取所有 JSON 文件，如果文件数小于等于 14，无需清理
+            // Get all json files, If file count <= 14, no cleanup needed
+            var files = Directory.GetFiles(SavePath(date), "*.json");
+            if (files.Length <= 14) return;
+
+            // 解析文件名中的数字并排序
+            // Parse number and then sort
+            var fileInfoList = files
+                .Select(filePath => 
+                {
+                    var fileName = Path.GetFileNameWithoutExtension(filePath);
+                    return new
+                    {
+                        Path = filePath,
+                        FileName = fileName,
+                        Number = Util.ConvertToDaysPlayed(fileName)
+                    };
+                })
+                .OrderByDescending(item => item.Number)
+                .ToList();
+
+            // 保留最近的 14 个文件，遍历并删除旧文件
+            // Keep nearest 14 files, then iterate and delete old files
+            var filesToKeep = fileInfoList
+                .Take(14)
+                .Select(item => item.Path)
+                .ToHashSet();
+
+            foreach (var file in files)
+            {
+                if (filesToKeep.Contains(file)) continue;
+                File.Delete(file);
+                ModEntry.Log($"Deleted: {Path.GetFileName(file)}");
+            }
+
+            ModEntry.Log("Cleanup complete.");
+        }
+        catch (Exception ex)
+        {
+            ModEntry.Log($"Error during cleanup: {ex.Message}");
+        }
     }
 }

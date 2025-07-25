@@ -10,6 +10,7 @@ namespace BetterRetainingSoils.Framework.MultiplayerService;
 
 internal class MultiplayerServer : IModule
 {
+    public object Lock = new();
     public bool IsActive { get; private set; }
 
     private static IMultiplayerHelper MultiplayerHelper => ModEntry.ModHelper.Multiplayer;

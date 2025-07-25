@@ -9,21 +9,25 @@ using StardewValley.Tools;
 
 namespace BetterRetainingSoils.Patcher;
 
-internal static class WaterRetentionPatches
+internal static class PatchWaterRetention
 {
     /// <summary>
-    /// Patches <see cref="StardewValley.TerrainFeatures.HoeDirt.GetFertilizerWaterRetentionChance"/> method.
-    /// 根据模组逻辑重新判断是否保留水分。
-    /// Re-judge whether to retain waters by this mod's logic
+    /// Patch <see cref="StardewValley.TerrainFeatures.HoeDirt.GetFertilizerWaterRetentionChance"/> method.
+    /// 若使用了保湿土壤但不是顶级保湿土壤，将保湿概率置为 0 以方便后续处理。请参阅
+    /// HoeDirtManager.DayUpdate 内的逻辑以了解本模组的处理逻辑。
+    /// When using a retaining-soil, but not a deluxe one, set the water
+    /// retention chance to 0 to make it easy for follow up processes.
+    /// See also HoeDirtManager.DayUpdate to know my processing logic.
     /// </summary>
     /// <param name="__result">原函数的返回值。The return value of the original method.</param>
+    /// <seealso cref="HoeDirtManager.DayUpdate"/>
     public static void Patch_GetFertilizerWaterRetentionChance(ref float __result)
     {
         __result = Math.Abs(__result - 1.0f) < 1e-4f ? 1.0f : 0f;
     }
 
     /// <summary>
-    /// Patches <see cref="StardewValley.TerrainFeatures.HoeDirt.performToolAction"/> method.
+    /// Patch <see cref="StardewValley.TerrainFeatures.HoeDirt.performToolAction"/> method.
     /// 应用自定义浇水事件。Use custom watering event.
     /// </summary>
     /// <param name="__instance">引用的耕地。 Refered soil.</param>
@@ -50,13 +54,13 @@ internal static class WaterRetentionPatches
         {
             var originalM1 = AccessTools.Method(typeof(HoeDirt), "GetFertilizerWaterRetentionChance");
             var postfixM1 = AccessTools.Method(
-                typeof(WaterRetentionPatches), nameof(Patch_GetFertilizerWaterRetentionChance));
+                typeof(PatchWaterRetention), nameof(Patch_GetFertilizerWaterRetentionChance));
             harmony.Patch(original: originalM1, postfix: new HarmonyMethod(postfixM1));
             ModEntry.Log("Patched HoeDirt.GetFertilizerWaterRetentionChance successfully.", LogLevel.Debug);
             
             var originalM2 = AccessTools.Method(typeof(HoeDirt), "performToolAction");
             var prefixM2 = AccessTools.Method(
-                typeof(WaterRetentionPatches), nameof(Patch_performToolAction));
+                typeof(PatchWaterRetention), nameof(Patch_performToolAction));
             harmony.Patch(original: originalM2, prefix: new HarmonyMethod(prefixM2));
             ModEntry.Log("Patched ChestOverlay.Getoffset for fridges successfully.", LogLevel.Debug);
         }
