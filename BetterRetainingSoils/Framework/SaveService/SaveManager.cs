@@ -119,7 +119,8 @@ internal static class SaveManager
     /// <seealso cref="Util.ConvertToDaysPlayed"/>
     private static void CleanCache(string date)
     {
-        if (!Directory.Exists(SavePath(date)))
+        var dirPath = Path.GetDirectoryName(AbsoluteSavePath(date));
+        if (!Directory.Exists(dirPath))
         {
             ModEntry.Log($"Directory not found: {SavePath(date)}");
             return;
@@ -128,7 +129,7 @@ internal static class SaveManager
         {
             // 获取所有 JSON 文件，如果文件数小于等于 14，无需清理
             // Get all json files, If file count <= 14, no cleanup needed
-            var files = Directory.GetFiles(SavePath(date), "*.json");
+            var files = Directory.GetFiles(dirPath, "*.json");
             if (files.Length <= 14) return;
 
             // 解析文件名中的数字并排序
