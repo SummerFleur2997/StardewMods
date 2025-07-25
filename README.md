@@ -3,6 +3,9 @@
 ## Mods
 ### Active mods:
 
+* **Better Retaining Soils** <small>([Nexus](https://www.nexusmods.com/stardewvalley/mods/36007) | [source](BetterRetainingSoils))</small>  
+  _Enhance and optimize retaining-soil's mechanic to make them able 
+  to keep the crop watered for multiple days._
 * **Bigger Containers** <small>([Nexus](https://www.nexusmods.com/stardewvalley/mods/32558) | [source](BiggerContainers))</small>  
   _A small mod helps expand the capacity of your fridges and Junimo 
   chests._
@@ -13,9 +16,6 @@
 
 ### Mods under develop:
 
-* **Better Retaining-Soils**  
-  _Retaining Soils seems almost useless in Stardew Vally, so I am
-  trying to optimize some of its mechanics to make them useful._
 * **Custom Sort**  
   _The game's 'organize' feature sorts inventory/chests categorically
   and alphabetically—a common system. For CJK users, however, this
