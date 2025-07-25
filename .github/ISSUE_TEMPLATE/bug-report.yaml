@@ -30,6 +30,7 @@ body:
       label: Mod name
       description: please provide the mod that has the issue
       options:
+        - Better Retaining Soils
         - Bigger Containers
         - Convenient Chests
     validations:
