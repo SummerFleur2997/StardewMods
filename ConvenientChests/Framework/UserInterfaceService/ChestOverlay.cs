@@ -142,10 +142,10 @@ internal class ChestOverlay : Widget
     private void OpenCategoryMenu()
     {
         var chestData = _chest.GetChestData();
-        CategoryMenu = new CategoryMenu(chestData, TooltipManager, _itemGrabMenu.width - 24);
+        CategoryMenu = new CategoryMenu(chestData, TooltipManager, _itemGrabMenu.width);
         CategoryMenu.Position = new Point(
-            _itemGrabMenu.xPositionOnScreen - GlobalBounds.X - 12,
-            _itemGrabMenu.yPositionOnScreen - GlobalBounds.Y - 60);
+            (Game1.uiViewport.Width - CategoryMenu.Width) / 2,
+            (Game1.uiViewport.Height - CategoryMenu.Height) / 2);
 
         CategoryMenu.OnClose += CloseCategoryMenu;
         AddChild(CategoryMenu);

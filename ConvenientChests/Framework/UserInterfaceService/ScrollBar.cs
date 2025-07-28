@@ -102,7 +102,6 @@ internal class ScrollBar : Widget
         _scrollBackground.Width = Runner.Width;
         Runner.X = _scrollBackground.X;
 
-
         _scrollBackground.Location = Globalize(_scrollBackground.Location);
         UpdateScroller();
     }
@@ -175,7 +174,6 @@ internal class ScrollBar : Widget
         var mouseY = Game1.getMouseY(true);
         var progress = Math.Min(Math.Max(0f, mouseY - _scrollBackground.Y) / Height, 1);
         ScrollPosition = (int)(progress * ScrollMax);
-
         OnScroll?.Invoke(this, new ScrollBarEventArgs(ScrollPosition));
     }
 
@@ -205,11 +203,11 @@ internal class ScrollBar : Widget
 
     private class ScrollBarRunner : Widget
     {
-        private static readonly TextureRegion TextureTop = new(Game1.mouseCursors, new Rectangle(435, 463, 6, 3), true);
+        private static readonly TextureRegion TextureTop = new(Game1.mouseCursors, 435, 463, 6, 3, true);
 
-        private static readonly TextureRegion TextureMid = new(Game1.mouseCursors, new Rectangle(435, 466, 6, 4), true);
+        private static readonly TextureRegion TextureMid = new(Game1.mouseCursors, 435, 466, 6, 4, true);
 
-        private static readonly TextureRegion TextureBot = new(Game1.mouseCursors, new Rectangle(435, 470, 6, 3), true);
+        private static readonly TextureRegion TextureBot = new(Game1.mouseCursors, 435, 470, 6, 3, true);
 
         private bool Visible { get; } = true;
 

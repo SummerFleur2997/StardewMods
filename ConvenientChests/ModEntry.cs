@@ -1,5 +1,6 @@
 ﻿using Common;
 using ConvenientChests.CategorizeChests;
+using ConvenientChests.CategorizeChests.Framework;
 using ConvenientChests.CraftFromChests;
 using ConvenientChests.Framework;
 using ConvenientChests.Framework.ChestService;
@@ -69,8 +70,8 @@ internal class ModEntry : Mod
         ModHelper = Helper;
 
         helper.Events.GameLoop.GameLaunched += OnGameLaunched;
-        helper.Events.GameLoop.SaveLoaded += OnGameLoaded;
-        helper.Events.GameLoop.ReturnedToTitle += OnGameUnload;
+        helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
+        helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
         helper.Events.GameLoop.Saving += OnSaving;
         helper.Events.Display.MenuChanged += OnMenuChanged;
 
@@ -125,8 +126,9 @@ internal class ModEntry : Mod
     /// 在载入游戏存档时加载模组。
     /// Load modules when loading a game save.
     /// </summary>
-    private static void OnGameLoaded(object sender, SaveLoadedEventArgs e)
+    private static void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
     {
+        CategoryDataManager.Initialize();
         CategorizeModule = new CategorizeChestsModule();
         if (Config.CategorizeChests)
             CategorizeModule.Activate();
@@ -150,7 +152,7 @@ internal class ModEntry : Mod
     /// 在返回游戏标题界面时卸载模组。
     /// Unload modules when back to the title page.
     /// </summary>
-    private static void OnGameUnload(object sender, ReturnedToTitleEventArgs e)
+    private static void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
     {
         CategorizeModule.Deactivate();
         CategorizeModule = null;
@@ -180,6 +182,10 @@ internal class ModEntry : Mod
             ReloadConfig,
             ModMonitor
         );
+
+        if (!ModHelper.ModRegistry.IsLoaded("DLX.QuickSave")) return;
+        var api = ModHelper.ModRegistry.GetApi<IQuickSaveAPI>("DLX.QuickSave");
+        if (api != null) api.SavingEvent += Api_SavingEvent;
     }
 
     /// <summary>
@@ -215,7 +221,7 @@ internal class ModEntry : Mod
     }
 
     /// <summary>
-    /// 在游戏开始对存档进行保存之前触发。
+    /// 在游戏向存档文件写入数据前触发（除了新建存档时）。
     /// Raised before the game begins writes data to the save file (except the initial save creation).
     /// </summary>
     private static void OnSaving(object sender, SavingEventArgs e)
@@ -223,6 +229,19 @@ internal class ModEntry : Mod
         SaveManager.Save();
     }
 
+    /// <summary>
+    /// 兼容 Quick Save
+    /// Compatible to Quick Save
+    /// </summary>
+    private static void Api_SavingEvent(object sender, ISavingEventArgs e)
+    {
+        SaveManager.Save();
+    }
+
+    /// <summary>
+    /// 在玩家按下/松开键盘、鼠标或手柄上的任意按钮时触发。
+    /// Raised after the player pressed/released any buttons on the keyboard, mouse, or controller. 
+    /// </summary>
     private static void OnButtonChanged(object sender, ButtonsChangedEventArgs e)
     {
         switch (Game1.activeClickableMenu)

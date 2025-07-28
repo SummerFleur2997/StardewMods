@@ -12,6 +12,8 @@
     <Compile Include="$(MSBuildThisFileDirectory)UserInterface\Background.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserInterface\BaseOverlay.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserInterface\Button.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserInterface\Dropdown.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UserInterface\DropdownList.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserInterface\ItemToggle.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserInterface\ItemTooltip.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UserInterface\Label.cs" />

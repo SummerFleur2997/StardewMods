@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using ConvenientChests.Framework.ItemService;
+using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Tools;
 
@@ -11,13 +12,13 @@ internal static class CategoryDataManager
     /// <summary>
     /// A mapping of category names to the item keys belonging to that category.
     /// </summary>
-    public static Dictionary<ItemCategoryName, IList<ItemKey>> Categories { get; } = CreateCategoriesByDisplayName();
+    public static Dictionary<ItemCategoryName, IList<ItemKey>> Categories;
 
-    public static List<ItemCategoryName> ItemCategories => Categories.Keys.ToList();
+    public static List<ItemCategoryName> ItemCategories;
 
-    private static Dictionary<ItemCategoryName, IList<ItemKey>> CreateCategoriesByDisplayName()
+    public static void Initialize()
     {
-        return DiscoverItems()
+        Categories = DiscoverItems()
             .Select(item => item.ToItemKey())
             .Where(key => !CategoryItemBlacklist.Includes(key))
             .GroupBy(key => key.GetCategory())
@@ -25,6 +26,13 @@ internal static class CategoryDataManager
                 g => g.Key,
                 g => (IList<ItemKey>)g.ToList()
             );
+        ItemCategories = Categories.Keys.ToList();
+
+        foreach (var category in ItemCategories)
+        {
+            var items = string.Join(", ", Categories[category]);
+            ModEntry.Log($"Registed ItemCategory {category.CategoryBaseName}: [{items}]", LogLevel.Debug);
+        }
     }
 
     /// <summary>

@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using ConvenientChests.Framework.ItemService;
-using StardewValley;
 
 namespace ConvenientChests.CategorizeChests.Framework;
 
@@ -17,9 +16,9 @@ internal static class CategoryItemBlacklist
     /// <param name="itemKey">Item key to check.</param>
     public static bool Includes(ItemKey itemKey)
     {
-        return itemKey.TypeDefinition == "(F)"
-               || (itemKey.TypeDefinition == "(BC)" && !itemKey.GetOne<Object>().IsCraftable())
+        var includes = itemKey.TypeDefinition == "(F)"
                || BlacklistedItemIDs.Contains(itemKey.QualifiedItemId);
+        return includes;
     }
 
     private static readonly HashSet<string> BlacklistedItemIDs = new()
@@ -179,8 +178,18 @@ internal static class CategoryItemBlacklist
 
         "(O)SeedSpot",
 
-        // secrets
-        "(BC)96", // Strange Capsule
-        "(BC)98" // Empty Capsule
+        // barrels & crates
+        "(BC)118",
+        "(BC)119",
+        "(BC)120",
+        "(BC)121",
+        "(BC)122",
+        "(BC)123",
+        "(BC)124",
+        "(BC)125",
+        "(BC)174",
+        "(BC)175",
+        "(BC)262",
+        "(BC)263"
     };
 }

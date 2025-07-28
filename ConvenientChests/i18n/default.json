@@ -37,6 +37,7 @@
   "Config.Mobile.Offset.desc": "Adjust the offset of buttons besides the inventory menus on mobile devices.",
 
   "Categorize.All": "All",
+  "Categorize.BigCrafts": "Big Craftable",
   "Categorize.Consumable": "Consumable",
   "Categorize.Crafting": "Crafting",
   "Categorize.Flooring": "Flooring",

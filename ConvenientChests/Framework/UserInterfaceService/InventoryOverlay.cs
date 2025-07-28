@@ -70,10 +70,10 @@ internal class InventoryOverlay : Widget
     private void OpenLockMenu()
     {
         var inventoryData = InventoryManager.GetInventoryData(_player);
-        LockMenu = new LockMenu(inventoryData, TooltipManager, _gameMenu.width - 24);
+        LockMenu = new LockMenu(inventoryData, TooltipManager, _gameMenu.width);
         LockMenu.Position = new Point(
-            _gameMenu.xPositionOnScreen - GlobalBounds.X - 12,
-            _gameMenu.yPositionOnScreen - GlobalBounds.Y - 60);
+            (Game1.uiViewport.Width - LockMenu.Width) / 2,
+            (Game1.uiViewport.Height - LockMenu.Height) / 2);
 
         LockMenu.OnClose += CloseLockMenu;
         AddChild(LockMenu);

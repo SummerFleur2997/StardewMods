@@ -56,10 +56,10 @@ internal class CategoryMenu : ModMenu
             var customOrder = new List<string>
             {
                 "Vegetable", "Fruit", "Flower", "Animal Product", "Artisan Goods", "Seed", "Fertilizer",
-                "Fish", "Bait", "Fishing Tackle", "Crafting", "Machine", "Book", "Skill Book", "Trash",
-                "Tool", "Weapons", "Ring", "Hats", "Shirts", "Pants", "Footwear", "Mannequin", "Decor",
-                "Wallpaper", "Flooring", "Consumable", "Cooking", "Miscellaneous", "Trinket", "Monster Loot",
-                "Artifact", "Mineral", "Resource", "Forage"
+                "Fish", "Bait", "Fishing Tackle", "Crafting", "Machine", "BigCrafts", "Book", "Skill Book", 
+                "Trash", "Tool", "Weapons", "Ring", "Hats", "Shirts", "Pants", "Footwear", "Mannequin", 
+                "Decor", "Wallpaper", "Flooring", "Consumable", "Cooking", "Miscellaneous", "Trinket", 
+                "Monster Loot", "Artifact", "Mineral", "Resource", "Forage"
             };
 
             // 创建基准名称到排序索引的字典
@@ -114,7 +114,6 @@ internal class CategoryMenu : ModMenu
         // Figure out width
         Body.Width = ToggleBag.Width;
         TopRow.Width = Body.Width;
-        // Width        = Body.Width + Background.Graphic.LeftBorderThickness + Background.Graphic.RightBorderThickness + Padding * 2;
 
         // Build the top row
         var categoriesName = ItemCategoryName.GetCategoriesDisplayNames(Categories);
@@ -149,8 +148,8 @@ internal class CategoryMenu : ModMenu
         ScrollBar.Visible = NumItems > MaxItemsPage;
 
         ScrollBar.ScrollPosition = 0;
-        ScrollBar.ScrollMax = NumItems;
-        ScrollBar.Step = MaxItemsPage;
+        ScrollBar.ScrollMax = NumItems - MaxItemColumns * (MaxItemRows - 2);
+        ScrollBar.Step = MaxItemColumns * 2;
     }
 
     private void OnToggleSelectAll(bool on)

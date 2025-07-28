@@ -101,8 +101,8 @@ internal class LockMenu : ModMenu
         ScrollBar.Visible = NumItems > MaxItemsPage;
 
         ScrollBar.ScrollPosition = 0;
-        ScrollBar.ScrollMax = NumItems;
-        ScrollBar.Step = MaxItemsPage;
+        ScrollBar.ScrollMax = NumItems - MaxItemColumns * (MaxItemRows - 2);
+        ScrollBar.Step = MaxItemColumns * 2;
     }
 
     /// <summary>

@@ -140,9 +140,16 @@ internal class ItemKey
                 return new ItemCategoryName(I18n.Categorize_Wallpaper(), "Wallpaper");
 
             case "(BC)":
-                return GetOne<Object>().GetMachineData() != null
-                    ? new ItemCategoryName(I18n.Categorize_Machine(), "Machine")
-                    : new ItemCategoryName(I18n.Categorize_Crafting(), "Crafting");
+                var obj = GetOne<Object>();
+                return obj switch
+                {
+                    _ when obj.GetMachineData() != null => 
+                        new ItemCategoryName(I18n.Categorize_Machine(), "Machine"),
+                    _ when obj.IsCraftable() => 
+                        new ItemCategoryName(I18n.Categorize_Crafting(), "Crafting"),
+                    _ => 
+                        new ItemCategoryName(I18n.Categorize_BigCrafts(), "BigCrafts")
+                };
 
             case "(M)":
                 return new ItemCategoryName(I18n.Categorize_Mannequin(), "Mannequin");

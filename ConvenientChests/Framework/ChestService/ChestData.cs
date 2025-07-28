@@ -11,15 +11,10 @@ namespace ConvenientChests.Framework.ChestService;
 /// The extra data associated with a chest, contains the list of items it accepts.
 /// 箱子的额外属性，包含该箱子所接受的物品列表。
 /// </summary>
-internal class ChestData
+internal class ChestData(Chest chest)
 {
-    private readonly WeakReference<Chest> _chestRef;
+    private readonly WeakReference<Chest> _chestRef = new(chest);
     public HashSet<ItemKey> AcceptedItemKinds { get; set; } = new();
-
-    public ChestData(Chest chest)
-    {
-        _chestRef = new WeakReference<Chest>(chest);
-    }
 
     /// <summary>
     /// Set this chest to accept the specified kind of item.

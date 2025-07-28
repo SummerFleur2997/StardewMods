@@ -19,52 +19,58 @@ public interface IGenericModConfigMenuApi
     /// </param>
     void Register(IManifest manifest, Action reset, Action save, bool titleScreenOnly = false);
 
-    /// <summary>
-    /// 章节标题控件。 Section title element.
-    /// </summary>
-    /// <param name="manifest">本模组的注册名单 The mod's manifest</param>
-    /// <param name="text">标题文字 The label text of the section title</param>
-    /// <param name="tooltip">悬停提示信息 Tips shown when the cursor hovers</param>
+    /// <summary>Add a section title at the current position in the form.</summary>
+    /// <param name="manifest">The mod's manifest.</param>
+    /// <param name="text">The title text shown in the form.</param>
+    /// <param name="tooltip">The tooltip text shown when the cursor hovers on the title, or <c>null</c> to disable the tooltip.</param>
     void AddSectionTitle(IManifest manifest, Func<string> text, Func<string> tooltip = null);
 
-    /// <summary>
-    /// 复选框控件。 Checkbox element.
-    /// </summary>
-    /// <param name="manifest">本模组的注册名单 The mod's manifest</param>
-    /// <param name="getValue">读取配置值操作 Actions to read the current config value</param>
-    /// <param name="setValue">设置配置值操作 Actions to save the new config value</param>
-    /// <param name="name">复选框控件的名称 The label text of the checkbox</param>
-    /// <param name="tooltip">悬停提示信息 Tips shown when the cursor hovers</param>
-    /// <param name="fieldId">控件唯一标识符 Unique field ID of the element</param>
+    /// <summary>Add a paragraph of text at the current position in the form.</summary>
+    /// <param name="manifest">The mod's manifest.</param>
+    /// <param name="text">The paragraph text to display.</param>
+    void AddParagraph(IManifest manifest, Func<string> text);
+
+    /// <summary>Add a boolean option at the current position in the form.</summary>
+    /// <param name="manifest">The mod's manifest.</param>
+    /// <param name="getValue">Get the current value from the mod config.</param>
+    /// <param name="setValue">Set a new value in the mod config.</param>
+    /// <param name="name">The label text to show in the form.</param>
+    /// <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
+    /// <param name="fieldId">The unique field ID for use with OnFieldChanged, or <c>null</c> to auto-generate a randomized ID.</param>
     void AddBoolOption(IManifest manifest, Func<bool> getValue, Action<bool> setValue, Func<string> name,
         Func<string> tooltip = null, string fieldId = null);
 
-    /// <summary>
-    /// 数字填框控件。 Number input element.
-    /// </summary>
-    /// <param name="manifest">本模组的注册名单 The mod's manifest</param>
-    /// <param name="getValue">读取配置值操作 Actions to read the current config value</param>
-    /// <param name="setValue">设置配置值操作 Actions to save the new config value</param>
-    /// <param name="name">复选框控件的名称 The label text of the number inputbox</param>
-    /// <param name="tooltip">悬停提示信息 Tips shown when the cursor hovers</param>
-    /// <param name="min">最小值 Minium value</param>
-    /// <param name="max">最大值 Maxium value</param>
-    /// <param name="interval">可选择的数值间隔 The interval of values that can be selected.</param>
-    /// <param name="formatValue">数字格式化操作方法 Function to format the number value</param>
-    /// <param name="fieldId">控件唯一标识符 Unique field ID of the element</param>
+    /// <summary>Add an integer option at the current position in the form.</summary>
+    /// <param name="manifest">The mod's manifest.</param>
+    /// <param name="getValue">Get the current value from the mod config.</param>
+    /// <param name="setValue">Set a new value in the mod config.</param>
+    /// <param name="name">The label text to show in the form.</param>
+    /// <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
+    /// <param name="min">The minimum allowed value, or <c>null</c> to allow any.</param>
+    /// <param name="max">The maximum allowed value, or <c>null</c> to allow any.</param>
+    /// <param name="interval">The interval of values that can be selected.</param>
+    /// <param name="formatValue">Get the display text to show for a value, or <c>null</c> to show the number as-is.</param>
+    /// <param name="fieldId">The unique field ID for use with OnFieldChanged, or <c>null</c> to auto-generate a randomized ID.</param>
     void AddNumberOption(IManifest manifest, Func<int> getValue, Action<int> setValue, Func<string> name,
         Func<string> tooltip = null, int? min = null, int? max = null, int? interval = null,
         Func<int, string> formatValue = null, string fieldId = null);
 
-    /// <summary>
-    /// 按键绑定列表控件。 Key-bind list element.
-    /// </summary>
-    /// <param name="manifest">本模组的注册名单 The mod's manifest</param>
-    /// <param name="getValue">读取配置值操作 Actions to read the current config value</param>
-    /// <param name="setValue">设置配置值操作 Actions to save the new config value</param>
-    /// <param name="name">按键绑定控件的名称 The label text of the key-bind list</param>
-    /// <param name="tooltip">悬停提示信息 Tips shown when the cursor hovers</param>
-    /// <param name="fieldId">控件唯一标识符 Unique field ID of the element</param>
-    void AddKeybindList(IManifest manifest, Func<KeybindList> getValue, Action<KeybindList> setValue, Func<string> name,
-        Func<string> tooltip = null, string fieldId = null);
+
+    /// <summary>Add a keybind at the current position in the form.</summary>
+    /// <param name="manifest">The mod's manifest.</param>
+    /// <param name="getValue">Get the current value from the mod config.</param>
+    /// <param name="setValue">Set a new value in the mod config.</param>
+    /// <param name="name">The label text to show in the form.</param>
+    /// <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
+    /// <param name="fieldId">The unique field ID for use with OnFieldChanged, or <c>null</c> to auto-generate a randomized ID.</param>
+    void AddKeybind(IManifest manifest, Func<SButton> getValue, Action<SButton> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
+
+    /// <summary>Add a keybind list at the current position in the form.</summary>
+    /// <param name="manifest">The mod's manifest.</param>
+    /// <param name="getValue">Get the current value from the mod config.</param>
+    /// <param name="setValue">Set a new value in the mod config.</param>
+    /// <param name="name">The label text to show in the form.</param>
+    /// <param name="tooltip">The tooltip text shown when the cursor hovers on the field, or <c>null</c> to disable the tooltip.</param>
+    /// <param name="fieldId">The unique field ID for use with OnFieldChanged, or <c>null</c> to auto-generate a randomized ID.</param>
+    void AddKeybindList(IManifest manifest, Func<KeybindList> getValue, Action<KeybindList> setValue, Func<string> name, Func<string> tooltip = null, string fieldId = null);
 }

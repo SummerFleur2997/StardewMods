@@ -6,6 +6,7 @@ using ConvenientChests.Framework.InventoryService;
 using ConvenientChests.Framework.ItemService;
 using StardewModdingAPI.Events;
 using StardewValley;
+using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using static ConvenientChests.StashToChests.Framework.StashLogic;
@@ -38,11 +39,12 @@ internal class StashToChestsModule : IModule
     /// 堆叠至附近的箱子功能是否启用。
     /// Whether stash anywhere function is enabled.
     /// </summary>
-    private bool IsStashAnyweherActive { get; set; }
+    private bool IsStashAnywhereActive { get; set; }
 
     public StashToChestsModule()
     {
         ModEntry.ModHelper.Events.Input.ButtonPressed += OnButtonPressed;
+        ModEntry.ModHelper.Events.GameLoop.TimeChanged += OnTimeChanged;
     }
 
     public void Activate()
@@ -139,7 +141,7 @@ internal class StashToChestsModule : IModule
     private void RefreshConfig()
     {
         IsStashToNearbyActive = ModEntry.Config.StashToNearby;
-        IsStashAnyweherActive = ModEntry.Config.StashAnywhere;
+        IsStashAnywhereActive = ModEntry.Config.StashAnywhere;
     }
 
     /// <summary>
@@ -159,9 +161,9 @@ internal class StashToChestsModule : IModule
 
     /// <summary>
     /// 将物品堆叠至箱子中。
-    /// Stash items to chest(s).
+    /// Stash items to nearby chest(s).
     /// </summary>
-    private void StashToNearbyKeyPressed()
+    private void StashToNearby()
     {
         // 未获取到玩家位置信息，结束函数。
         // If cannot get the player's current location, stop.
@@ -179,7 +181,11 @@ internal class StashToChestsModule : IModule
             StashToNearbyChests(ModEntry.Config.StashRadius, AcceptingFunc, RejectingFunc);
     }
 
-    private void StashAnywhereKeyPressed()
+    /// <summary>
+    /// 将物品堆叠至任意位置箱子中。
+    /// Stash items to chest(s) anywhere.
+    /// </summary>
+    private void StashAnywhere()
     {
         // try to stash to fridge first
         var success = false;
@@ -211,16 +217,24 @@ internal class StashToChestsModule : IModule
     /// </summary>
     private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
     {
-        if (ModEntry.Config.StashAnywhereKey.JustPressed())
-        {
-            //ModEntry.ReloadConfig(ModEntry.Config.StashAnywhere, this);
-            if (IsStashAnyweherActive) StashAnywhereKeyPressed();
-        }
+        if (ModEntry.Config.StashAnywhereKey.JustPressed() && IsStashAnywhereActive)
+            StashAnywhere();
 
         if (ModEntry.Config.StashToNearbyKey.JustPressed() || e.Button == ModEntry.Config.StashButton)
+            StashToNearby();
+    }
+
+    private void OnTimeChanged(object sender, TimeChangedEventArgs e)
+    {
+        var config = ModEntry.Config;
+        if (!config.AutoStash || e.NewTime % 100 % 30 != 0) return;
+        switch (Game1.player.currentLocation)
         {
-            //ModEntry.ReloadConfig(ModEntry.Config.StashToNearby, this);
-            StashToNearbyKeyPressed();
+            case MineShaft { mineLevel: <= 120 } when config.AutoStashInTheMine:
+            case MineShaft { mineLevel: > 120 and not 77377} when config.AutoStashInSkullCavern:
+            case VolcanoDungeon when config.AutoStashInVolcanoDungeon:
+                StashAnywhere();
+                break;
         }
     }
 }
