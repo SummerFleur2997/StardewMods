@@ -12,6 +12,22 @@ and [CategorizeChests](https://www.nexusmods.com/stardewvalley/mods/1300), and a
 
 ## Update logs
 
+### 1.8.3
+
+**New Features**
+
+- Introduce a new feature to auto stash every 30 minutes.
+
+**Optimizations**
+
+- Add more categorizable items.
+- Compatible with QuickSave.
+- Polish Chinese wording.
+
+**Bug Fixes**
+
+- Fixed the issue that the Category menu does not fit the screen in Android.
+
 ### 1.8.2
 
 **New Features**
