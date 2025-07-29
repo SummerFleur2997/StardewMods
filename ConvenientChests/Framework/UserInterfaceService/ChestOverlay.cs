@@ -88,9 +88,9 @@ internal class ChestOverlay : Widget
     /// </summary>
     private int GetOffset()
     {
-        return ModEntry.IsAndroid 
+        return ModEntry.IsAndroid
             ? 100 + ModEntry.Config.MobileOffset
-            : _chest.SpecialChestType switch 
+            : _chest.SpecialChestType switch
             {
                 Chest.SpecialChestTypes.BigChest => 128,
                 Chest.SpecialChestTypes.MiniShippingBin => 34,

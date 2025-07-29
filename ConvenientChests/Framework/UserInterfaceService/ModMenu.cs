@@ -13,10 +13,10 @@ internal class ModMenu : Widget
     protected const int MaxItemsPage = MaxItemColumns * MaxItemRows;
     protected static int Padding => 2 * Game1.pixelZoom;
     protected static SpriteFont HeaderFont => Game1.dialogueFont;
-    
+
     // pagination
     protected int Row { get; set; }
-    
+
     // Elements
     protected Widget Body { get; set; }
     protected Widget TopRow { get; set; }

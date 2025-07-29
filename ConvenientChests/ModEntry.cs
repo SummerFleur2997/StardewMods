@@ -28,13 +28,19 @@ internal class ModEntry : Mod
      ** 属性
      ** Properties
      ****/
+
     #region Properties
+
     public static bool IsAndroid => Constants.TargetPlatform == GamePlatform.Android;
     public static ModConfig Config { get; private set; }
     public static IManifest Manifest { get; private set; }
     public static IModHelper ModHelper { get; private set; }
     private static IMonitor ModMonitor { get; set; }
-    public static void Log(string s, LogLevel l = LogLevel.Trace) => ModMonitor.Log(s, l);
+
+    public static void Log(string s, LogLevel l = LogLevel.Trace)
+    {
+        ModMonitor.Log(s, l);
+    }
 
     /// <summary>
     /// <see cref="CategorizeChestsModule"/> mod.
@@ -55,6 +61,7 @@ internal class ModEntry : Mod
     /// <see cref="MultiplayerServer"/> module.
     /// </summary>
     private static MultiplayerServer MultiplayerServer { get; set; }
+
     #endregion
 
     /// <summary>
@@ -82,7 +89,9 @@ internal class ModEntry : Mod
      ** 私有方法
      ** Private Methods
      ****/
+
     #region Private Methods
+
     /// <summary>
     /// 读取模组配置更新并重新载入配置。
     /// Read the update of modconfig and reload them.
@@ -115,13 +124,16 @@ internal class ModEntry : Mod
             }
         }
     }
+
     #endregion
 
     /****
      ** 事件处理函数
      ** Event handlers
      ****/
+
     #region Event handlers
+
     /// <summary>
     /// 在载入游戏存档时加载模组。
     /// Load modules when loading a game save.
@@ -254,5 +266,6 @@ internal class ModEntry : Mod
                 break;
         }
     }
+
     #endregion
 }

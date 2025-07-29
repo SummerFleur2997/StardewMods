@@ -77,7 +77,7 @@ internal class InventoryOverlay : Widget
 
         LockMenu.OnClose += CloseLockMenu;
         AddChild(LockMenu);
-        
+
         SetItemsClickable(false);
     }
 
@@ -85,7 +85,7 @@ internal class InventoryOverlay : Widget
     {
         RemoveChild(LockMenu);
         LockMenu = null;
-        
+
         SetItemsClickable(true);
     }
 
@@ -106,9 +106,8 @@ internal class InventoryOverlay : Widget
     private void SetItemsClickable(bool clickable) // todo
     {
         ModEntry.Log(
-            clickable ? "Set items clickable." : "Set items not clickable.", 
+            clickable ? "Set items clickable." : "Set items not clickable.",
             LogLevel.Debug
         );
-        
     }
 }

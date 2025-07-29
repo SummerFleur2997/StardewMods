@@ -16,6 +16,7 @@ internal class CategoryMenu : ModMenu
     private int NumItems => ActiveCategory.CategoryDisplayName == ""
         ? 0
         : CategoryDataManager.Categories[ActiveCategory].Count;
+
     private ChestData ChestData { get; }
     private LabeledCheckbox SelectAllButton { get; set; }
     private SpriteButton PrevButton { get; set; }
@@ -56,9 +57,9 @@ internal class CategoryMenu : ModMenu
             var customOrder = new List<string>
             {
                 "Vegetable", "Fruit", "Flower", "Animal Product", "Artisan Goods", "Seed", "Fertilizer",
-                "Fish", "Bait", "Fishing Tackle", "Crafting", "Machine", "BigCrafts", "Book", "Skill Book", 
-                "Trash", "Tool", "Weapons", "Ring", "Hats", "Shirts", "Pants", "Footwear", "Mannequin", 
-                "Decor", "Wallpaper", "Flooring", "Consumable", "Cooking", "Miscellaneous", "Trinket", 
+                "Fish", "Bait", "Fishing Tackle", "Crafting", "Machine", "BigCrafts", "Book", "Skill Book",
+                "Trash", "Tool", "Weapons", "Ring", "Hats", "Shirts", "Pants", "Footwear", "Mannequin",
+                "Decor", "Wallpaper", "Flooring", "Consumable", "Cooking", "Miscellaneous", "Trinket",
                 "Monster Loot", "Artifact", "Mineral", "Resource", "Forage"
             };
 
@@ -74,6 +75,7 @@ internal class CategoryMenu : ModMenu
                 .OrderBy(c => orderDictionary.GetValueOrDefault(c.CategoryBaseName, int.MaxValue))
                 .ToList();
         }
+
         SetCategory(Index);
     }
 

@@ -168,7 +168,8 @@ internal class Dropdown<TItem> : ClickableComponent
     public void Draw(SpriteBatch sprites, float opacity = 1)
     {
         // get selected label
-        DrawTab(sprites, bounds.X, bounds.Y, bounds.Width, _list.MaxLabelHeight, out var textPos, drawShadow: IsAndroid);
+        DrawTab(sprites, bounds.X, bounds.Y, bounds.Width, _list.MaxLabelHeight, out var textPos,
+            drawShadow: IsAndroid);
         sprites.DrawString(_font, _displayLabel, textPos, Color.Black * opacity);
 
         // draw dropdown

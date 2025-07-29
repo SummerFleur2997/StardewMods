@@ -231,7 +231,7 @@ internal class StashToChestsModule : IModule
         switch (Game1.player.currentLocation)
         {
             case MineShaft { mineLevel: <= 120 } when config.AutoStashInTheMine:
-            case MineShaft { mineLevel: > 120 and not 77377} when config.AutoStashInSkullCavern:
+            case MineShaft { mineLevel: > 120 and not 77377 } when config.AutoStashInSkullCavern:
             case VolcanoDungeon when config.AutoStashInVolcanoDungeon:
                 StashAnywhere();
                 break;

@@ -31,7 +31,7 @@ internal static class Saver
         {
             Version = Version.ToString(),
             ChestEntries = BuildChestEntries().Where(e => e.AcceptedItems.Any()).ToList(),
-            InventoryEntries = BuildInventoryEntries()//.Where(e => e.LockedItems.Any()).ToList()
+            InventoryEntries = BuildInventoryEntries() //.Where(e => e.LockedItems.Any()).ToList()
         };
     }
 
@@ -50,7 +50,7 @@ internal static class Saver
                 yield return new ChestEntry(
                     farmHouse.fridge.Value.GetChestData(),
                     new ChestAddress
-                    (farmHouse.uniqueName?.Value ?? farmHouse.Name, Vector2.Zero, ChestLocationType.Refrigerator)
+                        (farmHouse.uniqueName?.Value ?? farmHouse.Name, Vector2.Zero, ChestLocationType.Refrigerator)
                 );
             else
                 foreach (var building in location.buildings.Where(b => b.indoors.Value != null))

@@ -39,7 +39,7 @@ internal class InventoryData(FarmHouse farmHouse)
     /// Toggle whether this player's inventory accepts the specified kind of item.
     /// 切换这个玩家的背包是否锁定指定类型的物品。
     /// </summary>
-    public void Toggle(ItemKey itemKey, bool receiver=false)
+    public void Toggle(ItemKey itemKey, bool receiver = false)
     {
         if (Locks(itemKey))
             RemoveLocked(itemKey);

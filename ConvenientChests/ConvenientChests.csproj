@@ -23,11 +23,11 @@
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations"/>
-        <PackageReference Include="Pathoschild.Stardew.ModBuildConfig" />
-        <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder" />
+        <PackageReference Include="Pathoschild.Stardew.ModBuildConfig"/>
+        <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder"/>
     </ItemGroup>
-    <Import Project="..\Common\Common.projitems" Label="Shared" />
-    <Import Project="..\UI\UI.projitems" Label="Shared" />
+    <Import Project="..\Common\Common.projitems" Label="Shared"/>
+    <Import Project="..\UI\UI.projitems" Label="Shared"/>
     <ItemGroup>
         <None Update="manifest.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -16,5 +16,4 @@ internal class MultiplayerInventorySync
         ItemKey = itemKey;
         SenderID = playerID;
     }
-        
 }

@@ -1,19 +1,19 @@
 {
-  "Name": "Convenient Chests Unofficial",
-  "Author": "SummerFleur",
-  "Version": "1.8.3-alpha",
-  "Description": "Makes your life easier: Allows crafting from and auto-stashing to chests.",
-  "UniqueID": "SummerFleur.ConvenientChests",
-  "MinimumApiVersion": "4.0.0",
-  "EntryDll": "ConvenientChests.dll",
-  "UpdateKeys": [
-    "Nexus:32558",
-    "GitHub:SummerFleur2997/ConvenientChests"
-  ],
-  "Dependencies": [
-    {
-      "UniqueID": "spacechase0.GenericModConfigMenu",
-      "IsRequired": false
-    }
-  ]
+    "Name": "Convenient Chests Unofficial",
+    "Author": "SummerFleur",
+    "Version": "1.8.3-alpha",
+    "Description": "Makes your life easier: Allows crafting from and auto-stashing to chests.",
+    "UniqueID": "SummerFleur.ConvenientChests",
+    "MinimumApiVersion": "4.0.0",
+    "EntryDll": "ConvenientChests.dll",
+    "UpdateKeys": [
+        "Nexus:32558",
+        "GitHub:SummerFleur2997/ConvenientChests"
+    ],
+    "Dependencies": [
+        {
+            "UniqueID": "spacechase0.GenericModConfigMenu",
+            "IsRequired": false
+        }
+    ]
 }

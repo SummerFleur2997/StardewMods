@@ -20,17 +20,17 @@ namespace UI;
 internal class DropdownList<TValue> : ClickableComponent
 {
     /*********
-    ** Fields
-    *********/
+     ** Fields
+     *********/
     /****
-    ** Constants
-    ****/
+     ** Constants
+     ****/
     /// <summary>The padding applied to dropdown lists.</summary>
     private const int DropdownPadding = 5;
 
     /****
-    ** Items
-    ****/
+     ** Items
+     ****/
     /// <summary>The selected option.</summary>
     private DropListOption SelectedOption;
 
@@ -57,8 +57,8 @@ internal class DropdownList<TValue> : ClickableComponent
 
 
     /****
-    ** Rendering
-    ****/
+     ** Rendering
+     ****/
     /// <summary>The font with which to render text.</summary>
     private readonly SpriteFont Font;
 
@@ -70,8 +70,8 @@ internal class DropdownList<TValue> : ClickableComponent
 
 
     /*********
-    ** Accessors
-    *********/
+     ** Accessors
+     *********/
     /// <summary>The selected value.</summary>
     public TValue SelectedValue => SelectedOption.Value;
 
@@ -89,8 +89,8 @@ internal class DropdownList<TValue> : ClickableComponent
 
 
     /*********
-    ** Public methods
-    *********/
+     ** Public methods
+     *********/
     /// <summary>Construct an instance.</summary>
     /// <param name="selectedValue">The selected value.</param>
     /// <param name="items">The items in the list.</param>
@@ -98,7 +98,8 @@ internal class DropdownList<TValue> : ClickableComponent
     /// <param name="x">The X-position from which to render the list.</param>
     /// <param name="y">The Y-position from which to render the list.</param>
     /// <param name="font">The font with which to render text.</param>
-    public DropdownList(TValue? selectedValue, TValue[] items, Func<TValue, string> getLabel, int x, int y, SpriteFont font)
+    public DropdownList(TValue? selectedValue, TValue[] items, Func<TValue, string> getLabel, int x, int y,
+        SpriteFont font)
         : base(new Rectangle(), nameof(DropdownList<TValue>))
     {
         // save values
@@ -109,7 +110,7 @@ internal class DropdownList<TValue> : ClickableComponent
         MaxLabelHeight = Options.Max(p => p.LabelHeight);
 
         // set initial selection
-        int selectedIndex = Array.IndexOf(items, selectedValue);
+        var selectedIndex = Array.IndexOf(items, selectedValue);
         SelectedOption = selectedIndex >= 0
             ? Options[selectedIndex]
             : Options.First();
@@ -135,13 +136,14 @@ internal class DropdownList<TValue> : ClickableComponent
     public bool TryClick(int x, int y, out bool itemClicked)
     {
         // dropdown value
-        DropListOption? option = Options.FirstOrDefault(p => p.visible && p.containsPoint(x, y));
+        var option = Options.FirstOrDefault(p => p.visible && p.containsPoint(x, y));
         if (option != null)
         {
             SelectedOption = option;
             itemClicked = true;
             return true;
         }
+
         itemClicked = false;
 
         // arrows
@@ -150,6 +152,7 @@ internal class DropdownList<TValue> : ClickableComponent
             Scroll(-1);
             return true;
         }
+
         if (DownArrow.containsPoint(x, y))
         {
             Scroll(1);
@@ -164,7 +167,7 @@ internal class DropdownList<TValue> : ClickableComponent
     /// <returns>Returns whether an item was selected.</returns>
     public bool TrySelect(TValue value)
     {
-        DropListOption? entry = Options.FirstOrDefault(p =>
+        var entry = Options.FirstOrDefault(p =>
             (p.Value == null && value == null)
             || p.Value?.Equals(value) == true
         );
@@ -191,7 +194,7 @@ internal class DropdownList<TValue> : ClickableComponent
     public void Draw(SpriteBatch sprites, float opacity = 1)
     {
         // draw dropdown items
-        foreach (DropListOption option in Options)
+        foreach (var option in Options)
         {
             if (!option.visible)
                 continue;
@@ -204,7 +207,8 @@ internal class DropdownList<TValue> : ClickableComponent
                 sprites.Draw(Sprites.InactiveBackground, option.bounds, Color.White * opacity);
 
             // draw text
-            var position = new Vector2(option.bounds.X + DropdownPadding, option.bounds.Y + (int)(Game1.tileSize / 16f));
+            var position = new Vector2(option.bounds.X + DropdownPadding,
+                option.bounds.Y + (int)(Game1.tileSize / 16f));
             sprites.DrawString(Font, option.label, position, Color.Black * opacity);
         }
 
@@ -219,12 +223,13 @@ internal class DropdownList<TValue> : ClickableComponent
     [MemberNotNull(nameof(UpArrow), nameof(DownArrow))]
     public void ReinitializeComponents()
     {
-        int x = bounds.X;
-        int y = bounds.Y;
+        var x = bounds.X;
+        var y = bounds.Y;
 
         // get item size
-        int itemWidth = MaxLabelWidth = Math.Max(Options.Max(p => p.LabelWidth), Game1.tileSize * 2) + DropdownPadding * 2;
-        int itemHeight = MaxLabelHeight;
+        var itemWidth = MaxLabelWidth =
+            Math.Max(Options.Max(p => p.LabelWidth), Game1.tileSize * 2) + DropdownPadding * 2;
+        var itemHeight = MaxLabelHeight;
 
         // get pagination
         MaxItems = Math.Min((Game1.uiViewport.Height - y) / itemHeight, Options.Length);
@@ -236,8 +241,8 @@ internal class DropdownList<TValue> : ClickableComponent
 
         // update components
         {
-            int itemY = y;
-            foreach (DropListOption option in Options)
+            var itemY = y;
+            foreach (var option in Options)
             {
                 option.visible = option.Index >= FirstVisibleIndex && option.Index <= LastVisibleIndex;
                 if (option.visible)
@@ -250,17 +255,18 @@ internal class DropdownList<TValue> : ClickableComponent
 
         // add arrows
         {
-            Rectangle upSource = Sprites.UpArrow.Region;
-            Rectangle downSource = Sprites.DownArrow.Region;
+            var upSource = Sprites.UpArrow.Region;
+            var downSource = Sprites.DownArrow.Region;
 
             UpArrow = new ClickableTextureComponent(
-                "up-arrow", 
-                new Rectangle(x - upSource.Width, y, upSource.Width, upSource.Height), 
+                "up-arrow",
+                new Rectangle(x - upSource.Width, y, upSource.Width, upSource.Height),
                 "", "", Sprites.CursorSheet, upSource, 1);
             DownArrow = new ClickableTextureComponent(
-                "down-arrow", 
-                new Rectangle(x - downSource.Width, y + bounds.Height - downSource.Height, downSource.Width, downSource.Height), 
-                "", "",Sprites.CursorSheet, downSource, 1);
+                "down-arrow",
+                new Rectangle(x - downSource.Width, y + bounds.Height - downSource.Height, downSource.Width,
+                    downSource.Height),
+                "", "", Sprites.CursorSheet, downSource, 1);
         }
 
         // update controller flow
@@ -270,14 +276,14 @@ internal class DropdownList<TValue> : ClickableComponent
     /// <summary>Set the fields to support controller snapping.</summary>
     public void ReinitializeControllerFlow()
     {
-        int firstIndex = FirstVisibleIndex;
-        int lastIndex = LastVisibleIndex;
+        var firstIndex = FirstVisibleIndex;
+        var lastIndex = LastVisibleIndex;
 
-        int initialId = 1_100_000;
-        foreach (DropListOption option in Options)
+        var initialId = 1_100_000;
+        foreach (var option in Options)
         {
-            int index = option.Index;
-            int id = initialId + index;
+            var index = option.Index;
+            var id = initialId + index;
 
             option.myID = id;
             option.upNeighborID = index > firstIndex
@@ -297,14 +303,14 @@ internal class DropdownList<TValue> : ClickableComponent
 
 
     /*********
-    ** Private methods
-    *********/
+     ** Private methods
+     *********/
     /// <summary>Scroll the dropdown by the specified amount.</summary>
     /// <param name="amount">The number of items to scroll.</param>
     private void Scroll(int amount)
     {
         // recalculate first item
-        int firstItem = GetValidFirstItem(FirstVisibleIndex + amount, MaxFirstVisibleIndex);
+        var firstItem = GetValidFirstItem(FirstVisibleIndex + amount, MaxFirstVisibleIndex);
         if (firstItem == FirstVisibleIndex)
             return;
         FirstVisibleIndex = firstItem;
@@ -323,14 +329,14 @@ internal class DropdownList<TValue> : ClickableComponent
 
 
     /*********
-    ** Private models
-    *********/
+     ** Private models
+     *********/
     /// <summary>A clickable option in the dropdown.</summary>
     private class DropListOption : ClickableComponent
     {
         /*********
-        ** Accessors
-        *********/
+         ** Accessors
+         *********/
         /// <summary>The option's index in the list.</summary>
         public int Index { get; }
 
@@ -345,8 +351,8 @@ internal class DropdownList<TValue> : ClickableComponent
 
 
         /*********
-        ** Public methods
-        *********/
+         ** Public methods
+         *********/
         /// <summary>Construct an instance.</summary>
         /// <param name="bounds">The pixel bounds on screen.</param>
         /// <param name="index">The option's index in the list.</param>
@@ -354,12 +360,12 @@ internal class DropdownList<TValue> : ClickableComponent
         /// <param name="value">The option value.</param>
         /// <param name="font">The font with which to measure the label.</param>
         public DropListOption(Rectangle bounds, int index, string label, TValue value, SpriteFont font)
-            : base(bounds: bounds, name: index.ToString(), label: label)
+            : base(bounds, index.ToString(), label)
         {
             Index = index;
             Value = value;
 
-            Vector2 labelSize = font.MeasureString(label);
+            var labelSize = font.MeasureString(label);
             LabelWidth = (int)labelSize.X;
             LabelHeight = (int)labelSize.Y;
         }

@@ -1,32 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup>
-    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
-    <HasSharedItems>true</HasSharedItems>
-    <SharedGUID>6a4d86fa-821f-441f-a885-90f1d2c3e63c</SharedGUID>
-  </PropertyGroup>
-  <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Common</Import_RootNamespace>
-  </PropertyGroup>
-  <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)UserInterface\Background.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UserInterface\BaseOverlay.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UserInterface\Button.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UserInterface\Dropdown.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UserInterface\DropdownList.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UserInterface\ItemToggle.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UserInterface\ItemTooltip.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UserInterface\Label.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UserInterface\LabeledCheckbox.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UserInterface\NineSlice.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UserInterface\SpriteButton.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UserInterface\Sprites.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UserInterface\Stamp.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UserInterface\TextButton.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UserInterface\TextureRegion.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UserInterface\TooltipManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UserInterface\Widget.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UserInterface\WidgetHost.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UserInterface\WrapBag.cs" />
-  </ItemGroup>
+    <PropertyGroup>
+        <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+        <HasSharedItems>true</HasSharedItems>
+        <SharedGUID>6a4d86fa-821f-441f-a885-90f1d2c3e63c</SharedGUID>
+    </PropertyGroup>
+    <PropertyGroup Label="Configuration">
+        <Import_RootNamespace>Common</Import_RootNamespace>
+    </PropertyGroup>
+    <ItemGroup>
+        <Compile Include="$(MSBuildThisFileDirectory)UserInterface\Background.cs"/>
+        <Compile Include="$(MSBuildThisFileDirectory)UserInterface\BaseOverlay.cs"/>
+        <Compile Include="$(MSBuildThisFileDirectory)UserInterface\Button.cs"/>
+        <Compile Include="$(MSBuildThisFileDirectory)UserInterface\Dropdown.cs"/>
+        <Compile Include="$(MSBuildThisFileDirectory)UserInterface\DropdownList.cs"/>
+        <Compile Include="$(MSBuildThisFileDirectory)UserInterface\ItemToggle.cs"/>
+        <Compile Include="$(MSBuildThisFileDirectory)UserInterface\ItemTooltip.cs"/>
+        <Compile Include="$(MSBuildThisFileDirectory)UserInterface\Label.cs"/>
+        <Compile Include="$(MSBuildThisFileDirectory)UserInterface\LabeledCheckbox.cs"/>
+        <Compile Include="$(MSBuildThisFileDirectory)UserInterface\NineSlice.cs"/>
+        <Compile Include="$(MSBuildThisFileDirectory)UserInterface\SpriteButton.cs"/>
+        <Compile Include="$(MSBuildThisFileDirectory)UserInterface\Sprites.cs"/>
+        <Compile Include="$(MSBuildThisFileDirectory)UserInterface\Stamp.cs"/>
+        <Compile Include="$(MSBuildThisFileDirectory)UserInterface\TextButton.cs"/>
+        <Compile Include="$(MSBuildThisFileDirectory)UserInterface\TextureRegion.cs"/>
+        <Compile Include="$(MSBuildThisFileDirectory)UserInterface\TooltipManager.cs"/>
+        <Compile Include="$(MSBuildThisFileDirectory)UserInterface\Widget.cs"/>
+        <Compile Include="$(MSBuildThisFileDirectory)UserInterface\WidgetHost.cs"/>
+        <Compile Include="$(MSBuildThisFileDirectory)UserInterface\WrapBag.cs"/>
+    </ItemGroup>
 </Project>

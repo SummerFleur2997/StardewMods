@@ -34,9 +34,7 @@ internal class Label : Widget
     }
 
     public Label(string text, Color color)
-        : this(text, color, Game1.smallFont)
-    {
-    }
+        : this(text, color, Game1.smallFont) { }
 
     public override void Draw(SpriteBatch batch)
     {

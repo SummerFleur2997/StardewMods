@@ -27,7 +27,7 @@ internal class ItemKey
     /// Get the fully qualified unique identifier for the item, e.g., (O)279.
     /// </summary>
     public string QualifiedItemId => $"{TypeDefinition}{ItemId}";
-    
+
     public ItemKey() { }
 
     /// <summary>
@@ -143,11 +143,11 @@ internal class ItemKey
                 var obj = GetOne<Object>();
                 return obj switch
                 {
-                    _ when obj.GetMachineData() != null => 
+                    _ when obj.GetMachineData() != null =>
                         new ItemCategoryName(I18n.Categorize_Machine(), "Machine"),
-                    _ when obj.IsCraftable() => 
+                    _ when obj.IsCraftable() =>
                         new ItemCategoryName(I18n.Categorize_Crafting(), "Crafting"),
-                    _ => 
+                    _ =>
                         new ItemCategoryName(I18n.Categorize_BigCrafts(), "BigCrafts")
                 };
 

@@ -16,8 +16,7 @@ internal static class CategoryItemBlacklist
     /// <param name="itemKey">Item key to check.</param>
     public static bool Includes(ItemKey itemKey)
     {
-        var includes = itemKey.TypeDefinition == "(F)"
-               || BlacklistedItemIDs.Contains(itemKey.QualifiedItemId);
+        var includes = itemKey.TypeDefinition == "(F)" || BlacklistedItemIDs.Contains(itemKey.QualifiedItemId);
         return includes;
     }
 

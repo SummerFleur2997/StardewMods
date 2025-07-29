@@ -8,7 +8,7 @@ namespace UI.UserInterface;
 /// 用于记录组成 <see cref="NineSlice"/> 组件纹理的区域
 /// Represents the region of a texture that makes up a <see cref="NineSlice"/> component
 /// </summary>
-internal class TextureRegion(Texture2D texture, int x, int y, int width, int height, bool zoomable=false)
+internal class TextureRegion(Texture2D texture, int x, int y, int width, int height, bool zoomable = false)
 {
     /// <summary>
     /// 纹理
