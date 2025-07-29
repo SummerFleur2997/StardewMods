@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using ConvenientChests.Framework.ItemService;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Tools;
 
@@ -31,7 +30,7 @@ internal static class CategoryDataManager
         foreach (var category in ItemCategories)
         {
             var items = string.Join(", ", Categories[category]);
-            ModEntry.Log($"Registed ItemCategory {category.CategoryBaseName}: [{items}]", LogLevel.Debug);
+            ModEntry.Log($"Registered ItemCategory {category.CategoryBaseName}: [{items}]");
         }
     }
 

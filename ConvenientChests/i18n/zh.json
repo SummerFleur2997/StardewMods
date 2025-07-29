@@ -1,5 +1,5 @@
 {
-  "Button.Stash": "堆叠",
+  "Button.Stash": "存储",
   "Button.Categorize": "分类",
   
   "Config.active": "启用",
@@ -13,24 +13,33 @@
   "Config.CraftFromChest.desc": "使用附近箱子里的物品进行打造。",
   "Config.CraftFromChest.radius": "搜寻半径",
   
-  "Config.StashToChests.Title": "堆叠至箱子",
-  "Config.StashToChests.desc": "使用快捷键将物品堆叠至箱子中。",
+  "Config.StashToChests.Title": "存储至箱子",
+  "Config.StashToChests.desc": "使用快捷键将物品存储至箱子中。",
 
-  "Config.StashToNearby.Title": "堆叠至附近的箱子",
-  "Config.StashToNearby.desc": "将物品快速堆叠至附近的箱子里。",
-  "Config.StashAnywhere.Title": "堆叠至任意位置的箱子",
-  "Config.StashAnywhere.desc": "将物品快速堆叠至世界任意位置的箱子里。",
+  "Config.StashToNearby.Title": "存储至附近的箱子",
+  "Config.StashToNearby.desc": "将物品快速存储至附近的箱子里。",
+  "Config.StashAnywhere.Title": "存储至任意位置的箱子",
+  "Config.StashAnywhere.desc": "将物品快速存储至世界任意位置的箱子里。",
   "Config.StashToNearby.radius": "搜寻半径",
   
   "Config.KeyBind.Title": "按键绑定",
-  "Config.StashToChests.key": "堆叠至箱子",
-  "Config.StashAnywhere.key": "堆叠至任意位置的箱子",
+  "Config.StashToChests.key": "存储至箱子",
+  "Config.StashAnywhere.key": "存储至任意位置的箱子",
   
-  "Config.StashLogic.exist": "堆叠至已存在的组",
-  "Config.StashLogic.fridge": "优先堆叠至冰箱中",
+  "Config.StashLogic.exist": "存储至已存在的组",
+  "Config.StashLogic.fridge": "优先存储至冰箱中",
 
-  "Config.StashRule.LockItems": "禁用工具堆叠",
-  "Config.StashRule.LockItems.desc": "禁止将任何工具堆叠至箱子中，在多人游戏中较为实用。",
+  "Config.StashRule.LockItems": "禁用工具存储",
+  "Config.StashRule.LockItems.desc": "禁止将任何工具存储至箱子中，在多人游戏中较为实用。",
+
+  "Config.AutoStash.Title": "自动存储",
+  "Config.AutoStash.desc": "配置在何处时启用自动存储，启用后每 30 分钟自动将物品存储至任意位置的箱子。",
+  "Config.AutoStash.mine": "矿井",
+  "Config.AutoStash.mine.desc": "位于矿井时启用自动存储。",
+  "Config.AutoStash.skull": "骷髅洞穴",
+  "Config.AutoStash.skull.desc": "位于骷髅洞穴时启用自动存储。",
+  "Config.AutoStash.dungeon": "火山地牢",
+  "Config.AutoStash.dungeon.desc": "位于火山地牢时启用自动存储。",
 
   "Config.Mobile.Title": "移动端适配",
   "Config.Mobile.Offset": "侧边按钮偏移量",

@@ -32,6 +32,15 @@
   "Config.StashRule.LockItems": "Never stash tools",
   "Config.StashRule.LockItems.desc": "Prevent tools from stash into chests, may useful in multiplayer.",
 
+  "Config.AutoStash.Title": "Auto stash",
+  "Config.AutoStash.desc": "Customize where to active auto stash feature, it will auto stash to anywhere every 30 minutes.",
+  "Config.AutoStash.mine": "The Mine",
+  "Config.AutoStash.mine.desc": "Active auto stash while in the Mines.",
+  "Config.AutoStash.skull": "Skull Cavern",
+  "Config.AutoStash.skull.desc": "Active auto stash while in the Skull Cavern.",
+  "Config.AutoStash.dungeon": "Volcano Dungeon",
+  "Config.AutoStash.dungeon.desc": "Active auto stash while in the Volcano Dungeon.",
+
   "Config.Mobile.Title": "Mobile adaptation",
   "Config.Mobile.Offset": "Buttons offset",
   "Config.Mobile.Offset.desc": "Adjust the offset of buttons besides the inventory menus on mobile devices.",

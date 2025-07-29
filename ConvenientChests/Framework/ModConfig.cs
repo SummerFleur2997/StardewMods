@@ -26,7 +26,6 @@ public class ModConfig
     public bool NeverStashTools { get; set; } = true;
     public int MobileOffset { get; set; } = 40;
 
-    public bool AutoStash { get; set; }
     public bool AutoStashInTheMine { get; set; }
     public bool AutoStashInSkullCavern { get; set; }
     public bool AutoStashInVolcanoDungeon { get; set; }

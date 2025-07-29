@@ -30,13 +30,13 @@ internal class StashToChestsModule : IModule
     public RejectingFunc RejectingFunc { get; private set; }
 
     /// <summary>
-    /// 堆叠至附近的箱子功能是否启用。
+    /// 存储至附近的箱子功能是否启用。
     /// Whether stash to nearby function is enabled.
     /// </summary>
     private bool IsStashToNearbyActive { get; set; }
 
     /// <summary>
-    /// 堆叠至附近的箱子功能是否启用。
+    /// 存储至附近的箱子功能是否启用。
     /// Whether stash anywhere function is enabled.
     /// </summary>
     private bool IsStashAnywhereActive { get; set; }
@@ -51,7 +51,7 @@ internal class StashToChestsModule : IModule
     {
         IsActive = true;
         RefreshConfig();
-        // 初始化堆叠逻辑函数
+        // 初始化存储逻辑函数
         // Init the stack logic function.
         CreateJudgementFunction();
     }
@@ -107,10 +107,10 @@ internal class StashToChestsModule : IModule
     }
 
     /// <summary>
-    /// 根据配置选项设置将物品堆叠至箱子时的接受物品判断函数。
+    /// 根据配置选项设置将物品存储至箱子时的接受物品判断函数。
     /// Set the accepting function based on modconfig.
     /// </summary>
-    /// <returns>接受物品判断逻辑函数 Accepting function to determine whether the item is accepted by the chest</returns>
+    /// <returns>接受物品判断逻辑函数 Accepting function to determine whether the chest accepts the item</returns>
     private static AcceptingFunc CreateAcceptingFunction()
     {
         return (ModEntry.Config.CategorizeChests, ModEntry.Config.StashToExistingStacks) switch
@@ -127,10 +127,10 @@ internal class StashToChestsModule : IModule
     }
 
     /// <summary>
-    /// 根据配置选项设置将物品堆叠至箱子时的拒绝物品判断函数。
+    /// 根据配置选项设置将物品存储至箱子时的拒绝物品判断函数。
     /// Set the rejecting function based on modconfig.
     /// </summary>
-    /// <returns>拒绝物品判断逻辑函数 Rejecting function to determine whether the item is rejected by the chest</returns>
+    /// <returns>拒绝物品判断逻辑函数 Rejecting function to determine whether the chest rejects the item</returns>
     private static RejectingFunc CreateRejectingFunction()
     {
         if (ModEntry.Config.NeverStashTools)
@@ -160,34 +160,34 @@ internal class StashToChestsModule : IModule
     }
 
     /// <summary>
-    /// 将物品堆叠至箱子中。
+    /// 将物品存储至箱子中。
     /// Stash items to nearby chest(s).
     /// </summary>
     private void StashToNearby()
     {
         // 未获取到玩家位置信息，结束函数。
-        // If cannot get the player's current location, stop.
+        // If unable to get the player's current location, stop.
         if (Game1.player.currentLocation == null)
             return;
 
-        // 打开某个箱子时，将物品堆叠至当前的箱子。
-        // While opening a chest, stash items into current chest.
+        // 打开某个箱子时，将物品存储至当前的箱子。
+        // While opening a chest, stash items into the current chest.
         if (Game1.activeClickableMenu is ItemGrabMenu { context: Chest chest })
             StashToCurrentChest(chest, AcceptingFunc, RejectingFunc);
 
-        // 未打开箱子时，将物品堆叠至附近的箱子。
+        // 未打开箱子时，将物品存储至附近的箱子。
         // While no chests is opening, stash items into nearby chests.
         else if (IsStashToNearbyActive)
             StashToNearbyChests(ModEntry.Config.StashRadius, AcceptingFunc, RejectingFunc);
     }
 
     /// <summary>
-    /// 将物品堆叠至任意位置箱子中。
+    /// 将物品存储至任意位置箱子中。
     /// Stash items to chest(s) anywhere.
     /// </summary>
     private void StashAnywhere()
     {
-        // try to stash to fridge first
+        // try to stash to the fridge first
         var success = false;
         if (ModEntry.Config.StashAnywhereToFridge && Game1.player.GetFridge() is { } fridge)
             success |= StashToChest(fridge, AcceptingFunc, RejectingFunc);
@@ -212,7 +212,7 @@ internal class StashToChestsModule : IModule
     }
 
     /// <summary>
-    /// 按下堆叠按钮或按键时，将物品堆叠至子里。
+    /// 按下存储按钮或按键时，将物品存储至子里。
     /// When stash button or stash key is pressed, try stash items to nearby chests.
     /// </summary>
     private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
@@ -227,10 +227,10 @@ internal class StashToChestsModule : IModule
     private void OnTimeChanged(object sender, TimeChangedEventArgs e)
     {
         var config = ModEntry.Config;
-        if (!config.AutoStash || e.NewTime % 100 % 30 != 0) return;
+        if (e.NewTime % 100 % 30 != 0) return;
         switch (Game1.player.currentLocation)
         {
-            case MineShaft { mineLevel: <= 120 } when config.AutoStashInTheMine:
+            case MineShaft { mineLevel: > 0 and <= 120 and not (20 or 60 or 100) } when config.AutoStashInTheMine:
             case MineShaft { mineLevel: > 120 and not 77377 } when config.AutoStashInSkullCavern:
             case VolcanoDungeon when config.AutoStashInVolcanoDungeon:
                 StashAnywhere();

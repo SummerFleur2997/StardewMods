@@ -66,7 +66,7 @@ internal class ChestOverlay : Widget
     }
 
     /// <summary>
-    /// 添加分类和堆叠按钮。
+    /// 添加分类和存储按钮。
     /// Add categorize and stash buttons.
     /// </summary>
     private void AddButtons()
@@ -83,8 +83,8 @@ internal class ChestOverlay : Widget
     }
 
     /// <summary>
-    /// 计算分类按钮和堆叠按钮的偏移量。
-    /// Calculate the offset of the categorize and stash buttons
+    /// 计算分类按钮和存储按钮的偏移量。
+    /// Calculate the offset of the category and stash buttons
     /// </summary>
     private int GetOffset()
     {
@@ -104,8 +104,8 @@ internal class ChestOverlay : Widget
     }
 
     /// <summary>
-    /// 确定分类按钮和堆叠按钮的位置，使它们在箱子界面左侧对齐。
-    /// Determine the position of the categorize and stash buttons to
+    /// 确定分类按钮和存储按钮的位置，使它们在箱子界面左侧对齐。
+    /// Determine the position of the category and stash buttons to
     /// align them on the left side of the chest interface.
     /// </summary>
     private void PositionButtons()
@@ -166,7 +166,7 @@ internal class ChestOverlay : Widget
     }
 
     /// <summary>
-    /// 将物品堆叠到当前箱子中。
+    /// 将物品存储到当前箱子中。
     /// Stash items into the current chest.
     /// </summary>
     private void StashItems()

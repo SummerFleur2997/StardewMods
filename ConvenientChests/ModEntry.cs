@@ -194,10 +194,7 @@ internal class ModEntry : Mod
             ReloadConfig,
             ModMonitor
         );
-
-        if (!ModHelper.ModRegistry.IsLoaded("DLX.QuickSave")) return;
-        var api = ModHelper.ModRegistry.GetApi<IQuickSaveAPI>("DLX.QuickSave");
-        if (api != null) api.SavingEvent += Api_SavingEvent;
+        QuickSaveIntegration.Register();
     }
 
     /// <summary>
@@ -237,15 +234,6 @@ internal class ModEntry : Mod
     /// Raised before the game begins writes data to the save file (except the initial save creation).
     /// </summary>
     private static void OnSaving(object sender, SavingEventArgs e)
-    {
-        SaveManager.Save();
-    }
-
-    /// <summary>
-    /// 兼容 Quick Save
-    /// Compatible to Quick Save
-    /// </summary>
-    private static void Api_SavingEvent(object sender, ISavingEventArgs e)
     {
         SaveManager.Save();
     }

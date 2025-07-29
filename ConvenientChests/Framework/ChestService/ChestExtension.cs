@@ -16,10 +16,10 @@ public static class ChestExtension
 {
     /// <summary>
     /// 寻找当前玩家房子里的冰箱。
-    /// Find the frige in current player's house.
+    /// Find the fridge in the current player's house.
     /// </summary>
     /// <param name="player">玩家 The player</param>
-    /// <returns>玩家房子里的冰箱 The frige in player's house</returns>
+    /// <returns>玩家房子里的冰箱 The fridge in player's house</returns>
     public static Chest? GetFridge(this Farmer player)
     {
         if (Game1.player.IsMainPlayer)

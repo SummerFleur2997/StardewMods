@@ -66,7 +66,7 @@ internal static class GenericModConfigMenuIntegration
         );
 
         // 【数值输入框】搜寻半径
-        // [Number inputbox] Craft from chests radius
+        // [Number inputbox] Craft from chests' radius
         api.AddNumberOption(
             manifest,
             name: I18n.Config_CraftFromChest_Radius,
@@ -74,11 +74,11 @@ internal static class GenericModConfigMenuIntegration
             setValue: value => getConfig().CraftRadius = value
         );
 
-        // 【标题】堆叠至箱子 - 使用快捷键将物品堆叠至箱子中
+        // 【标题】存储至箱子 - 使用快捷键将物品存储至箱子中
         // [Title] Stash to chests - Stash items to chests using a hot key
         api.AddSectionTitle(manifest, I18n.Config_StashToChests_Title, I18n.Config_StashToChests_Desc);
 
-        // 【选项】堆叠至附近的箱子 - 将物品快速堆叠至附近的箱子里
+        // 【选项】存储至附近的箱子 - 将物品快速存储至附近的箱子里
         // [Checkbox] Stash to nearby - Allows for items to be stashed to chests in the player's vicinity
         api.AddBoolOption(
             manifest,
@@ -88,7 +88,7 @@ internal static class GenericModConfigMenuIntegration
             setValue: value => getConfig().StashToNearby = value
         );
 
-        // 【选项】堆叠至任意位置的箱子 - 将物品快速堆叠至世界任意位置的箱子里
+        // 【选项】存储至任意位置的箱子 - 将物品快速存储至世界任意位置的箱子里
         // [Checkbox] Stash from anywhere - Allows for items to be stashed to any chest accessible to the player
         api.AddBoolOption(
             manifest,
@@ -107,7 +107,7 @@ internal static class GenericModConfigMenuIntegration
             setValue: value => getConfig().StashRadius = value
         );
 
-        // 【选项】堆叠至已存在的组
+        // 【选项】存储至已存在的组
         // [Checkbox] Stash to existing stacks?
         api.AddBoolOption(
             manifest,
@@ -116,7 +116,7 @@ internal static class GenericModConfigMenuIntegration
             setValue: value => getConfig().StashToExistingStacks = value
         );
 
-        // 【选项】优先堆叠至冰箱中
+        // 【选项】优先存储至冰箱中
         // [Checkbox] Stash to fridge first?
         api.AddBoolOption(
             manifest,
@@ -125,8 +125,8 @@ internal static class GenericModConfigMenuIntegration
             setValue: value => getConfig().StashAnywhereToFridge = value
         );
 
-        // 【选项】禁用工具堆叠 - 禁止将任何工具堆叠至箱子中，在多人游戏中较为实用
-        // [Checkbox] Never stash tools - Prevent tools from stash into chests, may useful in multiplayer
+        // 【选项】禁用工具存储 - 禁止将任何工具存储至箱子中，在多人游戏中较为实用
+        // [Checkbox] Never stash tools - Prevent tools from stash into chests. May useful in multiplayer
         api.AddBoolOption(
             manifest,
             name: I18n.Config_StashRule_LockItems,
@@ -135,11 +135,43 @@ internal static class GenericModConfigMenuIntegration
             setValue: value => getConfig().NeverStashTools = value
         );
 
+        api.AddSectionTitle(manifest, I18n.Config_AutoStash_Title, I18n.Config_AutoStash_Desc);
+
+        // 【选项】禁用工具存储 - 禁止将任何工具存储至箱子中，在多人游戏中较为实用
+        // [Checkbox] The Mine - Active auto stash while in the Mines
+        api.AddBoolOption(
+            manifest,
+            name: I18n.Config_AutoStash_Mine,
+            tooltip: I18n.Config_AutoStash_Mine_Desc,
+            getValue: () => getConfig().AutoStashInTheMine,
+            setValue: value => getConfig().AutoStashInTheMine = value
+        );
+
+        // 【选项】禁用工具存储 - 禁止将任何工具存储至箱子中，在多人游戏中较为实用
+        // [Checkbox] Skull Cavern - Active auto stash while in the Skull Cavern
+        api.AddBoolOption(
+            manifest,
+            name: I18n.Config_AutoStash_Skull,
+            tooltip: I18n.Config_AutoStash_Skull_Desc,
+            getValue: () => getConfig().AutoStashInSkullCavern,
+            setValue: value => getConfig().AutoStashInSkullCavern = value
+        );
+
+        // 【选项】禁用工具存储 - 禁止将任何工具存储至箱子中，在多人游戏中较为实用
+        // [Checkbox] Volcano Dungeon - Active auto stash while in the Volcano Dungeon
+        api.AddBoolOption(
+            manifest,
+            name: I18n.Config_AutoStash_Dungeon,
+            tooltip: I18n.Config_AutoStash_Dungeon_Desc,
+            getValue: () => getConfig().AutoStashInVolcanoDungeon,
+            setValue: value => getConfig().AutoStashInVolcanoDungeon = value
+        );
+
         // 【标题】按键绑定
         // [Title] Key bind
         api.AddSectionTitle(manifest, I18n.Config_KeyBind_Title);
 
-        // 【按键绑定列表】堆叠至箱子
+        // 【按键绑定列表】存储至箱子
         // [Key-bind list] Stash to chests key-bind
         api.AddKeybindList(
             manifest,
@@ -148,7 +180,7 @@ internal static class GenericModConfigMenuIntegration
             setValue: value => getConfig().StashToNearbyKey = value
         );
 
-        // 【按键绑定列表】堆叠至任意位置的箱子
+        // 【按键绑定列表】存储至任意位置的箱子
         // [Key-bind list] Stash from anywhere key-bind
         api.AddKeybindList(
             manifest,
@@ -157,19 +189,22 @@ internal static class GenericModConfigMenuIntegration
             setValue: value => getConfig().StashAnywhereKey = value
         );
 
-        if (!ModEntry.IsAndroid) return;
+        if (ModEntry.IsAndroid)
+        {
+            // 【标题】移动端适配
+            // [Title] Mobile Adaptation
+            api.AddSectionTitle(manifest, I18n.Config_Mobile_Title);
+            api.AddNumberOption(
+                manifest,
+                name: I18n.Config_Mobile_Offset,
+                tooltip: I18n.Config_Mobile_Offset_Desc,
+                getValue: () => getConfig().MobileOffset,
+                setValue: value => getConfig().MobileOffset = value,
+                min: 0,
+                max: 80
+            );
+        }
 
-        // 【标题】移动端适配
-        // [Title] Mobile Adaptation
-        api.AddSectionTitle(manifest, I18n.Config_Mobile_Title);
-        api.AddNumberOption(
-            manifest,
-            name: I18n.Config_Mobile_Offset,
-            tooltip: I18n.Config_Mobile_Offset_Desc,
-            getValue: () => getConfig().MobileOffset,
-            setValue: value => getConfig().MobileOffset = value,
-            min: 0,
-            max: 80
-        );
+        ModEntry.Log("Successfully added configurations to GMCM.");
     }
 }

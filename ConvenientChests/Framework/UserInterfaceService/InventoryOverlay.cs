@@ -2,7 +2,6 @@ using ConvenientChests.Framework.InventoryService;
 using ConvenientChests.StashToChests.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
 using StardewValley;
 using StardewValley.Menus;
 using UI.UserInterface;
@@ -105,9 +104,6 @@ internal class InventoryOverlay : Widget
     /// </summary>
     private void SetItemsClickable(bool clickable) // todo
     {
-        ModEntry.Log(
-            clickable ? "Set items clickable." : "Set items not clickable.",
-            LogLevel.Debug
-        );
+        ModEntry.Log(clickable ? "Set items clickable." : "Set items not clickable.");
     }
 }

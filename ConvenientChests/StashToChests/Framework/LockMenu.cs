@@ -75,7 +75,6 @@ internal class LockMenu : ModMenu
         // Figure out width
         Body.Width = ToggleBag.Width;
         TopRow.Width = Body.Width;
-        // Width        = Body.Width + Background.Graphic.LeftBorderThickness + Background.Graphic.RightBorderThickness + Padding * 2;
 
         // Build the top row
         TitleLabel.Text = I18n.LockItems_Title();
