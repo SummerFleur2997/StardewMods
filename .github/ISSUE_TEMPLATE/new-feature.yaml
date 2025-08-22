@@ -13,6 +13,8 @@ body:
           required: true
         - label: I've noticed and agreed that if I do not follow the instructions provided in the template, my issue may be deleted without condition.
           required: true
+        - label: I've checked the existing issues and there is no similar request.
+          required: true
 
   - type: textarea
     id: feature-to-add
