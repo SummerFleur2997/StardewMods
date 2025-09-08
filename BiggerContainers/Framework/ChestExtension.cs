@@ -1,5 +1,4 @@
-﻿using Common.ChestServices;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using StardewValley.Locations;
 using StardewValley.Objects;
 

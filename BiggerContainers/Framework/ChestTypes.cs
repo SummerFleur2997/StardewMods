@@ -1,4 +1,4 @@
-﻿namespace Common.ChestServices;
+﻿namespace BiggerContainers.Framework;
 
 /// <summary>
 /// 箱子的类型。 Type of this chest.

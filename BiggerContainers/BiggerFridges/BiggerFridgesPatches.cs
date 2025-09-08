@@ -1,5 +1,4 @@
 ﻿using BiggerContainers.Framework;
-using Common.ChestServices;
 using StardewValley.Objects;
 
 namespace BiggerContainers.BiggerFridges;

@@ -9,7 +9,6 @@
         <Import_RootNamespace>Common</Import_RootNamespace>
     </PropertyGroup>
     <ItemGroup>
-        <Compile Include="$(MSBuildThisFileDirectory)Chests\ChestTypes.cs"/>
         <Compile Include="$(MSBuildThisFileDirectory)ConfigurationServices\IGenericModConfigMenuApi.cs"/>
         <Compile Include="$(MSBuildThisFileDirectory)ConfigurationServices\IntergrationHelper.cs"/>
         <Compile Include="$(MSBuildThisFileDirectory)ExceptionService\InvalidSaveDataException.cs"/>
