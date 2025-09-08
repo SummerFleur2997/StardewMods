@@ -83,34 +83,27 @@ internal class ChestOverlay : Widget
     }
 
     /// <summary>
-    /// 计算分类按钮和存储按钮的偏移量。
-    /// Calculate the offset of the category and stash buttons
-    /// </summary>
-    private int GetOffset()
-    {
-        return ModEntry.IsAndroid
-            ? 100 + ModEntry.Config.MobileOffset
-            : _chest.SpecialChestType switch
-            {
-                Chest.SpecialChestTypes.BigChest => 128,
-                Chest.SpecialChestTypes.MiniShippingBin => 34,
-                Chest.SpecialChestTypes.JunimoChest => 34,
-                _ => _chest.Name switch
-                {
-                    "__Auto_!_Eats__" => 34,
-                    _ => 112
-                }
-            };
-    }
-
-    /// <summary>
     /// 确定分类按钮和存储按钮的位置，使它们在箱子界面左侧对齐。
     /// Determine the position of the category and stash buttons to
     /// align them on the left side of the chest interface.
     /// </summary>
     private void PositionButtons()
     {
-        var delta = GetOffset();
+        // Calculate the offset based on the chest size.
+        var delta = ModEntry.IsAndroid
+            // For android, use a fixed offset.
+            ? 100 + ModEntry.Config.MobileOffset
+            // Otherwise, use a dynamic offset based on the chest size.
+            : _chest.GetActualCapacity() switch
+            {
+                // Big chests, >=70 to compatible with unlimited storage
+                >= 70 => 128,
+                // Junimo chests / Shipping bin 
+                9 => 34,
+                // Common chests
+                _ => 112
+            };
+
         StashButton.Width = CategorizeButton.Width = Math.Max(StashButton.Width, CategorizeButton.Width);
 
         CategorizeButton.Position = new Point(

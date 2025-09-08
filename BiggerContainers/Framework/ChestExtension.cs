@@ -9,7 +9,7 @@ public static class ChestExtension
 {
     /// <summary>
     /// 检查给定的箱子是否是特殊的箱子。
-    /// Checks if the given chest is special chest.
+    /// Checks if the given chest is a special chest.
     /// </summary>
     public static ChestTypes MyChestType(this Chest chest)
     {

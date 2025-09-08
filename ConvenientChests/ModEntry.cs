@@ -70,8 +70,6 @@ internal class ModEntry : Mod
     /// </summary>
     public override void Entry(IModHelper helper)
     {
-        I18n.Init(Helper.Translation);
-
         Manifest = ModManifest;
         ModMonitor = Monitor;
         ModHelper = Helper;
@@ -82,6 +80,7 @@ internal class ModEntry : Mod
         helper.Events.GameLoop.Saving += OnSaving;
         helper.Events.Display.MenuChanged += OnMenuChanged;
 
+        I18n.Init(Helper.Translation);
         Config = helper.ReadConfig<ModConfig>();
     }
 

@@ -1,29 +1,54 @@
 ﻿{
   "Button.Stash": "Guardar",
   "Button.Categorize": "Classificar",
+
   "Config.active": "ativo",
+
   "Config.Categorize.Title": "Classificar baús",
   "Config.Categorize.desc": "Classifica seus baús por itens.",
   "Config.Categorize.sort": "Ordenar categorias",
   "Config.Categorize.sort.desc": "Ordena as categorias em ordem alfabética.",
+
   "Config.CraftFromChest.Title": "Criar a partir de baús",
   "Config.CraftFromChest.desc": "Usa itens de baús próximos para fabricar.",
   "Config.CraftFromChest.radius": "Raio de Criar a partir de baús",
+
   "Config.StashToChests.Title": "Guardar em baús",
   "Config.StashToChests.desc": "Guarde itens em baús usando uma tecla de atalho.",
+
   "Config.StashToNearby.Title": "Guardar em baús próximos",
   "Config.StashToNearby.desc": "Permite que itens sejam guardados em baús próximos ao jogador.",
   "Config.StashAnywhere.Title": "Guardar de qualquer lugar",
   "Config.StashAnywhere.desc": "Permite que itens sejam guardados em qualquer baú acessível ao jogador.",
   "Config.StashToNearby.radius": "Raio de Guardar em baús próximos",
+
   "Config.KeyBind.Title": "tecla de atalho vinculada",
   "Config.StashToChests.key": "tecla de atalho vinculada para guardar em baús",
   "Config.StashAnywhere.key": "tecla de atalho vinculada para guardar de qualquer lugar",
+
   "Config.StashLogic.exist": "Guardar nas pilhas existentes?",
   "Config.StashLogic.fridge": "Guardar primeiro na geladeira?",
+
   "Config.StashRule.LockItems": "Nunca guardar ferramentas",
   "Config.StashRule.LockItems.desc": "Evita que as ferramentas sejam guardadas em baús, o que pode ser útil no modo multijogador.",
+
+  // TODO
+  "Config.AutoStash.Title": "Auto stash",
+  "Config.AutoStash.desc": "Customize where to active auto stash feature, it will auto stash to anywhere every 30 minutes.",
+  "Config.AutoStash.mine": "The Mine",
+  "Config.AutoStash.mine.desc": "Active auto stash while in the Mines.",
+  "Config.AutoStash.skull": "Skull Cavern",
+  "Config.AutoStash.skull.desc": "Active auto stash while in the Skull Cavern.",
+  "Config.AutoStash.dungeon": "Volcano Dungeon",
+  "Config.AutoStash.dungeon.desc": "Active auto stash while in the Volcano Dungeon.",
+
+  // TODO
+  "Config.Mobile.Title": "Mobile adaptation",
+  "Config.Mobile.Offset": "Buttons offset",
+  "Config.Mobile.Offset.desc": "Adjust the offset of buttons besides the inventory menus on mobile devices.",
+
   "Categorize.All": "Todos",
+  "Categorize.BigCrafts": "Big Craftable", // TODO
   "Categorize.Consumable": "Consumível",
   "Categorize.Crafting": "Artesanato",
   "Categorize.Flooring": "Pisos",
@@ -37,5 +62,6 @@
   "Categorize.Trinket": "Amuleto",
   "Categorize.Wallpaper": "Papel de parede",
   "Categorize.Weapons": "Armas",
+
   "LockItems.Title": "Bloquear itens"
 }

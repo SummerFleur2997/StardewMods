@@ -25,11 +25,11 @@ internal class BiggerFridgesModule : IModule
     {
         try
         {
-            var originalM1 = AccessTools.Method(typeof(Chest), "GetActualCapacity");
+            var originalM1 = AccessTools.Method(typeof(Chest), nameof(Chest.GetActualCapacity));
             var prefixM1 = AccessTools.Method(
                 typeof(BiggerFridgesPatches), nameof(BiggerFridgesPatches.Patch_GetActualCapacity));
             harmony.Patch(original: originalM1, prefix: new HarmonyMethod(prefixM1));
-            ModEntry.Log("Patched Chest.GetActualCapacity for fridges successfully.", LogLevel.Debug);
+            ModEntry.Log("Patched Chest.GetActualCapacity for fridges successfully.");
         }
         catch (Exception ex)
         {

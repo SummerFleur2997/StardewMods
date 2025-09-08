@@ -1,18 +1,18 @@
 {
   "Button.Stash": "存储",
   "Button.Categorize": "分类",
-  
+
   "Config.active": "启用",
-  
+
   "Config.Categorize.Title": "存储归类",
   "Config.Categorize.desc": "对箱子的内容物进行归类。",
   "Config.Categorize.sort": "物品种类排序",
   "Config.Categorize.sort.desc": "按字母顺序对种类进行排序，不建议中文用户启用。",
-  
+
   "Config.CraftFromChest.Title": "从附近的箱子里打造",
   "Config.CraftFromChest.desc": "使用附近箱子里的物品进行打造。",
   "Config.CraftFromChest.radius": "搜寻半径",
-  
+
   "Config.StashToChests.Title": "存储至箱子",
   "Config.StashToChests.desc": "使用快捷键将物品存储至箱子中。",
 
@@ -21,11 +21,11 @@
   "Config.StashAnywhere.Title": "存储至任意位置的箱子",
   "Config.StashAnywhere.desc": "将物品快速存储至世界任意位置的箱子里。",
   "Config.StashToNearby.radius": "搜寻半径",
-  
+
   "Config.KeyBind.Title": "按键绑定",
   "Config.StashToChests.key": "存储至箱子",
   "Config.StashAnywhere.key": "存储至任意位置的箱子",
-  
+
   "Config.StashLogic.exist": "存储至已存在的组",
   "Config.StashLogic.fridge": "优先存储至冰箱中",
 

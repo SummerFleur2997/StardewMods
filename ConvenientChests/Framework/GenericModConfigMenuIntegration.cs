@@ -199,9 +199,7 @@ internal static class GenericModConfigMenuIntegration
                 name: I18n.Config_Mobile_Offset,
                 tooltip: I18n.Config_Mobile_Offset_Desc,
                 getValue: () => getConfig().MobileOffset,
-                setValue: value => getConfig().MobileOffset = value,
-                min: 0,
-                max: 80
+                setValue: value => getConfig().MobileOffset = value
             );
         }
 

@@ -1,7 +1,7 @@
 {
   "Name": "Bigger Containers",
   "Author": "SummerFleur",
-  "Version": "1.1.0",
+  "Version": "1.1.1-alpha",
   "Description": "Expand junimo chests and fridges' capacity.",
   "UniqueID": "SummerFleur.BiggerContainers",
   "MinimumApiVersion": "4.0.0",

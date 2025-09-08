@@ -10,8 +10,8 @@
         <AssemblyTitle>ConvenientChests</AssemblyTitle>
         <Product>ConvenientChests</Product>
         <Copyright>Copyright © SummerFleur 2025</Copyright>
-        <AssemblyVersion>1.0.0.0</AssemblyVersion>
-        <FileVersion>1.0.0.0</FileVersion>
+        <AssemblyVersion>1.8.4</AssemblyVersion>
+        <FileVersion>1.8.4</FileVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DebugSymbols>true</DebugSymbols>

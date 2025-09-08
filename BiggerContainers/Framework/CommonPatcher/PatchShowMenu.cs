@@ -8,7 +8,7 @@ using StardewValley.Objects;
 
 namespace BiggerContainers.Framework.CommonPatcher;
 
-public class PatchShowMenu
+public static class PatchShowMenu
 {
     public static void RegisterHarmonyPatches(Harmony harmony)
     {
@@ -18,7 +18,6 @@ public class PatchShowMenu
             var prefixM3 = AccessTools.Method(
                 typeof(PatchShowMenu), nameof(Patch_ShowMenu));
             harmony.Patch(original: originalM3, prefix: new HarmonyMethod(prefixM3));
-            ModEntry.Log("Patched Chest.GetActualCapacity for junimo chests successfully.", LogLevel.Debug);
         }
         catch (Exception ex)
         {
@@ -28,10 +27,10 @@ public class PatchShowMenu
 
     /// <summary>
     /// Patches <see cref="StardewValley.Objects.Chest.ShowMenu"/> method.
-    /// 如果箱子被容量被模组修改，则重新生成其菜单。If the chest's capacity was modified by
-    /// this mod, regenerate its menu UI.
+    /// 如果箱子被容量被模组修改，则重新生成其菜单。If this mod modified the chest's capacity,
+    /// regenerate its menu UI.
     /// </summary>
-    /// <param name="__instance">要重新生成菜单的箱子。The chest to re-show its menu.</param>
+    /// <param name="__instance">要重新生成菜单的箱子。The chest to re-shows its menu.</param>
     /// <returns>是否需要使用原方法进一步处理，若为 true 则使用原方法继续处理。
     /// Whether it needs to be proceeded with the original method.</returns>
     public static bool Patch_ShowMenu(Chest __instance)

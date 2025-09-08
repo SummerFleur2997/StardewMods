@@ -1,7 +1,6 @@
 ﻿using BiggerContainers.BiggerFridges;
 using BiggerContainers.BiggerJunimoChests;
 using BiggerContainers.Framework;
-using BiggerContainers.Framework.CommonPatcher;
 using HarmonyLib;
 using JetBrains.Annotations;
 using StardewModdingAPI;
@@ -60,7 +59,6 @@ internal class ModEntry : Mod
         JunimoChestsModule = new BiggerJunimoChestsModule();
         JunimoChestsModule.Activate();
 
-        PatchChestOverlay.RegisterHarmonyPatches(Harmony);
         // PatchShowMenu.RegisterHarmonyPatches(Harmony);
     }
 

@@ -25,11 +25,11 @@ internal class BiggerJunimoChestsModule : IModule
     {
         try
         {
-            var originalM2 = AccessTools.Method(typeof(Chest), "GetActualCapacity");
+            var originalM2 = AccessTools.Method(typeof(Chest), nameof(Chest.GetActualCapacity));
             var prefixM2 = AccessTools.Method(
                 typeof(BiggerJunimoChestsPatches), nameof(BiggerJunimoChestsPatches.Patch_GetActualCapacity));
             harmony.Patch(original: originalM2, prefix: new HarmonyMethod(prefixM2));
-            ModEntry.Log("Patched Chest.GetActualCapacity for junimo chests successfully.", LogLevel.Debug);
+            ModEntry.Log("Patched Chest.GetActualCapacity for junimo chests successfully.");
         }
         catch (Exception ex)
         {

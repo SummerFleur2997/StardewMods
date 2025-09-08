@@ -1,9 +1,9 @@
 {
   "Button.Stash": "Stash",
   "Button.Categorize": "Categorize",
-  
+
   "Config.active": "active",
-  
+
   "Config.Categorize.Title": "Categorize chests",
   "Config.Categorize.desc": "Categorize your chests by items.",
   "Config.Categorize.sort": "Sort categories",
@@ -12,10 +12,10 @@
   "Config.CraftFromChest.Title": "Craft from chests",
   "Config.CraftFromChest.desc": "Use items from nearby chests to craft.",
   "Config.CraftFromChest.radius": "Craft from chests radius.",
-  
+
   "Config.StashToChests.Title": "Stash to chests",
   "Config.StashToChests.desc": "Stash items to chests using a hot key.",
-  
+
   "Config.StashToNearby.Title": "Stash to nearby",
   "Config.StashToNearby.desc": "Allows for items to be stashed to chests in the player's vicinity.",
   "Config.StashAnywhere.Title": "Stash from anywhere",
@@ -25,7 +25,7 @@
   "Config.KeyBind.Title": "Key bind",
   "Config.StashToChests.key": "Stash to chests key-bind",
   "Config.StashAnywhere.key": "Stash from anywhere key-bind",
-  
+
   "Config.StashLogic.exist": "Stash to existing stacks?",
   "Config.StashLogic.fridge": "Stash to fridge first?",
 
@@ -60,6 +60,6 @@
   "Categorize.Trinket": "Trinket",
   "Categorize.Wallpaper": "Wallpaper",
   "Categorize.Weapons": "Weapons",
-  
+
   "LockItems.Title": "Lock items"
 }
