@@ -3,12 +3,38 @@
   "Choice.Yes": "我就要走楼梯！",
   "Choice.No": "还是跳洞吧……",
 
+  "Config.GraphicPrompter": "图形提示",
   "Config.ShaftPrompter.Title": "启用竖井提示",
   "Config.ShaftPrompter.desc": "当地图上有一个竖井且尝试使用楼梯进入下一层时，提示玩家。",
-  "Config.TextPrompter.Title": "启用文字提示",
-  "Config.TextPrompter.desc": "当发现一个竖井或楼梯时，在界面上绘制文字提示。",
   "Config.ShaftIndicator.Title": "显示竖井指示器",
   "Config.ShaftIndicator.desc": "显示一个指示器，指向最近的竖井。",
   "Config.StairIndicator.Title": "显示梯子指示器",
-  "Config.StairIndicator.desc": "显示一个指示器，指向最近的梯子。"
+  "Config.StairIndicator.desc": "显示一个指示器，指向最近的梯子。",
+
+  "Config.TextPrompter": "文字提示",
+  "Config.TextPrompter.Title": "启用文字提示",
+  "Config.TextPrompter.desc": "当发现一个竖井或楼梯时，在界面上绘制文字提示。",
+  "Config.TextPositionX.Title": "文字 X 坐标",
+  "Config.TextPositionX.desc": "设置提示文字的横向位置",
+  "Config.TextPositionY.Title": "文字 Y 坐标",
+  "Config.TextPositionY.desc": "设置提示文字的纵向位置",
+  "Config.TextScale.Title": "文字缩放比例",
+  "Config.TextScale.desc": "提示文字的缩放比例",
+  "Config.ShowDirection.Title": "显示方向",
+  "Config.ShowDirection.desc": "提示文字是否显示方向",
+  "Config.ShowDistance.Title": "显示距离",
+  "Config.ShowDistance.desc": "提示文字是否显示距离",
+
+  "String.Top": "上方", 
+  "String.Left": "左边", 
+  "String.Right": "右边", 
+  "String.Bottom": "下方", 
+  "String.TopLeft": "左上", 
+  "String.TopRight": "右上", 
+  "String.BottomLeft": "左下", 
+  "String.BottomRight": "右下",
+
+  "String.StairFound": "发现梯子！",
+  "String.ShaftFound": "发现竖井",
+  "String.Tiles": "格"
 }

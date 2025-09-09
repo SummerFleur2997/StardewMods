@@ -3,12 +3,38 @@
   "Choice.Yes": "Yes",
   "Choice.No": "No",
 
+  "Config.GraphicPrompter": "Graphic Prompter",
   "Config.ShaftPrompter.Title": "Enable shaft prompter",
   "Config.ShaftPrompter.desc": "Ask before trying to go downstairs when there is a shaft on the map.",
-  "Config.TextPrompter.Title": "Enable text prompter",
-  "Config.TextPrompter.desc": "When discover a stair or shaft, draw text prompts on screen.",
   "Config.ShaftIndicator.Title": "Show shaft indicator",
   "Config.ShaftIndicator.desc": "Show an indicator point to the nearest shaft.",
   "Config.StairIndicator.Title": "Show stair indicator",
-  "Config.StairIndicator.desc": "Show an indicator point to the nearest stair."
+  "Config.StairIndicator.desc": "Show an indicator point to the nearest stair.",
+
+  "Config.TextPrompter": "Text Prompter",
+  "Config.TextPrompter.Title": "Enable text prompter",
+  "Config.TextPrompter.desc": "When discover a stair or shaft, draw text prompts on screen.",
+  "Config.TextPositionX.Title": "Text X Position",
+  "Config.TextPositionX.desc": "Set the horizontal position of the prompt text (pixels).",
+  "Config.TextPositionY.Title": "Text Y Position",
+  "Config.TextPositionY.desc": "Set the vertical position of the prompt text (pixels).",
+  "Config.TextScale.Title": "Text Scale",
+  "Config.TextScale.desc": "Scale of the prompt text (e.g. 1.0).",
+  "Config.ShowDirection.Title": "Show Direction",
+  "Config.ShowDirection.desc": "Whether to show direction in the prompt.",
+  "Config.ShowDistance.Title": "Show Distance",
+  "Config.ShowDistance.desc": "Whether to show distance in the prompt.",
+
+  "String.Top": "Top",
+  "String.Left": "Left",
+  "String.Right": "Right",
+  "String.Bottom": "Bottom",
+  "String.TopLeft": "TopLeft",
+  "String.TopRight": "TopRight",
+  "String.BottomLeft": "BottomLeft",
+  "String.BottomRight": "BottomRight",
+
+  "String.StairFound": "Discovered a stair!",
+  "String.ShaftFound": "Discovered a shaft!",
+  "String.Tiles": "tiles"
 }

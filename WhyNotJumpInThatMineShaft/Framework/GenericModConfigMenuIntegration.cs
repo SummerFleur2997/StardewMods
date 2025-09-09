@@ -29,6 +29,10 @@ internal static class GenericModConfigMenuIntegration
         // register config UI
         api.Register(manifest, reset, save);
 
+        // 【标题】图形提示
+        // [Title] Graphic Prompter
+        api.AddSectionTitle(manifest, I18n.Config_GraphicPrompter);
+
         // 【选项】启用竖井提示
         // [Checkbox] Enable shaft prompter
         api.AddBoolOption(
@@ -37,16 +41,6 @@ internal static class GenericModConfigMenuIntegration
             tooltip: I18n.Config_ShaftPrompter_Desc,
             getValue: () => getConfig().ShaftPrompter,
             setValue: value => getConfig().ShaftPrompter = value
-        );
-
-        // 【选项】启用文字提示
-        // [Checkbox] Enable text prompter
-        api.AddBoolOption(
-            manifest,
-            name: I18n.Config_TextPrompter_Title,
-            tooltip: I18n.Config_TextPrompter_Desc,
-            getValue: () => getConfig().TextPrompter,
-            setValue: value => getConfig().TextPrompter = value
         );
 
         // 【选项】显示竖井指示器
@@ -67,6 +61,74 @@ internal static class GenericModConfigMenuIntegration
             tooltip: I18n.Config_StairIndicator_Desc,
             getValue: () => getConfig().StairIndicator,
             setValue: value => getConfig().StairIndicator = value
+        );
+
+        // 【标题】文字提示
+        // [Title] Text Prompter
+        api.AddSectionTitle(manifest, I18n.Config_TextPrompter);
+
+        // 【选项】启用文字提示
+        // [Checkbox] Enable text prompter
+        api.AddBoolOption(
+            manifest,
+            name: I18n.Config_TextPrompter_Title,
+            tooltip: I18n.Config_TextPrompter_Desc,
+            getValue: () => getConfig().TextPrompter,
+            setValue: value => getConfig().TextPrompter = value
+        );
+
+        // 【数值输入框】文字 X 坐标
+        // [Number inputbox] Text X Position
+        api.AddNumberOption(
+            manifest,
+            name: I18n.Config_TextPositionX_Title,
+            tooltip: I18n.Config_TextPositionX_Desc,
+            getValue: () => getConfig().TextPositionX,
+            setValue: value => getConfig().TextPositionX = value
+        );
+
+        // 【数值输入框】文字 Y 坐标
+        // [Number inputbox] Text Y Position
+        api.AddNumberOption(
+            manifest,
+            name: I18n.Config_TextPositionY_Title,
+            tooltip: I18n.Config_TextPositionY_Desc,
+            getValue: () => getConfig().TextPositionY,
+            setValue: value => getConfig().TextPositionY = value
+        );
+
+        // 【数值选择条】文字缩放比例
+        // [Number bar] Text Scale
+        api.AddNumberOption(
+            manifest,
+            name: I18n.Config_TextScale_Title,
+            tooltip: I18n.Config_TextScale_Desc,
+            getValue: () => getConfig().TextScale,
+            setValue: value => getConfig().TextScale = value,
+            min: 0.5f,
+            max: 3.0f,
+            interval: 0.1f
+        );
+
+        
+        // 【选项】显示方向
+        // [Checkbox] Show direction
+        api.AddBoolOption(
+            manifest,
+            name: I18n.Config_ShowDirection_Title,
+            tooltip: I18n.Config_ShowDirection_Desc,
+            getValue: () => getConfig().ShowDirection,
+            setValue: value => getConfig().ShowDirection = value
+        );
+
+        // 【选项】显示距离
+        // [Checkbox] Show distance
+        api.AddBoolOption(
+            manifest,
+            name: I18n.Config_ShowDistance_Title,
+            tooltip: I18n.Config_ShowDistance_Desc,
+            getValue: () => getConfig().ShowDistance,
+            setValue: value => getConfig().ShowDistance = value
         );
     }
 }
