@@ -20,6 +20,11 @@ public static class CommonPatcher
             var postfixM2 = AccessTools.Method(typeof(MapScanner), nameof(MapScanner.Patch_doCreateLadderDown));
             harmony.Patch(original: originalM2, postfix: new HarmonyMethod(postfixM2));
             ModEntry.Log("Patched MineShaft.doCreateLadderDown successfully.");
+
+            var originalM3 = AccessTools.Method(typeof(MineShaft), nameof(MineShaft.checkAction));
+            var prefixM3 = AccessTools.Method(typeof(ShaftPrompter), nameof(ShaftPrompter.Patch_checkAction));
+            harmony.Patch(original: originalM3, prefix: new HarmonyMethod(prefixM3));
+            ModEntry.Log("Patched MineShaft.checkAction successfully.");
         }
         catch (Exception ex)
         {

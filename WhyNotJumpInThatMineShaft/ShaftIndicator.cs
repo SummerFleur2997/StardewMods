@@ -32,7 +32,7 @@ public class ShaftIndicator : IModule
     /// <returns>洞或梯子的地块坐标</returns>
     private static CoordinateAndDistance GetHolePosition(bool shaft = false)
     {
-        var minDistance = 0f;
+        var minDistance = float.MaxValue;
         var holeCoordinate = new Vector2();
         var playerPosition = Game1.player.Tile;
 
@@ -76,7 +76,7 @@ public class ShaftIndicator : IModule
         if (ModEntry.Config.TextPrompter && message != "")
         {
             var textPosition = new Vector2(32, 96); // TODO 自定义坐标
-            var color = MapScanner.Ladders.Count > 0 ? Color.Red : Color.White; // TODO 自定义颜色
+            var color = MapScanner.Holes.Count > 0 ? Color.Red : Color.White; // TODO 自定义颜色
             Utility.drawTextWithShadow(e.SpriteBatch, message, Game1.dialogueFont, textPosition, color);
         }
 
@@ -90,10 +90,11 @@ public class ShaftIndicator : IModule
             var fixedHolePosition = holeCoordinate * tileSize + new Vector2(tileSize / 2f, tileSize / 2f);
 
             // Calculate the pixel position of the indicator
-            var delta = Vector2.Normalize(fixedHolePosition - fixedPlayerPosition) * tileSize * 2;
-            var indicatorPosition = fixedPlayerPosition + delta;
+            var delta = Vector2.Normalize(fixedHolePosition - fixedPlayerPosition);
+            var indicatorPosition = fixedPlayerPosition + delta * tileSize * 2;
             var indicatorPixelPosition = indicatorPosition - new Vector2(Game1.viewport.X, Game1.viewport.Y);
             var rotation = MathF.Asin(delta.X / 1);
+            if (delta.Y > 0) rotation = MathF.PI - rotation;
 
             var rectangle = shaft ? Sprites.ShaftIndicator : Sprites.StairIndicator;
             e.SpriteBatch.Draw(
@@ -105,7 +106,7 @@ public class ShaftIndicator : IModule
                 new Vector2(6, 6), 
                 Game1.pixelZoom, 
                 SpriteEffects.None, 
-                1f);
+                0f);
         }
     }
 }

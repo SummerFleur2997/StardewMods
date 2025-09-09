@@ -28,11 +28,6 @@ internal class ModEntry : Mod
     /// </summary>
     private static ShaftIndicator ShaftIndicator { get; set; }
 
-    /// <summary>
-    /// <see cref="ShaftPrompter"/> mod.
-    /// </summary>
-    private static ShaftPrompter ShaftPrompter { get; set; }
-
     #endregion
 
     /// <summary>
@@ -96,9 +91,6 @@ internal class ModEntry : Mod
         ShaftIndicator = new ShaftIndicator(); 
         ShaftIndicator.Activate();
 
-        ShaftPrompter = new ShaftPrompter();
-        ShaftPrompter.Activate();
-
         ModHelper.Events.Player.Warped += MapScanner.OnMineLevelChanged;
     }
 
@@ -112,9 +104,6 @@ internal class ModEntry : Mod
 
         ShaftIndicator.Deactivate();
         ShaftIndicator = null;
-
-        ShaftPrompter.Deactivate();
-        ShaftPrompter = null;
 
         ModHelper.Events.Player.Warped -= MapScanner.OnMineLevelChanged;
     }
