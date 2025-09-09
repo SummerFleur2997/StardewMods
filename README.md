@@ -13,6 +13,8 @@
   _Makes your life easier: Add a category menu to specify what should
   be contained in this chest, quick stash items to nearby chests,
   crafting and cooking from nearby chests._
+* **Why Not Jump In That Mine Shaft** <small>([Nexus](https://www.nexusmods.com/stardewvalley/mods/37452) | [source](WhyNotJumpInThatMineShaft))</small>  
+  _Useful prompts that can enhance your mining experience in the mine and skull cavern._
 
 ### Mods under develop:
 
