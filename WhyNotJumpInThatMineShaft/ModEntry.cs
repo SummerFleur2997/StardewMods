@@ -7,13 +7,33 @@ using WhyNotJumpInThatMineShaft.Framework;
 namespace WhyNotJumpInThatMineShaft;
 
 [UsedImplicitly]
-public class ModEntry : Mod
+internal class ModEntry : Mod
 {
+    /****
+     ** 属性
+     ** Properties
+     ****/
+
+    #region Properties
+
+    public static ModConfig Config { get; private set; }
     public static IManifest Manifest { get; private set; }
     public static IModHelper ModHelper { get; private set; }
     public static Harmony Harmony { get; private set; }
     private static IMonitor ModMonitor { get; set; }
     public static void Log(string s, LogLevel l = LogLevel.Trace) => ModMonitor.Log(s, l);
+    
+    /// <summary>
+    /// <see cref="ShaftIndicator"/> mod.
+    /// </summary>
+    private static ShaftIndicator ShaftIndicator { get; set; }
+
+    /// <summary>
+    /// <see cref="ShaftPrompter"/> mod.
+    /// </summary>
+    private static ShaftPrompter ShaftPrompter { get; set; }
+
+    #endregion
 
     /// <summary>
     /// 模组入口点，在模组首次加载后调用。
@@ -26,20 +46,60 @@ public class ModEntry : Mod
         ModHelper = Helper;
         Harmony = new Harmony(Manifest.UniqueID);
 
+        helper.Events.GameLoop.GameLaunched += OnGameLaunched;
         helper.Events.GameLoop.SaveLoaded += OnGameLoaded;
         helper.Events.GameLoop.ReturnedToTitle += OnGameUnload;
 
         I18n.Init(Helper.Translation);
+        Config = helper.ReadConfig<ModConfig>();
     }
-    
+
+    /// <summary>
+    /// 读取模组配置更新并重新载入配置。
+    /// Read the update of modconfig and reload them.
+    /// </summary>
+    private static void ReloadConfig()
+    {
+        ModHelper.WriteConfig(Config);
+        Config = ModHelper.ReadConfig<ModConfig>();
+    }
+
+    /****
+     ** 事件处理函数
+     ** Event handlers
+     ****/
+
+    #region Event handlers
+
+    /// <summary>
+    /// 在游戏加载时读取配置选项。
+    /// Read configs when loading the game.
+    /// </summary>
+    private static void OnGameLaunched(object sender, GameLaunchedEventArgs e)
+    {
+        GenericModConfigMenuIntegration.Register(Manifest, ModHelper.ModRegistry,
+            () => Config,
+            () => Config = new ModConfig(),
+            ReloadConfig,
+            ModMonitor
+        );
+    }
+
     /// <summary>
     /// 在游戏加载时配置补丁。
     /// Read configs when loading the game.
     /// </summary>
     private static void OnGameLoaded(object sender, SaveLoadedEventArgs e)
     {
+        CommonPatcher.Initialize(Harmony);
+
+        ShaftIndicator = new ShaftIndicator(); 
+        ShaftIndicator.Activate();
+
+        ShaftPrompter = new ShaftPrompter();
+        ShaftPrompter.Activate();
+
         ModHelper.Events.Player.Warped += MapScanner.OnMineLevelChanged;
-        Patcher.Initialize(Harmony);
     }
 
     /// <summary>
@@ -48,9 +108,16 @@ public class ModEntry : Mod
     /// </summary>
     private static void OnGameUnload(object sender, ReturnedToTitleEventArgs e)
     {
-        ModHelper.Events.Player.Warped -= MapScanner.OnMineLevelChanged;
-
         Harmony.UnpatchAll(Manifest.UniqueID);
-        Harmony = null;
+
+        ShaftIndicator.Deactivate();
+        ShaftIndicator = null;
+
+        ShaftPrompter.Deactivate();
+        ShaftPrompter = null;
+
+        ModHelper.Events.Player.Warped -= MapScanner.OnMineLevelChanged;
     }
+
+    #endregion
 }

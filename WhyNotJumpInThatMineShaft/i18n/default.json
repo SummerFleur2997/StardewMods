@@ -1,5 +1,14 @@
 {
   "String.Prompt": "There's a shaft nearby, are you sure to go downstairs via this stair?",
   "Choice.Yes": "Yes",
-  "Choice.No": "No"
+  "Choice.No": "No",
+
+  "Config.ShaftPrompter.Title": "Enable shaft prompter",
+  "Config.ShaftPrompter.desc": "Ask before trying to go downstairs when there is a shaft on the map.",
+  "Config.TextPrompter.Title": "Enable text prompter",
+  "Config.TextPrompter.desc": "When discover a stair or shaft, draw text prompts on screen.",
+  "Config.ShaftIndicator.Title": "Show shaft indicator",
+  "Config.ShaftIndicator.desc": "Show an indicator point to the nearest shaft.",
+  "Config.StairIndicator.Title": "Show stair indicator",
+  "Config.StairIndicator.desc": "Show an indicator point to the nearest stair."
 }

@@ -2,25 +2,24 @@
 using HarmonyLib;
 using StardewModdingAPI;
 using StardewValley.Locations;
-using WhyNotJumpInThatMineShaft.Framework;
 
-namespace WhyNotJumpInThatMineShaft;
+namespace WhyNotJumpInThatMineShaft.Framework;
 
-public static class Patcher
+public static class CommonPatcher
 {
     public static void Initialize(Harmony harmony)
     {
         try
         {
-            var originalM1 = AccessTools.Method(typeof(MineShaft), nameof(MineShaft.checkAction));
-            var prefixM1 = AccessTools.Method(typeof(ShaftChecker), nameof(ShaftChecker.Patch_checkAction));
-            harmony.Patch(original: originalM1, prefix: new HarmonyMethod(prefixM1));
-            ModEntry.Log("Patched MineShaft.checkAction successfully.");
+            var originalM1 = AccessTools.Method(typeof(MineShaft), "doCreateLadderAt");
+            var postfixM1 = AccessTools.Method(typeof(MapScanner), nameof(MapScanner.Patch_doCreateLadderAt));
+            harmony.Patch(original: originalM1, postfix: new HarmonyMethod(postfixM1));
+            ModEntry.Log("Patched MineShaft.doCreateLadderAt successfully.");
 
             var originalM2 = AccessTools.Method(typeof(MineShaft), "doCreateLadderDown");
             var postfixM2 = AccessTools.Method(typeof(MapScanner), nameof(MapScanner.Patch_doCreateLadderDown));
             harmony.Patch(original: originalM2, postfix: new HarmonyMethod(postfixM2));
-            ModEntry.Log("Patched MineShaft.checkAction successfully.");
+            ModEntry.Log("Patched MineShaft.doCreateLadderDown successfully.");
         }
         catch (Exception ex)
         {

@@ -1,5 +1,14 @@
 {
   "String.Prompt": "地图上有一个竖井，确定要继续走楼梯吗？",
   "Choice.Yes": "我就要走楼梯！",
-  "Choice.No": "还是跳洞吧……"
+  "Choice.No": "还是跳洞吧……",
+
+  "Config.ShaftPrompter.Title": "启用竖井提示",
+  "Config.ShaftPrompter.desc": "当地图上有一个竖井且尝试使用楼梯进入下一层时，提示玩家。",
+  "Config.TextPrompter.Title": "启用文字提示",
+  "Config.TextPrompter.desc": "当发现一个竖井或楼梯时，在界面上绘制文字提示。",
+  "Config.ShaftIndicator.Title": "显示竖井指示器",
+  "Config.ShaftIndicator.desc": "显示一个指示器，指向最近的竖井。",
+  "Config.StairIndicator.Title": "显示梯子指示器",
+  "Config.StairIndicator.desc": "显示一个指示器，指向最近的梯子。"
 }
