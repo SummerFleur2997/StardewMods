@@ -2,7 +2,9 @@
 using JetBrains.Annotations;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
+using WhyNotJumpInThatMineShaft.ForceLanding;
 using WhyNotJumpInThatMineShaft.Framework;
+using WhyNotJumpInThatMineShaft.ShaftPrompter;
 
 namespace WhyNotJumpInThatMineShaft;
 
@@ -19,14 +21,19 @@ internal class ModEntry : Mod
     public static ModConfig Config { get; private set; }
     public static IManifest Manifest { get; private set; }
     public static IModHelper ModHelper { get; private set; }
-    public static Harmony Harmony { get; private set; }
+    private static Harmony Harmony { get; set; }
     private static IMonitor ModMonitor { get; set; }
     public static void Log(string s, LogLevel l = LogLevel.Trace) => ModMonitor.Log(s, l);
-    
+
     /// <summary>
-    /// <see cref="ShaftIndicator"/> mod.
+    /// <see cref="ForceLandingModule"/> mod.
     /// </summary>
-    private static ShaftIndicator ShaftIndicator { get; set; }
+    internal static ForceLandingModule ForceLanding { get; private set; }
+
+    /// <summary>
+    /// <see cref="ShaftPrompterModule"/> mod.
+    /// </summary>
+    internal static ShaftPrompterModule ShaftPrompter { get; private set; }
 
     #endregion
 
@@ -88,8 +95,11 @@ internal class ModEntry : Mod
     {
         CommonPatcher.Initialize(Harmony);
 
-        ShaftIndicator = new ShaftIndicator(); 
-        ShaftIndicator.Activate();
+        ForceLanding = new ForceLandingModule();
+        ForceLanding.Activate();
+
+        ShaftPrompter = new ShaftPrompterModule();
+        ShaftPrompter.Activate();
 
         ModHelper.Events.Player.Warped += MapScanner.OnMineLevelChanged;
     }
@@ -102,8 +112,11 @@ internal class ModEntry : Mod
     {
         Harmony.UnpatchAll(Manifest.UniqueID);
 
-        ShaftIndicator.Deactivate();
-        ShaftIndicator = null;
+        ForceLanding.Deactivate();
+        ForceLanding = null;
+
+        ShaftPrompter.Deactivate();
+        ShaftPrompter = null;
 
         ModHelper.Events.Player.Warped -= MapScanner.OnMineLevelChanged;
     }

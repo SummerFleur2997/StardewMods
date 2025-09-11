@@ -7,16 +7,22 @@ using StardewValley.Locations;
 
 namespace WhyNotJumpInThatMineShaft.Framework;
 
-internal static class MapScanner
+public static class MapScanner
 {
-    public static readonly List<Point> Holes = [];
-    public static readonly List<Point> Ladders = [];
+    public static readonly List<Point> Shafts = [];
+    public static readonly List<Point> Stairs = [];
 
     /// <summary>
     /// Check whether there is a hole in the map.
     /// 检查当前地图上是否存在一个竖井。
     /// </summary>
-    public static bool HasAHoleHere(this GameLocation _) => Holes.Count > 0;
+    public static bool HasAShaftHere => Shafts.Count > 0;
+
+    /// <summary>
+    /// Check whether there is a hole in the map.
+    /// 检查当前地图上是否存在一个竖井。
+    /// </summary>
+    public static bool HasAStairHere => Stairs.Count > 0;
 
     /// <summary>
     /// Patches <see cref="StardewValley.Locations.MineShaft.doCreateLadderDown"/> method.
@@ -25,10 +31,10 @@ internal static class MapScanner
     /// </summary>
     public static void Patch_doCreateLadderDown(Point point, bool shaft)
     {
-        if (shaft) 
-            Holes.Add(point);
+        if (shaft)
+            Shafts.Add(point);
         else
-            Ladders.Add(point);
+            Stairs.Add(point);
     }
 
     /// <summary>
@@ -39,13 +45,18 @@ internal static class MapScanner
     public static void Patch_doCreateLadderAt(Vector2 p)
     {
         var point = new Point((int)p.X, (int)p.Y);
-        Ladders.Add(point);
+        Stairs.Add(point);
     }
 
     public static void OnMineLevelChanged(object sender, WarpedEventArgs e)
     {
-        Holes.Clear();
-        Ladders.Clear();
+        // Confirm current location is the Mine or Skull Cavern
+        // 确保当前位置是矿井或骷髅洞穴
+        if (e.NewLocation is not MineShaft { mineLevel: not 77377 }) return;
+
+        Shafts.Clear();
+        Stairs.Clear();
+        ModEntry.ShaftPrompter.RefreshSleepTime();
         e.NewLocation.UpdateHoles();
     }
 
@@ -54,10 +65,6 @@ internal static class MapScanner
     /// </summary>
     private static void UpdateHoles(this GameLocation location)
     {
-        // Confirm current location is the Mine
-        // 确保当前位置是骷髅洞穴
-        if (location is not MineShaft) return;
-
         // Traverse each tile on Buildings layer to find a shaft or stair
         // 遍历 Buildings 图层上的每一个地块，查找是否有竖井或梯子
         var layer = location.map.RequireLayer("Buildings");
@@ -69,10 +76,10 @@ internal static class MapScanner
             switch (index)
             {
                 case 174:
-                    Holes.Add(new Point(x, y)); 
+                    Shafts.Add(new Point(x, y));
                     break;
                 case 173:
-                    Ladders.Add(new Point(x, y));
+                    Stairs.Add(new Point(x, y));
                     break;
             }
         }

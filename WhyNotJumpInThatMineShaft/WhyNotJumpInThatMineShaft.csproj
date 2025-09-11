@@ -33,4 +33,7 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
+    <ItemGroup>
+      <Compile Remove="Framework\DebugModule.cs" />
+    </ItemGroup>
 </Project>

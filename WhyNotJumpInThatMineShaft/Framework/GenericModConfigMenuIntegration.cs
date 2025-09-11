@@ -63,6 +63,32 @@ internal static class GenericModConfigMenuIntegration
             setValue: value => getConfig().StairIndicator = value
         );
 
+        // 【数值选择条】指示器最小距离
+        // [Number bar] Indicator minium distance
+        api.AddNumberOption(
+            manifest,
+            name: I18n.Config_IndicatorMinDistance_Title,
+            tooltip: I18n.Config_IndicatorMinDistance_Desc,
+            getValue: () => getConfig().HideDistance,
+            setValue: value => getConfig().HideDistance = value,
+            min: 1,
+            max: 10,
+            interval: 1
+        );
+
+        // 【数值选择条】指示器缩放比例
+        // [Number bar] Text Scale
+        api.AddNumberOption(
+            manifest,
+            name: I18n.Config_TextScale_Title,
+            tooltip: I18n.Config_TextScale_Desc,
+            getValue: () => getConfig().IndicatorScale,
+            setValue: value => getConfig().IndicatorScale = value,
+            min: 0.1f,
+            max: 3.0f,
+            interval: 0.1f
+        );
+
         // 【标题】文字提示
         // [Title] Text Prompter
         api.AddSectionTitle(manifest, I18n.Config_TextPrompter);
@@ -110,7 +136,6 @@ internal static class GenericModConfigMenuIntegration
             interval: 0.1f
         );
 
-        
         // 【选项】显示方向
         // [Checkbox] Show direction
         api.AddBoolOption(

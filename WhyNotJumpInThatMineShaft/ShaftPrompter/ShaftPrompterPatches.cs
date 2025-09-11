@@ -3,9 +3,9 @@ using StardewValley;
 using WhyNotJumpInThatMineShaft.Framework;
 using xTile.Dimensions;
 
-namespace WhyNotJumpInThatMineShaft;
+namespace WhyNotJumpInThatMineShaft.ShaftPrompter;
 
-internal static class ShaftPrompter
+internal static class ShaftPrompterPatches
 {
     /// <summary>
     /// Patches <see cref="StardewValley.Locations.MineShaft.checkAction"/> method.
@@ -23,11 +23,11 @@ internal static class ShaftPrompter
         // 检查这个地块是否是一个梯子，以及此处是否有竖井
         var location = Game1.currentLocation;
         var index = location.getTileIndexAt(tileLocation, "Buildings", "mine");
-        if (index != 173 || !location.HasAHoleHere()) return true;
+        if (index != 173 || !MapScanner.HasAShaftHere) return true;
 
         // Generate an option menu
         // 生成选项菜单
-        var options2 = new []
+        var options2 = new[]
         {
             new Response("Go", I18n.Choice_Yes()).SetHotKey(Keys.Y),
             new Response("Do", I18n.Choice_No()).SetHotKey(Keys.Escape)
