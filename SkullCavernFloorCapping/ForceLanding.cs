@@ -1,13 +1,36 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
+using StardewModdingAPI;
 using StardewValley.Locations;
 
-namespace WhyNotJumpInThatMineShaft.ForceLanding;
+namespace SkullCavernFloorCapping;
 
-internal static class ForceLandingPatches
+internal class ForceLanding
 {
+    private static readonly Harmony Harmony = new (ModEntry.Manifest.UniqueID);
+
+    public static void Activate() => RegisterHarmonyPatches(Harmony);
+
+    public static void Deactivate() => Harmony.UnpatchAll(Harmony.Id);
+
+    private static void RegisterHarmonyPatches(Harmony harmony)
+    {
+        try
+        {
+            var original = AccessTools.Method(typeof(MineShaft), nameof(MineShaft.enterMineShaft));
+            var transpiler = AccessTools.Method(typeof(ForceLanding), nameof(Patch_enterMineShaft));
+            harmony.Patch(original: original, transpiler: new HarmonyMethod(transpiler));
+            ModEntry.Log("Patched MineShaft.enterMineShaft successfully.");
+        }
+        catch (Exception ex)
+        {
+            ModEntry.Log($"Failed to patch method: {ex.Message}", LogLevel.Error);
+        }
+    }
+
     /// <summary>
     /// Patches <see cref="StardewValley.Locations.MineShaft.enterMineShaft"/> method.
     /// 确保不跳过 200 层和 300 层的宝箱层。
@@ -26,7 +49,7 @@ internal static class ForceLandingPatches
         {
             new (OpCodes.Ldarg_0),
             new (OpCodes.Ldloca_S, 0),
-            new (OpCodes.Call, AccessTools.Method(typeof(ForceLandingPatches), nameof(AdjustLevelsDown)))
+            new (OpCodes.Call, AccessTools.Method(typeof(ForceLanding), nameof(AdjustLevelsDown)))
         };
 
         codes.InsertRange(index - 1, injection);

@@ -2,7 +2,6 @@
 using JetBrains.Annotations;
 using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using WhyNotJumpInThatMineShaft.ForceLanding;
 using WhyNotJumpInThatMineShaft.Framework;
 using WhyNotJumpInThatMineShaft.ShaftPrompter;
 
@@ -24,11 +23,6 @@ internal class ModEntry : Mod
     private static Harmony Harmony { get; set; }
     private static IMonitor ModMonitor { get; set; }
     public static void Log(string s, LogLevel l = LogLevel.Trace) => ModMonitor.Log(s, l);
-
-    /// <summary>
-    /// <see cref="ForceLandingModule"/> mod.
-    /// </summary>
-    internal static ForceLandingModule ForceLanding { get; private set; }
 
     /// <summary>
     /// <see cref="ShaftPrompterModule"/> mod.
@@ -95,9 +89,6 @@ internal class ModEntry : Mod
     {
         CommonPatcher.Initialize(Harmony);
 
-        ForceLanding = new ForceLandingModule();
-        ForceLanding.Activate();
-
         ShaftPrompter = new ShaftPrompterModule();
         ShaftPrompter.Activate();
 
@@ -111,9 +102,6 @@ internal class ModEntry : Mod
     private static void OnGameUnload(object sender, ReturnedToTitleEventArgs e)
     {
         Harmony.UnpatchAll(Manifest.UniqueID);
-
-        ForceLanding.Deactivate();
-        ForceLanding = null;
 
         ShaftPrompter.Deactivate();
         ShaftPrompter = null;

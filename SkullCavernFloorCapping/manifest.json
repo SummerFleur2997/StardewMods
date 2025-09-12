@@ -1,0 +1,12 @@
+﻿{
+    "Name": "Skull Cavern Floor Capping",
+    "Author": "SummerFleur",
+    "Version": "1.0.0",
+    "Description": "When jump in a mine shaft, ensure the level 200 and 300 treasure room not be skipped.",
+    "UniqueID": "SummerFleur.SkullCavernFloorCapping",
+    "MinimumApiVersion": "4.0.0",
+    "EntryDll": "SkullCavernFloorCapping.dll",
+    "UpdateKeys": [
+        "Nexus:???"
+    ],
+}
