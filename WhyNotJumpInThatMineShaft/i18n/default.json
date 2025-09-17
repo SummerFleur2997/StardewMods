@@ -28,6 +28,8 @@
   "Config.ShowDirection.desc": "Whether to show direction in the prompt.",
   "Config.ShowDistance.Title": "Show Distance",
   "Config.ShowDistance.desc": "Whether to show distance in the prompt.",
+  "Config.ShaftGeneratableIndicator.Title": "Show Shaft Generatable Indicator",
+  "Config.ShaftGeneratableIndicator.Desc": "Show whether a shaft can be generated (above the text prompt).",
 
   "String.Top": "Top",
   "String.Left": "Left",
@@ -40,5 +42,7 @@
 
   "String.StairFound": "Discovered a stair!",
   "String.ShaftFound": "Discovered a shaft!",
-  "String.Tiles": "tiles"
+  "String.Tiles": "tiles",
+  "String.ShaftGeneratable": "Shaft can be generated",
+  "String.ShaftNotGeneratable": "Shaft cannot be generated"
 }

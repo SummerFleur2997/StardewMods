@@ -80,8 +80,8 @@ internal static class GenericModConfigMenuIntegration
         // [Number bar] Text Scale
         api.AddNumberOption(
             manifest,
-            name: I18n.Config_TextScale_Title,
-            tooltip: I18n.Config_TextScale_Desc,
+            name: I18n.Config_IndicatorScale_Title,
+            tooltip: I18n.Config_IndicatorScale_Desc,
             getValue: () => getConfig().IndicatorScale,
             setValue: value => getConfig().IndicatorScale = value,
             min: 0.1f,
@@ -155,5 +155,16 @@ internal static class GenericModConfigMenuIntegration
             getValue: () => getConfig().ShowDistance,
             setValue: value => getConfig().ShowDistance = value
         );
+
+        // 【选项】显示可生成竖井提示
+        // [Checkbox] Show shaft generatable indicator
+        api.AddBoolOption(
+            manifest,
+            name: I18n.Config_ShaftGeneratableIndicator_Title,
+            tooltip: I18n.Config_ShaftGeneratableIndicator_Desc,
+            getValue: () => getConfig().ShaftGeneratableIndicator,
+            setValue: value => getConfig().ShaftGeneratableIndicator = value
+        );
+
     }
 }

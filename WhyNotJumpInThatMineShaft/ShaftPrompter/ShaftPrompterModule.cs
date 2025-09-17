@@ -116,7 +116,7 @@ internal class ShaftPrompterModule : IModule
     {
         // Confirm current location is the Mine or Skull Cavern
         // 确保当前位置是矿井或骷髅洞穴
-        if (Game1.currentLocation is not MineShaft { mineLevel: not 77377 }) return;
+        if (Game1.currentLocation is not MineShaft { mineLevel: not 77377 } mineShaft) return;
         if (_sleepTime > 0)
         {
             _sleepTime --;
@@ -128,17 +128,19 @@ internal class ShaftPrompterModule : IModule
         var data = (Coordinate: Vector2.Zero, Distance: -1f);
 
         // Draw stair indicator
-        if (config.StairIndicator && MapScanner.HasAStairHere)
+        if (MapScanner.HasAStairHere)
         {
             data = GetNearestHolePosition(false);
-            if (data.Distance >= config.HideDistance) DrawIndicator(data.Coordinate, false);
+            if (config.StairIndicator && data.Distance >= config.HideDistance) 
+                DrawIndicator(data.Coordinate, false);
         }
 
         // Draw shaft indicator
-        if (config.ShaftIndicator && MapScanner.HasAShaftHere)
+        if (MapScanner.HasAShaftHere)
         {
             data = GetNearestHolePosition(true);
-            if (data.Distance >= config.HideDistance) DrawIndicator(data.Coordinate, true);
+            if (config.ShaftIndicator && data.Distance >= config.HideDistance) 
+                DrawIndicator(data.Coordinate, true);
         }
 
         // Draw text prompt
@@ -148,7 +150,42 @@ internal class ShaftPrompterModule : IModule
             var textPosition = new Vector2(config.TextPositionX, config.TextPositionY);
             var color = MapScanner.HasAShaftHere ? Color.Red : Color.White;
             var scale = config.TextScale;
-            Utility.drawTextWithShadow(e.SpriteBatch, message, Game1.dialogueFont, textPosition, color, scale);
+            // Draw with common font without a shadow
+            e.SpriteBatch.DrawString(
+                Game1.smallFont,
+                message,
+                textPosition,
+                color,
+                0f,
+                Vector2.Zero,
+                scale,
+                SpriteEffects.None,
+                0f
+            );
+        }
+
+        // Draw shaft generatable indicator (above text prompt)
+        if (config.ShaftGeneratableIndicator)
+        {
+            var generatableText = mineShaft.ladderHasSpawned
+                ? I18n.String_ShaftNotGeneratable()
+                : I18n.String_ShaftGeneratable();
+            var generatableColor = mineShaft.ladderHasSpawned ? Color.Gray : Color.LimeGreen;
+            var generatablePosition = new Vector2(config.TextPositionX, config.TextPositionY - 40 * config.TextScale);
+            var scale = config.TextScale;
+
+            // 使用普通字体且无阴影
+            e.SpriteBatch.DrawString(
+                Game1.smallFont,
+                generatableText,
+                generatablePosition,
+                generatableColor,
+                0f,
+                Vector2.Zero,
+                scale,
+                SpriteEffects.None,
+                0f
+            );
         }
 
         return;

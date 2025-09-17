@@ -28,6 +28,8 @@
   "Config.ShowDirection.desc": "提示文字是否显示方向",
   "Config.ShowDistance.Title": "显示距离",
   "Config.ShowDistance.desc": "提示文字是否显示距离",
+  "Config.ShaftGeneratableIndicator.Title": "显示可生成竖井提示",
+  "Config.ShaftGeneratableIndicator.Desc": "在文字提示上方显示当前是否可生成竖井。",
 
   "String.Top": "上方", 
   "String.Left": "左边", 
@@ -40,5 +42,7 @@
 
   "String.StairFound": "发现梯子！",
   "String.ShaftFound": "发现竖井",
-  "String.Tiles": "格"
+  "String.Tiles": "格",
+  "String.ShaftGeneratable": "可生成竖井",
+  "String.ShaftNotGeneratable": "不可生成竖井"
 }

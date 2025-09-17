@@ -13,4 +13,5 @@ internal class ModConfig
     public float TextScale { get; set; } = 1.0f;
     public bool ShowDirection { get; set; } = true;
     public bool ShowDistance { get; set; } = true;
+    public bool ShaftGeneratableIndicator { get; set; }
 }
