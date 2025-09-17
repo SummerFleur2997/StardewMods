@@ -33,6 +33,7 @@ body:
         - Better Retaining Soils
         - Bigger Containers
         - Convenient Chests
+        - Skull Cavern Floor Capping
         - Why Not Jump In That Mine Shaft
     validations:
       required: true

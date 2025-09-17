@@ -1,6 +1,11 @@
-﻿using JetBrains.Annotations;
+﻿using System;
+using System.Collections.Generic;
+using System.Reflection;
+using System.Reflection.Emit;
+using HarmonyLib;
+using JetBrains.Annotations;
 using StardewModdingAPI;
-using StardewModdingAPI.Events;
+using StardewValley.Locations;
 
 namespace SkullCavernFloorCapping;
 
@@ -14,39 +19,67 @@ internal class ModEntry : Mod
 
     #region Properties
 
-    public static IManifest Manifest { get; private set; }
     private static IMonitor ModMonitor { get; set; }
-    public static void Log(string s, LogLevel l = LogLevel.Trace) => ModMonitor.Log(s, l);
+    private static void Log(string s, LogLevel l = LogLevel.Trace) => ModMonitor.Log(s, l);
 
     #endregion
 
     public override void Entry(IModHelper helper)
     {
-        Manifest = ModManifest;
         ModMonitor = Monitor;
-
-        helper.Events.GameLoop.SaveLoaded += OnGameLoaded;
-        helper.Events.GameLoop.ReturnedToTitle += OnGameUnload;
+        var harmony = new Harmony(ModManifest.UniqueID);
+        RegisterHarmonyPatches(harmony);
     }
 
-    /****
-     ** 事件处理函数
-     ** Event handlers
-     ****/
-
-    #region Event handlers
+    private static void RegisterHarmonyPatches(Harmony harmony)
+    {
+        try
+        {
+            var original = AccessTools.Method(typeof(MineShaft), nameof(MineShaft.enterMineShaft));
+            var transpiler = AccessTools.Method(typeof(ModEntry), nameof(Patch_enterMineShaft));
+            harmony.Patch(original: original, transpiler: new HarmonyMethod(transpiler));
+            Log("Patched MineShaft.enterMineShaft successfully.");
+        }
+        catch (Exception ex)
+        {
+            Log($"Failed to patch method: {ex.Message}", LogLevel.Error);
+        }
+    }
 
     /// <summary>
-    /// 在游戏加载时配置补丁。
-    /// Read configs when loading the game.
+    /// Patches <see cref="StardewValley.Locations.MineShaft.enterMineShaft"/> method.
+    /// 确保不跳过 200 层和 300 层的宝箱层。
+    /// Guarantee for the level 200 and 300 treasure room.
     /// </summary>
-    private static void OnGameLoaded(object sender, SaveLoadedEventArgs e) => ForceLanding.Activate();
+    /// <returns>List of transpiler</returns>
+    public static IEnumerable<CodeInstruction> Patch_enterMineShaft(IEnumerable<CodeInstruction> instructions)
+    {
+        var codes = new List<CodeInstruction>(instructions);
+        var index = codes.FindIndex(c => 
+            c.opcode == OpCodes.Stfld && c.operand is FieldInfo { Name: "lastLevelsDownFallen" });
 
-    /// <summary>
-    /// 在返回游戏标题界面时卸载模组。
-    /// Unload modules when back to the title page.
-    /// </summary>
-    private static void OnGameUnload(object sender, ReturnedToTitleEventArgs e) => ForceLanding.Deactivate();
+        if (index == -1) return codes;
+        
+        var injection = new List<CodeInstruction>
+        {
+            new (OpCodes.Ldarg_0),
+            new (OpCodes.Ldloca_S, 0),
+            new (OpCodes.Call, AccessTools.Method(typeof(ModEntry), nameof(AdjustLevelsDown)))
+        };
 
-    #endregion
+        codes.InsertRange(index - 1, injection);
+        return codes;
+    }
+
+    public static void AdjustLevelsDown(MineShaft __instance, ref int levelsDown)
+    {
+        if (__instance.mineLevel < 320 && __instance.mineLevel + levelsDown > 320)
+        {
+            levelsDown = 320 - __instance.mineLevel;
+        }
+        if (__instance.mineLevel < 420 && __instance.mineLevel + levelsDown > 420)
+        {
+            levelsDown = 420 - __instance.mineLevel;
+        }
+    }
 }
