@@ -4,11 +4,27 @@ English | [简体中文](README_zh.md)
 
 A simple mod, enhance your mining experience in the mine and skull cavern.
 
-Imagine that you are fighting in the skull cavern, and you find a mine shaft, but you want to dig some more valuable minerals, then you forgot the mine shaft and go downstairs via a stair. Do you feel annoyed somehow? Well, this mod can help you say goodbye to these circumstances!
+Imagine that you are fighting in the skull cavern, and you find a mine shaft, but you want to dig 
+some more valuable minerals, then you forgot the mine shaft and go downstairs via a stair. Do you 
+feel annoyed somehow? Well, this mod can help you say goodbye to these circumstances!
 
-This mod adds a confirmation prompt before taking the stairs down when a shaft exists; two indicators point at the nearest stair and shaft if available; and a configurable text prompter to show specific information. They can significantly improve your mining experience! 
+This mod adds a confirmation prompt before taking the stairs down when a shaft exists; two 
+indicators point at the nearest stair and shaft if available; and a configurable text prompter to 
+show specific information. They can significantly improve your mining experience! 
 
 ## Update logs
+
+### 1.0.1
+
+**New Features**
+
+- Add a new text prompt to indicate whether shafts and stairs can spawn at 
+current level. Mainly designed for advanced players.
+
+**Optimizations**
+
+- Slightly improve the algorithm. 
+- Use common fonts without shadows to improve readability.
 
 ### 1.0.0
 

@@ -1,7 +1,7 @@
 ﻿{
     "Name": "Why Not Jump in That Shaft",
     "Author": "SummerFleur, Jyo",
-    "Version": "1.0.1-alpha",
+    "Version": "1.0.1",
     "Description": "Prompt you that there is a shaft in the map when you choose to go downstairs by a stair.",
     "UniqueID": "SummerFleurAndJyo.WhyNotJumpInThatMineShaft",
     "MinimumApiVersion": "4.0.0",
