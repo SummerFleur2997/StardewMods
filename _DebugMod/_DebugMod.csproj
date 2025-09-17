@@ -4,15 +4,14 @@
         <DeployModFolderName>$(MSBuildProjectName)</DeployModFolderName>
         <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
         <Authors>SummerFleur</Authors>
-        <EnableHarmony>true</EnableHarmony>
     </PropertyGroup>
     <PropertyGroup>
         <OutputType>Library</OutputType>
-        <AssemblyTitle>WhyNotJumpInThatMineShaft</AssemblyTitle>
-        <Product>WhyNotJumpInThatMineShaft</Product>
+        <AssemblyTitle>Debug</AssemblyTitle>
+        <Product>Debug</Product>
         <Copyright>Copyright © SummerFleur 2025</Copyright>
-        <AssemblyVersion>1.0.0</AssemblyVersion>
-        <FileVersion>1.0.0</FileVersion>
+        <AssemblyVersion>7.7.7</AssemblyVersion>
+        <FileVersion>7.7.7</FileVersion>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DebugSymbols>true</DebugSymbols>
@@ -20,12 +19,11 @@
         <PathMap>$(SolutionDir)=.</PathMap>
     </PropertyGroup>
     <PropertyGroup>
-        <ModFolderName>WhyNotJumpInThatMineShaft</ModFolderName>
+        <ModFolderName>Debug</ModFolderName>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations"/>
         <PackageReference Include="Pathoschild.Stardew.ModBuildConfig"/>
-        <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder"/>
     </ItemGroup>
     <Import Project="..\Common\Common.projitems" Label="Shared"/>
     <ItemGroup>
