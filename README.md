@@ -6,14 +6,14 @@
 * **Better Retaining Soils** <small>([Nexus](https://www.nexusmods.com/stardewvalley/mods/36007) | [source](BetterRetainingSoils))</small>  
   _Enhance and optimize retaining-soil's mechanic to make them able 
   to keep the crop watered for multiple days._
-* **Bigger Containers** <small>([Nexus](https://www.nexusmods.com/stardewvalley/mods/32558) | [source](BiggerContainers))</small>  
+* **Bigger Containers** <small>([Nexus](https://www.nexusmods.com/stardewvalley/mods/35905) | [source](BiggerContainers))</small>  
   _A small mod helps expand the capacity of your fridges and Junimo 
   chests._
 * **Convenient Chests** <small>([Nexus](https://www.nexusmods.com/stardewvalley/mods/32558) | [source](ConvenientChests))</small>  
   _Makes your life easier: Add a category menu to specify what should
   be contained in this chest, quick stash items to nearby chests,
   crafting and cooking from nearby chests._
-* **Skull Cavern Floor Capping** <small>([Nexus](https://www.nexusmods.com/stardewvalley/mods/37452) | [source](SkullCavernFloorCapping))</small>  
+* **Skull Cavern Floor Capping** <small>([Nexus](https://www.nexusmods.com/stardewvalley/mods/37716) | [source](SkullCavernFloorCapping))</small>  
   _Add a new rule to prevent the treasure rooms in Skull Cavern level 200 and 300 
   to be skipped when entering a mine shaft._
 * **Why Not Jump In That Mine Shaft** <small>([Nexus](https://www.nexusmods.com/stardewvalley/mods/37452) | [source](WhyNotJumpInThatMineShaft))</small>  
