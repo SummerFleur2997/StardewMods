@@ -1,4 +1,5 @@
-MIT License
+MIT License with an additional restriction prohibiting distribution on
+specific websites
 
 Copyright (c) 2025 SummerFleur
 
@@ -19,3 +20,38 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+Additional Clause: Restriction on Specific Distribution Platforms
+
+Notwithstanding the broad permissions granted by the MIT License herein, the 
+copyright holder imposes the following additional restriction on any 
+Derivative Work (as defined below) that incorporates the source code of this 
+software mod ("Original Work"):
+
+1. Restriction. You are expressly prohibited from distributing, publishing, 
+or otherwise making available any Derivative Work on the website known as 
+"玩家动力" (currently accessible at https://www.wanjiadongli.com), or any of 
+its subdomains or successor domains, herein referred to as the "玩家动力".
+
+2. Definition of Derivative Work. For the purposes of this clause, a 
+"Derivative Work" shall mean any work that is based upon, derived from, or 
+incorporates all or part of the Original Work, in source code or object code 
+form.
+
+3. **Scope**. This restriction applies only to the distribution of Derivative 
+Works and is limited to the aforementioned "玩家动力". Distribution through any 
+other channel, platform, or website remains governed solely by the terms of 
+the MIT License. This restriction does not apply to the distribution of the 
+Original Work in its original, unmodified form.
+
+4. Written Waiver. The copyright holder may, at their sole discretion, grant 
+a written waiver to this restriction for a specific Derivative Work. Requests 
+for such a waiver must be directed to summerfleur@qq.com.
+
+5. Severability. If any provision of this additional restriction is held to be 
+invalid, illegal, or unenforceable by a court of competent jurisdiction, the 
+remaining provisions of the entire license (including the core MIT License) 
+shall remain in full force and effect to the maximum extent permitted by law.
+
+This additional clause is an integral part of the licensing terms governing 
+the use of the Original Work.
