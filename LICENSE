@@ -24,29 +24,36 @@ SOFTWARE.
 Additional Clause: Restriction on Specific Distribution Platforms
 
 Notwithstanding the broad permissions granted by the MIT License herein, the 
-copyright holder imposes the following additional restriction on any 
-Derivative Work (as defined below) that incorporates the source code of this 
-software mod ("Original Work"):
+copyright holder imposes the following additional restriction on the Original 
+Work and any Derivative Work (as defined below) that incorporates the source 
+code of this software mod ("Original Work"):
 
 1. Restriction. You are expressly prohibited from distributing, publishing, 
-or otherwise making available any Derivative Work on the website known as 
-"玩家动力" (currently accessible at https://www.wanjiadongli.com), or any of 
-its subdomains or successor domains, herein referred to as the "玩家动力".
+or otherwise making available any Original and Derivative Work on the website 
+known as "玩家动力" (currently accessible at https://www.wanjiadongli.com), or 
+any of its subdomains or successor domains, herein referred to as the 
+"Restricted Platform".
 
-2. Definition of Derivative Work. For the purposes of this clause, a 
-"Derivative Work" shall mean any work that is based upon, derived from, or 
-incorporates all or part of the Original Work, in source code or object code 
-form.
+2. Definition of Derivative Work and Original Work. For the purposes of this 
+clause:
+ a) "Derivative Work" shall mean any work that is based upon, derived from, 
+ or incorporates all or part of the Original Work, in source code or object 
+ code form.
+ b) "Original Work" shall mean the work in its pristine, unmodified form as 
+ published by the copyright holder, including any binaries compiled from the 
+ source code in this repository and any official versions released by the 
+ copyright holder on its sole and exclusive official distribution platform, 
+ namely "Nexus Mods" (currently accessible at https://www.nexusmods.com).
 
-3. **Scope**. This restriction applies only to the distribution of Derivative 
-Works and is limited to the aforementioned "玩家动力". Distribution through any 
-other channel, platform, or website remains governed solely by the terms of 
-the MIT License. This restriction does not apply to the distribution of the 
-Original Work in its original, unmodified form.
+3. Scope. This restriction applies to the distribution of Original Work and 
+Derivative Works, and is limited to the aforementioned Restricted Platform. 
+Distribution through any other channel, platform, or website remains governed 
+solely by the terms of the MIT License. 
 
 4. Written Waiver. The copyright holder may, at their sole discretion, grant 
-a written waiver to this restriction for a specific Derivative Work. Requests 
-for such a waiver must be directed to summerfleur@qq.com.
+a written waiver to this restriction for any Original Works or a specific 
+Derivative Work. Requests for such a waiver must be directed to 
+summerfleur2997@outlook.com.
 
 5. Severability. If any provision of this additional restriction is held to be 
 invalid, illegal, or unenforceable by a court of competent jurisdiction, the 
