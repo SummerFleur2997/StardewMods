@@ -20,14 +20,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "_DebugMod", "_DebugMod\_Deb
 EndProject
 
 Global
-    GlobalSection(SharedMSBuildProjectFiles) = preSolution
-        Common\Common.projitems*{D834CECD-6D22-46D8-A5A2-5B22F1017276}*SharedItemsImports = 5
-        Common\Common.projitems*{42B09115-667F-45F5-9262-F738D57FDF14}*SharedItemsImports = 5
-        Common\Common.projitems*{04E30128-3AC5-4D64-862D-51B73A844D6B}*SharedItemsImports = 5
-        Common\Common.projitems*{4510AB5A-755B-4828-8198-B2975F8203A2}*SharedItemsImports = 13
-        UI\UI.projitems*{D834CECD-6D22-46D8-A5A2-5B22F1017276}*SharedItemsImports = 5
-        UI\UI.projitems*{6A4D86FA-821F-441F-A885-90F1D2C3E63C}*SharedItemsImports = 13
-    EndGlobalSection
+	GlobalSection(SharedMSBuildProjectFiles) = preSolution
+		Common\Common.projitems*{D834CECD-6D22-46D8-A5A2-5B22F1017276}*SharedItemsImports = 5
+		Common\Common.projitems*{42B09115-667F-45F5-9262-F738D57FDF14}*SharedItemsImports = 5
+		Common\Common.projitems*{04E30128-3AC5-4D64-862D-51B73A844D6B}*SharedItemsImports = 5
+		Common\Common.projitems*{4510AB5A-755B-4828-8198-B2975F8203A2}*SharedItemsImports = 13
+		UI\UI.projitems*{D834CECD-6D22-46D8-A5A2-5B22F1017276}*SharedItemsImports = 5
+		UI\UI.projitems*{6A4D86FA-821F-441F-A885-90F1D2C3E63C}*SharedItemsImports = 13
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU

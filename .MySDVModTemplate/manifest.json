@@ -1,0 +1,12 @@
+﻿{
+    "Name": "ModName",                  // TODO
+    "Author": "SummerFleur",
+    "Version": "1.0.0",
+    "Description": "Description",       // TODO
+    "UniqueID": "SummerFleur.ModName",  // TODO
+    "MinimumApiVersion": "4.0.0",
+    "EntryDll": "ModName.dll",          // TODO
+    "UpdateKeys": [
+        "Nexus:???"                     // TODO
+    ]
+}
