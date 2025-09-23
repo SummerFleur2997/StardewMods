@@ -19,7 +19,7 @@ internal static class PatchOtherMods
     public static void Patch_DetailRenderers(TerrainFeature? terrain, List<string> entries, bool __result)
     {
         // 若当前地块不是耕地，或者当前耕地没有使用保湿土壤，直接返回。
-        // When the terrian is not a hoedirt, or this dirt is not using a retaining soil, return
+        // When the terrain is not a hoedirt, or this dirt is not using a retaining soil, return
         if (!__result || terrain is not HoeDirt hoeDirt) return;
         // 添加自定义文本。
         // Add custom strings.
@@ -47,7 +47,7 @@ internal static class PatchOtherMods
             var originalM1 = AccessTools.Method(type, "CropRender");
             var postfixM1 = AccessTools.Method(typeof(PatchOtherMods), nameof(Patch_DetailRenderers));
             harmony.Patch(original: originalM1, postfix: new HarmonyMethod(postfixM1));
-            ModEntry.Log("Patched UIInfoSuite2 successfully.", LogLevel.Debug);
+            ModEntry.Log("Patched UIInfoSuite2 successfully.");
         }
         catch (Exception ex)
         {
@@ -64,7 +64,7 @@ internal static class PatchOtherMods
             var originalM2 = AccessTools.Method(type, "WaterTile");
             var postfixM2 = AccessTools.Method(typeof(PatchOtherMods), nameof(Patch_WaterTile));
             harmony.Patch(original: originalM2, postfix: new HarmonyMethod(postfixM2));
-            ModEntry.Log("Patched BetterSprinklersPlus successfully.", LogLevel.Debug);
+            ModEntry.Log("Patched BetterSprinklersPlus successfully.");
         }
         catch (Exception ex)
         {

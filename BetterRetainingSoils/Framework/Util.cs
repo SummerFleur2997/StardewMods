@@ -5,7 +5,7 @@ namespace BetterRetainingSoils.Framework;
 public static class Util
 {
     /// <summary>
-    /// 将已游玩的游戏天数转化为具体日期。 Convert the number of days played to a .
+    /// 将已游玩的游戏天数转化为具体日期。 Convert the number of days played to a specific date.
     /// </summary>
     /// <returns>转化得到的具体日期。 A specific date. Format like: Y1,Summer,22</returns>
     /// <exception cref="DataException">How did you trigger that?</exception>
@@ -30,8 +30,8 @@ public static class Util
     /// </summary>
     /// <param name="date">Format like: Y1,Summer,22</param>
     /// <returns>当前已游玩的天数，应为一个大于 0 的整数。若返回 0 则代表解析错误。
-    /// The number of days played, should be a integer that greater than 0.
-    /// If an error occured when phase, return 0.</returns>
+    /// The number of days played, should be an integer that greater than 0.
+    /// If an error occured when phasing, return 0.</returns>
     /// <exception cref="DataException">季节名称错误。 The name of the season is incorrect.</exception>
     public static uint ConvertToDaysPlayed(string date)
     {

@@ -1,14 +1,13 @@
 ﻿using System;
-using BetterRetainingSoils.API;
 using StardewValley.TerrainFeatures;
 
 namespace BetterRetainingSoils.DirtService;
 
 /// <summary>
 /// 耕地的额外属性，包含由本模组定义的状态。
-/// The extra data associated with a dirt, contains the status of this dirt defined by this.
+/// The extra data associated with a hoedirt, contains the status of this dirt defined by this.
 /// </summary>
-public class HoeDirtData : IHoeDirtData
+public class HoeDirtData
 {
     private readonly WeakReference<HoeDirt> _dirtRef;
 
@@ -32,7 +31,7 @@ public class HoeDirtData : IHoeDirtData
 
     /// <summary>
     /// 当前耕地今天是否手动浇过水？例如使用水壶或洒水器浇水。
-    /// Whether the dirt is watered manual todey. e.g. use the watercan or a sprinkler
+    /// Whether the dirt is watered manual today. e.g., use the watering can or a sprinkler
     /// </summary>
     public bool IsWateredToday { get; set; }
 
@@ -85,7 +84,7 @@ public class HoeDirtData : IHoeDirtData
     {
         if (!_dirtRef.TryGetTarget(out var dirt) || GetMaxWaterRemainDays() <= 0 || WaterRemainDays <= 0) return;
         // 若保湿土壤还能维持水分，减少水分维持时间。
-        // If a retaining soil can still remaining water, reduce moisture retention duration.
+        // If a retaining soil can still remain water, reduce moisture retention duration.
         if (--WaterRemainDays > 0) dirt.state.Value = 1;
         IsWateredToday = false;
     }

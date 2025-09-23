@@ -12,20 +12,20 @@ namespace BetterRetainingSoils.Framework.SaveService;
 
 /// <summary>
 /// 模组存档数据的管理器，用于管理存档数据，加载保存模组存档数据。
-/// The manager responsible for handling the mod's save data, saving and loading the mod state.
+/// The manager responsible for handling the mod's savedata, saving and loading the mod state.
 /// </summary>
 internal static class SaveManager
 {
     /// <summary>
     /// 存档数据的存储路径，位于 mod 文件夹下的 savedata 文件夹中。
-    /// The path to the mod's save data file, relative to the mod folder.
+    /// The path to the mod's savedata file, relative to the mod folder.
     /// </summary>
     private static string SavePath(string date)
         => Path.Combine("savedata", Constants.SaveFolderName??"error", $"{date}.json");
 
     /// <summary>
     /// 存档数据的绝对路径。
-    /// The absolute path to the mod's save data file.
+    /// The absolute path to the mod's savedata file.
     /// </summary>
     private static string AbsoluteSavePath(string date)
         => Path.Combine(ModEntry.ModHelper.DirectoryPath, SavePath(date));
@@ -128,7 +128,7 @@ internal static class SaveManager
         try
         {
             // 获取所有 JSON 文件，如果文件数小于等于 14，无需清理
-            // Get all json files, If file count <= 14, no cleanup needed
+            // Get all JSON files, If the file counts <= 14, no cleanup needed
             var files = Directory.GetFiles(dirPath, "*.json");
             if (files.Length <= 14) return;
 

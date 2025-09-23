@@ -51,7 +51,7 @@ public static class HoeDirtManager
     /// 给土壤浇水了。例如洒水器，玩家的配偶等等。
     /// Since the soil water retention probability has been set to 0 in
     /// Patch_GetFertilizerWaterRetentionChance, and this method executes
-    /// after DayStarted, it means that when this method runs, if the current
+    /// after DayStarted, it means that when this method calls, if the current
     /// dirt is watered, it indicates some "external factor" has watered the
     /// soil. For example, a sprinkler or the player's spouse, etc.
     /// </remarks>

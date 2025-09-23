@@ -1,8 +1,8 @@
 ﻿{
-    "String.WaterRemain": "Water can remain {{days}} days.",
+    "String.WaterRemain": "Water can last for {{days}} days.",
     "Config.WaterMaintain": "Water maintaining days",
     "Config.BasicSoilRemainDays.Title": "Basic Retaining Soil",
-    "Config.BasicSoilRemainDays.desc": "How many days a Basic Retaining Soil can maintain moisture.",
+    "Config.BasicSoilRemainDays.desc": "How many days a Basic Retaining Soil can keep the soil moist.",
     "Config.QualitySoilRemainDays.Title": "Quality Retaining Soil",
-    "Config.QualitySoilRemainDays.desc": "How many days a Quality Retaining Soil can maintain moisture."
+    "Config.QualitySoilRemainDays.desc": "How many days a Quality Retaining Soil can keep the soil moist."
 }
