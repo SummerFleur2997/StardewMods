@@ -1,18 +1,11 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <DeployModFolderName>$(MSBuildProjectName)</DeployModFolderName>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <Authors>SummerFleur</Authors>
-        <!-- <EnableHarmony>true</EnableHarmony> -->
-    </PropertyGroup>
-    <PropertyGroup>
-        <OutputType>Library</OutputType>
-        <AssemblyTitle>ModName</AssemblyTitle>      <!-- TODO -->
-        <Product>ModName</Product>                  <!-- TODO -->
-        <Copyright>Copyright © SummerFleur 2025</Copyright>
+        <AssemblyTitle>ModName</AssemblyTitle>
+        <ModFolderName>ModName</ModFolderName>
+        <Product>ModName</Product>
         <AssemblyVersion>1.0.0</AssemblyVersion>
         <FileVersion>1.0.0</FileVersion>
+        <!-- <EnableHarmony>true</EnableHarmony> TODO -->
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DebugSymbols>true</DebugSymbols>
@@ -20,7 +13,6 @@
         <PathMap>$(SolutionDir)=.</PathMap>
     </PropertyGroup>
     <PropertyGroup>
-        <ModFolderName>ModName</ModFolderName>      <!-- TODO -->
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations"/>

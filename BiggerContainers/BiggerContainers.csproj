@@ -1,26 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <DeployModFolderName>$(MSBuildProjectName)</DeployModFolderName>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <Authors>SummerFleur</Authors>
-        <EnableHarmony>true</EnableHarmony>
-    </PropertyGroup>
-    <PropertyGroup>
-        <OutputType>Library</OutputType>
         <AssemblyTitle>BiggerContainers</AssemblyTitle>
+        <ModFolderName>BiggerContainers</ModFolderName>
         <Product>BiggerContainers</Product>
-        <Copyright>Copyright © SummerFleur 2025</Copyright>
         <AssemblyVersion>1.1.1</AssemblyVersion>
         <FileVersion>1.1.1</FileVersion>
+        <EnableHarmony>true</EnableHarmony>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DebugSymbols>true</DebugSymbols>
         <DebugType>embedded</DebugType>
         <PathMap>$(SolutionDir)=.</PathMap>
-    </PropertyGroup>
-    <PropertyGroup>
-        <ModFolderName>BiggerContainers</ModFolderName>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations"/>

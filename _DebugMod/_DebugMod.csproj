@@ -1,15 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <DeployModFolderName>$(MSBuildProjectName)</DeployModFolderName>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <Authors>SummerFleur</Authors>
-    </PropertyGroup>
-    <PropertyGroup>
-        <OutputType>Library</OutputType>
         <AssemblyTitle>Debug</AssemblyTitle>
+        <ModFolderName>Debug</ModFolderName>
         <Product>Debug</Product>
-        <Copyright>Copyright © SummerFleur 2025</Copyright>
         <AssemblyVersion>7.7.7</AssemblyVersion>
         <FileVersion>7.7.7</FileVersion>
     </PropertyGroup>
@@ -17,9 +10,6 @@
         <DebugSymbols>true</DebugSymbols>
         <DebugType>embedded</DebugType>
         <PathMap>$(SolutionDir)=.</PathMap>
-    </PropertyGroup>
-    <PropertyGroup>
-        <ModFolderName>Debug</ModFolderName>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations"/>

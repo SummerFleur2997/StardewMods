@@ -1,26 +1,16 @@
 <Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <DeployModFolderName>$(MSBuildProjectName)</DeployModFolderName>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <Authors>SummerFleur</Authors>
-        <EnableHarmony>true</EnableHarmony>
-    </PropertyGroup>
-    <PropertyGroup>
-        <OutputType>Library</OutputType>
         <AssemblyTitle>BetterRetainingSoils</AssemblyTitle>
+        <ModFolderName>BetterRetainingSoils</ModFolderName>
         <Product>BetterRetainingSoils</Product>
-        <Copyright>Copyright © SummerFleur 2025</Copyright>
         <AssemblyVersion>1.0.0</AssemblyVersion>
         <FileVersion>1.0.0</FileVersion>
+        <EnableHarmony>true</EnableHarmony>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DebugSymbols>true</DebugSymbols>
         <DebugType>embedded</DebugType>
         <PathMap>$(SolutionDir)=.</PathMap>
-    </PropertyGroup>
-    <PropertyGroup>
-        <ModFolderName>BetterRetainingSoils</ModFolderName>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations"/>

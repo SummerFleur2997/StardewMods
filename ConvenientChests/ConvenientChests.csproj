@@ -1,15 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net6.0</TargetFramework>
-        <DeployModFolderName>$(MSBuildProjectName)</DeployModFolderName>
-        <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-        <Authors>SummerFleur</Authors>
-    </PropertyGroup>
-    <PropertyGroup>
-        <OutputType>Library</OutputType>
         <AssemblyTitle>ConvenientChests</AssemblyTitle>
+        <ModFolderName>ConvenientChestsUnofficial</ModFolderName>
         <Product>ConvenientChests</Product>
-        <Copyright>Copyright © SummerFleur 2025</Copyright>
         <AssemblyVersion>1.8.4</AssemblyVersion>
         <FileVersion>1.8.4</FileVersion>
     </PropertyGroup>
@@ -17,9 +10,6 @@
         <DebugSymbols>true</DebugSymbols>
         <DebugType>embedded</DebugType>
         <PathMap>$(SolutionDir)=.</PathMap>
-    </PropertyGroup>
-    <PropertyGroup>
-        <ModFolderName>ConvenientChestsUnofficial</ModFolderName>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations"/>
