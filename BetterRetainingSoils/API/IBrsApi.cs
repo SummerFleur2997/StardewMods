@@ -4,6 +4,6 @@ namespace BetterRetainingSoils.API;
 
 public interface IBrsApi
 {
-    IHoeDirtData GetHoeDirtData(HoeDirt hoeDirt);
+    bool GetIsWateredToday(HoeDirt hoeDirt);
     int GetWaterRemainDays(HoeDirt hoeDirt);
 }
