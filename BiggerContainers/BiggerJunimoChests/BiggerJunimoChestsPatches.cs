@@ -5,8 +5,6 @@ namespace BiggerContainers.BiggerJunimoChests;
 
 internal static class BiggerJunimoChestsPatches
 {
-    public static bool ShouldPatchCCChestOverlay;
-
     /// <summary>
     /// Patches <see cref="StardewValley.Objects.Chest.GetActualCapacity"/> method.
     /// 如果箱子是一个有效的祝尼魔箱，并且相应的配置被启用，则修改其容量。If the chest is a valid junimo chest 
@@ -18,7 +16,6 @@ internal static class BiggerJunimoChestsPatches
     /// Whether it needs to be proceeded with the original method.</returns>
     public static bool Patch_GetActualCapacity(Chest __instance, ref int __result)
     {
-        ShouldPatchCCChestOverlay = false;
         if (__instance.MyChestType() is not ChestTypes.JunimoChest) return true;
         if (!ModEntry.JunimoChestsModule.IsActive) return true;
 
@@ -28,7 +25,6 @@ internal static class BiggerJunimoChestsPatches
             2 => 70,
             _ => 9
         };
-        ShouldPatchCCChestOverlay = true;
         return false;
     }
 }

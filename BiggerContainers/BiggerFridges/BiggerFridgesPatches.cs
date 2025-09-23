@@ -5,8 +5,6 @@ namespace BiggerContainers.BiggerFridges;
 
 internal static class BiggerFridgesPatches
 {
-    public static bool ShouldPatchCCChestOverlay;
-
     /// <summary>
     /// Patches <see cref="StardewValley.Objects.Chest.GetActualCapacity"/> method.
     /// 如果箱子是一个有效的冰箱，并且相应的配置被启用，则修改其容量。If the chest is a valid fridge 
@@ -18,7 +16,6 @@ internal static class BiggerFridgesPatches
     /// Whether it needs to be proceeded with the original method.</returns>
     public static bool Patch_GetActualCapacity(Chest __instance, ref int __result)
     {
-        ShouldPatchCCChestOverlay = false;
         if (__instance.MyChestType() is not (ChestTypes.Fridge or ChestTypes.MiniFridge)) return true;
         if (!ModEntry.FridgesModule.IsActive) return true;
 
@@ -27,7 +24,6 @@ internal static class BiggerFridgesPatches
             case ChestTypes.Fridge when ModEntry.Config.BiggerFridge:
             case ChestTypes.MiniFridge when ModEntry.Config.BiggerMiniFridge:
                 __result = 70;
-                ShouldPatchCCChestOverlay = true;
                 return false;
             default:
                 return true;
