@@ -3,9 +3,16 @@
 namespace BetterRetainingSoils.Framework.MultiplayerService;
 
 [Serializable]
-internal struct SyncData(string locationName, int x, int y)
+internal struct SyncData
 {
-    public string LocationName { get; set; } = locationName;
-    public int X { get; set; } = x;
-    public int Y { get; set; } = y;
+    public string LocationName;
+    public int X;
+    public int Y;
+
+    public SyncData(string locationName, int x, int y)
+    {
+        LocationName = locationName;
+        X = x;
+        Y = y;
+    }
 }

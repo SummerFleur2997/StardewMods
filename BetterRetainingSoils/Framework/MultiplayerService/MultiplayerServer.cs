@@ -36,7 +36,8 @@ internal class MultiplayerServer : IModule
     {
         var data = new SyncData(Game1.currentLocation.Name, (int)dirt.Tile.X, (int)dirt.Tile.Y);
         MultiplayerHelper.SendMessage(data, "MultiplayerWateringSync",
-            [ModEntry.Manifest.UniqueID], [Game1.MasterPlayer.UniqueMultiplayerID]);
+            new[] {ModEntry.Manifest.UniqueID}, 
+            new[] {Game1.MasterPlayer.UniqueMultiplayerID});
     }
 
     private static void ReceiveDirtData(SyncData data)
@@ -70,17 +71,16 @@ internal class MultiplayerServer : IModule
         }
     }
 
+    /// <summary>
+    /// When the host receives the "MultiplayerWateringSync" message from other players.
+    /// 房主收到其他玩家的 MultiplayerWateringSync 消息后。
+    /// </summary>
     private static void OnMessageReceived(object sender, ModMessageReceivedEventArgs e)
     {
-        switch (e.Type)
-        {
-            // When the host receives the "MultiplayerWateringSync" message from other players
-            // 房主收到其他玩家的 MultiplayerWateringSync 消息后
-            case "MultiplayerWateringSync":
-                var data = e.ReadAs<SyncData>();
-                ModEntry.Log($"Received watering data from {e.FromPlayerID}.", LogLevel.Info);
-                ReceiveDirtData(data);
-                break;
-        }
+        if (e.Type != "MultiplayerWateringSync") return;
+
+        var data = e.ReadAs<SyncData>();
+        ModEntry.Log($"Received watering data from {e.FromPlayerID}.", LogLevel.Info);
+        ReceiveDirtData(data);
     }
 }

@@ -9,8 +9,8 @@ namespace WhyNotJumpInThatMineShaft.Framework;
 
 public static class MapScanner
 {
-    public static readonly List<Point> Shafts = [];
-    public static readonly List<Point> Stairs = [];
+    public static readonly List<Point> Shafts = new();
+    public static readonly List<Point> Stairs = new();
 
     /// <summary>
     /// Check whether there is a hole in the map.

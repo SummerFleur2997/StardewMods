@@ -11,10 +11,15 @@ namespace ConvenientChests.Framework.InventoryService;
 /// The extra data associated with a player, contains the list of items they locks.
 /// 玩家的额外属性，包含该玩家物品栏锁定的物品列表。
 /// </summary>
-internal class InventoryData(FarmHouse farmHouse)
+internal class InventoryData
 {
-    private readonly WeakReference<FarmHouse> _farmHouseRef = new(farmHouse);
+    private readonly WeakReference<FarmHouse> _farmHouseRef;
     public HashSet<ItemKey> LockedItemKinds { get; set; } = new();
+
+    public InventoryData(FarmHouse farmHouse)
+    {
+        _farmHouseRef = new WeakReference<FarmHouse>(farmHouse);
+    }
 
     /// <summary>
     /// Set this player's inventory to lock the specified kind of item.

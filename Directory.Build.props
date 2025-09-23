@@ -6,7 +6,7 @@
         <RepositoryUrl>https://github.com/SummerFleur2997/StardewMods</RepositoryUrl>
         <RepositoryType>git</RepositoryType>
         <TargetFramework>net6.0</TargetFramework>
-        <LangVersion>latest</LangVersion>
+        <LangVersion>10</LangVersion>
         <Nullable>disable</Nullable>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <ModZipPath Condition="'$(SolutionDir)' != ''">$(SolutionDir)\_releases</ModZipPath>

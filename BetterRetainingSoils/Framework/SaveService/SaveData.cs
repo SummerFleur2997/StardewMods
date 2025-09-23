@@ -21,8 +21,14 @@ internal class SaveData
 }
 
 [Serializable]
-internal struct DirtData(HoeDirt hoeDirt)
+internal struct DirtData
 {
-    public Vector2 Tile { get; set; } = hoeDirt.Tile;
-    public int Days { get; set; } = hoeDirt.GetHoeDirtData().WaterRemainDays;
+    public Vector2 Tile { get; set; }
+    public int Days { get; set; }
+
+    public DirtData(HoeDirt hoeDirt)
+    {
+        Tile = hoeDirt.Tile;
+        Days = hoeDirt.GetHoeDirtData().WaterRemainDays;
+    }
 }
