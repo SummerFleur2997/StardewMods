@@ -63,6 +63,16 @@ internal static class GenericModConfigMenuIntegration
             setValue: value => getConfig().StairIndicator = value
         );
 
+        // 【选项】显示三花猫雕像指示器
+        // [Checkbox] Show calico statue indicator
+        api.AddBoolOption(
+            manifest,
+            name: I18n.Config_StatueIndicator_Title,
+            tooltip: I18n.Config_StatueIndicator_Desc,
+            getValue: () => getConfig().StatueIndicator,
+            setValue: value => getConfig().StatueIndicator = value
+        );
+
         // 【数值选择条】指示器最小距离
         // [Number bar] Indicator minium distance
         api.AddNumberOption(

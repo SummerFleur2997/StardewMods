@@ -11,6 +11,7 @@ public static class MapScanner
 {
     public static readonly List<Point> Shafts = new();
     public static readonly List<Point> Stairs = new();
+    public static readonly List<Point> Statue = new();
 
     /// <summary>
     /// Check whether there is a hole in the map.
@@ -23,6 +24,12 @@ public static class MapScanner
     /// 检查当前地图上是否存在一个竖井。
     /// </summary>
     public static bool HasAStairHere => Stairs.Count > 0;
+
+    /// <summary>
+    /// Check whether there is a calico statue in the map.
+    /// 检查当前地图上是否存在一个三花猫雕像。
+    /// </summary>
+    public static bool HasAStatueHere => Statue.Count > 0;
 
     /// <summary>
     /// Patches <see cref="StardewValley.Locations.MineShaft.doCreateLadderDown"/> method.
@@ -80,6 +87,9 @@ public static class MapScanner
                     break;
                 case 173:
                     Stairs.Add(new Point(x, y));
+                    break;
+                case 284:
+                    Statue.Add(new Point(x, y));
                     break;
             }
         }

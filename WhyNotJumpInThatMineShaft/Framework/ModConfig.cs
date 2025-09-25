@@ -5,6 +5,7 @@ internal class ModConfig
     public bool ShaftPrompter { get; set; } = true;
     public bool ShaftIndicator { get; set; } = true;
     public bool StairIndicator { get; set; } = true;
+    public bool StatueIndicator { get; set; } = true;
     public int HideDistance { get; set; } = 3;
     public float IndicatorScale { get; set; } = 1;
     public bool TextPrompter { get; set; } = true;

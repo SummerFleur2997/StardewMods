@@ -10,6 +10,8 @@
   "Config.ShaftIndicator.desc": "Show an indicator point to the nearest shaft.",
   "Config.StairIndicator.Title": "Show Stair Indicator",
   "Config.StairIndicator.desc": "Show an indicator point to the nearest stair.",
+  "Config.StatueIndicator.Title": "Show Calico Statue Indicator",
+  "Config.StatueIndicator.desc": "Show an indicator point to the calico statue (if any).",
   "Config.IndicatorMinDistance.Title": "Indicator Minium Distance",
   "Config.IndicatorMinDistance.desc": "Hide the indicator if the distance to the stair/shaft less than this value.",
   "Config.IndicatorScale.Title": "Indicator Scale",

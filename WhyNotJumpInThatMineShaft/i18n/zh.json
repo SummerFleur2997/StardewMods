@@ -10,6 +10,8 @@
   "Config.ShaftIndicator.desc": "显示一个指示器，指向最近的竖井。",
   "Config.StairIndicator.Title": "显示梯子指示器",
   "Config.StairIndicator.desc": "显示一个指示器，指向最近的梯子。",
+  "Config.StatueIndicator.Title": "显示三花猫雕像指示器",
+  "Config.StatueIndicator.desc": "显示一个指示器，指向卡利科三花猫雕像（若有）。",
   "Config.IndicatorMinDistance.Title": "指示器最小距离",
   "Config.IndicatorMinDistance.desc": "当最近的梯子或竖井的距离小于该值时隐藏指示器。",
   "Config.IndicatorScale.Title": "指示器缩放比例",

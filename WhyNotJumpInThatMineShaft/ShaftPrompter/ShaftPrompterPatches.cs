@@ -17,24 +17,34 @@ internal static class ShaftPrompterPatches
     /// Whether it needs to be proceeded with the original method.</returns>
     public static bool Patch_checkAction(Location tileLocation, Farmer who, ref bool __result)
     {
-        if (!ModEntry.Config.ShaftPrompter || !who.IsLocalPlayer) return true;
-
-        // Check whether the tile is a stair, and there are any shafts here
-        // 检查这个地块是否是一个梯子，以及此处是否有竖井
+        if (!who.IsLocalPlayer) return true;
         var location = Game1.currentLocation;
         var index = location.getTileIndexAt(tileLocation, "Buildings", "mine");
-        if (index != 173 || !MapScanner.HasAShaftHere) return true;
 
-        // Generate an option menu
-        // 生成选项菜单
-        var options2 = new[]
+        switch (index)
         {
-            new Response("Go", I18n.Choice_Yes()).SetHotKey(Keys.Y),
-            new Response("Do", I18n.Choice_No()).SetHotKey(Keys.Escape)
-        };
-        location.createQuestionDialogue(I18n.String_Prompt(), options2, "Dungeon");
+            // Check whether the tile is a stair, and there are any shafts here
+            // 检查这个地块是否是一个梯子，以及此处是否有竖井
+            case 173 when ModEntry.Config.ShaftPrompter && MapScanner.HasAShaftHere:
+                // Generate an option menu
+                // 生成选项菜单
+                var options2 = new[]
+                {
+                    new Response("Go", I18n.Choice_Yes()).SetHotKey(Keys.Y),
+                    new Response("Do", I18n.Choice_No()).SetHotKey(Keys.Escape)
+                };
+                location.createQuestionDialogue(I18n.String_Prompt(), options2, "Dungeon");
 
-        __result = true;
-        return false;
+                __result = true;
+                return false;
+
+            // Set field MapScanner.Statue to 0
+            // 将属性 MapScanner.Statue 置为 0
+            case 284 when ModEntry.Config.StatueIndicator:
+                MapScanner.Statue.Clear();
+                return true;
+            default:
+                return true;
+        }
     }
 }

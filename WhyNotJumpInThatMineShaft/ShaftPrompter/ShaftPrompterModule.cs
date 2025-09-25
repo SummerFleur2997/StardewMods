@@ -40,16 +40,23 @@ internal class ShaftPrompterModule : IModule
     /// Get the coordinate of the nearest stair or shaft and its distance
     /// to the player.
     /// </summary>
-    /// <param name="shaft">是否是竖井 Whether this is a shaft</param>
+    /// <param name="feature">是否是竖井 Whether this is a shaft</param>
     /// <returns>洞或梯子的地块坐标与距离 The coordinate and distance</returns>
-    private static (Vector2 Coordinate, float Distance) GetNearestHolePosition(bool shaft)
+    private static (Vector2 Coordinate, float Distance) GetNearestHolePosition(Feature feature)
     {
         var minDistance = float.MaxValue;
         var holeCoordinate = new Vector2();
         var playerPixelPosition = Game1.player.getStandingPosition();
 
         // Validate the data
-        var whichList = shaft ? MapScanner.Shafts : MapScanner.Stairs;
+        var whichList = feature switch
+        {
+            Feature.Shaft => MapScanner.Shafts,
+            Feature.Stair => MapScanner.Stairs,
+            Feature.Statue => MapScanner.Statue,
+            _ => throw new ArgumentOutOfRangeException(feature.ToString())
+        };
+
         if (whichList.Count == 0) return (Vector2.Zero, -1);
 
         // Find the nearest shaft
@@ -130,17 +137,25 @@ internal class ShaftPrompterModule : IModule
         // Draw stair indicator
         if (MapScanner.HasAStairHere)
         {
-            data = GetNearestHolePosition(false);
-            if (config.StairIndicator && data.Distance >= config.HideDistance) 
-                DrawIndicator(data.Coordinate, false);
+            data = GetNearestHolePosition(Feature.Stair);
+            if (config.StairIndicator && data.Distance >= config.HideDistance)
+                DrawIndicator(data.Coordinate, Feature.Stair);
         }
 
         // Draw shaft indicator
         if (MapScanner.HasAShaftHere)
         {
-            data = GetNearestHolePosition(true);
-            if (config.ShaftIndicator && data.Distance >= config.HideDistance) 
-                DrawIndicator(data.Coordinate, true);
+            data = GetNearestHolePosition(Feature.Shaft);
+            if (config.ShaftIndicator && data.Distance >= config.HideDistance)
+                DrawIndicator(data.Coordinate, Feature.Shaft);
+        }
+
+        // Draw calico statue indicator
+        if (MapScanner.HasAStatueHere)
+        {
+            data = GetNearestHolePosition(Feature.Statue);
+            if (config.StatueIndicator && data.Distance >= config.HideDistance)
+                DrawIndicator(data.Coordinate, Feature.Statue);
         }
 
         // Draw text prompt
@@ -205,7 +220,7 @@ internal class ShaftPrompterModule : IModule
             return message;
         }
 
-        void DrawIndicator(Vector2 holeCoordinate, bool shaft)
+        void DrawIndicator(Vector2 holeCoordinate, Feature feature)
         {
             // Calculate the central pixel point of the player and hole
             var fixedPlayerPosition = Game1.player.getStandingPosition() + new Vector2(0, -TileSize / 2f);
@@ -220,17 +235,31 @@ internal class ShaftPrompterModule : IModule
             var scale = Game1.pixelZoom * Game1.options.uiScale * config.IndicatorScale * 
                         (Constants.TargetPlatform == GamePlatform.Android ? 1 / 3f : 1);
 
-            var rectangle = shaft ? Assets.ShaftIndicator : Assets.StairIndicator;
+            var color = feature switch
+            {
+                Feature.Shaft => new Color(221, 97, 251),
+                Feature.Stair => new Color(56, 227, 242),
+                Feature.Statue => new Color(254, 210, 11),
+                _ => throw new ArgumentOutOfRangeException(feature.ToString())
+            };
+
             e.SpriteBatch.Draw(
                 Assets.IndicatorTexture,
                 indicatorPixelPosition * Game1.options.zoomLevel / Game1.options.uiScale,
-                rectangle,
-                Color.White,
+                null,
+                color,
                 rotation,
                 new Vector2(6, 6),
                 scale,
                 SpriteEffects.None,
                 0f);
         }
+    }
+
+    private enum Feature
+    {
+        Shaft,
+        Stair,
+        Statue
     }
 }
