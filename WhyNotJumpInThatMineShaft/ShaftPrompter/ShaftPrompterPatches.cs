@@ -38,8 +38,8 @@ internal static class ShaftPrompterPatches
                 __result = true;
                 return false;
 
-            // Set field MapScanner.Statue to 0
-            // 将属性 MapScanner.Statue 置为 0
+            // Set field MapScanner.Statue to empty
+            // 将属性 MapScanner.Statue 清空
             case 284 when ModEntry.Config.StatueIndicator:
                 MapScanner.Statue.Clear();
                 return true;

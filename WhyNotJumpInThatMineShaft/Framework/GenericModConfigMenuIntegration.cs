@@ -87,7 +87,7 @@ internal static class GenericModConfigMenuIntegration
         );
 
         // 【数值选择条】指示器缩放比例
-        // [Number bar] Text Scale
+        // [Number bar] Text scale
         api.AddNumberOption(
             manifest,
             name: I18n.Config_IndicatorScale_Title,
@@ -114,7 +114,7 @@ internal static class GenericModConfigMenuIntegration
         );
 
         // 【数值输入框】文字 X 坐标
-        // [Number inputbox] Text X Position
+        // [Number inputbox] Text X position
         api.AddNumberOption(
             manifest,
             name: I18n.Config_TextPositionX_Title,
@@ -124,7 +124,7 @@ internal static class GenericModConfigMenuIntegration
         );
 
         // 【数值输入框】文字 Y 坐标
-        // [Number inputbox] Text Y Position
+        // [Number inputbox] Text Y position
         api.AddNumberOption(
             manifest,
             name: I18n.Config_TextPositionY_Title,
@@ -134,7 +134,7 @@ internal static class GenericModConfigMenuIntegration
         );
 
         // 【数值选择条】文字缩放比例
-        // [Number bar] Text Scale
+        // [Number bar] Text scale
         api.AddNumberOption(
             manifest,
             name: I18n.Config_TextScale_Title,
@@ -175,6 +175,5 @@ internal static class GenericModConfigMenuIntegration
             getValue: () => getConfig().ShaftGeneratableIndicator,
             setValue: value => getConfig().ShaftGeneratableIndicator = value
         );
-
     }
 }
