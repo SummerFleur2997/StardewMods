@@ -15,7 +15,6 @@
         <PackageReference Include="JetBrains.Annotations"/>
         <PackageReference Include="Pathoschild.Stardew.ModBuildConfig"/>
     </ItemGroup>
-    <Import Project="..\Common\Common.projitems" Label="Shared"/>
     <ItemGroup>
         <None Update="manifest.json">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>

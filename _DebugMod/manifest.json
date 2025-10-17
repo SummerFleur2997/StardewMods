@@ -5,5 +5,5 @@
     "Description": "O.o",
     "UniqueID": "SummerFleur.DebugMod",
     "MinimumApiVersion": "4.0.0",
-    "EntryDll": "DebugMod.dll"
+    "EntryDll": "_DebugMod.dll"
 }
