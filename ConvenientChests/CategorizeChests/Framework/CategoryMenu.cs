@@ -230,10 +230,7 @@ internal class CategoryMenu : ModMenu
         SelectAllButton.Checked = AreAllSelected();
     }
 
-    private bool AreAllSelected()
-    {
-        return ToggleBag.Children.OfType<ItemToggle>().Count(t => !t.Active) == 0;
-    }
+    private bool AreAllSelected() => ToggleBag.Children.OfType<ItemToggle>().Any(t => !t.Active);
 
     public override bool ReceiveLeftClick(Point point)
     {

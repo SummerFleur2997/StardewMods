@@ -15,13 +15,13 @@ internal static class GenericModConfigMenuIntegration
     /// <param name="getConfig">读取配置操作 Actions to read the mod's current config</param>
     /// <param name="reset">初始化配置操作 Actions to reset the mod's config to its default</param>
     /// <param name="save">保存配置操作 Actions when save the mod's new config</param>
-    /// <param name="monitor"></param>
+    /// <param name="log">输出日志的操作 Action to output a log on screen</param>
     public static void Register(IManifest manifest, IModRegistry modRegistry,
-        Func<ModConfig> getConfig, Action reset, Action save, IMonitor monitor)
+        Func<ModConfig> getConfig, Action reset, Action save, Action<string, LogLevel> log)
     {
         // 获取 GenericModConfigMenu 模组 API
         // get GenericModConfigMenu API
-        var api = IntegrationHelper.GetGenericModConfigMenu(modRegistry, monitor);
+        var api = IntegrationHelper.GetGenericModConfigMenu(modRegistry, log);
         if (api == null)
             return;
 

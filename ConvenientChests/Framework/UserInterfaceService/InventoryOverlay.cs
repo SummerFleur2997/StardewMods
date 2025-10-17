@@ -76,16 +76,12 @@ internal class InventoryOverlay : Widget
 
         LockMenu.OnClose += CloseLockMenu;
         AddChild(LockMenu);
-
-        SetItemsClickable(false);
     }
 
     private void CloseLockMenu()
     {
         RemoveChild(LockMenu);
         LockMenu = null;
-
-        SetItemsClickable(true);
     }
 
     public override bool ReceiveLeftClick(Point point)
@@ -96,14 +92,5 @@ internal class InventoryOverlay : Widget
             // If clicking outside the menu, try to close it.
             CloseLockMenu();
         return hit;
-    }
-
-    /// <summary>
-    /// 设置物品是否可点击。
-    /// Set whether items are clickable.
-    /// </summary>
-    private void SetItemsClickable(bool clickable) // todo
-    {
-        ModEntry.Log(clickable ? "Set items clickable." : "Set items not clickable.");
     }
 }

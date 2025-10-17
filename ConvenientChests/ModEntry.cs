@@ -191,9 +191,9 @@ internal class ModEntry : Mod
             () => Config,
             () => Config = new ModConfig(),
             ReloadConfig,
-            ModMonitor
+            Log
         );
-        QuickSaveIntegration.Register();
+        QuickSaveIntegration.Register(Log);
     }
 
     /// <summary>
