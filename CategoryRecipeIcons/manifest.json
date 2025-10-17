@@ -1,0 +1,12 @@
+﻿{
+    "Name": "CategoryRecipeIcons",
+    "Author": "SummerFleur",
+    "Version": "1.0.0",
+    "Description": "Description", // TODO
+    "UniqueID": "SummerFleur.CategoryRecipeIcons",
+    "MinimumApiVersion": "4.0.0",
+    "EntryDll": "CategoryRecipeIcons.dll",
+    "UpdateKeys": [
+        "Nexus:???" // TODO
+    ]
+}

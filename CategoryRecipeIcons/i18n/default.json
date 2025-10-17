@@ -1,0 +1,19 @@
+﻿{
+    "String.BasicResource": "Basic Resource",
+    "String.BigCraftable": "Big Craftable",
+    "String.GeodeMineral": "Geode Mineral",
+    "String.Hat": "Hat",
+    "String.Meat": "Meat",
+    "String.MetalResource": "Metal Ore",
+    "String.RareProduct": "Rare Product",
+    "String.OtherAquaticProducts": "Other Aquatic Product",
+    "String.OtherCooking": "Other Cooking",
+    "String.Syrup": "Syrup",
+    "String.Trinket": "Trinket",
+    "String.Weapon": "Weapon",
+
+    // Translator's note: The English value begins with a space.
+    // Please consult the surrounding context in your language file for consistency.
+    // Related key: "Strings/StringsFromCSFiles/CraftingRecipe.cs.571"
+    "String.Any": " (Any)"
+}
