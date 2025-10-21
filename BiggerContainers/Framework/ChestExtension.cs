@@ -18,7 +18,7 @@ public static class ChestExtension
                 => ChestTypes.Fridge,
             { Location: FarmHouse { upgradeLevel: >= 1 } or IslandFarmHouse, fridge.Value: true } 
                 => ChestTypes.MiniFridge,
-            { specialChestType.Value: Chest.SpecialChestTypes.JunimoChest } 
+            { specialChestType.Value: Chest.SpecialChestTypes.JunimoChest } or { QualifiedItemId: "(BC)256" } 
                 => ChestTypes.JunimoChest,
             _ => ChestTypes.None
         };
