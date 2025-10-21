@@ -14,6 +14,16 @@ show specific information. They can significantly improve your mining experience
 
 ## Update logs
 
+### 1.0.2
+
+**New Features**
+
+- Add a new indicator points to the Calico Status.
+
+**Bug Fixes**
+
+- Fix the bug when disabling all indicators will cause the text prompt doesn't work.
+
 ### 1.0.1
 
 **New Features**
