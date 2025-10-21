@@ -14,7 +14,5 @@ public class ModEntry : Mod
     {
         ModMonitor = Monitor;
         ModHelper = Helper;
-
-        DrawAShaft.Initialize();
     }
 }

@@ -85,6 +85,8 @@ internal class ShaftPrompterModule : IModule
                 DrawIndicator(Feature.Shaft, e, ref data);
         }
 
+        DrawText(mineShaft.ladderHasSpawned, e, ref data);
+
         // Draw calico statue indicator
         if (MapScanner.HasAStatueHere)
         {
@@ -92,8 +94,6 @@ internal class ShaftPrompterModule : IModule
             if (config.StatueIndicator && data.Distance >= config.HideDistance)
                 DrawIndicator(Feature.Statue, e, ref data);
         }
-
-        DrawText(mineShaft.ladderHasSpawned, e, ref data);
     }
 
     /// <summary>
@@ -240,7 +240,7 @@ internal class ShaftPrompterModule : IModule
         {
             Feature.Shaft => new Color(221, 97, 251),
             Feature.Stair => new Color(56, 227, 242),
-            Feature.Statue => new Color(254, 210, 11),
+            Feature.Statue => new Color(182, 237, 11),
             _ => throw new ArgumentOutOfRangeException(feature.ToString())
         };
 

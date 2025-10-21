@@ -1,15 +1,17 @@
-﻿using StardewModdingAPI.Events;
+﻿#if DEBUG
+using Microsoft.Xna.Framework;
+using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Extensions;
 using StardewValley.Locations;
 using xTile.Tiles;
 
-namespace _DebugMod;
+namespace WhyNotJumpInThatMineShaft.Framework;
 
-internal static class DrawAShaft
+internal static class Debug
 {
-    private static void OnButtonChanged(object sender, ButtonPressedEventArgs e)
+    public static void OnButtonChanged(object sender, ButtonPressedEventArgs e)
     {
         var keybind = KeybindList.Parse("B");
         if (keybind.JustPressed()) DrawShaftHere();
@@ -26,11 +28,7 @@ internal static class DrawAShaft
         var layer = map.RequireLayer("Buildings");
         var tileSheet = map.RequireTileSheet(0, "mine");
         layer.Tiles[x, y] = new StaticTile(layer, tileSheet, BlendMode.Alpha, 174);
-        // MapScanner.Shafts.Add(new Point(x, y));
-    }
-
-    public static void Initialize()
-    {
-        ModEntry.ModHelper.Events.Input.ButtonPressed += OnButtonChanged;
+        MapScanner.Shafts.Add(new Point(x, y));
     }
 }
+#endif

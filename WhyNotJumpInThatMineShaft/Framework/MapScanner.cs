@@ -63,6 +63,7 @@ public static class MapScanner
 
         Shafts.Clear();
         Stairs.Clear();
+        Statue.Clear();
         ModEntry.ShaftPrompter.RefreshSleepTime();
         e.NewLocation.UpdateHoles();
     }

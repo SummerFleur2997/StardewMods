@@ -45,6 +45,9 @@ internal class ModEntry : Mod
         helper.Events.GameLoop.GameLaunched += OnGameLaunched;
         helper.Events.GameLoop.SaveLoaded += OnGameLoaded;
         helper.Events.GameLoop.ReturnedToTitle += OnGameUnload;
+#if DEBUG
+        helper.Events.Input.ButtonPressed += Debug.OnButtonChanged;
+#endif
 
         I18n.Init(Helper.Translation);
         Config = helper.ReadConfig<ModConfig>();
