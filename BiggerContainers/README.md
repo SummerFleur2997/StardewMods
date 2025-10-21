@@ -10,6 +10,11 @@ This mod is inspired by Entoarox's [Bigger Fridges](https://www.nexusmods.com/st
 
 ## Update logs
 
+### 1.1.1
+
+**Optimizations**
+- Compatible with Crystalline Junimo Chest
+
 ### 1.1.0
 
 **Optimizations & Improvements**
