@@ -27,6 +27,12 @@ such as:
 
 ## Update logs
 
+### 1.0.1
+
+**Bug Fixes**
+
+- Fix the bug that the mod does not work on pots.
+
 ### 1.0.0
 
 First upload
