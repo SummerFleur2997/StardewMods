@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using StardewValley;
+using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 
 namespace BetterRetainingSoils.DirtService;
@@ -32,6 +33,10 @@ public static class HoeDirtManager
     public static bool IsAvailable(this HoeDirt hoeDirt)
         => hoeDirt.IsFertilizerAppliedWith("370") || hoeDirt.IsFertilizerAppliedWith("371");
 
+    /// <summary>
+    /// 获取当前地点的所有可耕种土地。
+    /// Get all tillable dirt in the current location.
+    /// </summary>
     public static IEnumerable<HoeDirt> GetHoeDirt(this GameLocation location)
     {
         return location.terrainFeatures.Pairs
@@ -39,6 +44,17 @@ public static class HoeDirtManager
             .OfType<HoeDirt>()
             .Where(h => h.state.Value != 2);
     }
+
+    /// <summary>
+    /// 获取当前地点的所有花盆内的土地。
+    /// Get all dirt in garden pots in the current location.
+    /// </summary>
+    public static IEnumerable<HoeDirt> GetGardenPot(this GameLocation location) =>
+        location.Objects.Pairs
+            .Select(pair => pair.Value)
+            .OfType<IndoorPot>()
+            .Select(p => p.hoeDirt.Value)
+            .Where(h => h.state.Value != 2);
 
     /// <summary>
     /// 当新的一天开始时，更新当前耕地的状态。

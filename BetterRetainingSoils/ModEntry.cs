@@ -1,4 +1,5 @@
-﻿using BetterRetainingSoils.DirtService;
+﻿using System.Linq;
+using BetterRetainingSoils.DirtService;
 using BetterRetainingSoils.Framework;
 using BetterRetainingSoils.Framework.MultiplayerService;
 using BetterRetainingSoils.Framework.SaveService;
@@ -125,7 +126,7 @@ internal class ModEntry : Mod
         {
             // 获取所有耕地，根据模组逻辑保持水分
             // Get all hoedirts, then maintain moisture by mod logic.
-            var hoeDirts = location.GetHoeDirt();
+            var hoeDirts = location.GetHoeDirt().Concat(location.GetGardenPot());
             foreach (var hoeDirt in hoeDirts) hoeDirt.DayUpdate();
             return true;
         });

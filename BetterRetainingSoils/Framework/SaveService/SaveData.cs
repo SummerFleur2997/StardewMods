@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using BetterRetainingSoils.DirtService;
 using Microsoft.Xna.Framework;
+using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 
 namespace BetterRetainingSoils.Framework.SaveService;
@@ -30,5 +31,11 @@ internal struct DirtData
     {
         Tile = hoeDirt.Tile;
         Days = hoeDirt.GetHoeDirtData().WaterRemainDays;
+    }
+
+    public DirtData(IndoorPot pot)
+    {
+        Tile = pot.TileLocation;
+        Days = pot.hoeDirt.Value.GetHoeDirtData().WaterRemainDays;
     }
 }

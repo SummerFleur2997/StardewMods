@@ -6,6 +6,7 @@ using BetterRetainingSoils.DirtService;
 using Common.ExceptionService;
 using StardewModdingAPI;
 using StardewValley;
+using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 
 namespace BetterRetainingSoils.Framework.SaveService;
@@ -67,10 +68,10 @@ internal static class SaveManager
                 var hoeDirts = new Dictionary<HoeDirt, int>();
                 foreach (var dirtData in entry.Value)
                 {
-                    if (location.terrainFeatures.TryGetValue(dirtData.Tile, out var feature) && feature is HoeDirt hoeDirt)
-                    {
+                    if (location.terrainFeatures.TryGetValue(dirtData.Tile, out var f) && f is HoeDirt hoeDirt)
                         hoeDirts.Add(hoeDirt, dirtData.Days);
-                    }
+                    else if (location.Objects.TryGetValue(dirtData.Tile, out var o) && o is IndoorPot pot)
+                        hoeDirts.Add(pot.hoeDirt.Value, dirtData.Days);
                 }
                 foreach (var hoeDirt in hoeDirts.Keys)
                 {
@@ -92,22 +93,38 @@ internal static class SaveManager
     /// </summary>
     private static SaveData GetSerializableData()
     {
+        var dirtEntries = new Dictionary<string, List<DirtData>>();
+
+        foreach (var location in Game1.locations)
+        {
+            var cache = new List<DirtData>();
+
+            var dirts = location.terrainFeatures.Pairs
+                .Select(pair => pair.Value)
+                .OfType<HoeDirt>()
+                .Where(h => h.state.Value != 2 && h.IsAvailable())
+                .ToList();
+
+            var pots = location.Objects.Pairs
+                .Select(pair => pair.Value)
+                .OfType<IndoorPot>()
+                .Where(h => h.hoeDirt.Value.state.Value != 2 && h.hoeDirt.Value.IsAvailable())
+                .ToList();
+
+            if (dirts.Count > 0)
+                cache.AddRange(dirts.Select(h => new DirtData(h)));
+
+            if (pots.Count > 0)
+                cache.AddRange(pots.Select(p => new DirtData(p)));
+
+            if (cache.Count > 0)
+                dirtEntries.Add(location.Name, cache);
+        }
+
         return new SaveData
         {
             Version = ModEntry.Manifest.Version.ToString(),
-            DirtEntries = Game1.locations
-                .Select(location => new
-                {
-                    location.Name,
-                    DirtDataList = location.terrainFeatures.Pairs
-                        .Select(pair => pair.Value)
-                        .OfType<HoeDirt>()
-                        .Where(h => h.state.Value != 2 && h.IsAvailable())
-                        .Select(h => new DirtData(h))
-                        .ToList()
-                })
-                .Where(item => item.DirtDataList.Count > 0)
-                .ToDictionary(item => item.Name, item => item.DirtDataList)
+            DirtEntries = dirtEntries
         };
     }
 
