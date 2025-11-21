@@ -60,7 +60,11 @@ internal class ShaftPrompterModule : IModule
 
         // Confirm current location is the Mine or Skull Cavern
         // 确保当前位置是矿井或骷髅洞穴
-        if (Game1.currentLocation is not MineShaft { mineLevel: not 77377 } mineShaft) return;
+        if (Game1.currentLocation is not MineShaft
+                {
+                    mineLevel: not (20 or 40 or 60 or 80 or 100 or 120 or 77377)
+                }
+                mineShaft) return;
         if (_sleepTime > 0)
         {
             _sleepTime--;

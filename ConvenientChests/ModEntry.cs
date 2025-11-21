@@ -21,7 +21,6 @@ namespace ConvenientChests;
 /// The mod entry class loaded by SMAPI.
 /// </summary>
 [UsedImplicitly]
-// If your IDE cannot recognize this attribute above, just delete it, and the using namespace in line 11.
 internal class ModEntry : Mod
 {
     /****
@@ -37,10 +36,7 @@ internal class ModEntry : Mod
     public static IModHelper ModHelper { get; private set; }
     private static IMonitor ModMonitor { get; set; }
 
-    public static void Log(string s, LogLevel l = LogLevel.Trace)
-    {
-        ModMonitor.Log(s, l);
-    }
+    public static void Log(string s, LogLevel l = LogLevel.Trace) => ModMonitor.Log(s, l);
 
     /// <summary>
     /// <see cref="CategorizeChestsModule"/> mod.
@@ -93,9 +89,9 @@ internal class ModEntry : Mod
 
     /// <summary>
     /// 读取模组配置更新并重新载入配置。
-    /// Read the update of modconfig and reload them.
+    /// Save the update of modconfig and reload them.
     /// </summary>
-    private static void ReloadConfig()
+    private static void SaveConfig()
     {
         ModHelper.WriteConfig(Config);
         Config = ModHelper.ReadConfig<ModConfig>();
@@ -123,6 +119,8 @@ internal class ModEntry : Mod
             }
         }
     }
+
+    private static void ResetConfig() => Config = new ModConfig();
 
     #endregion
 
@@ -187,13 +185,8 @@ internal class ModEntry : Mod
     /// </summary>
     private static void OnGameLaunched(object sender, GameLaunchedEventArgs e)
     {
-        GenericModConfigMenuIntegration.Register(Manifest, ModHelper.ModRegistry,
-            () => Config,
-            () => Config = new ModConfig(),
-            ReloadConfig,
-            Log
-        );
-        QuickSaveIntegration.Register(Log);
+        GenericModConfigMenuIntegration.Register(Manifest, ModHelper.ModRegistry, ResetConfig, SaveConfig);
+        QuickSaveIntegration.Register();
     }
 
     /// <summary>
@@ -232,10 +225,7 @@ internal class ModEntry : Mod
     /// 在游戏向存档文件写入数据前触发（除了新建存档时）。
     /// Raised before the game begins writes data to the save file (except the initial save creation).
     /// </summary>
-    private static void OnSaving(object sender, SavingEventArgs e)
-    {
-        SaveManager.Save();
-    }
+    private static void OnSaving(object sender, SavingEventArgs e) => SaveManager.Save();
 
     /// <summary>
     /// 在玩家按下/松开键盘、鼠标或手柄上的任意按钮时触发。

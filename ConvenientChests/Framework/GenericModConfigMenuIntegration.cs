@@ -12,16 +12,13 @@ internal static class GenericModConfigMenuIntegration
     /// </summary>
     /// <param name="manifest">本模组的注册名单 The mod's manifest</param>
     /// <param name="modRegistry">本模组的元数据 Metadata about loaded mods</param>
-    /// <param name="getConfig">读取配置操作 Actions to read the mod's current config</param>
     /// <param name="reset">初始化配置操作 Actions to reset the mod's config to its default</param>
     /// <param name="save">保存配置操作 Actions when save the mod's new config</param>
-    /// <param name="log">输出日志的操作 Action to output a log on screen</param>
-    public static void Register(IManifest manifest, IModRegistry modRegistry,
-        Func<ModConfig> getConfig, Action reset, Action save, Action<string, LogLevel> log)
+    public static void Register(IManifest manifest, IModRegistry modRegistry, Action reset, Action save)
     {
         // 获取 GenericModConfigMenu 模组 API
         // get GenericModConfigMenu API
-        var api = IntegrationHelper.GetGenericModConfigMenu(modRegistry, log);
+        var api = IntegrationHelper.GetGenericModConfigMenu(modRegistry, ModEntry.Log);
         if (api == null)
             return;
 
@@ -38,8 +35,8 @@ internal static class GenericModConfigMenuIntegration
         api.AddBoolOption(
             manifest,
             name: I18n.Config_Active,
-            getValue: () => getConfig().CategorizeChests,
-            setValue: value => getConfig().CategorizeChests = value
+            getValue: () => ModEntry.Config.CategorizeChests,
+            setValue: value => ModEntry.Config.CategorizeChests = value
         );
 
         // 【选项】物品种类排序 - 按字母顺序对种类进行排序，不建议中文用户启用
@@ -48,8 +45,8 @@ internal static class GenericModConfigMenuIntegration
             manifest,
             name: I18n.Config_Categorize_Sort,
             tooltip: I18n.Config_Categorize_Sort_Desc,
-            getValue: () => getConfig().EnableSort,
-            setValue: value => getConfig().EnableSort = value
+            getValue: () => ModEntry.Config.EnableSort,
+            setValue: value => ModEntry.Config.EnableSort = value
         );
 
         // 【标题】从附近的箱子里打造 - 使用附近箱子里的物品进行打造
@@ -61,8 +58,8 @@ internal static class GenericModConfigMenuIntegration
         api.AddBoolOption(
             manifest,
             name: I18n.Config_Active,
-            getValue: () => getConfig().CraftFromChests,
-            setValue: value => getConfig().CraftFromChests = value
+            getValue: () => ModEntry.Config.CraftFromChests,
+            setValue: value => ModEntry.Config.CraftFromChests = value
         );
 
         // 【数值输入框】搜寻半径
@@ -70,8 +67,8 @@ internal static class GenericModConfigMenuIntegration
         api.AddNumberOption(
             manifest,
             name: I18n.Config_CraftFromChest_Radius,
-            getValue: () => getConfig().CraftRadius,
-            setValue: value => getConfig().CraftRadius = value
+            getValue: () => ModEntry.Config.CraftRadius,
+            setValue: value => ModEntry.Config.CraftRadius = value
         );
 
         // 【标题】存储至箱子 - 使用快捷键将物品存储至箱子中
@@ -84,8 +81,8 @@ internal static class GenericModConfigMenuIntegration
             manifest,
             name: I18n.Config_StashToNearby_Title,
             tooltip: I18n.Config_StashToNearby_Desc,
-            getValue: () => getConfig().StashToNearby,
-            setValue: value => getConfig().StashToNearby = value
+            getValue: () => ModEntry.Config.StashToNearby,
+            setValue: value => ModEntry.Config.StashToNearby = value
         );
 
         // 【选项】存储至任意位置的箱子 - 将物品快速存储至世界任意位置的箱子里
@@ -94,8 +91,8 @@ internal static class GenericModConfigMenuIntegration
             manifest,
             name: I18n.Config_StashAnywhere_Title,
             tooltip: I18n.Config_StashAnywhere_Desc,
-            getValue: () => getConfig().StashAnywhere,
-            setValue: value => getConfig().StashAnywhere = value
+            getValue: () => ModEntry.Config.StashAnywhere,
+            setValue: value => ModEntry.Config.StashAnywhere = value
         );
 
         // 【数值输入框】搜寻半径
@@ -103,8 +100,8 @@ internal static class GenericModConfigMenuIntegration
         api.AddNumberOption(
             manifest,
             name: I18n.Config_StashToNearby_Radius,
-            getValue: () => getConfig().StashRadius,
-            setValue: value => getConfig().StashRadius = value
+            getValue: () => ModEntry.Config.StashRadius,
+            setValue: value => ModEntry.Config.StashRadius = value
         );
 
         // 【选项】存储至已存在的组
@@ -112,8 +109,8 @@ internal static class GenericModConfigMenuIntegration
         api.AddBoolOption(
             manifest,
             name: I18n.Config_StashLogic_Exist,
-            getValue: () => getConfig().StashToExistingStacks,
-            setValue: value => getConfig().StashToExistingStacks = value
+            getValue: () => ModEntry.Config.StashToExistingStacks,
+            setValue: value => ModEntry.Config.StashToExistingStacks = value
         );
 
         // 【选项】优先存储至冰箱中
@@ -121,8 +118,8 @@ internal static class GenericModConfigMenuIntegration
         api.AddBoolOption(
             manifest,
             name: I18n.Config_StashLogic_Fridge,
-            getValue: () => getConfig().StashAnywhereToFridge,
-            setValue: value => getConfig().StashAnywhereToFridge = value
+            getValue: () => ModEntry.Config.StashAnywhereToFridge,
+            setValue: value => ModEntry.Config.StashAnywhereToFridge = value
         );
 
         // 【选项】禁用工具存储 - 禁止将任何工具存储至箱子中，在多人游戏中较为实用
@@ -131,8 +128,8 @@ internal static class GenericModConfigMenuIntegration
             manifest,
             name: I18n.Config_StashRule_LockItems,
             tooltip: I18n.Config_StashRule_LockItems_Desc,
-            getValue: () => getConfig().NeverStashTools,
-            setValue: value => getConfig().NeverStashTools = value
+            getValue: () => ModEntry.Config.NeverStashTools,
+            setValue: value => ModEntry.Config.NeverStashTools = value
         );
 
         api.AddSectionTitle(manifest, I18n.Config_AutoStash_Title, I18n.Config_AutoStash_Desc);
@@ -143,8 +140,8 @@ internal static class GenericModConfigMenuIntegration
             manifest,
             name: I18n.Config_AutoStash_Mine,
             tooltip: I18n.Config_AutoStash_Mine_Desc,
-            getValue: () => getConfig().AutoStashInTheMine,
-            setValue: value => getConfig().AutoStashInTheMine = value
+            getValue: () => ModEntry.Config.AutoStashInTheMine,
+            setValue: value => ModEntry.Config.AutoStashInTheMine = value
         );
 
         // 【选项】禁用工具存储 - 禁止将任何工具存储至箱子中，在多人游戏中较为实用
@@ -153,8 +150,8 @@ internal static class GenericModConfigMenuIntegration
             manifest,
             name: I18n.Config_AutoStash_Skull,
             tooltip: I18n.Config_AutoStash_Skull_Desc,
-            getValue: () => getConfig().AutoStashInSkullCavern,
-            setValue: value => getConfig().AutoStashInSkullCavern = value
+            getValue: () => ModEntry.Config.AutoStashInSkullCavern,
+            setValue: value => ModEntry.Config.AutoStashInSkullCavern = value
         );
 
         // 【选项】禁用工具存储 - 禁止将任何工具存储至箱子中，在多人游戏中较为实用
@@ -163,8 +160,8 @@ internal static class GenericModConfigMenuIntegration
             manifest,
             name: I18n.Config_AutoStash_Dungeon,
             tooltip: I18n.Config_AutoStash_Dungeon_Desc,
-            getValue: () => getConfig().AutoStashInVolcanoDungeon,
-            setValue: value => getConfig().AutoStashInVolcanoDungeon = value
+            getValue: () => ModEntry.Config.AutoStashInVolcanoDungeon,
+            setValue: value => ModEntry.Config.AutoStashInVolcanoDungeon = value
         );
 
         // 【标题】按键绑定
@@ -176,8 +173,8 @@ internal static class GenericModConfigMenuIntegration
         api.AddKeybindList(
             manifest,
             name: I18n.Config_StashToChests_Key,
-            getValue: () => getConfig().StashToNearbyKey,
-            setValue: value => getConfig().StashToNearbyKey = value
+            getValue: () => ModEntry.Config.StashToNearbyKey,
+            setValue: value => ModEntry.Config.StashToNearbyKey = value
         );
 
         // 【按键绑定列表】存储至任意位置的箱子
@@ -185,8 +182,8 @@ internal static class GenericModConfigMenuIntegration
         api.AddKeybindList(
             manifest,
             name: I18n.Config_StashAnywhere_Key,
-            getValue: () => getConfig().StashAnywhereKey,
-            setValue: value => getConfig().StashAnywhereKey = value
+            getValue: () => ModEntry.Config.StashAnywhereKey,
+            setValue: value => ModEntry.Config.StashAnywhereKey = value
         );
 
         if (ModEntry.IsAndroid)
@@ -198,8 +195,8 @@ internal static class GenericModConfigMenuIntegration
                 manifest,
                 name: I18n.Config_Mobile_Offset,
                 tooltip: I18n.Config_Mobile_Offset_Desc,
-                getValue: () => getConfig().MobileOffset,
-                setValue: value => getConfig().MobileOffset = value
+                getValue: () => ModEntry.Config.MobileOffset,
+                setValue: value => ModEntry.Config.MobileOffset = value
             );
         }
 

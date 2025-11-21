@@ -20,7 +20,7 @@ internal static class Debug
     private static void DrawShaftHere()
     {
         var location = Game1.currentLocation;
-        if (location is not MineShaft { mineLevel: > 120 }) return;
+        if (location is not MineShaft) return;
 
         var x = (Game1.getMouseX() + Game1.viewport.X) / 64;
         var y = (Game1.getMouseY() + Game1.viewport.Y) / 64;

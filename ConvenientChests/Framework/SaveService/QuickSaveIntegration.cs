@@ -1,19 +1,17 @@
-﻿using System;
-using Common.ConfigurationServices;
-using StardewModdingAPI;
+﻿using Common.ConfigurationServices;
 
 namespace ConvenientChests.Framework.SaveService;
 
 public static class QuickSaveIntegration
 {
-    public static void Register(Action<string, LogLevel> log)
+    public static void Register()
     {
         var api = IntegrationHelper.GetValidatedApi<IQuickSaveAPI>(
             "Quick Save",
             "DLX.QuickSave",
             "1.2.1",
             ModEntry.ModHelper.ModRegistry,
-            log);
+            ModEntry.Log);
         if (api != null) api.SavingEvent += Api_SavingEvent;
 
         ModEntry.Log("Successfully registered QuickSave events.");

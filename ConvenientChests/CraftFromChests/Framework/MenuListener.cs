@@ -1,5 +1,4 @@
 ﻿using System;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
@@ -76,7 +75,11 @@ internal class MenuListener
 
     public event EventHandler GameMenuTabChanged;
 
-    /// <summary>When a menu is open (<see cref="Game1.activeClickableMenu"/> isn't null), raised after that menu is drawn to the sprite batch but before it's rendered to the screen.</summary>
+    /// <summary>
+    /// When a menu is open (<see cref="Game1.activeClickableMenu"/> isn't null),
+    /// raised after that menu is drawn to the sprite batch, but before it's
+    /// rendered to the screen.
+    /// </summary>
     /// <param name="sender">The event sender.</param>
     /// <param name="e">The event data.</param>
     private void OnRenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e)
@@ -106,7 +109,7 @@ internal class MenuListener
 
             default:
                 // How did we get here?
-                ModEntry.Log($"Unexpected menu: {Game1.activeClickableMenu.GetType()}", LogLevel.Warn);
+                ModEntry.Log($"Unexpected menu: {Game1.activeClickableMenu.GetType()}");
                 UnregisterTabEvent();
                 return;
         }
