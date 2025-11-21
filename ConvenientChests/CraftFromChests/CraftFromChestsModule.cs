@@ -59,7 +59,9 @@ internal class CraftFromChestsModule : IModule
             page._materialContainers = inventories.ToList();
 
         else
-            page._materialContainers.AddRange(inventories);
+            foreach (var inv in inventories.ToList())
+                if (!page._materialContainers.Contains(inv))
+                    page._materialContainers.Add(inv);
     }
 
     private IEnumerable<Chest> GetChests(bool isCookingScreen)
