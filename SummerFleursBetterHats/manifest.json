@@ -1,0 +1,12 @@
+﻿{
+    "Name": "SummerFleursBetterHats",
+    "Author": "SummerFleur",
+    "Version": "1.0.0",
+    "Description": "Description", // TODO
+    "UniqueID": "SummerFleur.SummerFleursBetterHats",
+    "MinimumApiVersion": "4.0.0",
+    "EntryDll": "SummerFleursBetterHats.dll",
+    "UpdateKeys": [
+        "Nexus:???" // TODO
+    ]
+}

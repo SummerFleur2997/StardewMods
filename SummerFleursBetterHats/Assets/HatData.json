@@ -1,0 +1,14 @@
+﻿{
+  // Witch Hat
+  "(H)17": {
+    "FishingLevel": 1.0
+  },
+  // Witch Hat
+  "(H)70": {
+    "Immunity": 2.0
+  },
+  // Forager's Hat
+  "(H)90": {
+    "ForagingLevel": 1.0
+  }
+}
