@@ -76,9 +76,4 @@ public class HatData
     /// 免疫加成。
     /// </summary>
     public float Immunity { get; set; } = 0;
-
-    /// <summary>
-    /// A game query context that determines whether the buff is applied.
-    /// </summary>
-    public string QueryContext { get; set; }
 }

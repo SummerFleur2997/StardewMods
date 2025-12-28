@@ -14,7 +14,7 @@ public static partial class HatWithPatches
 {
     private const string ChefHatID = "(H)61";
 
-    public static void RegisterHarmonyPatchForChefHat(Harmony harmony)
+    public static void RegisterPatchForChefHat(Harmony harmony)
     {
         try
         {
@@ -29,7 +29,7 @@ public static partial class HatWithPatches
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed to patch method clickCraftingRecipe: {ex.Message}", LogLevel.Error);
+            ModEntry.Log($"Failed to patch for chef hat: {ex.Message}", LogLevel.Error);
         }
     }
 

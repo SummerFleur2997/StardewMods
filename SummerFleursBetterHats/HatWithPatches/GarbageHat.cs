@@ -11,7 +11,7 @@ public static partial class HatWithPatches
 {
     private const string GarbageHatID = "(H)66";
 
-    public static void RegisterHarmonyPatchForGarbageHat(Harmony harmony)
+    public static void RegisterPatchForGarbageHat(Harmony harmony)
     {
         try
         {
@@ -23,12 +23,12 @@ public static partial class HatWithPatches
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed to patch method TryGetGarbageItem: {ex.Message}", LogLevel.Error);
+            ModEntry.Log($"Failed to patch for garbage hat: {ex.Message}", LogLevel.Error);
         }
     }
 
     /// <summary>
-    /// Set the chance to find items in garbage can if the player is wearing the garbage hat.
+    /// Add 10% of the chance to find items in garbage can if the player is wearing the garbage hat.
     /// </summary>
     public static void SetGarbageChance(ref float baseChance)
     {
@@ -37,19 +37,19 @@ public static partial class HatWithPatches
     }
 
     /// <summary>
-    /// Add a transpiler to the CraftingPage.clickCraftingRecipe method
-    /// to set the quality of the dish.
+    /// Add a transpiler to the GameLocation.TryGetGarbageItem method
+    /// to add the chance of finding items in the garbage can.
     /// </summary>
     public static IEnumerable<CodeInstruction> Patch_GarbageHat_TryGetGarbageItem(IEnumerable<CodeInstruction> ci)
     {
-        var codes = new List<CodeInstruction>(ci);
+        var matcher = new CodeMatcher(ci);
 
         // Find an anchor instruction for the injection
-        var index = codes.FindIndex(c =>
-            c.opcode == OpCodes.Ldstr && c.operand is "Book_Trash");
+        var target = new CodeMatch(OpCodes.Ldstr, "Book_Trash");
+        matcher.MatchStartForward(target).Advance(-2); 
 
         // If the anchor instruction is not found, throw an exception.
-        if (index == -1) throw new Exception("This method seems to have changed.");
+        if (matcher.IsInvalid) throw new Exception("This method seems to have changed.");
 
         // Add the injection to the codes
         var injection = new List<CodeInstruction>
@@ -57,9 +57,8 @@ public static partial class HatWithPatches
             new(OpCodes.Ldloca_S, 3), // baseChance
             new(OpCodes.Call, AccessTools.Method(typeof(HatWithPatches), nameof(SetGarbageChance)))
         };
+        matcher.InsertAndAdvance(injection);
 
-        codes.InsertRange(index - 2, injection);
-
-        return codes;
+        return matcher.InstructionEnumeration();
     }
 }

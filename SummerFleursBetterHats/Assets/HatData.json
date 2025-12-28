@@ -1,7 +1,46 @@
 ﻿{
-  // Witch Hat
+  // Cowboy Hat
+  "(H)0": {
+    "Speed": 1.0
+  },
+  // Straw Hat
+  "(H)4": {
+    "FarmingLevel": 1.0
+  },
+  // Skeleton Mask
+  "(H)8": {
+    "Attack": 1.0
+  },
+  // Sailor's Cap
   "(H)17": {
     "FishingLevel": 1.0
+  },
+  // Living Hat
+  "(H)40": {
+    "LuckLevel": 3.0
+  },
+  // Knight's Helmet
+  "(H)50": {
+    "Defense": 2.0
+  },
+  // Squire's Helmet
+  "(H)51": {
+    "Defense": 1.0
+  },
+  // Party Hat Red
+  "(H)57": {
+    "Speed": 0.5,
+    "LuckLevel": 1.0
+  },
+  // Party Hat Blue
+  "(H)58": {
+    "Speed": 0.5,
+    "LuckLevel": 1.0
+  },
+  // Party Hat Green
+  "(H)59": {
+    "Speed": 0.5,
+    "LuckLevel": 1.0
   },
   // Witch Hat
   "(H)70": {
