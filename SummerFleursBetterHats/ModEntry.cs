@@ -37,6 +37,8 @@ internal class ModEntry : Mod
         Harmony = new Harmony(ModManifest.UniqueID);
 
         Helper.Events.GameLoop.SaveLoaded += RegisterHatChangeEvents;
+        Helper.Events.GameLoop.ReturnedToTitle += UnRegisterHatChangeEvents;
+        Helper.Events.GameLoop.ReturnedToTitle += UnRegisterAllConditionCheckers;
         Helper.Events.GameLoop.DayStarted += OnDayStart;
         Manager.OnHatEquipped += RegisterConditionChecker;
         Manager.OnHatUnequipped += UnRegisterConditionChecker;
@@ -51,10 +53,16 @@ internal class ModEntry : Mod
         var hat = Game1.player.hat;
         if (hat?.Value == null) return;
 
-        Manager.OnHatChange(hat, null, hat.Value);
+        // Simulate a hat change event to apply all codes.
+        Manager.OnHatChange(hat, hat.Value, hat.Value);
+        ManualInvokeActionIfNecessary();
     }
 
-    private static void RegisterHatChangeEvents(object s, SaveLoadedEventArgs e) => Game1.player.hat.fieldChangeEvent += Manager.OnHatChange;
+    private static void RegisterHatChangeEvents(object s, SaveLoadedEventArgs e)
+        => Game1.player.hat.fieldChangeEvent += Manager.OnHatChange;
+
+    private static void UnRegisterHatChangeEvents(object s, ReturnedToTitleEventArgs e)
+        => Game1.player.hat.fieldChangeEvent -= Manager.OnHatChange;
 
     public override object GetApi(IModInfo mod) => Manager;
 }

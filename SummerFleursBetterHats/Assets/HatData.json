@@ -11,8 +11,16 @@
   "(H)8": {
     "Attack": 1.0
   },
+  // Earmuffs
+  "(H)11": {
+    "Speed": 1.0
+  },
   // Sailor's Cap
   "(H)17": {
+    "FishingLevel": 1.0
+  },
+  // Sou'wester
+  "(H)28": {
     "FishingLevel": 1.0
   },
   // Living Hat
@@ -49,5 +57,10 @@
   // Forager's Hat
   "(H)90": {
     "ForagingLevel": 1.0
+  },
+  // Paper Hat
+  "(H)PaperHat": {
+    "Speed": 0.5,
+    "LuckLevel": 1.0
   }
 }
