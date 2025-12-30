@@ -1,4 +1,5 @@
 ﻿using Common;
+using ConvenientChests.API;
 using ConvenientChests.CategorizeChests;
 using ConvenientChests.CategorizeChests.Framework;
 using ConvenientChests.CraftFromChests;
@@ -58,6 +59,8 @@ internal class ModEntry : Mod
     /// </summary>
     private static MultiplayerServer MultiplayerServer { get; set; }
 
+    public static readonly ChestAPI ChestApi = new();
+
     #endregion
 
     /// <summary>
@@ -79,6 +82,8 @@ internal class ModEntry : Mod
         I18n.Init(Helper.Translation);
         Config = helper.ReadConfig<ModConfig>();
     }
+
+    public override object GetApi(IModInfo mod) => ChestApi;
 
     /****
      ** 私有方法
