@@ -60,70 +60,80 @@ internal class ShaftPrompterModule : IModule
 
         // Confirm current location is the Mine or Skull Cavern
         // 确保当前位置是矿井或骷髅洞穴
-        if (Game1.currentLocation is not MineShaft
-                {
-                    mineLevel: not (20 or 40 or 60 or 80 or 100 or 120 or 77377)
-                }
-                mineShaft) return;
+        if (!IsAvailableLevel(out var mineShaft) || mineShaft is null) return;
         if (_sleepTime > 0)
         {
             _sleepTime--;
             return;
         }
 
-        var data = new FeatureData();
+        var data = new TargetData();
 
         // Draw stair indicator
         if (MapScanner.HasAStairHere)
         {
-            GetNearestFeaturePosition(Feature.Stair, ref data);
+            data = GetNearestFeaturePosition(Target.Stair);
             if (config.StairIndicator && data.Distance >= config.HideDistance)
-                DrawIndicator(Feature.Stair, e, ref data);
+                DrawIndicator(Target.Stair, e, data);
         }
 
         // Draw shaft indicator
         if (MapScanner.HasAShaftHere)
         {
-            GetNearestFeaturePosition(Feature.Shaft, ref data);
+            data = GetNearestFeaturePosition(Target.Shaft);
             if (config.ShaftIndicator && data.Distance >= config.HideDistance)
-                DrawIndicator(Feature.Shaft, e, ref data);
+                DrawIndicator(Target.Shaft, e, data);
         }
 
-        DrawText(mineShaft.ladderHasSpawned, e, ref data);
+        DrawText(mineShaft.ladderHasSpawned, e, data);
 
         // Draw calico statue indicator
         if (MapScanner.HasAStatueHere)
         {
-            GetNearestFeaturePosition(Feature.Statue, ref data);
+            data = GetNearestFeaturePosition(Target.Statue);
             if (config.StatueIndicator && data.Distance >= config.HideDistance)
-                DrawIndicator(Feature.Statue, e, ref data);
+                DrawIndicator(Target.Statue, e, data);
         }
+    }
+
+    /// <summary>
+    /// 判断要不要在当前层绘制提示。
+    /// </summary>
+    /// <param name="mineShaft">当前层矿井实例</param>
+    private static bool IsAvailableLevel(out MineShaft mineShaft)
+    {
+        if (Game1.currentLocation is not MineShaft mine)
+        {
+            mineShaft = null;
+            return false;
+        }
+
+        mineShaft = mine;
+        var level = mine.mineLevel;
+        return (level > 120 || level % 10 != 0) && level != 77377;
     }
 
     /// <summary>
     /// 获取最近的洞或梯子的地块坐标与距离。
     /// Get the coordinate of the nearest feature and its distance to the player.
     /// </summary>
-    private static void GetNearestFeaturePosition(Feature feature, ref FeatureData data)
+    private static TargetData GetNearestFeaturePosition(Target target)
     {
         var minDistance = float.MaxValue;
         var holeCoordinate = new Vector2();
         var playerPixelPosition = Game1.player.getStandingPosition();
 
         // Validate the data
-        var whichList = feature switch
+        var whichList = target switch
         {
-            Feature.Shaft => MapScanner.Shafts,
-            Feature.Stair => MapScanner.Stairs,
-            Feature.Statue => MapScanner.Statue,
-            _ => throw new ArgumentOutOfRangeException(feature.ToString())
+            Target.Shaft => MapScanner.Shafts,
+            Target.Stair => MapScanner.Stairs,
+            Target.Statue => MapScanner.Statue,
+            _ => throw new ArgumentOutOfRangeException(target.ToString())
         };
 
         if (whichList.Count == 0)
-        {
-            data = new FeatureData();
-            return;
-        }
+            return new TargetData();
 
         // Find the nearest shaft
         foreach (var hole in whichList)
@@ -137,14 +147,14 @@ internal class ShaftPrompterModule : IModule
             holeCoordinate = holePosition;
         }
 
-        data = new FeatureData(holeCoordinate, minDistance);
+        return new TargetData(holeCoordinate, minDistance, target);
     }
 
     /// <summary>
-    /// 绘制提示文字。
-    /// Draw text prompters.
+    /// 绘制竖井和梯子提示文字。
+    /// Draw text prompters for shafts and ladders.
     /// </summary>
-    private static void DrawText(bool ladderHasSpawned, RenderedHudEventArgs e, ref FeatureData data)
+    private static void DrawText(bool ladderHasSpawned, RenderedHudEventArgs e, TargetData data)
     {
         var config = ModEntry.Config;
         // 获取玩家到目标点的八方向描述。
@@ -167,7 +177,12 @@ internal class ShaftPrompterModule : IModule
         };
 
         // Basic prompt
-        var message = MapScanner.HasAShaftHere ? I18n.String_ShaftFound() : I18n.String_StairFound();
+        var (message, textColor) = data.Type switch
+        {
+            Target.Shaft => (I18n.String_ShaftFound(), Color.Red),
+            Target.Stair => (I18n.String_StairFound(), Color.White),
+            _ => ("Error", Color.White)
+        };
 
         // Detailed prompt
         var details = new List<string>();
@@ -179,14 +194,13 @@ internal class ShaftPrompterModule : IModule
         if (config.TextPrompter && data.Distance > 0)
         {
             var textPosition = new Vector2(config.TextPositionX, config.TextPositionY);
-            var color = MapScanner.HasAShaftHere ? Color.Red : Color.White;
             var scale = config.TextScale;
             // Draw with common font without a shadow
             e.SpriteBatch.DrawString(
                 Game1.smallFont,
                 message,
                 textPosition,
-                color,
+                textColor,
                 0f,
                 Vector2.Zero,
                 scale,
@@ -221,10 +235,10 @@ internal class ShaftPrompterModule : IModule
     }
 
     /// <summary>
-    /// 绘制指向指定地物的箭头。
+    /// 绘制指向指定的箭头。
     /// Draw an indicator point to specific feature.
     /// </summary>
-    private static void DrawIndicator(Feature feature, RenderedHudEventArgs e, ref FeatureData data)
+    private static void DrawIndicator(Target target, RenderedHudEventArgs e, TargetData data)
     {
         // Calculate the central pixel point of the player and hole
         var fixedPlayerPosition = Game1.player.getStandingPosition() + new Vector2(0, -TileSize / 2f);
@@ -240,12 +254,12 @@ internal class ShaftPrompterModule : IModule
         var scale = Game1.pixelZoom * Game1.options.uiScale * ModEntry.Config.IndicatorScale *
                     (Constants.TargetPlatform == GamePlatform.Android ? 1 / 3f : 1);
 
-        var color = feature switch
+        var color = target switch
         {
-            Feature.Shaft => new Color(221, 97, 251),
-            Feature.Stair => new Color(56, 227, 242),
-            Feature.Statue => new Color(182, 237, 11),
-            _ => throw new ArgumentOutOfRangeException(feature.ToString())
+            Target.Shaft => new Color(221, 97, 251),
+            Target.Stair => new Color(56, 227, 242),
+            Target.Statue => new Color(182, 237, 11),
+            _ => throw new ArgumentOutOfRangeException(target.ToString())
         };
 
         e.SpriteBatch.Draw(
@@ -264,41 +278,48 @@ internal class ShaftPrompterModule : IModule
     /// 各种矿井内的地形特征。
     /// Types of features in the shaft.
     /// </summary>
-    private enum Feature
+    private enum Target
     {
         Shaft,
         Stair,
         Statue
+        //Slime
     }
 
-    private readonly struct FeatureData
+    private class TargetData
     {
-        /// <summary>
-        /// 目标地物的位置，单位为地块坐标。
-        /// The position of the targeted feature in tiles.
-        /// </summary>
-        public readonly Vector2 Position = Vector2.Zero;
+        private readonly Vector2 _position = Vector2.Zero;
+        private readonly float _distance = -1f;
+
+        public Target Type;
 
         /// <summary>
-        /// 目标地物与玩家之间的距离，单位为地块数。
-        /// The distance between the player and targeted feature in tiles.
+        /// 目标的位置，单位为地块坐标。
+        /// The position of the targeted in tiles.
         /// </summary>
-        public readonly float Distance = -1f;
+        public Vector2 Position => _position;
 
         /// <summary>
-        /// 使用确定值设定结构
-        /// Use certain value to init fields.
+        /// 目标与玩家之间的距离，单位为地块数。
+        /// The distance between the player and targeted in tiles.
         /// </summary>
-        public FeatureData(Vector2 position, float distance)
+        public float Distance => _distance;
+
+        /// <summary>
+        /// 使用地物的确定值设定结构
+        /// Use terrain feature to init fields.
+        /// </summary>
+        public TargetData(Vector2 position, float distance, Target target)
         {
-            Position = position;
-            Distance = distance;
+            _position = position;
+            _distance = distance;
+            Type = target;
         }
 
         /// <summary>
         /// 使用初始值设定结构
         /// Use default value to init fields.
         /// </summary>
-        public FeatureData() { }
+        public TargetData() { }
     }
 }

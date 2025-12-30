@@ -5,6 +5,7 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Extensions;
 using StardewValley.Locations;
+using WhyNotJumpInThatMineShaft.ShaftPrompter;
 using xTile.Tiles;
 
 namespace WhyNotJumpInThatMineShaft.Framework;

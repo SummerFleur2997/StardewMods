@@ -5,7 +5,7 @@ using StardewValley;
 using StardewValley.Extensions;
 using StardewValley.Locations;
 
-namespace WhyNotJumpInThatMineShaft.Framework;
+namespace WhyNotJumpInThatMineShaft.ShaftPrompter;
 
 public static class MapScanner
 {
@@ -32,12 +32,19 @@ public static class MapScanner
     public static bool HasAStatueHere => Statue.Count > 0;
 
     /// <summary>
+    /// A shortcut to get the current level of the player.
+    /// 获取玩家当前所在层数。
+    /// </summary>
+    private static int CurrentLevel => Game1.player.currentLocation is MineShaft mineShaft ? mineShaft.mineLevel : -1;
+
+    /// <summary>
     /// Patches <see cref="StardewValley.Locations.MineShaft.doCreateLadderDown"/> method.
     /// 游戏尝试生成梯子或洞时，将生成的梯子和洞添加到列表中。
     /// When the game tried to generate stair or shaft, add them to the list.
     /// </summary>
-    public static void Patch_doCreateLadderDown(Point point, bool shaft)
+    public static void Patch_doCreateLadderDown(Point point, bool shaft, ref MineShaft __instance)
     {
+        if (__instance.mineLevel != CurrentLevel) return;
         if (shaft)
             Shafts.Add(point);
         else
@@ -49,26 +56,32 @@ public static class MapScanner
     /// 游戏尝试生成梯子或洞时，将生成的梯子添加到列表中。
     /// When the game tried to generate stair, add it to the list.
     /// </summary>
-    public static void Patch_doCreateLadderAt(Vector2 p)
+    public static void Patch_doCreateLadderAt(Vector2 p, ref MineShaft __instance)
     {
+        if (__instance.mineLevel != CurrentLevel) return;
         var point = new Point((int)p.X, (int)p.Y);
         Stairs.Add(point);
     }
 
+    /// <summary>
+    /// After the player enters a new mine level, scan the current map.
+    /// 进入新的一层时，扫描当前楼层。
+    /// </summary>
     public static void OnMineLevelChanged(object sender, WarpedEventArgs e)
     {
         // Confirm current location is the Mine or Skull Cavern
         // 确保当前位置是矿井或骷髅洞穴
-        if (e.NewLocation is not MineShaft { mineLevel: not 77377 }) return;
+        if (e.NewLocation is not MineShaft { mineLevel: not 77377 } mineShaft) return;
 
         Shafts.Clear();
         Stairs.Clear();
         Statue.Clear();
         ModEntry.ShaftPrompter.RefreshSleepTime();
-        e.NewLocation.UpdateHoles();
+        mineShaft.UpdateHoles();
     }
 
     /// <summary>
+    /// Traverse each tile to find all coordinates of shafts and stairs.
     /// 遍历当前地图，获取全部的竖井和梯子坐标。
     /// </summary>
     private static void UpdateHoles(this GameLocation location)

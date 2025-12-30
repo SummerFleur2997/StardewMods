@@ -53,15 +53,26 @@ internal class ModEntry : Mod
         Config = helper.ReadConfig<ModConfig>();
     }
 
+    /****
+     ** 私有方法
+     ** Private Methods
+     ****/
+
+    #region Private Methods
+
     /// <summary>
     /// 读取模组配置更新并重新载入配置。
     /// Read the update of modconfig and reload them.
     /// </summary>
-    private static void ReloadConfig()
+    private static void SaveConfig()
     {
         ModHelper.WriteConfig(Config);
         Config = ModHelper.ReadConfig<ModConfig>();
     }
+
+    private static void ResetConfig() => Config = new ModConfig();
+
+    #endregion
 
     /****
      ** 事件处理函数
@@ -75,14 +86,7 @@ internal class ModEntry : Mod
     /// Read configs when loading the game.
     /// </summary>
     private static void OnGameLaunched(object sender, GameLaunchedEventArgs e)
-    {
-        GenericModConfigMenuIntegration.Register(Manifest, ModHelper.ModRegistry,
-            () => Config,
-            () => Config = new ModConfig(),
-            ReloadConfig,
-            Log
-        );
-    }
+        => GenericModConfigMenuIntegration.Register(Manifest, ModHelper.ModRegistry, ResetConfig, SaveConfig);
 
     /// <summary>
     /// 在游戏加载时配置补丁。
@@ -90,7 +94,7 @@ internal class ModEntry : Mod
     /// </summary>
     private static void OnGameLoaded(object sender, SaveLoadedEventArgs e)
     {
-        CommonPatcher.Initialize(Harmony);
+        MapScannerPatches.Initialize(Harmony);
 
         ShaftPrompter = new ShaftPrompterModule();
         ShaftPrompter.Activate();

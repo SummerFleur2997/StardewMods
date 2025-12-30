@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Input;
 using StardewValley;
-using WhyNotJumpInThatMineShaft.Framework;
 using xTile.Dimensions;
 
 namespace WhyNotJumpInThatMineShaft.ShaftPrompter;

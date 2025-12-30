@@ -12,16 +12,13 @@ internal static class GenericModConfigMenuIntegration
     /// </summary>
     /// <param name="manifest">本模组的注册名单 The mod's manifest</param>
     /// <param name="modRegistry">本模组的元数据 Metadata about loaded mods</param>
-    /// <param name="getConfig">读取配置操作 Actions to read the mod's current config</param>
     /// <param name="reset">初始化配置操作 Actions to reset the mod's config to its default</param>
     /// <param name="save">保存配置操作 Actions when save the mod's new config</param>
-    /// <param name="log">输出日志的操作 Action to output a log on screen</param>
-    public static void Register(IManifest manifest, IModRegistry modRegistry,
-        Func<ModConfig> getConfig, Action reset, Action save, Action<string, LogLevel> log)
+    public static void Register(IManifest manifest, IModRegistry modRegistry, Action reset, Action save)
     {
         // 获取 GenericModConfigMenu 模组 API
         // get GenericModConfigMenu API
-        var api = IntegrationHelper.GetGenericModConfigMenu(modRegistry, log);
+        var api = IntegrationHelper.GetGenericModConfigMenu(modRegistry, ModEntry.Log);
         if (api == null)
             return;
 
@@ -39,8 +36,8 @@ internal static class GenericModConfigMenuIntegration
             manifest,
             name: I18n.Config_ShaftPrompter_Title,
             tooltip: I18n.Config_ShaftPrompter_Desc,
-            getValue: () => getConfig().ShaftPrompter,
-            setValue: value => getConfig().ShaftPrompter = value
+            getValue: () => ModEntry.Config.ShaftPrompter,
+            setValue: value => ModEntry.Config.ShaftPrompter = value
         );
 
         // 【选项】显示竖井指示器
@@ -49,8 +46,8 @@ internal static class GenericModConfigMenuIntegration
             manifest,
             name: I18n.Config_ShaftIndicator_Title,
             tooltip: I18n.Config_ShaftIndicator_Desc,
-            getValue: () => getConfig().ShaftIndicator,
-            setValue: value => getConfig().ShaftIndicator = value
+            getValue: () => ModEntry.Config.ShaftIndicator,
+            setValue: value => ModEntry.Config.ShaftIndicator = value
         );
 
         // 【选项】显示梯子指示器
@@ -59,8 +56,8 @@ internal static class GenericModConfigMenuIntegration
             manifest,
             name: I18n.Config_StairIndicator_Title,
             tooltip: I18n.Config_StairIndicator_Desc,
-            getValue: () => getConfig().StairIndicator,
-            setValue: value => getConfig().StairIndicator = value
+            getValue: () => ModEntry.Config.StairIndicator,
+            setValue: value => ModEntry.Config.StairIndicator = value
         );
 
         // 【选项】显示三花猫雕像指示器
@@ -69,8 +66,8 @@ internal static class GenericModConfigMenuIntegration
             manifest,
             name: I18n.Config_StatueIndicator_Title,
             tooltip: I18n.Config_StatueIndicator_Desc,
-            getValue: () => getConfig().StatueIndicator,
-            setValue: value => getConfig().StatueIndicator = value
+            getValue: () => ModEntry.Config.StatueIndicator,
+            setValue: value => ModEntry.Config.StatueIndicator = value
         );
 
         // 【数值选择条】指示器最小距离
@@ -79,8 +76,8 @@ internal static class GenericModConfigMenuIntegration
             manifest,
             name: I18n.Config_IndicatorMinDistance_Title,
             tooltip: I18n.Config_IndicatorMinDistance_Desc,
-            getValue: () => getConfig().HideDistance,
-            setValue: value => getConfig().HideDistance = value,
+            getValue: () => ModEntry.Config.HideDistance,
+            setValue: value => ModEntry.Config.HideDistance = value,
             min: 1,
             max: 10,
             interval: 1
@@ -92,8 +89,8 @@ internal static class GenericModConfigMenuIntegration
             manifest,
             name: I18n.Config_IndicatorScale_Title,
             tooltip: I18n.Config_IndicatorScale_Desc,
-            getValue: () => getConfig().IndicatorScale,
-            setValue: value => getConfig().IndicatorScale = value,
+            getValue: () => ModEntry.Config.IndicatorScale,
+            setValue: value => ModEntry.Config.IndicatorScale = value,
             min: 0.1f,
             max: 3.0f,
             interval: 0.1f
@@ -109,8 +106,8 @@ internal static class GenericModConfigMenuIntegration
             manifest,
             name: I18n.Config_TextPrompter_Title,
             tooltip: I18n.Config_TextPrompter_Desc,
-            getValue: () => getConfig().TextPrompter,
-            setValue: value => getConfig().TextPrompter = value
+            getValue: () => ModEntry.Config.TextPrompter,
+            setValue: value => ModEntry.Config.TextPrompter = value
         );
 
         // 【数值输入框】文字 X 坐标
@@ -119,8 +116,8 @@ internal static class GenericModConfigMenuIntegration
             manifest,
             name: I18n.Config_TextPositionX_Title,
             tooltip: I18n.Config_TextPositionX_Desc,
-            getValue: () => getConfig().TextPositionX,
-            setValue: value => getConfig().TextPositionX = value
+            getValue: () => ModEntry.Config.TextPositionX,
+            setValue: value => ModEntry.Config.TextPositionX = value
         );
 
         // 【数值输入框】文字 Y 坐标
@@ -129,8 +126,8 @@ internal static class GenericModConfigMenuIntegration
             manifest,
             name: I18n.Config_TextPositionY_Title,
             tooltip: I18n.Config_TextPositionY_Desc,
-            getValue: () => getConfig().TextPositionY,
-            setValue: value => getConfig().TextPositionY = value
+            getValue: () => ModEntry.Config.TextPositionY,
+            setValue: value => ModEntry.Config.TextPositionY = value
         );
 
         // 【数值选择条】文字缩放比例
@@ -139,8 +136,8 @@ internal static class GenericModConfigMenuIntegration
             manifest,
             name: I18n.Config_TextScale_Title,
             tooltip: I18n.Config_TextScale_Desc,
-            getValue: () => getConfig().TextScale,
-            setValue: value => getConfig().TextScale = value,
+            getValue: () => ModEntry.Config.TextScale,
+            setValue: value => ModEntry.Config.TextScale = value,
             min: 0.5f,
             max: 3.0f,
             interval: 0.1f
@@ -152,8 +149,8 @@ internal static class GenericModConfigMenuIntegration
             manifest,
             name: I18n.Config_ShowDirection_Title,
             tooltip: I18n.Config_ShowDirection_Desc,
-            getValue: () => getConfig().ShowDirection,
-            setValue: value => getConfig().ShowDirection = value
+            getValue: () => ModEntry.Config.ShowDirection,
+            setValue: value => ModEntry.Config.ShowDirection = value
         );
 
         // 【选项】显示距离
@@ -162,8 +159,8 @@ internal static class GenericModConfigMenuIntegration
             manifest,
             name: I18n.Config_ShowDistance_Title,
             tooltip: I18n.Config_ShowDistance_Desc,
-            getValue: () => getConfig().ShowDistance,
-            setValue: value => getConfig().ShowDistance = value
+            getValue: () => ModEntry.Config.ShowDistance,
+            setValue: value => ModEntry.Config.ShowDistance = value
         );
 
         // 【选项】显示可生成竖井提示
@@ -172,8 +169,8 @@ internal static class GenericModConfigMenuIntegration
             manifest,
             name: I18n.Config_ShaftGeneratableIndicator_Title,
             tooltip: I18n.Config_ShaftGeneratableIndicator_Desc,
-            getValue: () => getConfig().ShaftGeneratableIndicator,
-            setValue: value => getConfig().ShaftGeneratableIndicator = value
+            getValue: () => ModEntry.Config.ShaftGeneratableIndicator,
+            setValue: value => ModEntry.Config.ShaftGeneratableIndicator = value
         );
     }
 }
