@@ -12,6 +12,8 @@
   "Config.StairIndicator.desc": "显示一个指示器，指向最近的梯子。",
   "Config.StatueIndicator.Title": "显示三花猫雕像指示器",
   "Config.StatueIndicator.desc": "显示一个指示器，指向卡利科三花猫雕像（若有）。",
+  "Config.PrisSlimeIndicator.Title": "显示五彩史莱姆指示器",
+  "Config.PrisSlimeIndicator.desc": "显示一个指示器，指向五彩史莱姆（若有）。",
   "Config.IndicatorMinDistance.Title": "指示器最小距离",
   "Config.IndicatorMinDistance.desc": "当最近的梯子或竖井的距离小于该值时隐藏指示器。",
   "Config.IndicatorScale.Title": "指示器缩放比例",
@@ -43,7 +45,8 @@
   "String.BottomRight": "右下",
 
   "String.StairFound": "发现梯子！",
-  "String.ShaftFound": "发现竖井",
+  "String.ShaftFound": "发现竖井！",
+  "String.PrismaticSlimeFound": "发现五彩史莱姆！",
   "String.Tiles": "格",
   "String.ShaftGeneratable": "当前地图可能生成竖井",
   "String.ShaftNotGeneratable": "当前地图不可生成竖井"

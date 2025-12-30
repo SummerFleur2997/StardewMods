@@ -12,6 +12,8 @@
   "Config.StairIndicator.desc": "Show an indicator point to the nearest stair.",
   "Config.StatueIndicator.Title": "Show Calico Statue Indicator",
   "Config.StatueIndicator.desc": "Show an indicator point to the calico statue (if any).",
+  "Config.PrisSlimeIndicator.Title": "Show Prismatic Slime Indicator",
+  "Config.PrisSlimeIndicator.desc": "Show an indicator point to the prismatic slime (if any).",
   "Config.IndicatorMinDistance.Title": "Indicator Minium Distance",
   "Config.IndicatorMinDistance.desc": "Hide the indicator if the distance to the stair/shaft less than this value.",
   "Config.IndicatorScale.Title": "Indicator Scale",
@@ -44,6 +46,7 @@
 
   "String.StairFound": "Discovered a stair!",
   "String.ShaftFound": "Discovered a shaft!",
+  "String.PrismaticSlimeFound": "Discovered a prismatic slime!",
   "String.Tiles": "tiles",
   "String.ShaftGeneratable": "Shaft can be generated on current map",
   "String.ShaftNotGeneratable": "Shaft cannot be generated on current map"

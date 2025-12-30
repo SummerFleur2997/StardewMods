@@ -70,6 +70,16 @@ internal static class GenericModConfigMenuIntegration
             setValue: value => ModEntry.Config.StatueIndicator = value
         );
 
+        // 【选项】显示五彩史莱姆指示器
+        // [Checkbox] Show prismatic slime indicator
+        api.AddBoolOption(
+            manifest,
+            name: I18n.Config_PrisSlimeIndicator_Title,
+            tooltip: I18n.Config_PrisSlimeIndicator_Desc,
+            getValue: () => ModEntry.Config.PrismaticSlimeIndicator,
+            setValue: value => ModEntry.Config.PrismaticSlimeIndicator = value
+        );
+
         // 【数值选择条】指示器最小距离
         // [Number bar] Indicator minium distance
         api.AddNumberOption(

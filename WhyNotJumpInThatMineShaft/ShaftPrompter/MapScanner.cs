@@ -1,9 +1,11 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Extensions;
 using StardewValley.Locations;
+using StardewValley.Monsters;
 
 namespace WhyNotJumpInThatMineShaft.ShaftPrompter;
 
@@ -12,6 +14,7 @@ public static class MapScanner
     public static readonly List<Point> Shafts = new();
     public static readonly List<Point> Stairs = new();
     public static readonly List<Point> Statue = new();
+    internal static GreenSlime Slime;
 
     /// <summary>
     /// Check whether there is a hole in the map.
@@ -30,6 +33,12 @@ public static class MapScanner
     /// 检查当前地图上是否存在一个三花猫雕像。
     /// </summary>
     public static bool HasAStatueHere => Statue.Count > 0;
+
+    /// <summary>
+    /// Check whether there is a calico statue in the map.
+    /// 检查当前地图上是否存在一个三花猫雕像。
+    /// </summary>
+    public static bool HasAPrismaticSlimeHere => Slime is not null;
 
     /// <summary>
     /// A shortcut to get the current level of the player.
@@ -78,6 +87,23 @@ public static class MapScanner
         Statue.Clear();
         ModEntry.ShaftPrompter.RefreshSleepTime();
         mineShaft.UpdateHoles();
+        mineShaft.UpdatePrismaticSlime();
+
+        if (Slime is not null)
+            ModEntry.ModHelper.Events.Player.InventoryChanged += OnInventoryChanged;
+    }
+
+    /// <summary>
+    /// After killed the prismatic slime, remove the indicator.
+    /// 击杀五彩史莱姆后，移除指示器。
+    /// </summary>
+    private static void OnInventoryChanged(object sender, InventoryChangedEventArgs e)
+    {
+        if (e.Added.Any(i => i.QualifiedItemId == "(O)876"))
+        {
+            Slime = null;
+            ModEntry.ModHelper.Events.Player.InventoryChanged -= OnInventoryChanged;
+        }
     }
 
     /// <summary>
@@ -107,5 +133,20 @@ public static class MapScanner
                     break;
             }
         }
+    }
+
+    /// <summary>
+    /// Try to find the prismatic slime on the current map.
+    /// 寻找当前地图内的五彩史莱姆。
+    /// </summary>
+    private static void UpdatePrismaticSlime(this GameLocation location)
+    {
+        if (!Game1.player.team.SpecialOrderActive("Wizard2") || Game1.player.Items.ContainsId("(O)876"))
+            return;
+
+        var slime = location.characters
+            .OfType<GreenSlime>()
+            .FirstOrDefault(s => s.prismatic.Value);
+        Slime = slime;
     }
 }

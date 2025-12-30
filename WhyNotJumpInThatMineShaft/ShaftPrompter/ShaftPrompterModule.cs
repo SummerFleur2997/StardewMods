@@ -8,6 +8,7 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Locations;
+using StardewValley.Monsters;
 using WhyNotJumpInThatMineShaft.Framework;
 
 namespace WhyNotJumpInThatMineShaft.ShaftPrompter;
@@ -85,6 +86,14 @@ internal class ShaftPrompterModule : IModule
                 DrawIndicator(Target.Shaft, e, data);
         }
 
+        // Draw prismatic slime indicator
+        if (Game1.player.team.SpecialOrderActive("Wizard2") && MapScanner.HasAPrismaticSlimeHere)
+        {
+            data = GetPrismaticSlimePosition();
+            if (config.PrismaticSlimeIndicator && data.Distance >= config.HideDistance)
+                DrawIndicator(Target.Slime, e, data);
+        }
+
         DrawText(mineShaft.ladderHasSpawned, e, data);
 
         // Draw calico statue indicator
@@ -151,6 +160,12 @@ internal class ShaftPrompterModule : IModule
     }
 
     /// <summary>
+    /// 获取五彩史莱姆的位置和距离。
+    /// Get the coordinate of the prismatic slime and its distance to the player.
+    /// </summary>
+    private static TargetData GetPrismaticSlimePosition() => new(MapScanner.Slime);
+
+    /// <summary>
     /// 绘制竖井和梯子提示文字。
     /// Draw text prompters for shafts and ladders.
     /// </summary>
@@ -181,6 +196,7 @@ internal class ShaftPrompterModule : IModule
         {
             Target.Shaft => (I18n.String_ShaftFound(), Color.Red),
             Target.Stair => (I18n.String_StairFound(), Color.White),
+            Target.Slime => (I18n.String_PrismaticSlimeFound(), Utility.GetPrismaticColor(data.SpecialNumber, 5f)),
             _ => ("Error", Color.White)
         };
 
@@ -259,6 +275,7 @@ internal class ShaftPrompterModule : IModule
             Target.Shaft => new Color(221, 97, 251),
             Target.Stair => new Color(56, 227, 242),
             Target.Statue => new Color(182, 237, 11),
+            Target.Slime => Utility.GetPrismaticColor(data.SpecialNumber, 5f),
             _ => throw new ArgumentOutOfRangeException(target.ToString())
         };
 
@@ -282,14 +299,15 @@ internal class ShaftPrompterModule : IModule
     {
         Shaft,
         Stair,
-        Statue
-        //Slime
+        Statue,
+        Slime
     }
 
     private class TargetData
     {
         private readonly Vector2 _position = Vector2.Zero;
         private readonly float _distance = -1f;
+        private readonly GreenSlime _slime;
 
         public Target Type;
 
@@ -297,13 +315,17 @@ internal class ShaftPrompterModule : IModule
         /// 目标的位置，单位为地块坐标。
         /// The position of the targeted in tiles.
         /// </summary>
-        public Vector2 Position => _position;
+        public Vector2 Position => _slime?.Tile ?? _position;
 
         /// <summary>
         /// 目标与玩家之间的距离，单位为地块数。
         /// The distance between the player and targeted in tiles.
         /// </summary>
-        public float Distance => _distance;
+        public float Distance => _slime is null
+            ? _distance
+            : Vector2.Distance(Game1.player.getStandingPosition(), _slime.getStandingPosition()) / TileSize;
+
+        public int SpecialNumber => 348 + _slime.specialNumber.Value;
 
         /// <summary>
         /// 使用地物的确定值设定结构
@@ -314,6 +336,16 @@ internal class ShaftPrompterModule : IModule
             _position = position;
             _distance = distance;
             Type = target;
+        }
+
+        /// <summary>
+        /// 使用史莱姆设定结构
+        /// Use slime to init fields.
+        /// </summary>
+        public TargetData(GreenSlime slime)
+        {
+            _slime = slime;
+            Type = Target.Slime;
         }
 
         /// <summary>
