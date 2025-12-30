@@ -33,8 +33,9 @@ internal static class StashLogic
             .DumpItemsToChest(chest, toBeMoved)
             .ToList();
 
-        ModEntry.Log($"Moved [{string.Join(", ", moved.Select(i => $"{i.Name} * {i.Stack}"))}] " +
-                     $"to chest in {chest.Location.Name} at {chest.TileLocation}.");
+        if (moved.Any())
+            ModEntry.Log($"Moved [{string.Join(", ", moved.Select(i => $"{i.Name} * {i.Stack}"))}] " +
+                         $"to chest in {chest.Location.Name} at {chest.TileLocation}.");
         return toBeMoved.Any() && moved.Any();
     }
 

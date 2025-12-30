@@ -12,8 +12,9 @@ public static class QuickSaveIntegration
             "1.2.1",
             ModEntry.ModHelper.ModRegistry,
             ModEntry.Log);
-        if (api != null) api.SavingEvent += Api_SavingEvent;
+        if (api == null) return;
 
+        api.SavingEvent += Api_SavingEvent;
         ModEntry.Log("Successfully registered QuickSave events.");
     }
 
