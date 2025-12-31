@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CategoryRecipeIcons", "Cate
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SummerFleursBetterHats", "SummerFleursBetterHats\SummerFleursBetterHats.csproj", "{F329DB8A-6DF9-4141-A07E-F99F424C7185}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinThereSavedThat", "BinThereSavedThat\BinThereSavedThat.csproj", "{8C98F39F-C53C-4F9A-8327-ED679F576415}"
+EndProject
 
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -69,6 +71,10 @@ Global
 		{F329DB8A-6DF9-4141-A07E-F99F424C7185}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F329DB8A-6DF9-4141-A07E-F99F424C7185}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F329DB8A-6DF9-4141-A07E-F99F424C7185}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C98F39F-C53C-4F9A-8327-ED679F576415}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C98F39F-C53C-4F9A-8327-ED679F576415}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C98F39F-C53C-4F9A-8327-ED679F576415}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C98F39F-C53C-4F9A-8327-ED679F576415}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

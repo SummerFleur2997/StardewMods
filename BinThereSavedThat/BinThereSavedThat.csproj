@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyTitle>BinThereSavedThat</AssemblyTitle>
+        <ModFolderName>BinThereSavedThat</ModFolderName>
+        <Product>BinThereSavedThat</Product>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <FileVersion>1.0.0</FileVersion>
+        <EnableHarmony>true</EnableHarmony>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>embedded</DebugType>
+        <PathMap>$(SolutionDir)=.</PathMap>
+    </PropertyGroup>
+    <PropertyGroup>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="JetBrains.Annotations"/>
+        <PackageReference Include="Pathoschild.Stardew.ModBuildConfig"/>
+<!--        <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder"/>-->
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="manifest.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+</Project>
