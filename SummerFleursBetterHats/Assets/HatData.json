@@ -1,4 +1,8 @@
 ﻿{
+  /**** 
+    Belows are hat data with no extra conditions, you can directly
+    edit them if you want to customize them. 
+   ****/
   // Cowboy Hat
   "(H)0": {
     "Speed": 1.0
@@ -11,16 +15,12 @@
   "(H)8": {
     "Attack": 1.0
   },
-  // Earmuffs
-  "(H)11": {
-    "Speed": 1.0
+  // Hunter's Cap
+  "(H)15": {
+    "Attack": 1.0
   },
   // Sailor's Cap
   "(H)17": {
-    "FishingLevel": 1.0
-  },
-  // Sou'wester
-  "(H)28": {
     "FishingLevel": 1.0
   },
   // Living Hat
@@ -35,21 +35,6 @@
   "(H)51": {
     "Defense": 1.0
   },
-  // Party Hat Red
-  "(H)57": {
-    "Speed": 0.5,
-    "LuckLevel": 1.0
-  },
-  // Party Hat Blue
-  "(H)58": {
-    "Speed": 0.5,
-    "LuckLevel": 1.0
-  },
-  // Party Hat Green
-  "(H)59": {
-    "Speed": 0.5,
-    "LuckLevel": 1.0
-  },
   // Witch Hat
   "(H)70": {
     "Immunity": 2.0
@@ -58,9 +43,109 @@
   "(H)90": {
     "ForagingLevel": 1.0
   },
+  // Tiger Hat
+  "(H)91": {
+    "Attack": 2.0
+  },
+  // Warrior Helmet
+  "(H)93": {
+    "Attack": 2.0,
+    "Speed": 0.5
+  },
+
+  /**** 
+    Belows are hat data with some extra conditions or some special
+    effects. You can directly edit them, but they must match the 
+    game's query or trigger action format; otherwise the effect will
+    not work. 
+
+    This mod defines some other query methods and trigger actions, 
+    you can see their implementation in the code.
+   ****/
+  // Earmuffs (Current season is winter)
+  "(H)11": {
+    "Speed": 0.5,
+    "LuckLevel": 1.0,
+    "Condition": "LOCATION_SEASON Here Winter",
+    "Trigger": "LocationChanged"
+  },
+  // Butterfly Bow (Current date is spring 15~18)
+  "(H)14": {
+    "ForagingLevel": 1.0,
+    "Condition": "LOCATION_SEASON Here Spring, SEASON_DAY Spring 15 Spring 16 Spring 17 Spring 18",
+    "Trigger": "LocationChanged"
+  },
+  // Good Ol' Cap
+  "(H)18": {
+    "Action": "AddMoney 20",
+    "Trigger": "DayStarted"
+  },
+  // Fedora (Current season is fall)
+  "(H)19": {
+    "Speed": 0.5,
+    "LuckLevel": 1.0,
+    "Condition": "LOCATION_SEASON Here Fall",
+    "Trigger": "LocationChanged"
+  },
+  // Santa Hat (Today is winter star festival)
+  "(H)25": {
+    "Condition": "SEASON_DAY Winter 25",
+    "Action": "SFBH_AddMysteryBox",
+    "Trigger": "DayStarted"
+  },
+  // Sou'wester (Current weather is stormy)
+  "(H)28": {
+    "FishingLevel": 2.0,
+    "Condition": "LOCATION_IS_OUTDOORS Here, WEATHER Here Storm",
+    "Trigger": "LocationChanged"
+  },
+  // Daisy (Current season is spring)
+  "(H)29": {
+    "Speed": 0.5,
+    "LuckLevel": 1.0,
+    "Condition": "LOCATION_SEASON Here Spring",
+    "Trigger": "LocationChanged"
+  },
+  // Watermelon Band (Current date is summer)
+  "(H)30": {
+    "Speed": 0.5,
+    "LuckLevel": 1.0,
+    "Condition": "LOCATION_SEASON Here Summer",
+    "Trigger": "LocationChanged"
+  },
+  // Pumpkin Mask (Current date is fall 8~11)
+  "(H)48": {
+    "ForagingLevel": 1.0,
+    "Condition": "LOCATION_SEASON Here Fall, SEASON_DAY Fall 8 Fall 9 Fall 10 Fall 11",
+    "Trigger": "LocationChanged"
+  },
+  // Party Hat Red (Current location is the mine, and the mine level >= 80)
+  "(H)57": {
+    "Speed": 1.0,
+    "LuckLevel": 1.0,
+    "Condition": "SFBH_MINE_LEVEL Here 80",
+    "Trigger": "LocationChanged"
+  },
+  // Party Hat Blue (Current location is the mine, and the mine level is 40~79)
+  "(H)58": {
+    "Speed": 1.0,
+    "LuckLevel": 1.0,
+    "Condition": "SFBH_MINE_LEVEL Here 40 79",
+    "Trigger": "LocationChanged"
+  },
+  // Party Hat Green (Current location is the mine, and the mine level < 40)
+  "(H)59": {
+    "Speed": 1.0,
+    "LuckLevel": 1.0,
+    "Condition": "SFBH_MINE_LEVEL Here 1 39",
+    "Trigger": "LocationChanged"
+  },
   // Paper Hat
   "(H)PaperHat": {
-    "Speed": 0.5,
-    "LuckLevel": 1.0
-  }
+    "Speed": 1.0,
+    "LuckLevel": 1.0,
+    "Condition": "LOCATION_CONTEXT Here Island",
+    "Trigger": "LocationChanged"
+  },
+
 }

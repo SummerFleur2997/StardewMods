@@ -5,7 +5,8 @@
         <Product>SummerFleursBetterHats</Product>
         <AssemblyVersion>1.0.0</AssemblyVersion>
         <FileVersion>1.0.0</FileVersion>
-         <EnableHarmony>true</EnableHarmony>
+        <EnableHarmony>true</EnableHarmony>
+        <ImplicitUsings>true</ImplicitUsings>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DebugSymbols>true</DebugSymbols>

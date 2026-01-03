@@ -1,5 +1,4 @@
 ﻿#nullable enable
-using StardewValley;
 using StardewValley.Objects;
 
 namespace SummerFleursBetterHats.API;
@@ -40,7 +39,7 @@ public interface ISummerfleursBetterHatsAPI
     /// Get the buff from the given hat. The returned value is a read-only
     /// copy of the buff. So what you do to the buff will make no effect.
     /// </summary>
-    public Buff GetBuffFromHatData(Hat hat, string? buffId = null);
+    public Buff GetBuffForThisHat(Hat hat, string? buffId = null);
 
     public delegate void HatUnequippedDelegate(object? sender, IHatUnequippedEventArgs e);
 
@@ -72,9 +71,4 @@ public interface IHatEquippedEventArgs
     /// The equipped hat. 
     /// </summary>
     Buff BuffToApply { get; }
-
-    /// <summary>
-    /// Whether the buff should be applied.
-    /// </summary>
-    bool ShouldApply { get; set; }
 }

@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection.Emit;
+﻿using System.Reflection.Emit;
 using HarmonyLib;
-using StardewModdingAPI;
-using StardewValley;
 
 namespace SummerFleursBetterHats.HatWithPatches;
 
 public partial class HatWithPatches
 {
-    private const string GoblinMaskID = "(H)9";
-
-    public static void RegisterPatchForGoblinMask(Harmony harmony)
+    private static void RegisterPatchForGoblinMask(Harmony harmony)
     {
         try
         {
@@ -28,7 +22,7 @@ public partial class HatWithPatches
     }
 
     /// <summary>
-    /// Scare the NPC and make it unavailable to talk.
+    /// Scare the NPC and make them unavailable to talk.
     /// </summary>
     public static bool ScareNPC(NPC __instance)
     {
@@ -60,8 +54,8 @@ public partial class HatWithPatches
     }
 
     /// <summary>
-    /// Add a transpiler to the CraftingPage.clickCraftingRecipe method
-    /// to set the quality of the dish.
+    /// Add a transpiler to the <see cref="NPC.checkAction"/> method
+    /// to scare the npc.
     /// </summary>
     public static IEnumerable<CodeInstruction> Patch_GoblinMask_checkAction(IEnumerable<CodeInstruction> ci,
         ILGenerator il)

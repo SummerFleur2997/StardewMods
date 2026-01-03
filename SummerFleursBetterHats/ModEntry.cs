@@ -1,9 +1,7 @@
 ﻿using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewValley;
 using SummerFleursBetterHats.API;
+using SummerFleursBetterHats.HatExtensions;
 using static SummerFleursBetterHats.HatWithConditions.HatWithConditions;
 using static SummerFleursBetterHats.HatWithPatches.HatWithPatches;
 
@@ -36,33 +34,35 @@ internal class ModEntry : Mod
         ModHelper = Helper;
         Harmony = new Harmony(ModManifest.UniqueID);
 
-        Helper.Events.GameLoop.SaveLoaded += RegisterHatChangeEvents;
-        Helper.Events.GameLoop.ReturnedToTitle += UnRegisterHatChangeEvents;
-        Helper.Events.GameLoop.ReturnedToTitle += UnRegisterAllConditionCheckers;
-        Helper.Events.GameLoop.DayStarted += OnDayStart;
-        Manager.OnHatEquipped += RegisterConditionChecker;
-        Manager.OnHatUnequipped += UnRegisterConditionChecker;
-        RegisterPatchForChefHat(Harmony);
-        RegisterPatchForGarbageHat(Harmony);
-        RegisterPatchForTruckerHat(Harmony);
-        RegisterPatchForGoblinMask(Harmony);
+        GameExtensions.RegisterAll();
+        HatDataHelper.Initialize();
+
+        Helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
+        Helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
+        Helper.Events.GameLoop.DayStarted += WhenDayStarted;
+        Helper.Events.Player.Warped += WhenWarped;
+
+        RegisterAllPatches(Harmony);
     }
 
-    private static void OnDayStart(object s, DayStartedEventArgs e)
+    private static void OnSaveLoaded(object s, SaveLoadedEventArgs e)
     {
-        var hat = Game1.player.hat;
-        if (hat?.Value == null) return;
+        Game1.player.hat.fieldChangeEvent += Manager.OnHatChange;
 
-        // Simulate a hat change event to apply all codes.
-        Manager.OnHatChange(hat, hat.Value, hat.Value);
-        ManualInvokeActionIfNecessary();
+        var hat = Utilities.PlayerHat();
+        if (hat is null) return;
+        var hatBuff = HatManager.GetBuffAndHatData(hat, out var data);
+        if (data.CheckCondition())
+            Game1.player.applyBuff(hatBuff);
+
+        Manager.CachedHatData = data;
     }
 
-    private static void RegisterHatChangeEvents(object s, SaveLoadedEventArgs e)
-        => Game1.player.hat.fieldChangeEvent += Manager.OnHatChange;
-
-    private static void UnRegisterHatChangeEvents(object s, ReturnedToTitleEventArgs e)
-        => Game1.player.hat.fieldChangeEvent -= Manager.OnHatChange;
+    private static void OnReturnedToTitle(object s, ReturnedToTitleEventArgs e)
+    {
+        Game1.player.hat.fieldChangeEvent -= Manager.OnHatChange;
+        Manager.CachedHatData = null;
+    }
 
     public override object GetApi(IModInfo mod) => Manager;
 }

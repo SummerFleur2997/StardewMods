@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
-using StardewModdingAPI;
 using StardewValley.Locations;
 
 namespace SummerFleursBetterHats.HatWithPatches;
 
 public static partial class HatWithPatches
 {
-    private const string TruckerHatID = "(H)16";
-
-    public static void RegisterPatchForTruckerHat(Harmony harmony)
+    private static void RegisterPatchForTruckerHat(Harmony harmony)
     {
         try
         {
@@ -36,8 +31,8 @@ public static partial class HatWithPatches
     public static int ModifyTicketPrice(int price) => Utilities.PlayerHatIs(TruckerHatID) ? 1 : price;
 
     /// <summary>
-    /// Add a transpiler to the BusStop.answerDialogue method,
-    /// allows the player to drive the bus by themselves.
+    /// Add a transpiler to the <see cref="BusStop.answerDialogue"/> method
+    /// to set the ticket price.
     /// </summary>
     public static IEnumerable<CodeInstruction> Patch_TruckerHat(IEnumerable<CodeInstruction> ci)
     {

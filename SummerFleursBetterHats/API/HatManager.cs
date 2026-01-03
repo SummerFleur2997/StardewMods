@@ -1,6 +1,5 @@
 ﻿#nullable enable
 using Netcode;
-using StardewValley;
 using StardewValley.Objects;
 using SummerFleursBetterHats.HatExtensions;
 
@@ -11,16 +10,18 @@ public class HatManager : ISummerfleursBetterHatsAPI
     /// <summary>
     /// The constant buff id used for applying buffs.
     /// </summary>
-    public string DefaultBuffID => "SummerFleur.SummerFleursBetterHats.HatBuff";
+    public string DefaultBuffID => IdHelper.DefaultBuffID;
 
     /// <inheritdoc/>
-    public Buff EmptyBuff => new(DefaultBuffID) { millisecondsDuration = 100 };
+    public Buff EmptyBuff => new(IdHelper.DefaultBuffID) { millisecondsDuration = 100 };
 
     /// <inheritdoc/>
     public event ISummerfleursBetterHatsAPI.HatUnequippedDelegate? OnHatUnequipped;
 
     /// <inheritdoc/>
     public event ISummerfleursBetterHatsAPI.HatEquippedDelegate? OnHatEquipped;
+
+    public HatData? CachedHatData;
 
     public void OnHatChange(NetRef<Hat> field, Hat? oldHat, Hat? newHat)
     {
@@ -36,38 +37,29 @@ public class HatManager : ISummerfleursBetterHatsAPI
         if (newHat != null)
         {
             // Get the hat data and convert it to a buff.
-            var hatBuff = GetBuffFromHatData(newHat);
+            var hatBuff = GetBuffAndHatData(newHat, out var data);
             var args = new HatEquippedEventArgs(newHat, hatBuff);
+            CachedHatData = data;
 
             // Apply the buff to player.
             OnHatEquipped?.Invoke(this, args);
-            if (args.ShouldApply) Game1.player.applyBuff(hatBuff);
+            if (data.CheckCondition())
+                Game1.player.applyBuff(hatBuff);
         }
     }
 
-    public Buff GetBuffFromHatData(Hat hat, string? buffId = null)
+    /// <inheritdoc/>
+    public Buff GetBuffForThisHat(Hat hat, string? buffId = null)
+        => GetBuffAndHatData(hat, out _, buffId);
+
+    /// <summary>
+    /// Internal version of <see cref="GetBuffForThisHat"/>,
+    /// provided to allow for the out parameter.
+    /// </summary>
+    internal static Buff GetBuffAndHatData(Hat hat, out HatData data, string? buffId = null)
     {
-        var data = hat.GetHatData() ?? new HatData();
-        var buff = new Buff(buffId ?? DefaultBuffID);
-
-        buff.effects.CombatLevel.Value = data.CombatLevel;
-        buff.effects.FarmingLevel.Value = data.FarmingLevel;
-        buff.effects.FishingLevel.Value = data.FishingLevel;
-        buff.effects.MiningLevel.Value = data.MiningLevel;
-        buff.effects.LuckLevel.Value = data.LuckLevel;
-        buff.effects.ForagingLevel.Value = data.ForagingLevel;
-        buff.effects.MaxStamina.Value = data.MaxStamina;
-        buff.effects.MagneticRadius.Value = data.MagneticRadius;
-        buff.effects.Speed.Value = data.Speed;
-        buff.effects.Attack.Value = data.Attack;
-        buff.effects.Defense.Value = data.Defense;
-        buff.effects.Immunity.Value = data.Immunity;
-#if RELEASE
-        buff.visible = false;
-#endif
-        buff.millisecondsDuration = Buff.ENDLESS;
-
-        return buff;
+        data = hat.GetHatData() ?? new HatData();
+        return data.ConvertToBuff(buffId ?? IdHelper.DefaultBuffID);
     }
 }
 
@@ -82,7 +74,6 @@ public class HatEquippedEventArgs : IHatEquippedEventArgs
 {
     public Hat NewHat { get; }
     public Buff BuffToApply { get; }
-    public bool ShouldApply { get; set; } = true;
 
     public HatEquippedEventArgs(Hat newHat, Buff buff)
     {

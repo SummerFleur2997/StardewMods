@@ -1,20 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
-using StardewModdingAPI;
-using StardewValley;
 using StardewValley.Menus;
 
 namespace SummerFleursBetterHats.HatWithPatches;
 
 public static partial class HatWithPatches
 {
-    private const string ChefHatID = "(H)61";
-
-    public static void RegisterPatchForChefHat(Harmony harmony)
+    private static void RegisterPatchForChefHat(Harmony harmony)
     {
         try
         {

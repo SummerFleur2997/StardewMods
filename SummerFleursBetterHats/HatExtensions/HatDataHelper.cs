@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using StardewModdingAPI;
+﻿using JetBrains.Annotations;
 using StardewValley.Objects;
 
 namespace SummerFleursBetterHats.HatExtensions;
@@ -13,14 +11,19 @@ public static class HatDataHelper
     /// A dictionary of all hat data. The format is
     /// <see cref="StardewValley.Item.QualifiedItemId"/> -> <see cref="HatData"/>.
     /// </summary>
-    private static readonly Dictionary<string, HatData> AllHatData;
+    private static Dictionary<string, HatData> AllHatData { get; set; }
 
     /// <summary>
+    /// Gets the <see cref="HatData"/> of the specified hat.
     /// 获取指定帽子的 <see cref="HatData"/> 数据。
     /// </summary>
+    [CanBeNull]
     public static HatData GetHatData(this Hat hat) => AllHatData.GetValueOrDefault(hat.QualifiedItemId);
 
-    static HatDataHelper()
+    /// <summary>
+    /// Initialize the hat data when the mod is loaded.
+    /// </summary>
+    public static void Initialize()
     {
         var absoluteDataPath = Path.Combine(ModEntry.ModHelper.DirectoryPath, DataPath);
         if (!File.Exists(absoluteDataPath))

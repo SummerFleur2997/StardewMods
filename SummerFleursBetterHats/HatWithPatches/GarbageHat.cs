@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection.Emit;
+﻿using System.Reflection.Emit;
 using HarmonyLib;
-using StardewModdingAPI;
-using StardewValley;
 
 namespace SummerFleursBetterHats.HatWithPatches;
 
 public static partial class HatWithPatches
 {
-    private const string GarbageHatID = "(H)66";
-
-    public static void RegisterPatchForGarbageHat(Harmony harmony)
+    private static void RegisterPatchForGarbageHat(Harmony harmony)
     {
         try
         {
@@ -37,7 +31,7 @@ public static partial class HatWithPatches
     }
 
     /// <summary>
-    /// Add a transpiler to the GameLocation.TryGetGarbageItem method
+    /// Add a transpiler to the <see cref="GameLocation.TryGetGarbageItem"/> method
     /// to add the chance of finding items in the garbage can.
     /// </summary>
     public static IEnumerable<CodeInstruction> Patch_GarbageHat_TryGetGarbageItem(IEnumerable<CodeInstruction> ci)
@@ -46,7 +40,7 @@ public static partial class HatWithPatches
 
         // Find an anchor instruction for the injection
         var target = new CodeMatch(OpCodes.Ldstr, "Book_Trash");
-        matcher.MatchStartForward(target).Advance(-2); 
+        matcher.MatchStartForward(target).Advance(-2);
 
         // If the anchor instruction is not found, throw an exception.
         if (matcher.IsInvalid) throw new Exception("This method seems to have changed.");

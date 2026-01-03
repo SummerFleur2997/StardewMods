@@ -1,14 +1,17 @@
 ﻿#nullable enable
-using StardewValley;
+using StardewValley.Objects;
 
 namespace SummerFleursBetterHats;
 
 public static class Utilities
 {
-    public static bool PlayerHatIs(string id)
+    public static bool PlayerHatIs(string id) => PlayerHat()?.QualifiedItemId == id;
+
+    public static bool PlayerHatIn(HashSet<string> id)
     {
-        var hat = Game1.player.hat?.Value;
-        if (hat == null) return false;
-        return hat.QualifiedItemId == id;
+        var hat = PlayerHat();
+        return hat is not null && id.Contains(hat.QualifiedItemId);
     }
+
+    public static Hat? PlayerHat() => Game1.player.hat?.Value;
 }
