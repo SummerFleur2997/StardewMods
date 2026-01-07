@@ -66,7 +66,7 @@ internal static class Saver
     {
         return Game1.getAllFarmers()
             .Select(player => new InventoryEntry(
-                InventoryManager.GetInventoryData(player),
+                player.GetInventoryData(),
                 player.Name,
                 player.UniqueMultiplayerID
             ));

@@ -1,29 +1,35 @@
-﻿using StardewModdingAPI.Utilities;
+﻿using StardewModdingAPI;
+using StardewModdingAPI.Events;
+using StardewModdingAPI.Utilities;
 using StardewValley.Menus;
 using StardewValley.Objects;
-using UI.UserInterface;
+using UI;
 
 namespace ConvenientChests.Framework.UserInterfaceService;
 
 internal static class MenuManager
 {
-    public static PerScreen<WidgetHost> ScreenWidgetHost { get; } = new();
+    public static PerScreen<BaseOverlay> ScreenWidgetHost { get; } = new();
+    private static IModEvents Events => ModEntry.ModHelper.Events;
+    private static IInputHelper Input => ModEntry.ModHelper.Input;
+    private static IReflectionHelper Reflection => ModEntry.ModHelper.Reflection;
 
     public static void CreateMenu(ItemGrabMenu itemGrabMenu)
     {
-        if (itemGrabMenu.context is not Chest chest) return;
-        ScreenWidgetHost.Value =
-            new WidgetHost(ModEntry.ModHelper.Events, ModEntry.ModHelper.Input, ModEntry.ModHelper.Reflection);
+        // Ensure that the menu is for a chest, and not an enricher.
+        if (itemGrabMenu.context is not Chest { SpecialChestType: not Chest.SpecialChestTypes.Enricher } chest)
+            return;
+
+        ScreenWidgetHost.Value?.Dispose();
         var overlay = new ChestOverlay(itemGrabMenu, chest);
-        ScreenWidgetHost.Value.RootWidget.AddChild(overlay);
+        ScreenWidgetHost.Value = new MenuHost<ItemGrabMenu>(Events, Input, Reflection, overlay);
     }
 
     public static void CreateMenu(GameMenu gameMenu)
     {
-        ScreenWidgetHost.Value =
-            new WidgetHost(ModEntry.ModHelper.Events, ModEntry.ModHelper.Input, ModEntry.ModHelper.Reflection);
+        ScreenWidgetHost.Value?.Dispose();
         var overlay = new InventoryOverlay(gameMenu);
-        ScreenWidgetHost.Value.RootWidget.AddChild(overlay);
+        ScreenWidgetHost.Value = new MenuHost<GameMenu>(Events, Input, Reflection, overlay);
     }
 
     public static void ClearMenu()

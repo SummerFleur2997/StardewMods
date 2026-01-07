@@ -203,26 +203,28 @@ internal class ModEntry : Mod
         if (e.NewMenu == e.OldMenu)
             return;
 
-        switch (e.OldMenu)
+        switch (e.OldMenu, e.NewMenu)
         {
-            case GameMenu:
-                ModHelper.Events.Input.ButtonsChanged -= OnButtonChanged;
-                MenuManager.ClearMenu();
-                break;
-            case ItemGrabMenu:
-                MenuManager.ClearMenu();
-                break;
-        }
-
-        switch (e.NewMenu)
-        {
-            case GameMenu gameMenu:
+            case (null, GameMenu gameMenu):
                 MenuManager.CreateMenu(gameMenu);
                 ModHelper.Events.Input.ButtonsChanged += OnButtonChanged;
                 break;
-            case ItemGrabMenu itemGrabMenu:
+            case (null, ItemGrabMenu itemGrabMenu):
                 MenuManager.CreateMenu(itemGrabMenu);
                 break;
+            case (GameMenu, null):
+                ModHelper.Events.Input.ButtonsChanged -= OnButtonChanged;
+                MenuManager.ClearMenu();
+                break;
+            case (ItemGrabMenu, null):
+                MenuManager.ClearMenu();
+                break;
+            // case (GameMenu gameMenu, BaseMenu baseMenu):
+            //     baseMenu.exitFunction = () => Game1.activeClickableMenu = gameMenu;
+            //     break;
+            // case (ItemGrabMenu itemGrabMenu, BaseMenu baseMenu):
+            //     baseMenu.exitFunction = () => Game1.activeClickableMenu = itemGrabMenu;
+            //     break;
         }
     }
 

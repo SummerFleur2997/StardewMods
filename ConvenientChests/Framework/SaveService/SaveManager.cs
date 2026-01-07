@@ -73,8 +73,7 @@ internal static class SaveManager
 
         foreach (var entry in saveData!.InventoryEntries)
         {
-            var player = InventoryManager.GetPlayerByID(entry.PlayerID);
-            var invtyData = InventoryManager.GetInventoryData(player);
+            var invtyData = InventoryManager.GetPlayerByID(entry.PlayerID).GetInventoryData();
 
             invtyData.LockedItemKinds = entry.GetItemSet();
         }

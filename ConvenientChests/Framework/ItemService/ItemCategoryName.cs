@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace ConvenientChests.Framework.ItemService;
 
@@ -35,16 +33,5 @@ internal readonly struct ItemCategoryName : IEquatable<ItemCategoryName>
     public bool Equals(ItemCategoryName other)
     {
         return CategoryDisplayName == other.CategoryDisplayName;
-    }
-
-    /// <summary>
-    /// 获取分类列表的显示名称。
-    /// Get the display names of a list of categories.
-    /// </summary>
-    public static List<string> GetCategoriesDisplayNames(List<ItemCategoryName> categories)
-    {
-        return categories?
-            .Select(c => c.CategoryDisplayName)
-            .ToList() ?? new List<string>();
     }
 }

@@ -1,153 +1,84 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using ConvenientChests.Framework.InventoryService;
 using ConvenientChests.Framework.ItemService;
-using ConvenientChests.Framework.UserInterfaceService;
-using Microsoft.Xna.Framework;
+using JetBrains.Annotations;
+using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
-using UI.UserInterface;
-using Background = UI.UserInterface.Background;
+using UI.Component;
+using UI.Menu;
 
 namespace ConvenientChests.StashToChests.Framework;
 
-internal class LockMenu : ModMenu
+internal class LockMenu : BaseMenu
 {
-    private static int NumItems => Game1.player.Items.Count;
-    private InventoryData InventoryData { get; }
-    private ItemKey[] BackpackItems { get; }
-    public event Action OnClose;
-
-    public LockMenu(InventoryData inventoryData, TooltipManager tooltipManager, int width)
-    {
-        TooltipManager = tooltipManager;
-        InventoryData = inventoryData;
-        Width = width;
-        BackpackItems = GetBackpackItems();
-
-        BuildWidgets();
-        RecreateItemToggles();
-        PositionElements();
-    }
-
-    private static ItemKey[] GetBackpackItems()
-    {
-        var itemKeyList = new List<ItemKey>();
-        foreach (var item in Game1.player.Items)
-        {
-            if (item is Tool or null) continue;
-            itemKeyList.Add(new ItemKey(item));
-        }
-
-        return itemKeyList.Distinct().ToArray();
-    }
-
-    private void BuildWidgets()
-    {
-        Background = AddChild(new Background(Sprites.MenuBackground));
-        Body = AddChild(new Widget());
-        TopRow = Body.AddChild(new Widget());
-        ToggleBag = Body.AddChild(new WrapBag(MaxItemColumns * Game1.tileSize));
-
-        CloseButton = AddChild(new SpriteButton(Sprites.ExitButton));
-        CloseButton.OnPress += () => OnClose?.Invoke();
-
-        TitleLabel = TopRow.AddChild(new Label("", Color.Black, HeaderFont));
-
-        ScrollBar = AddChild(new ScrollBar());
-        ScrollBar.OnScroll += (_, args) => UpdateScrollPosition(args.Position);
-    }
-
-    private void UpdateScrollPosition(int position)
-    {
-        Row = Math.Max(0, position / MaxItemColumns);
-        RecreateItemToggles();
-    }
-
     /// <summary>
-    /// 绘制各个辅助元素。
-    /// Draw all the supplementary elements in position.
+    /// Used to compatible with LookupAnything.
     /// </summary>
-    private void PositionElements()
+    [UsedImplicitly] public Item HoveredItem;
+
+    private readonly InventoryData _inventoryData;
+    private readonly List<ItemKey> _backpackItems;
+    private GridMenu _gridMenu;
+    private ItemToggle _hoveredToggle;
+
+    public LockMenu(int x, int y, int width, int height, InventoryData inventoryData, int padding = 0)
+        : base(x, y, width, height)
     {
-        Body.Position = new Point(Background.Graphic.LeftBorderThickness, Background.Graphic.TopBorderThickness);
+        _inventoryData = inventoryData;
+        this.width = width;
+        this.height = height;
+        _backpackItems = Game1.player.GetBackpackItems();
 
-        // Figure out width
-        Body.Width = ToggleBag.Width;
-        TopRow.Width = Body.Width;
+        BuildWidgets(padding);
+        CreateItemToggles();
+    }
 
-        // Build the top row
-        TitleLabel.Text = I18n.LockItems_Title();
-        TitleLabel.CenterHorizontally();
+    private void BuildWidgets(int padding)
+    {
+        var maxColumns = ModEntry.IsAndroid ? 99 : 12;
+        _gridMenu = new GridMenu(
+            xPositionOnScreen + padding,
+            yPositionOnScreen + padding,
+            width - padding * 2,
+            height - padding * 2,
+            66, maxColumns);
 
-        TopRow.Height = TopRow.Children.Max(c => c.Height);
-
-
-        // Figure out height and vertical positioning
-        ToggleBag.Y = TopRow.Y + TopRow.Height + Padding;
-        Body.Height = ToggleBag.Y + ToggleBag.Height;
-        Height = TopRow.Height +
-                 Game1.tileSize * MaxItemRows + Padding * (MaxItemRows - 1) +
-                 Background.Graphic.TopBorderThickness + Background.Graphic.BottomBorderThickness + Padding * 2;
-
-        Background.Width = Width;
-        Background.Height = Height;
-
-        CloseButton.Position = new Point(Width - CloseButton.Width, 0);
-
-        ScrollBar.Position = new Point(Width - 64 - 3 * 4, CloseButton.Height);
-        ScrollBar.Height = Height - CloseButton.Height - 16;
-        ScrollBar.Visible = NumItems > MaxItemsPage;
-
-        ScrollBar.ScrollPosition = 0;
-        ScrollBar.ScrollMax = NumItems - MaxItemColumns * (MaxItemRows - 2);
-        ScrollBar.Step = MaxItemColumns * 2;
+        AddChild(_gridMenu);
     }
 
     /// <summary>
     /// 绘制物品列表。
     /// Draw the item lists in position.
     /// </summary>
-    private void RecreateItemToggles()
+    private void CreateItemToggles()
     {
-        var entries = BackpackItems
-            .Select(key => new { Key = key, Item = key.GetOne() })
-            .Skip(Row * MaxItemColumns)
-            .Take(MaxItemsPage)
+        var entries = _backpackItems
+            .Select(itemKey => new ItemEntry(itemKey))
+            .OrderBy(itemEntry => itemEntry)
             .ToList();
 
         foreach (var entry in entries)
         {
-            var toggle =
-                ToggleBag.AddChild(new ItemToggle(TooltipManager, entry.Item, InventoryData.Locks(entry.Key)));
-            toggle.OnToggle += () => ToggleItem(entry.Key);
+            var toggle = new ItemToggle(entry.Item, _inventoryData.Locks(entry.ItemKey));
+            toggle.OnToggle += () => ToggleItem(entry.ItemKey);
+            toggle.OnHover += () =>
+            {
+                _hoveredToggle = toggle;
+                HoveredItem = toggle.Item;
+            };
+            _gridMenu.AddComponent(toggle);
         }
     }
 
-    private void ToggleItem(ItemKey itemKey)
+    private void ToggleItem(ItemKey itemKey) => _inventoryData.Toggle(itemKey);
+
+    public override void Draw(SpriteBatch b) => _hoveredToggle?.Tooltip.Draw(b);
+
+    public override bool ReceiveCursorHover(int x, int y)
     {
-        InventoryData.Toggle(itemKey);
-    }
-
-    public override bool ReceiveLeftClick(Point point)
-    {
-        PropagateLeftClick(point);
-        return true;
-    }
-
-    public override bool ReceiveScrollWheelAction(int amount)
-    {
-        var direction = amount > 1 ? -1 : 1;
-
-        if (ScrollBar.Visible)
-            switch (direction)
-            {
-                case -1 when ScrollBar.ScrollPosition > 0:
-                case +1 when ScrollBar.ScrollPosition < ScrollBar.ScrollMax:
-                    ScrollBar.Scroll(direction);
-                    return true;
-            }
-
-        return true;
+        _hoveredToggle = null;
+        HoveredItem = null;
+        return base.ReceiveCursorHover(x, y);
     }
 }

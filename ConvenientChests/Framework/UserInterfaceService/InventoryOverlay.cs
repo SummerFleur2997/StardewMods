@@ -4,93 +4,58 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using StardewValley.Menus;
-using UI.UserInterface;
+using UI.Component;
 
 namespace ConvenientChests.Framework.UserInterfaceService;
 
-internal class InventoryOverlay : Widget
+internal class InventoryOverlay : IOverlay<GameMenu>
 {
-    private readonly Farmer _player;
-    private readonly GameMenu _gameMenu;
+    public GameMenu RootMenu { get; }
     private TextButton LockButton { get; set; }
-    private LockMenu LockMenu { get; set; }
-    private TooltipManager TooltipManager { get; }
 
     public InventoryOverlay(GameMenu menu)
     {
-        _player = Game1.player;
-        _gameMenu = menu;
-        TooltipManager = new TooltipManager();
-        AddButtons();
+        RootMenu = menu;
+        AddAndPositionButtons();
     }
 
-    protected override void OnParent(Widget parent)
+    public void Draw(SpriteBatch b)
     {
-        base.OnParent(parent);
-
-        if (parent == null) return;
-        Width = parent.Width;
-        Height = parent.Height;
+        if (ModEntry.StashModule.IsActive || ModEntry.CategorizeModule.IsActive)
+            LockButton?.Draw(b);
     }
 
-    public override void Draw(SpriteBatch batch)
+    private void AddAndPositionButtons()
     {
-        base.Draw(batch);
-        TooltipManager.Draw(batch);
-    }
+        LockButton =
+            new TextButton(NineSlice.LeftProtrudingTab(), I18n.LockItems_Title(), Color.Black, Game1.smallFont);
+        LockButton.OnPress += OpenLockMenu;
 
-    private void AddButtons()
-    {
-        LockButton = new TextButton(I18n.LockItems_Title(), Sprites.LeftProtrudingTab);
-        LockButton.OnPress += ToggleMenu;
-        if (ModEntry.StashModule.IsActive || ModEntry.CategorizeModule.IsActive) AddChild(LockButton);
-
-        PositionButtons();
-    }
-
-    private void PositionButtons()
-    {
         var delta = ModEntry.IsAndroid ? 100 + ModEntry.Config.MobileOffset : 106;
 
-        LockButton.Position = new Point(
-            _gameMenu.xPositionOnScreen + _gameMenu.width / 2 - LockButton.Width - delta * Game1.pixelZoom,
-            _gameMenu.yPositionOnScreen + 30 * Game1.pixelZoom);
-    }
-
-    private void ToggleMenu()
-    {
-        if (LockMenu == null)
-            OpenLockMenu();
-
-        else
-            CloseLockMenu();
+        LockButton.SetPosition(
+            RootMenu.xPositionOnScreen + RootMenu.width / 2 - LockButton.Width - delta * Game1.pixelZoom,
+            RootMenu.yPositionOnScreen + 30 * Game1.pixelZoom);
     }
 
     private void OpenLockMenu()
     {
-        var inventoryData = InventoryManager.GetInventoryData(_player);
-        LockMenu = new LockMenu(inventoryData, TooltipManager, _gameMenu.width);
-        LockMenu.Position = new Point(
-            (Game1.uiViewport.Width - LockMenu.Width) / 2,
-            (Game1.uiViewport.Height - LockMenu.Height) / 2);
+        var data = Game1.player.GetInventoryData();
+        var menu = new LockMenu(RootMenu.xPositionOnScreen, RootMenu.yPositionOnScreen,
+            RootMenu.width, RootMenu.height, data);
+        menu.exitFunction = ExitFunction;
+        Game1.activeClickableMenu = menu;
+        return;
 
-        LockMenu.OnClose += CloseLockMenu;
-        AddChild(LockMenu);
+        void ExitFunction() => Game1.activeClickableMenu = RootMenu;
     }
 
-    private void CloseLockMenu()
+    public bool ReceiveLeftClick(int x, int y)
     {
-        RemoveChild(LockMenu);
-        LockMenu = null;
+        if ((ModEntry.StashModule.IsActive || ModEntry.CategorizeModule.IsActive) && LockButton.Contains(x, y))
+            return LockButton.ReceiveLeftClick(x, y);
+        return false;
     }
 
-    public override bool ReceiveLeftClick(Point point)
-    {
-        var hit = PropagateLeftClick(point);
-        if (!hit && LockMenu != null)
-            // 如果点击菜单外部，尝试关闭菜单。
-            // If clicking outside the menu, try to close it.
-            CloseLockMenu();
-        return hit;
-    }
+    public bool ReceiveCursorHover(int x, int y) => false;
 }

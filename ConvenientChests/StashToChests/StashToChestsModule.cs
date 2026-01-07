@@ -103,7 +103,7 @@ internal class StashToChestsModule : IModule
     private static bool InventoryLocksItem(Item item)
     {
         var itemKey = item.ToBase().ToItemKey();
-        return InventoryManager.GetInventoryData(Game1.player).Locks(itemKey);
+        return Game1.player.GetInventoryData().Locks(itemKey);
     }
 
     /// <summary>

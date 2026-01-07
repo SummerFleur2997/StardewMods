@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using ConvenientChests.Framework.ItemService;
 using StardewValley;
@@ -19,15 +20,26 @@ internal static class InventoryManager
     {
         lock (Lock)
         {
-            var player = GetPlayerByID(playerID);
-            var data = GetInventoryData(player);
+            var data = GetPlayerByID(playerID).GetInventoryData();
             data.Toggle(itemKey, true);
         }
     }
 
-    public static InventoryData GetInventoryData(Farmer player)
+    public static InventoryData GetInventoryData(this Farmer player)
     {
         return Table.GetValue(Utility.getHomeOfFarmer(player), p => new InventoryData(p));
+    }
+
+    public static List<ItemKey> GetBackpackItems(this Farmer player)
+    {
+        var itemKeyList = new List<ItemKey>();
+        foreach (var item in player.Items)
+        {
+            if (item is Tool or null) continue;
+            itemKeyList.Add(new ItemKey(item));
+        }
+
+        return itemKeyList.Distinct().ToList();
     }
 
     /// <summary>
@@ -46,4 +58,5 @@ internal static class InventoryManager
 
         return player;
     }
+
 }
