@@ -35,6 +35,10 @@
   "(H)51": {
     "Defense": 1.0
   },
+  // Propeller Hat
+  "(H)68": {
+    "MagneticRadius": 64.0
+  },
   // Witch Hat
   "(H)70": {
     "Immunity": 2.0
@@ -60,7 +64,8 @@
     not work. 
 
     This mod defines some other query methods and trigger actions, 
-    you can see their implementation in the code.
+    these methods and actions have the same prefix "SFBH_". And you
+    can see their implementation in the "GameExtensions.cs" file.
    ****/
   // Earmuffs (Current season is winter)
   "(H)11": {
@@ -90,7 +95,7 @@
   // Santa Hat (Today is winter star festival)
   "(H)25": {
     "Condition": "SEASON_DAY Winter 25",
-    "Action": "SFBH_AddMysteryBox",
+    "Action": "SFBH_SantaGift",
     "Trigger": "DayStarted"
   },
   // Sou'wester (Current weather is stormy)
@@ -147,5 +152,4 @@
     "Condition": "LOCATION_CONTEXT Here Island",
     "Trigger": "LocationChanged"
   },
-
 }

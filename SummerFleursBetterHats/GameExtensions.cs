@@ -13,8 +13,8 @@ public static class GameExtensions
 {
     public static void RegisterAll()
     {
+        TriggerActionManager.RegisterAction("SFBH_SantaGift", AddMysteryBox);
         GameStateQuery.Register("SFBH_MINE_LEVEL", MINE_LEVEL);
-        TriggerActionManager.RegisterAction("SFBH_AddMysteryBox", AddMysteryBox);
     }
 
     /// <summary>

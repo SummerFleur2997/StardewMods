@@ -3,12 +3,17 @@ using StardewValley.Objects;
 
 namespace SummerFleursBetterHats.API;
 
-/***
+/****
  * Note:
  *    This api can be used to add custom hat buffs when a hat is equipped.
  *
- *    All the event args in IHatUnequippedEventArgs or IHatEquippedEventArgs are already
- *    checked for null, so you don't need to check them again.
+ *    All the event args in IHatUnequippedEventArgs or IHatEquippedEventArgs
+ *    are already checked for null, so you don't need to check them again.
+ *
+ *    It may change in the future, to get the newest version of the api,
+ *    please check the GitHub page:
+ *
+ *    https://github.com/SummerFleur2997/StardewMods/tree/master/SummerFleursBetterHats/API
  */
 
 public interface ISummerfleursBetterHatsAPI

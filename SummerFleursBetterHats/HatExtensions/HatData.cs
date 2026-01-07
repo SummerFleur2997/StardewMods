@@ -2,6 +2,12 @@
 
 namespace SummerFleursBetterHats.HatExtensions;
 
+/// <summary>
+/// This class represents the data of a hat. It should be
+/// deserialized from a JSON file. All the properties are
+/// initialized to 0 or an empty string by default. So you
+/// only need to specify the properties you want to use.
+/// </summary>
 [Serializable]
 public class HatData
 {
@@ -24,7 +30,7 @@ public class HatData
     public float FishingLevel { get; set; } = 0;
 
     /// <summary>
-    /// Minig level bonus.
+    /// Mining level bonus.
     /// 采矿技能等级加成。
     /// </summary>
     public float MiningLevel { get; set; } = 0;
@@ -98,6 +104,10 @@ public class HatData
     /// <seealso cref="SummerFleursBetterHats.HatExtensions.Trigger"/>
     public Trigger Trigger { get; set; } = Trigger.None;
 
+    /// <summary>
+    /// Convert this hat data to a buff.
+    /// </summary>
+    /// <param name="buffId">The id of the buff.</param>
     public Buff ConvertToBuff(string buffId)
     {
         var buff = new Buff(buffId);
@@ -125,16 +135,20 @@ public class HatData
     /// Checks if the condition is met.
     /// </summary>
     /// <returns>
-    /// True, if the trigger is None or the condition is met, false otherwise.
+    /// True, if the trigger is None or the condition is met;
+    /// False otherwise.
     /// </returns>
     public bool CheckCondition() => string.IsNullOrWhiteSpace(Condition) || GameStateQuery.CheckConditions(Condition);
 
+    /// <summary>
+    /// Try to perform the action. If something goes wrong, log the error.
+    /// </summary>
     public void TryPerformAction()
     {
         if (string.IsNullOrWhiteSpace(Action)) return;
         TriggerActionManager.TryRunAction(Action, out var error, out var ex);
         if (ex != null)
-            ModEntry.Log($"Error while performing action '{Action}': {error}", LogLevel.Warn);
+            ModEntry.Log($"Error while performing action '{Action}': \n{error}", LogLevel.Warn);
     }
 }
 
@@ -149,6 +163,6 @@ public enum Trigger
     /// <summary>Triggered when new day starts.</summary>
     DayStarted,
 
-    /// <summary>Does not trigger.</summary>
+    /// <summary>Trigger with no extra conditions.</summary>
     None
 }

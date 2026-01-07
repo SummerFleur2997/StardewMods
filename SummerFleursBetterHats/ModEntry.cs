@@ -2,7 +2,6 @@
 using JetBrains.Annotations;
 using SummerFleursBetterHats.API;
 using SummerFleursBetterHats.HatExtensions;
-using static SummerFleursBetterHats.HatWithConditions.HatWithConditions;
 using static SummerFleursBetterHats.HatWithPatches.HatWithPatches;
 
 namespace SummerFleursBetterHats;
@@ -23,7 +22,7 @@ internal class ModEntry : Mod
     private static IMonitor ModMonitor { get; set; }
     public static void Log(string s, LogLevel l = LogLevel.Trace) => ModMonitor.Log(s, l);
 
-    public static readonly HatManager Manager = new();
+    private static readonly HatManager Manager = new();
 
     #endregion
 
@@ -39,8 +38,8 @@ internal class ModEntry : Mod
 
         Helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
         Helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
-        Helper.Events.GameLoop.DayStarted += WhenDayStarted;
-        Helper.Events.Player.Warped += WhenWarped;
+        Helper.Events.GameLoop.DayStarted += TriggerWhenDayStarted;
+        Helper.Events.Player.Warped += TriggerWhenWarped;
 
         RegisterAllPatches(Harmony);
     }
@@ -62,6 +61,41 @@ internal class ModEntry : Mod
     {
         Game1.player.hat.fieldChangeEvent -= Manager.OnHatChange;
         Manager.CachedHatData = null;
+    }
+
+    private static void TriggerWhenWarped(object sender, WarpedEventArgs e)
+    {
+        var data = Manager.CachedHatData;
+        if (data?.Trigger != Trigger.LocationChanged) return;
+
+        if (data.CheckCondition())
+        {
+            if (!Game1.player.hasBuff(DefaultBuffID))
+                Game1.player.applyBuff(data.ConvertToBuff(DefaultBuffID));
+            data.TryPerformAction();
+        }
+        else
+        {
+            Game1.player.applyBuff(Manager.EmptyBuff);
+        }
+    }
+
+    private static void TriggerWhenDayStarted(object sender, DayStartedEventArgs e)
+    {
+        var data = Manager.CachedHatData;
+        if (data is null) return;
+
+        if (data.CheckCondition())
+        {
+            if (!Game1.player.hasBuff(DefaultBuffID))
+                Game1.player.applyBuff(data.ConvertToBuff(DefaultBuffID));
+            if (data.Trigger == Trigger.DayStarted)
+                data.TryPerformAction();
+        }
+        else
+        {
+            Game1.player.applyBuff(Manager.EmptyBuff);
+        }
     }
 
     public override object GetApi(IModInfo mod) => Manager;
