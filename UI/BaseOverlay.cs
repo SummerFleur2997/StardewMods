@@ -13,7 +13,7 @@ using Rectangle = xTile.Dimensions.Rectangle;
 // in https://github.com/Pathoschild/StardewMods, available under the
 // MIT License. See that repository for the latest version.
 
-namespace UI.UserInterface;
+namespace UI;
 
 /// <summary>An interface which supports user interaction and overlays the active menu (if any).</summary>
 internal abstract class BaseOverlay : IDisposable
