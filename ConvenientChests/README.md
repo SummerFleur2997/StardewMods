@@ -12,6 +12,23 @@ and [CategorizeChests](https://www.nexusmods.com/stardewvalley/mods/1300), and a
 
 ## Update logs
 
+### 1.8.4
+
+**New Features**
+
+- Introduce a drop-down menu for the category menu.
+
+**Optimizations**
+
+- Provide an api for other mods.
+- Now, when using a new chest to swap the old chest, the category data will keep.
+- More clever ui design to fit with other mods or Android device.
+
+**Bug Fixes**
+
+- Fix a bug causing double ingredient use when crafting.
+  - Merged from [Pull #8](../pull/8) (thanks to DrakeCaesar!) 
+
 ### 1.8.3
 
 **New Features**

@@ -3,6 +3,7 @@ using System.Linq;
 using ConvenientChests.Framework.InventoryService;
 using ConvenientChests.Framework.ItemService;
 using JetBrains.Annotations;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley;
 using UI.Component;
@@ -19,6 +20,7 @@ internal class LockMenu : BaseMenu
 
     private readonly InventoryData _inventoryData;
     private readonly List<ItemKey> _backpackItems;
+    private TextLabel _label;
     private GridMenu _gridMenu;
     private ItemToggle _hoveredToggle;
 
@@ -34,15 +36,21 @@ internal class LockMenu : BaseMenu
 
     private void BuildWidgets(int padding)
     {
+        _label = new TextLabel(I18n.LockItems_Title(), Color.Black, Game1.smallFont);
+        _label.SetPosition(
+            xPositionOnScreen + (width - _label.Width) / 2,
+            yPositionOnScreen + padding);
+
         var maxColumns = ModEntry.IsAndroid ? 99 : 12;
         _gridMenu = new GridMenu(
             xPositionOnScreen + padding,
-            yPositionOnScreen + padding,
+            _label.Y + _label.Height + Game1.pixelZoom * 4,
             width - padding * 2,
-            height - padding * 2,
+            height - _label.Height - padding * 2 - Game1.pixelZoom * 4,
             66, maxColumns);
 
         AddChild(_gridMenu);
+        AddChild(_label);
     }
 
     /// <summary>
