@@ -1,7 +1,4 @@
-﻿using System.Reflection;
-using System.Reflection.Emit;
-using HarmonyLib;
-using StardewValley.Locations;
+﻿using StardewValley.Locations;
 
 namespace SummerFleursBetterHats.HatWithPatches;
 
@@ -28,7 +25,7 @@ public static partial class HatWithPatches
     /// <summary>
     /// Set the ticket price to 1 when the player wears the trucker hat.
     /// </summary>
-    public static int ModifyTicketPrice(int price) => Utilities.PlayerHatIs(TruckerHatID) ? 1 : price;
+    public static int ModifyTicketPrice(int price) => PlayerHatIs(TruckerHatID) ? 1 : price;
 
     /// <summary>
     /// Add a transpiler to the <see cref="BusStop.answerDialogue"/> method

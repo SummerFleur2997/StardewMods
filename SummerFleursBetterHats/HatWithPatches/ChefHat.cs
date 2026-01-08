@@ -1,7 +1,4 @@
-﻿using System.Reflection;
-using System.Reflection.Emit;
-using HarmonyLib;
-using StardewValley.Menus;
+﻿using StardewValley.Menus;
 
 namespace SummerFleursBetterHats.HatWithPatches;
 
@@ -31,7 +28,7 @@ public static partial class HatWithPatches
     /// </summary>
     private static void SetDishQualityToSilver(CraftingPage __instance, Item crafted)
     {
-        if (Utilities.PlayerHatIs(ChefHatID) && __instance.cooking && crafted.Quality == 0)
+        if (PlayerHatIs(ChefHatID) && __instance.cooking && crafted.Quality == 0)
             crafted.Quality = 1;
     }
 

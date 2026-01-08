@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using ConvenientChests;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using StardewModdingAPI;
 using UI.Component;
 using UI.Sprite;
 
@@ -77,7 +77,7 @@ public class GridMenu : IClickableMenu, IClickableComponent
 
     # region Android Exclusive
 
-    private static bool IsAndroid => ModEntry.IsAndroid;
+    private static bool IsAndroid => Constants.TargetPlatform == GamePlatform.Android;
 
     /// <summary>
     /// Only used on Android. Should be manually managed.

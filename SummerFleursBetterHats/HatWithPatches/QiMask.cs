@@ -1,7 +1,4 @@
-﻿using System.Reflection.Emit;
-using HarmonyLib;
-
-namespace SummerFleursBetterHats.HatWithPatches;
+﻿namespace SummerFleursBetterHats.HatWithPatches;
 
 public static partial class HatWithPatches
 {
@@ -33,7 +30,7 @@ public static partial class HatWithPatches
     {
         // create an exclusive random, avoid potential effect to the original logic 
         var r = Utility.CreateRandom(xTile * 7.0, yTile * 5.0, Game1.stats.DaysPlayed, Game1.uniqueIDForThisGame);
-        if (crop.indexOfHarvest.Value == "889" && Utilities.PlayerHatIs(QiMaskID) && r.NextDouble() < 0.1)
+        if (crop.indexOfHarvest.Value == "889" && PlayerHatIs(QiMaskID) && r.NextDouble() < 0.1)
             numToHarvest++;
     }
 

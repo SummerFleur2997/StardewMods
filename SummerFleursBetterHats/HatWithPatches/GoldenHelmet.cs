@@ -1,5 +1,4 @@
-﻿using HarmonyLib;
-using StardewValley.GameData.WildTrees;
+﻿using StardewValley.GameData.WildTrees;
 using StardewValley.TerrainFeatures;
 
 namespace SummerFleursBetterHats.HatWithPatches;
@@ -28,7 +27,7 @@ public static partial class HatWithPatches
     /// </summary>
     public static bool Patch_GoldenHelmet_TryGetDrop(WildTreeItemData drop)
     {
-        if (drop.ItemId == "(O)791" && Utilities.PlayerHatIs(GoldenHelmetId))
+        if (drop.ItemId == "(O)791" && PlayerHatIs(GoldenHelmetId))
             drop.Chance += 0.1f;
         return true;
     }

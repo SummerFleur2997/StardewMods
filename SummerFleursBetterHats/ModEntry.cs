@@ -1,5 +1,5 @@
-﻿using HarmonyLib;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
+using SummerFleursBetterHats.Framework;
 using static SummerFleursBetterHats.HatWithPatches.HatWithPatches;
 
 namespace SummerFleursBetterHats;

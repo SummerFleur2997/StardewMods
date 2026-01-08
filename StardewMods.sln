@@ -20,7 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "_DebugMod", "_DebugMod\_Deb
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CategoryRecipeIcons", "CategoryRecipeIcons\CategoryRecipeIcons.csproj", "{9C9862F8-C514-4056-A7E7-FCFC57F4B8C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SummerFleursBetterHats", "SummerFleursBetterHats\SummerFleursBetterHatsCode\SummerFleursBetterHats.csproj", "{F329DB8A-6DF9-4141-A07E-F99F424C7185}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SummerFleursBetterHats", "SummerFleursBetterHats\SummerFleursBetterHats.csproj", "{F329DB8A-6DF9-4141-A07E-F99F424C7185}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterHatsAPI", "BetterHatsAPI\BetterHatsAPI.csproj", "{D8119ABF-6D81-4745-93EB-4E89FADAE108}"
 EndProject

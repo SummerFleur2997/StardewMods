@@ -6,14 +6,11 @@
         <AssemblyVersion>1.0.0</AssemblyVersion>
         <FileVersion>1.0.0</FileVersion>
         <EnableHarmony>true</EnableHarmony>
-        <ImplicitUsings>true</ImplicitUsings>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DebugSymbols>true</DebugSymbols>
         <DebugType>embedded</DebugType>
         <PathMap>$(SolutionDir)=.</PathMap>
-    </PropertyGroup>
-    <PropertyGroup>
     </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations"/>
@@ -26,13 +23,6 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-      <Content Include="..\[BHA] SummerFleursBetterHats\content.json">
-        <Link>[BHA] SummerFleursBetterHats\content.json</Link>
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
-      <Content Include="..\[BHA] SummerFleursBetterHats\manifest.json">
-        <Link>[BHA] SummerFleursBetterHats\manifest.json</Link>
-        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      </Content>
+        <ContentPacks Include="content" Version="$(Version)" FolderName="[BHA] SummerFleursBetterHats" />
     </ItemGroup>
 </Project>

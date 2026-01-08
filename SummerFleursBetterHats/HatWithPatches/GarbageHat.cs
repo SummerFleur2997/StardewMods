@@ -1,7 +1,4 @@
-﻿using System.Reflection.Emit;
-using HarmonyLib;
-
-namespace SummerFleursBetterHats.HatWithPatches;
+﻿namespace SummerFleursBetterHats.HatWithPatches;
 
 public static partial class HatWithPatches
 {
@@ -26,7 +23,7 @@ public static partial class HatWithPatches
     /// </summary>
     public static void SetGarbageChance(ref float baseChance)
     {
-        if (Utilities.PlayerHatIs(GarbageHatID))
+        if (PlayerHatIs(GarbageHatID))
             baseChance += 0.1f;
     }
 

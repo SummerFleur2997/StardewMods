@@ -1,7 +1,4 @@
-﻿using System.Reflection.Emit;
-using HarmonyLib;
-
-namespace SummerFleursBetterHats.HatWithPatches;
+﻿namespace SummerFleursBetterHats.HatWithPatches;
 
 public partial class HatWithPatches
 {
@@ -26,7 +23,7 @@ public partial class HatWithPatches
     /// </summary>
     public static bool ScareNPC(NPC __instance)
     {
-        if (!Utilities.PlayerHatIs(GoblinMaskID))
+        if (!PlayerHatIs(GoblinMaskID))
             return false;
 
         if (__instance.Name is "Krobus" or "Dwarf")

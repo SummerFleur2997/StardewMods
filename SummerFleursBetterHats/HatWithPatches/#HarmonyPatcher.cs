@@ -1,6 +1,4 @@
-﻿using HarmonyLib;
-
-namespace SummerFleursBetterHats.HatWithPatches;
+﻿namespace SummerFleursBetterHats.HatWithPatches;
 
 public static partial class HatWithPatches
 {

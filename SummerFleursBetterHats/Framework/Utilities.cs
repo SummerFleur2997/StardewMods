@@ -1,7 +1,7 @@
 ﻿#nullable enable
 using StardewValley.Objects;
 
-namespace SummerFleursBetterHats;
+namespace SummerFleursBetterHats.Framework;
 
 public static class Utilities
 {

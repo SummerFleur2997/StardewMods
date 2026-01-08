@@ -1,7 +1,4 @@
-﻿using System.Reflection.Emit;
-using HarmonyLib;
-
-namespace SummerFleursBetterHats.HatWithPatches;
+﻿namespace SummerFleursBetterHats.HatWithPatches;
 
 public static partial class HatWithPatches
 {
@@ -34,8 +31,7 @@ public static partial class HatWithPatches
     /// <summary>
     /// Add 0.5 speed if the player is riding a horse.
     /// </summary>
-    public static float AddRidingHorseSpeed()
-        => Utilities.PlayerHatIn(CowboyHatsID) ? 0.5f : 0;
+    public static float AddRidingHorseSpeed() => PlayerHatIn(CowboyHatsID) ? 0.5f : 0;
 
     /// <summary>
     /// Add a transpiler to the <see cref="Farmer.getMovementSpeed"/> method

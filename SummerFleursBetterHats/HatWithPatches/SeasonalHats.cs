@@ -1,6 +1,4 @@
-﻿using System.Reflection.Emit;
-using HarmonyLib;
-using StardewValley.TerrainFeatures;
+﻿using StardewValley.TerrainFeatures;
 
 namespace SummerFleursBetterHats.HatWithPatches;
 
@@ -25,7 +23,7 @@ public partial class HatWithPatches
     /// <summary>
     /// An extra berry if the player is wearing the butterfly bow or the pumpkin mask.
     /// </summary>
-    public static int AddBerryCount(Bush bush) => Utilities.PlayerHat()?.QualifiedItemId switch
+    public static int AddBerryCount(Bush bush) => PlayerHat()?.QualifiedItemId switch
     {
         ButterflyBowID when bush.GetShakeOffItem() == "(O)296" => 1,
         PumpkinMaskID when bush.GetShakeOffItem() == "(O)410" => 1,

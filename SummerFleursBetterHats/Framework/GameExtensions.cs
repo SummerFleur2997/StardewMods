@@ -3,7 +3,7 @@ using StardewValley.Delegates;
 using StardewValley.Locations;
 using StardewValley.Triggers;
 
-namespace SummerFleursBetterHats;
+namespace SummerFleursBetterHats.Framework;
 
 /// <summary>
 /// Extensive methods for the <see cref="StardewValley.GameStateQuery"/>
