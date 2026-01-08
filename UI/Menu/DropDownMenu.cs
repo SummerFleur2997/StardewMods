@@ -15,7 +15,6 @@ public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
     public const int ArrowXOffset = 280;
     public const int ArrowYOffset = 8;
     public const int ItemHeight = 40;
-    public const int MaxVisibleOptions = 10;
 
     /// <inheritdoc/>
     public Rectangle Bounds => new(X, Y, Width, Height);
@@ -84,6 +83,11 @@ public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
     public TextureRegion HoverBackground;
 
     /// <summary>
+    /// The background texture for the active state.
+    /// </summary>
+    public TextureRegion ActiveBackground;
+
+    /// <summary>
     /// List of options in the drop-down menu.
     /// </summary>
     public List<DropDownOption<T>> Options = new();
@@ -107,11 +111,23 @@ public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
     public string SelectedLabel => _selectedIndex >= 0 ? Options[_selectedIndex].Label : "";
 
     /// <summary>
+    /// Maximum visible options, which is calculated based on the
+    /// <see cref="_limitVisibleOptions"/> and the viewport height.
+    /// </summary>
+    public int MaxVisibleOptions => Math.Min(_limitVisibleOptions, (Game1.viewport.Height - Y - _height) / ItemHeight);
+
+    /// <summary>
+    /// Limited visible options, which is set when constructed.
+    /// </summary>
+    private readonly int _limitVisibleOptions;
+
+    /// <summary>
     /// Initialize a new instance of the <see cref="DropDownMenu{T}"/> class.
     /// Customize its size is too complex, so we use a default size.
     /// </summary>
-    public DropDownMenu(int x = 0, int y = 0)
+    public DropDownMenu(int maxHeight, int x = 0, int y = 0)
     {
+        _limitVisibleOptions = maxHeight / ItemHeight - 1;
         Font = Game1.smallFont;
         var measure = Font.MeasureString("你好 World");
         var y0 = Bounds.Y + (Bounds.Height - measure.Y) / 2;
@@ -124,6 +140,7 @@ public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
         Arrow = new SpriteLabel(TextureRegion.DropDownSideArrow(), defaultArrowBound);
         InactiveBackground = TextureRegion.InactiveBackground();
         HoverBackground = TextureRegion.HoverBackground();
+        ActiveBackground = TextureRegion.ActiveBackground();
         this.SetPosition(x, y);
     }
 
@@ -149,27 +166,32 @@ public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
         _firstVisibleIndex = 0;
     }
 
-    public void SelectByValue(T value)
-    {
-        var index = Options.FindIndex(o => EqualityComparer<T>.Default.Equals(o.Value, value));
-        if (index >= 0)
-        {
-            _selectedIndex = index;
-            OnSelectionChanged?.Invoke(value);
-        }
-    }
-
     /// <summary>
-    /// Select the option by its index. If the index is out of range,
-    /// it will be clamped to the valid range.
+    /// Select the option by its index. Then update the first visible
+    /// index. If the index is out of range, it will be clamped to
+    /// the valid range.
     /// </summary>
     public void SelectByIndex(int index)
     {
         // Clamp the index to the valid range
-        index = Math.Clamp(index, 0, Options.Count - 1);
+        var count = Options.Count;
+        if (count == 0) throw new Exception("How did you get here?");
 
+        // Update the selected value
+        index = Math.Clamp(index, 0, count - 1);
         _selectedIndex = index;
         OnSelectionChanged?.Invoke(Options[index].Value);
+
+        // Update the first visible index, floating based on the selected index
+        var offset = (_selectedIndex + 1.0f) / count;
+        var maxFirstIndex = count - MaxVisibleOptions;
+        _firstVisibleIndex = (int)(offset * maxFirstIndex);
+    }
+
+    public void SelectByValue(T value)
+    {
+        var index = Options.FindIndex(o => EqualityComparer<T>.Default.Equals(o.Value, value));
+        SelectByIndex(index);
     }
 
     /// <summary>
@@ -215,8 +237,12 @@ public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
             var optionY = optionsBounds.Y + i * ItemHeight;
             var optionBounds = new Rectangle(optionsBounds.X, optionY, optionsBounds.Width, ItemHeight);
 
+            // 绘制活动项效果
+            if (optionIndex == _selectedIndex)
+                b.Draw(ActiveBackground.Texture, optionBounds, ActiveBackground.Region, Color.White * 0.5f);
+
             // 绘制悬停效果
-            if (optionIndex == _hoveredOptionIndex)
+            else if (optionIndex == _hoveredOptionIndex)
                 b.Draw(HoverBackground.Texture, optionBounds, HoverBackground.Region, Color.White * 0.5f);
 
             // 绘制选项文本
@@ -247,14 +273,10 @@ public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
             if (optionsBounds.Contains(x, y))
             {
                 var clickedIndex = _firstVisibleIndex + (y - optionsBounds.Y) / ItemHeight;
-                if (clickedIndex >= 0 && clickedIndex < Options.Count)
-                {
-                    _selectedIndex = clickedIndex;
-                    Expanded = false;
-                    OnSelectionChanged?.Invoke(Options[clickedIndex].Value);
-                    Game1.playSound("drumkit6");
-                    return true;
-                }
+                SelectByIndex(clickedIndex);
+                Expanded = false;
+                Game1.playSound("drumkit6");
+                return true;
             }
 
             // Otherwise, collapse the dropdown

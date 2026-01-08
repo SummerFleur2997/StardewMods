@@ -54,6 +54,11 @@ public static class ComponentExtensions
     public static Point Size(this IComponent component) => new(component.Width, component.Height);
 
     /// <summary>
+    /// The pixel position of the right-bottom corner of the <see cref="IComponent"/>.
+    /// </summary>
+    public static Point RightBottomPosition(this IComponent component) => component.Position() + component.Size();
+
+    /// <summary>
     /// Set the position of the component.
     /// </summary>
     /// <param name="component">The target component.</param>
@@ -63,6 +68,18 @@ public static class ComponentExtensions
     {
         component.X = x;
         component.Y = y;
+    }
+
+    /// <summary>
+    /// Move the component by the given offset.
+    /// </summary>
+    /// <param name="component">The target component.</param>
+    /// <param name="x">The movement in the x-axis.</param>
+    /// <param name="y">The movement in the y-axis.</param>
+    public static void OffsetPosition(this IComponent component, int x = 0, int y = 0)
+    {
+        component.X += x;
+        component.Y += y;
     }
 
     /// <summary>

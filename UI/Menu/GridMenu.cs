@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using ConvenientChests;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using UI.Component;
+using UI.Sprite;
 
 namespace UI.Menu;
 
@@ -37,7 +39,13 @@ public class GridMenu : IClickableMenu, IClickableComponent
     /// the width of the grid menu, the value will be adjusted to fit
     /// in the ctor.
     /// </remarks>
-    public int MaxItemColumns;
+    public int MaxItemColumns
+    {
+        get => IsAndroid && IsScrollingEnabled ? _maxItemColumns - 1 : _maxItemColumns;
+        set => _maxItemColumns = value;
+    }
+
+    private int _maxItemColumns;
 
     /// <summary>
     /// Maximum number of rows that can be displayed in the grid.
@@ -49,7 +57,7 @@ public class GridMenu : IClickableMenu, IClickableComponent
     /// the height of the grid menu, the value will be adjusted to fit
     /// in the ctor.
     /// </remarks>
-    public int MaxItemRows;
+    public int MaxItemRows { get; set; }
 
     /// <summary>
     /// The size of each item displayed in the grid.
@@ -63,19 +71,41 @@ public class GridMenu : IClickableMenu, IClickableComponent
     private int _firstItemIndex;
 
     public int MaxVisibleItems => MaxItemColumns * MaxItemRows;
+    public bool IsScrollingEnabled => Components.Count > _maxItems;
+
+    private readonly int _maxItems;
+
+    # region Android Exclusive
+
+    private static bool IsAndroid => ModEntry.IsAndroid;
 
     /// <summary>
-    /// 
+    /// Only used on Android. Should be manually managed.
+    /// Used to simulate scroll-wheel action when the elements in
+    /// grid-menu are too many.
     /// </summary>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
-    /// <param name="width"></param>
-    /// <param name="height"></param>
-    /// <param name="itemSize"></param>
-    /// <param name="maxItemColumns"></param>
-    /// <param name="maxItemRows"></param>
-    public GridMenu(int x, int y, int width, int height, int itemSize,
-        int maxItemColumns = 99, int maxItemRows = 99)
+    private SpriteButton _androidExclusiveNextButton;
+
+    /// <summary>
+    /// Only used on Android. Should be manually managed.
+    /// Used to simulate scroll-wheel action when the elements in
+    /// grid-menu are too many.
+    /// </summary>
+    private SpriteButton _androidExclusivePrevButton;
+
+    #endregion
+
+    /// <summary>
+    /// Construct a grid menu.
+    /// </summary>
+    /// <param name="x">The x-position of this grid-menu.</param>
+    /// <param name="y">The y-position of this grid-menu.</param>
+    /// <param name="width">The width of this grid-menu.</param>
+    /// <param name="height">The height of this grid-menu.</param>
+    /// <param name="itemSize">The size of each item displayed in the grid in pixel.</param>
+    /// <param name="maxItemColumns">The maximum number of columns that can be displayed in the grid.</param>
+    /// <param name="maxItemRows">The maximum number of rows that can be displayed in the grid.</param>
+    public GridMenu(int x, int y, int width, int height, int itemSize, int maxItemColumns = 99, int maxItemRows = 99)
     {
         this.SetDestination(x, y, width, height);
         MaxItemColumns = maxItemColumns;
@@ -86,6 +116,19 @@ public class GridMenu : IClickableMenu, IClickableComponent
             MaxItemColumns = width / itemSize;
         if (itemSize * maxItemRows > height)
             MaxItemRows = height / itemSize;
+
+        _maxItems = MaxItemColumns * MaxItemRows;
+
+        if (IsAndroid)
+        {
+            var anchor = this.RightBottomPosition();
+            _androidExclusiveNextButton = new SpriteButton(TextureRegion.DownArrow());
+            _androidExclusivePrevButton = new SpriteButton(TextureRegion.UpArrow());
+            _androidExclusiveNextButton.OnPress += () => ReceiveScrollWheelAction(-1);
+            _androidExclusivePrevButton.OnPress += () => ReceiveScrollWheelAction(1);
+            _androidExclusiveNextButton.SetDestination(anchor.X - 50, anchor.Y - 50, 48, 48);
+            _androidExclusivePrevButton.SetDestination(anchor.X - 50, anchor.Y - 100, 48, 48);
+        }
     }
 
     /// <summary>
@@ -93,16 +136,21 @@ public class GridMenu : IClickableMenu, IClickableComponent
     /// its initial position. The component will be placed in the
     /// center of its bounds by default.
     /// </summary>
-    public void AddComponent(IComponent component)
+    public void AddComponents(IEnumerable<IComponent> components)
     {
-        var index = Components.Count;
+        var index = 0;
 
-        Components.Add(component);
+        Components.AddRange(components);
+        var maxItemColumns = MaxItemColumns;
 
-        var column = index % MaxItemColumns;
-        var row = index / MaxItemColumns;
-        var bound = new Rectangle(X + column * ItemSize, Y + row * ItemSize, ItemSize, ItemSize);
-        component.SetInCenterOfTheBounds(bound);
+        foreach (var component in Components)
+        {
+            var column = index % maxItemColumns;
+            var row = index / maxItemColumns;
+            var bound = new Rectangle(X + column * ItemSize, Y + row * ItemSize, ItemSize, ItemSize);
+            component.SetInCenterOfTheBounds(bound);
+            index++;
+        }
     }
 
     public void RemoveAllComponents()
@@ -122,12 +170,19 @@ public class GridMenu : IClickableMenu, IClickableComponent
             if (Bounds.Contains(component.Bounds))
                 component.Draw(b);
         }
+
+        if (IsAndroid && IsScrollingEnabled)
+        {
+            _androidExclusiveNextButton.Draw(b);
+            _androidExclusivePrevButton.Draw(b);
+        }
     }
 
     /// <inheritdoc cref="BaseMenu.ReceiveLeftClick"/>
     public virtual bool ReceiveLeftClick(int x, int y)
     {
-        for (var i = Components.Count - 1; i >= 0; i--)
+        var lastItemIndex = Math.Min(_firstItemIndex + MaxVisibleItems, Components.Count);
+        for (var i = _firstItemIndex; i < lastItemIndex; i++)
         {
             var component = Components[i];
             if (component is not IClickableComponent c)
@@ -140,13 +195,16 @@ public class GridMenu : IClickableMenu, IClickableComponent
             if (handled) return true;
         }
 
-        return false;
+        return IsAndroid && IsScrollingEnabled &&
+               (_androidExclusiveNextButton.ReceiveLeftClick(x, y) ||
+                _androidExclusivePrevButton.ReceiveLeftClick(x, y));
     }
 
     /// <inheritdoc cref="BaseMenu.ReceiveCursorHover"/>
     public virtual bool ReceiveCursorHover(int x, int y)
     {
-        for (var i = Components.Count - 1; i >= 0; i--)
+        var lastItemIndex = Math.Min(_firstItemIndex + MaxVisibleItems, Components.Count);
+        for (var i = _firstItemIndex; i < lastItemIndex; i++)
         {
             var component = Components[i];
             if (component is not IClickableComponent c)
@@ -200,6 +258,13 @@ public class GridMenu : IClickableMenu, IClickableComponent
                 d.Dispose();
 
         Components.Clear();
+
+        if (IsAndroid)
+        {
+            _androidExclusiveNextButton.Dispose();
+            _androidExclusivePrevButton.Dispose();
+        }
+
         GC.SuppressFinalize(this);
     }
 }

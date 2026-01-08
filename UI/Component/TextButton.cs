@@ -53,7 +53,7 @@ public class TextButton : IClickableComponent, IDisposable
         get => _width;
         set
         {
-            Label.X = _x + (value - _width) / 2;
+            Label.X = _x + (value - Label.Width) / 2;
             Background.Width = value;
             _width = value;
         }
@@ -70,7 +70,7 @@ public class TextButton : IClickableComponent, IDisposable
         get => _height;
         set
         {
-            Label.Y = _y + (value - _height) / 2;
+            Label.Y = _y + (value - Label.Height) / 2;
             Background.Height = value;
             _height = value;
         }
@@ -105,9 +105,11 @@ public class TextButton : IClickableComponent, IDisposable
         _padding = padding;
 
         // Use the width and height of the label as the width and height of the button.
-        var w = width ?? Label.Width + padding * 2;
-        var h = height ?? Label.Height + padding * 2;
-        this.SetDestination(x, y, w, h);
+        _width = Background.Width = width ?? Label.Width + padding * 2;
+        _height = Background.Height = height ?? Label.Height + padding * 2;
+        _x = Background.X = x;
+        _y = Background.Y = y;
+        Label.SetInCenterOfTheBounds(Bounds);
     }
 
     public virtual void Draw(SpriteBatch b)
