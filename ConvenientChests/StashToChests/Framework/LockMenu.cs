@@ -26,8 +26,6 @@ internal class LockMenu : BaseMenu
         : base(x, y, width, height)
     {
         _inventoryData = inventoryData;
-        this.width = width;
-        this.height = height;
         _backpackItems = Game1.player.GetBackpackItems();
 
         BuildWidgets(padding);
@@ -58,6 +56,7 @@ internal class LockMenu : BaseMenu
             .OrderBy(itemEntry => itemEntry)
             .ToList();
 
+        var toggles = new List<ItemToggle>();
         foreach (var entry in entries)
         {
             var toggle = new ItemToggle(entry.Item, _inventoryData.Locks(entry.ItemKey));
@@ -67,8 +66,11 @@ internal class LockMenu : BaseMenu
                 _hoveredToggle = toggle;
                 HoveredItem = toggle.Item;
             };
-            _gridMenu.AddComponent(toggle);
+            toggles.Add(toggle);
         }
+
+        _gridMenu.AddComponents(toggles);
+
     }
 
     private void ToggleItem(ItemKey itemKey) => _inventoryData.Toggle(itemKey);

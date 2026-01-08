@@ -1,4 +1,6 @@
-﻿using StardewModdingAPI;
+﻿using ConvenientChests.Framework.ChestService;
+using ConvenientChests.Framework.InventoryService;
+using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley.Menus;
@@ -21,14 +23,14 @@ internal static class MenuManager
             return;
 
         ScreenWidgetHost.Value?.Dispose();
-        var overlay = new ChestOverlay(itemGrabMenu, chest);
+        var overlay = new ChestSideTab(itemGrabMenu, chest);
         ScreenWidgetHost.Value = new MenuHost<ItemGrabMenu>(Events, Input, Reflection, overlay);
     }
 
     public static void CreateMenu(GameMenu gameMenu)
     {
         ScreenWidgetHost.Value?.Dispose();
-        var overlay = new InventoryOverlay(gameMenu);
+        var overlay = new InventorySideTab(gameMenu);
         ScreenWidgetHost.Value = new MenuHost<GameMenu>(Events, Input, Reflection, overlay);
     }
 

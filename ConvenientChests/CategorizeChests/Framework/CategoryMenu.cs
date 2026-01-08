@@ -28,13 +28,12 @@ internal class CategoryMenu : BaseMenu
     private ItemToggle _hoveredToggle;
 
     private ItemCategoryName ActiveCategory => _topRow.CategorySelector.SelectedValue;
+    private static bool IsAndroid => ModEntry.IsAndroid;
 
     public CategoryMenu(int x, int y, int width, int height, ChestData chestData, int padding = 0)
         : base(x, y, width, height)
     {
         _chestData = chestData;
-        this.width = width;
-        this.height = height;
 
         BuildWidgets(padding);
         BuildCategories();
@@ -43,24 +42,29 @@ internal class CategoryMenu : BaseMenu
 
     private void BuildWidgets(int padding)
     {
-        var maxColumns = ModEntry.IsAndroid ? 99 : 12;
+        var maxColumns = IsAndroid ? 99 : 12;
+        var delta = IsAndroid ? 60 : 0;
         _topRow = new TopRow(
             xPositionOnScreen,
             yPositionOnScreen - TopRowHeight,
-            width, TopRowHeight);
+            width, TopRowHeight, height);
         _gridMenu = new GridMenu(
             xPositionOnScreen + padding,
             yPositionOnScreen + padding,
-            width - padding * 2,
+            width - padding * 2 - delta,
             height - padding * 2,
             66, maxColumns);
 
         _topRow.NextButton.OnPress += SelectNext;
         _topRow.PrevButton.OnPress += SelectPrev;
         _topRow.SelectAllButton.OnToggle += OnToggleSelectAll;
+        _topRow.CategorySelector.OnSelectionChanged += OnSelectChanged;
 
-        AddChild(_topRow);
+        // The click handler logic in BaseMenu will traverse the children in
+        // reverse order, so we need to add the grid menu in front of the top
+        // row to ensure that the drop-down in the top row is handled first.
         AddChild(_gridMenu);
+        AddChild(_topRow);
     }
 
     private void BuildCategories()
@@ -116,6 +120,7 @@ internal class CategoryMenu : BaseMenu
             .OrderBy(itemEntry => itemEntry)
             .ToList();
 
+        var toggles = new List<ItemToggle>();
         foreach (var entry in entries)
         {
             var toggle = new ItemToggle(entry.Item, _chestData.Accepts(entry.ItemKey));
@@ -125,8 +130,10 @@ internal class CategoryMenu : BaseMenu
                 _hoveredToggle = toggle;
                 HoveredItem = toggle.Item;
             };
-            _gridMenu.AddComponent(toggle);
+            toggles.Add(toggle);
         }
+
+        _gridMenu.AddComponents(toggles);
     }
 
     private void OnToggleSelectAll(bool on)
@@ -168,6 +175,8 @@ internal class CategoryMenu : BaseMenu
         RecreateItemToggles();
         _topRow.SelectAllButton.Checked = AreAllSelected();
     }
+
+    private void OnSelectChanged(ItemCategoryName category) => RecreateItemToggles();
 
     private void ToggleItem(ItemKey itemKey)
     {
@@ -215,24 +224,26 @@ internal sealed class TopRow : IClickableMenu, IClickableComponent
 
     private List<IClickableComponent> _components = new();
 
-    public TopRow(int x, int y, int width, int height)
+    public TopRow(int x, int y, int width, int height, int parentMenuHeight)
     {
         SelectAllButtonBackground = NineSlice.CommonMenu();
         SelectAllButton = new LabeledCheckBox(I18n.Categorize_All(), Color.Black);
         PrevButton = new SpriteButton(TextureRegion.UpArrow());
         NextButton = new SpriteButton(TextureRegion.DownArrow());
-        CategorySelector = new DropDownMenu<ItemCategoryName>();
+        CategorySelector = new DropDownMenu<ItemCategoryName>(parentMenuHeight);
 
         var actualHeight = Math.Max(SelectAllButton.Height, PrevButton.Height);
         y -= Math.Max(0, actualHeight - height); // offset to the top
         this.SetDestination(x, y, width, height);
-        CategorySelector.SetPosition(x + width / 2, y);
-        SelectAllButton.SetDestination(x, y, SelectAllButton.Width + Game1.pixelZoom * 4, height);
+        SelectAllButtonBackground.SetDestination(x, y, SelectAllButton.Width + Game1.pixelZoom * 10, height);
+        SelectAllButton.SetAtLeftCenterWithEqualMargins(SelectAllButtonBackground.Bounds);
 
-        x += SelectAllButton.Width + Game1.pixelZoom * 4;
+        x += SelectAllButtonBackground.Width + Game1.pixelZoom * 4;
         PrevButton.SetDestination(x, y, height, height);
-        x += height + Game1.pixelZoom * 4;
+        x += height - Game1.pixelZoom * 2;
         NextButton.SetDestination(x, y, height, height);
+        x += height + Game1.pixelZoom * 4;
+        CategorySelector.SetPosition(x, y);
 
         _components.Add(SelectAllButton);
         _components.Add(PrevButton);
@@ -250,11 +261,8 @@ internal sealed class TopRow : IClickableMenu, IClickableComponent
 
     public bool ReceiveLeftClick(int x, int y)
     {
-        if (CategorySelector.Expanded)
-        {
-            var handled = CategorySelector.ReceiveLeftClick(x, y);
-            if (handled) return true;
-        }
+        var handled = CategorySelector.ReceiveLeftClick(x, y);
+        if (handled) return true;
 
         foreach (var component in _components)
             if (component.Contains(x, y))
@@ -263,7 +271,8 @@ internal sealed class TopRow : IClickableMenu, IClickableComponent
         return false;
     }
 
-    public bool ReceiveCursorHover(int x, int y) => CategorySelector.Expanded && CategorySelector.ReceiveCursorHover(x, y);
+    public bool ReceiveCursorHover(int x, int y) =>
+        CategorySelector.Expanded && CategorySelector.ReceiveCursorHover(x, y);
 
     public bool ReceiveScrollWheelAction(int amount) =>
         CategorySelector.Expanded && CategorySelector.ReceiveScrollWheelAction(amount);

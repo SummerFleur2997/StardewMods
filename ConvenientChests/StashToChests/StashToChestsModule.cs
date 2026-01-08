@@ -220,7 +220,7 @@ internal class StashToChestsModule : IModule
         if (ModEntry.Config.StashAnywhereKey.JustPressed() && IsStashAnywhereActive)
             StashAnywhere();
 
-        if (ModEntry.Config.StashToNearbyKey.JustPressed() || e.Button == ModEntry.Config.StashButton)
+        if (ModEntry.Config.StashToNearbyKey.JustPressed())
             StashToNearby();
     }
 

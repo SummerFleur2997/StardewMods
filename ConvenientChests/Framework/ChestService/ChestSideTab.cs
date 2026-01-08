@@ -1,6 +1,6 @@
 using System;
 using ConvenientChests.CategorizeChests.Framework;
-using ConvenientChests.Framework.ChestService;
+using ConvenientChests.Framework.UserInterfaceService;
 using ConvenientChests.StashToChests.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,9 +9,9 @@ using StardewValley.Menus;
 using StardewValley.Objects;
 using UI.Component;
 
-namespace ConvenientChests.Framework.UserInterfaceService;
+namespace ConvenientChests.Framework.ChestService;
 
-internal class ChestOverlay : IOverlay<ItemGrabMenu>
+internal class ChestSideTab : IOverlay<ItemGrabMenu>
 {
     private readonly Chest _chest;
     public ItemGrabMenu RootMenu { get; }
@@ -22,7 +22,7 @@ internal class ChestOverlay : IOverlay<ItemGrabMenu>
     /// 构造函数，初始化 ChestOverlay 类。
     /// Constructor to initialize the ChestOverlay class.
     /// </summary>
-    public ChestOverlay(ItemGrabMenu menu, Chest chest)
+    public ChestSideTab(ItemGrabMenu menu, Chest chest)
     {
         _chest = chest;
         RootMenu = menu;
@@ -40,6 +40,7 @@ internal class ChestOverlay : IOverlay<ItemGrabMenu>
         if (ModEntry.CategorizeModule.IsActive)
             CategorizeButton?.Draw(b);
         StashButton?.Draw(b);
+        RootMenu.drawMouse(b);
     }
 
     /// <summary>
@@ -49,12 +50,14 @@ internal class ChestOverlay : IOverlay<ItemGrabMenu>
     /// </summary>
     private void AddAndPositionButtons()
     {
-        CategorizeButton =
-            new TextButton(NineSlice.LeftProtrudingTab(), I18n.Button_Categorize(), Color.Black, Game1.smallFont);
+        var padding = NineSlice.LeftProtrudingTab().TopBorderThickness;
+
+        CategorizeButton = new TextButton(NineSlice.LeftProtrudingTab(), I18n.Button_Categorize(),
+            Color.Black, Game1.smallFont, padding: padding);
         CategorizeButton.OnPress += OpenCategoryMenu;
 
-        StashButton =
-            new TextButton(NineSlice.LeftProtrudingTab(), I18n.Button_Stash(), Color.Black, Game1.smallFont);
+        StashButton = new TextButton(NineSlice.LeftProtrudingTab(), I18n.Button_Stash(),
+            Color.Black, Game1.smallFont, padding: padding);
         StashButton.OnPress += StashItems;
 
         // Calculate the offset based on the chest size.
@@ -81,6 +84,9 @@ internal class ChestOverlay : IOverlay<ItemGrabMenu>
         StashButton.SetPosition(
             CategorizeButton.X,
             CategorizeButton.Y + CategorizeButton.Height + 4 * Game1.pixelZoom);
+
+        CategorizeButton.Label.OffsetPosition(Game1.pixelZoom * 2);
+        StashButton.Label.OffsetPosition(Game1.pixelZoom * 2);
     }
 
     /// <summary>
@@ -90,8 +96,9 @@ internal class ChestOverlay : IOverlay<ItemGrabMenu>
     private void OpenCategoryMenu()
     {
         var data = _chest.GetChestData();
-        var menu = new CategoryMenu(RootMenu.xPositionOnScreen, RootMenu.yPositionOnScreen,
-            RootMenu.width, RootMenu.height, data);
+        var delta = ModEntry.IsAndroid ? 70 : 0;
+        var menu = new CategoryMenu(RootMenu.xPositionOnScreen, RootMenu.yPositionOnScreen + delta,
+            RootMenu.width, RootMenu.height - delta, data, IClickableMenu.borderWidth);
         menu.exitFunction = ExitFunction;
         Game1.activeClickableMenu = menu;
         return;
