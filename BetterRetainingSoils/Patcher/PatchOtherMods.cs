@@ -18,14 +18,23 @@ internal static class PatchOtherMods
     /// </summary>
     public static void Patch_DetailRenderers(TerrainFeature? terrain, List<string> entries, bool __result)
     {
-        // 若当前地块不是耕地，或者当前耕地没有使用保湿土壤，直接返回。
-        // When the terrain is not a hoedirt, or this dirt is not using a retaining soil, return
-        if (!__result || terrain is not HoeDirt hoeDirt) return;
-        // 添加自定义文本。
-        // Add custom strings.
-        var waterRemain = hoeDirt.GetHoeDirtData().WaterRemainDays;
-        if (waterRemain < 1) return;
-        entries.Add(I18n.String_WaterRemain(waterRemain));
+        try
+        {
+            // 若当前地块不是耕地，或者当前耕地没有使用保湿土壤，直接返回。
+            // When the terrain is not a hoedirt, or this dirt is not using a retaining soil, return
+            if (!__result || terrain is not HoeDirt hoeDirt) return;
+            // 添加自定义文本。
+            // Add custom strings.
+            var waterRemain = hoeDirt.GetHoeDirtData().WaterRemainDays;
+            if (waterRemain < 1) return;
+            entries.Add(I18n.String_WaterRemain(waterRemain));
+        }
+        catch (Exception ex)
+        {
+            ModEntry.Log("Something seems wrong when trying to add info to UIInfoSuite2.", LogLevel.Error);
+            ModEntry.Log(ex.Message);
+            ModEntry.Log(ex.StackTrace);
+        }
     }
 
     /// <summary>
