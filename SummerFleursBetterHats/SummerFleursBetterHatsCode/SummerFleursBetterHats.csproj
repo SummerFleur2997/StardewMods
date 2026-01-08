@@ -25,4 +25,14 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
+    <ItemGroup>
+      <Content Include="..\[BHA] SummerFleursBetterHats\content.json">
+        <Link>[BHA] SummerFleursBetterHats\content.json</Link>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Include="..\[BHA] SummerFleursBetterHats\manifest.json">
+        <Link>[BHA] SummerFleursBetterHats\manifest.json</Link>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
 </Project>

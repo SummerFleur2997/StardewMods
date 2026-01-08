@@ -1,0 +1,15 @@
+﻿{
+  "Name": "SummerFleursBetterHats",
+  "Author": "SummerFleur",
+  "Version": "1.0.0",
+  "Description": "Description", // TODO
+  "UniqueID": "SummerFleur.SummerFleursBetterHatsBHA",
+  "MinimumApiVersion": "4.0.0",
+  "UpdateKeys": [
+    "Nexus:???" // TODO
+  ],
+  "ContentPackFor": {
+    "UniqueID": "SummerFleur.BetterHatsAPI",
+    "MinimumVersion": "1.0.0"
+  }
+}
