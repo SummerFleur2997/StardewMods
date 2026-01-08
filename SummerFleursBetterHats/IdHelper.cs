@@ -123,5 +123,4 @@ public static class IdHelper
     public const string WhiteBowID = "(H)WhiteBow";
     public const string SpaceHelmetID = "(H)SpaceHelmet";
     public const string InfinityCrownID = "(H)InfinityCrown";
-    public const string DefaultBuffID = "SummerFleur.SummerFleursBetterHats.HatBuff";
 }
