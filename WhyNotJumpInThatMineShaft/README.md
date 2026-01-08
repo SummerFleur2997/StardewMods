@@ -14,6 +14,12 @@ show specific information. They can significantly improve your mining experience
 
 ## Update logs
 
+### 1.0.3
+
+**Bug Fixes**
+
+- Fix the bug when in multiplayer, the indicator may point at the wrong place.
+
 ### 1.0.2
 
 **New Features**

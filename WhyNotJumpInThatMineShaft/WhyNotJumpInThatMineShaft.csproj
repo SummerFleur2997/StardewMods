@@ -3,8 +3,8 @@
         <AssemblyTitle>WhyNotJumpInThatMineShaft</AssemblyTitle>
         <ModFolderName>WhyNotJumpInThatMineShaft</ModFolderName>
         <Product>WhyNotJumpInThatMineShaft</Product>
-        <AssemblyVersion>1.0.2</AssemblyVersion>
-        <FileVersion>1.0.2</FileVersion>
+        <AssemblyVersion>1.0.3</AssemblyVersion>
+        <FileVersion>1.0.3</FileVersion>
         <EnableHarmony>true</EnableHarmony>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
