@@ -1,25 +1,24 @@
 ﻿#nullable enable
 using Netcode;
 using StardewValley.Objects;
-using SummerFleursBetterHats.HatExtensions;
 
-namespace SummerFleursBetterHats.API;
+namespace BetterHatsAPI.API;
 
-public class HatManager : ISummerfleursBetterHatsAPI
+public class HatManager : ISummerFleurBetterHatsAPI
 {
     /// <summary>
     /// The constant buff id used for applying buffs.
     /// </summary>
-    public string DefaultBuffID => IdHelper.DefaultBuffID;
+    public string DefaultBuffID => Constants.DefaultBuffID;
 
     /// <inheritdoc/>
-    public Buff EmptyBuff => new(IdHelper.DefaultBuffID) { millisecondsDuration = 100 };
+    public Buff EmptyBuff => new(Constants.DefaultBuffID) { millisecondsDuration = 100 };
 
     /// <inheritdoc/>
-    public event ISummerfleursBetterHatsAPI.HatUnequippedDelegate? OnHatUnequipped;
+    public event ISummerFleurBetterHatsAPI.HatUnequippedDelegate? OnHatUnequipped;
 
     /// <inheritdoc/>
-    public event ISummerfleursBetterHatsAPI.HatEquippedDelegate? OnHatEquipped;
+    public event ISummerFleurBetterHatsAPI.HatEquippedDelegate? OnHatEquipped;
 
     public HatData? CachedHatData;
 
@@ -59,7 +58,7 @@ public class HatManager : ISummerfleursBetterHatsAPI
     internal static Buff GetBuffAndHatData(Hat hat, out HatData data, string? buffId = null)
     {
         data = hat.GetHatData() ?? new HatData();
-        return data.ConvertToBuff(buffId ?? IdHelper.DefaultBuffID);
+        return data.ConvertToBuff(buffId ?? Constants.DefaultBuffID);
     }
 }
 

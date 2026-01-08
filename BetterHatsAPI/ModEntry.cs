@@ -1,10 +1,7 @@
-﻿using HarmonyLib;
+﻿using BetterHatsAPI.API;
 using JetBrains.Annotations;
-using SummerFleursBetterHats.API;
-using SummerFleursBetterHats.HatExtensions;
-using static SummerFleursBetterHats.HatWithPatches.HatWithPatches;
 
-namespace SummerFleursBetterHats;
+namespace BetterHatsAPI;
 
 [UsedImplicitly]
 internal class ModEntry : Mod
@@ -16,9 +13,8 @@ internal class ModEntry : Mod
 
     #region Properties
 
-    // public static IManifest Manifest { get; private set; }
+    public static IManifest Manifest { get; private set; }
     public static IModHelper ModHelper { get; private set; }
-    private static Harmony Harmony { get; set; }
     private static IMonitor ModMonitor { get; set; }
     public static void Log(string s, LogLevel l = LogLevel.Trace) => ModMonitor.Log(s, l);
 
@@ -28,27 +24,23 @@ internal class ModEntry : Mod
 
     public override void Entry(IModHelper helper)
     {
-        // Manifest = ModManifest;
+        Manifest = ModManifest;
         ModMonitor = Monitor;
         ModHelper = Helper;
-        Harmony = new Harmony(ModManifest.UniqueID);
 
-        GameExtensions.RegisterAll();
         HatDataHelper.Initialize();
 
         Helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
         Helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
         Helper.Events.GameLoop.DayStarted += TriggerWhenDayStarted;
         Helper.Events.Player.Warped += TriggerWhenWarped;
-
-        RegisterAllPatches(Harmony);
     }
 
     private static void OnSaveLoaded(object s, SaveLoadedEventArgs e)
     {
         Game1.player.hat.fieldChangeEvent += Manager.OnHatChange;
 
-        var hat = Utilities.PlayerHat();
+        var hat = Game1.player.hat.Value;
         if (hat is null) return;
         var hatBuff = HatManager.GetBuffAndHatData(hat, out var data);
         if (data.CheckCondition())

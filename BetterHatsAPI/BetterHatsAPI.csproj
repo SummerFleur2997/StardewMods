@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <AssemblyTitle>BetterHatsAPI</AssemblyTitle>
+        <ModFolderName>BetterHatsAPI</ModFolderName>
+        <Product>BetterHatsAPI</Product>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <FileVersion>1.0.0</FileVersion>
+        <ImplicitUsings>true</ImplicitUsings>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>embedded</DebugType>
+        <PathMap>$(SolutionDir)=.</PathMap>
+    </PropertyGroup>
+    <PropertyGroup>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageReference Include="JetBrains.Annotations"/>
+        <PackageReference Include="Pathoschild.Stardew.ModBuildConfig"/>
+    </ItemGroup>
+    <ItemGroup>
+        <None Update="manifest.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+</Project>

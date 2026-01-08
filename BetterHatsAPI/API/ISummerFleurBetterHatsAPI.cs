@@ -1,7 +1,7 @@
 ﻿#nullable enable
 using StardewValley.Objects;
 
-namespace SummerFleursBetterHats.API;
+namespace BetterHatsAPI.API;
 
 /****
  * Note:
@@ -13,10 +13,10 @@ namespace SummerFleursBetterHats.API;
  *    It may change in the future, to get the newest version of the api,
  *    please check the GitHub page:
  *
- *    https://github.com/SummerFleur2997/StardewMods/tree/master/SummerFleursBetterHats/API
+ *    https://github.com/SummerFleur2997/StardewMods/tree/master/BetterHatsAPI/API
  */
 
-public interface ISummerfleursBetterHatsAPI
+public interface ISummerFleurBetterHatsAPI
 {
     /// <summary>
     /// The buff id used to apply buffs. And when a hat is unequipped,

@@ -1,7 +1,7 @@
 ﻿using JetBrains.Annotations;
 using StardewValley.Objects;
 
-namespace SummerFleursBetterHats.HatExtensions;
+namespace BetterHatsAPI.Framework;
 
 public static class HatDataHelper
 {

@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CategoryRecipeIcons", "Cate
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SummerFleursBetterHats", "SummerFleursBetterHats\SummerFleursBetterHats.csproj", "{F329DB8A-6DF9-4141-A07E-F99F424C7185}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterHatsAPI", "BetterHatsAPI\BetterHatsAPI.csproj", "{D8119ABF-6D81-4745-93EB-4E89FADAE108}"
+EndProject
 
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -69,6 +71,10 @@ Global
 		{F329DB8A-6DF9-4141-A07E-F99F424C7185}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F329DB8A-6DF9-4141-A07E-F99F424C7185}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F329DB8A-6DF9-4141-A07E-F99F424C7185}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D8119ABF-6D81-4745-93EB-4E89FADAE108}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D8119ABF-6D81-4745-93EB-4E89FADAE108}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D8119ABF-6D81-4745-93EB-4E89FADAE108}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D8119ABF-6D81-4745-93EB-4E89FADAE108}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

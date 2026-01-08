@@ -1,6 +1,6 @@
 ﻿using StardewValley.Triggers;
 
-namespace SummerFleursBetterHats.HatExtensions;
+namespace BetterHatsAPI.Framework;
 
 /// <summary>
 /// This class represents the data of a hat. It should be
@@ -101,7 +101,7 @@ public class HatData
     /// Determines when the condition should be checked.
     /// 确定何时检查条件。
     /// </summary>
-    /// <seealso cref="SummerFleursBetterHats.HatExtensions.Trigger"/>
+    /// <seealso cref="Framework.Trigger"/>
     public Trigger Trigger { get; set; } = Trigger.None;
 
     /// <summary>
