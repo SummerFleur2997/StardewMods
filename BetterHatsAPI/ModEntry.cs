@@ -42,10 +42,8 @@ internal class ModEntry : Mod
 
         var hat = Game1.player.hat.Value;
         if (hat is null) return;
-        var hatBuff = HatManager.GetBuffAndHatData(hat, out var data);
-        if (data.CheckCondition())
-            Game1.player.applyBuff(hatBuff);
 
+        var data = hat.GetHatData();
         Manager.CachedHatData = data;
     }
 
@@ -57,36 +55,38 @@ internal class ModEntry : Mod
 
     private static void TriggerWhenWarped(object sender, WarpedEventArgs e)
     {
-        var data = Manager.CachedHatData;
-        if (data?.Trigger != Trigger.LocationChanged) return;
+        var allData = Manager.CachedHatData;
+        if (allData is null) return;
+        foreach (var data in allData)
+        {
+            if (data.Trigger != Trigger.LocationChanged) return;
 
-        if (data.CheckCondition())
-        {
-            if (!Game1.player.hasBuff(DefaultBuffID))
-                Game1.player.applyBuff(data.ConvertToBuff(DefaultBuffID));
-            data.TryPerformAction();
-        }
-        else
-        {
-            Game1.player.applyBuff(Manager.EmptyBuff);
+            var id = data.UniqueBuffID;
+            if (data.CheckCondition())
+            {
+                if (!Game1.player.hasBuff(id))
+                    Game1.player.applyBuff(data.ConvertToBuff());
+                data.TryPerformAction();
+            }
+            else
+            {
+                Game1.player.applyBuff(data.ConvertToEmptyBuff());
+            }
         }
     }
 
     private static void TriggerWhenDayStarted(object sender, DayStartedEventArgs e)
     {
-        var data = Manager.CachedHatData;
-        if (data is null) return;
-
-        if (data.CheckCondition())
+        var allData = Manager.CachedHatData;
+        if (allData is null) return;
+        foreach (var data in allData)
         {
-            if (!Game1.player.hasBuff(DefaultBuffID))
-                Game1.player.applyBuff(data.ConvertToBuff(DefaultBuffID));
+            if (!data.CheckCondition())
+                continue;
+
+            Game1.player.applyBuff(data.ConvertToBuff());
             if (data.Trigger == Trigger.DayStarted)
                 data.TryPerformAction();
-        }
-        else
-        {
-            Game1.player.applyBuff(Manager.EmptyBuff);
         }
     }
 

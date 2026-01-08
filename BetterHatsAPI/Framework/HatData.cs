@@ -1,4 +1,6 @@
-﻿using StardewValley.Triggers;
+﻿#nullable enable
+using System.Text;
+using StardewValley.Triggers;
 
 namespace BetterHatsAPI.Framework;
 
@@ -11,6 +13,21 @@ namespace BetterHatsAPI.Framework;
 [Serializable]
 public class HatData
 {
+    internal string ContentPackID = "WIP";
+    internal string ContentPackName = "WIP";
+
+    /// <summary>
+    /// The unique id for the converted buff. If not specified, this
+    /// will be automatically set to the content pack's unique id.
+    /// </summary>
+    public string UniqueBuffID { get; set; } = string.Empty;
+
+    /// <summary>
+    /// The description of the converted buff. Will be shown in the
+    /// status bar.
+    /// </summary>
+    public string? Description { get; set; }
+
     /// <summary>
     /// Combat level bonus.
     /// 战斗技能等级加成。
@@ -107,10 +124,14 @@ public class HatData
     /// <summary>
     /// Convert this hat data to a buff.
     /// </summary>
-    /// <param name="buffId">The id of the buff.</param>
-    public Buff ConvertToBuff(string buffId)
+    public Buff ConvertToBuff()
     {
-        var buff = new Buff(buffId);
+        var buff = new Buff(UniqueBuffID);
+        var hatName = Game1.player.hat?.Value?.DisplayName ?? string.Empty;
+        buff.source = $"{hatName} ({ContentPackName})";
+
+        if (!string.IsNullOrWhiteSpace(Description))
+            buff.description = Description;
 
         buff.effects.CombatLevel.Value = CombatLevel;
         buff.effects.FarmingLevel.Value = FarmingLevel;
@@ -124,12 +145,14 @@ public class HatData
         buff.effects.Attack.Value = Attack;
         buff.effects.Defense.Value = Defense;
         buff.effects.Immunity.Value = Immunity;
-#if RELEASE
-        buff.visible = false;
-#endif
         buff.millisecondsDuration = Buff.ENDLESS;
         return buff;
     }
+
+    /// <summary>
+    /// Convert this hat data to an empty buff to overwrite the existing one.
+    /// </summary>
+    public Buff ConvertToEmptyBuff() => new(UniqueBuffID) { millisecondsDuration = 100 };
 
     /// <summary>
     /// Checks if the condition is met.
@@ -148,7 +171,47 @@ public class HatData
         if (string.IsNullOrWhiteSpace(Action)) return;
         TriggerActionManager.TryRunAction(Action, out var error, out var ex);
         if (ex != null)
-            ModEntry.Log($"Error while performing action '{Action}': \n{error}", LogLevel.Warn);
+            ModEntry.Log($"Error while performing action '{Action}' for content pack {ContentPackID}: \n" +
+                         $"{error}", LogLevel.Warn);
+    }
+
+    public override string ToString()
+    {
+        var stringBuilder = new StringBuilder();
+        stringBuilder.AppendLine($"Source content pack: {ContentPackID}({ContentPackName})");
+        stringBuilder.AppendLine($"Unique buff ID: {UniqueBuffID}");
+        stringBuilder.AppendLine($"Description: {Description}");
+        if (FarmingLevel > 0)
+            stringBuilder.AppendLine($"Farming +{FarmingLevel}");
+        if (FishingLevel > 0)
+            stringBuilder.AppendLine($"Fishing +{FishingLevel}");
+        if (ForagingLevel > 0)
+            stringBuilder.AppendLine($"Foraging +{ForagingLevel}");
+        if (MiningLevel > 0)
+            stringBuilder.AppendLine($"Mining +{MiningLevel}");
+        if (CombatLevel > 0)
+            stringBuilder.AppendLine($"Combat +{CombatLevel}");
+        if (LuckLevel > 0)
+            stringBuilder.AppendLine($"Luck +{LuckLevel}");
+        if (MaxStamina > 0)
+            stringBuilder.AppendLine($"Max stamina +{MaxStamina}");
+        if (MagneticRadius > 0)
+            stringBuilder.AppendLine($"Magnetic radius +{MagneticRadius}");
+        if (Speed > 0)
+            stringBuilder.AppendLine($"Speed +{Speed}");
+        if (Attack > 0)
+            stringBuilder.AppendLine($"Attack +{Attack}");
+        if (Defense > 0)
+            stringBuilder.AppendLine($"Defense +{Defense}");
+        if (Immunity > 0)
+            stringBuilder.AppendLine($"Immunity +{Immunity}");
+        if (!string.IsNullOrWhiteSpace(Condition))
+            stringBuilder.AppendLine($"Condition: {Condition}");
+        if (!string.IsNullOrWhiteSpace(Action))
+            stringBuilder.AppendLine($"Action: {Action}");
+        if (Trigger != Trigger.None)
+            stringBuilder.AppendLine($"Trigger type: {Trigger}");
+        return stringBuilder.ToString();
     }
 }
 

@@ -19,18 +19,6 @@ namespace BetterHatsAPI.API;
 public interface ISummerFleurBetterHatsAPI
 {
     /// <summary>
-    /// The buff id used to apply buffs. And when a hat is unequipped,
-    /// we will use this id and create a 100 ms empty buff to remove the buff.
-    /// </summary>
-    /// <seealso cref="EmptyBuff"/>
-    public string DefaultBuffID { get; }
-
-    /// <summary>
-    /// An empty buff that can be used to override the current hat buff.
-    /// </summary>
-    public Buff EmptyBuff { get; }
-
-    /// <summary>
     /// An event handler called when a hat is unequipped.
     /// </summary>
     public event HatUnequippedDelegate? OnHatUnequipped;
@@ -44,7 +32,7 @@ public interface ISummerFleurBetterHatsAPI
     /// Get the buff from the given hat. The returned value is a read-only
     /// copy of the buff. So what you do to the buff will make no effect.
     /// </summary>
-    public Buff GetBuffForThisHat(Hat hat, string? buffId = null);
+    public IEnumerable<Buff> GetBuffForThisHat(Hat hat);
 
     public delegate void HatUnequippedDelegate(object? sender, IHatUnequippedEventArgs e);
 
@@ -71,9 +59,4 @@ public interface IHatEquippedEventArgs
     /// The equipped hat.
     /// </summary>
     Hat NewHat { get; }
-
-    /// <summary>
-    /// The equipped hat. 
-    /// </summary>
-    Buff BuffToApply { get; }
 }

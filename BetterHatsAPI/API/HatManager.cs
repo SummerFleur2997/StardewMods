@@ -6,60 +6,50 @@ namespace BetterHatsAPI.API;
 
 public class HatManager : ISummerFleurBetterHatsAPI
 {
-    /// <summary>
-    /// The constant buff id used for applying buffs.
-    /// </summary>
-    public string DefaultBuffID => Constants.DefaultBuffID;
-
-    /// <inheritdoc/>
-    public Buff EmptyBuff => new(Constants.DefaultBuffID) { millisecondsDuration = 100 };
-
     /// <inheritdoc/>
     public event ISummerFleurBetterHatsAPI.HatUnequippedDelegate? OnHatUnequipped;
 
     /// <inheritdoc/>
     public event ISummerFleurBetterHatsAPI.HatEquippedDelegate? OnHatEquipped;
 
-    public HatData? CachedHatData;
+    internal List<HatData>? CachedHatData { get; set; }
 
     public void OnHatChange(NetRef<Hat> field, Hat? oldHat, Hat? newHat)
     {
         if (oldHat != null)
         {
+            // Get the hat data.
+            var allData = oldHat.GetHatData();
             var args = new HatUnequippedEventArgs(oldHat);
+
+            // Clear the cached data and invoke the event
+            CachedHatData = null;
             OnHatUnequipped?.Invoke(this, args);
 
-            // Apply an empty buff to override the current hat buff.
-            Game1.player.applyBuff(EmptyBuff);
+            // Remove the buff from player.
+            foreach (var data in allData)
+                Game1.player.applyBuff(data.ConvertToEmptyBuff());
         }
 
         if (newHat != null)
         {
             // Get the hat data and convert it to a buff.
-            var hatBuff = GetBuffAndHatData(newHat, out var data);
-            var args = new HatEquippedEventArgs(newHat, hatBuff);
-            CachedHatData = data;
+            var allData = newHat.GetHatData();
+            var args = new HatEquippedEventArgs(newHat);
+
+            // Cache the data and invoke the event 
+            CachedHatData = allData;
+            OnHatEquipped?.Invoke(this, args);
 
             // Apply the buff to player.
-            OnHatEquipped?.Invoke(this, args);
-            if (data.CheckCondition())
-                Game1.player.applyBuff(hatBuff);
+            foreach (var data in allData)
+                if (data.CheckCondition())
+                    Game1.player.applyBuff(data.ConvertToBuff());
         }
     }
 
     /// <inheritdoc/>
-    public Buff GetBuffForThisHat(Hat hat, string? buffId = null)
-        => GetBuffAndHatData(hat, out _, buffId);
-
-    /// <summary>
-    /// Internal version of <see cref="GetBuffForThisHat"/>,
-    /// provided to allow for the out parameter.
-    /// </summary>
-    internal static Buff GetBuffAndHatData(Hat hat, out HatData data, string? buffId = null)
-    {
-        data = hat.GetHatData() ?? new HatData();
-        return data.ConvertToBuff(buffId ?? Constants.DefaultBuffID);
-    }
+    public IEnumerable<Buff> GetBuffForThisHat(Hat hat) => hat.GetHatData().Select(d => d.ConvertToBuff()).ToList();
 }
 
 public class HatUnequippedEventArgs : IHatUnequippedEventArgs
@@ -72,11 +62,6 @@ public class HatUnequippedEventArgs : IHatUnequippedEventArgs
 public class HatEquippedEventArgs : IHatEquippedEventArgs
 {
     public Hat NewHat { get; }
-    public Buff BuffToApply { get; }
 
-    public HatEquippedEventArgs(Hat newHat, Buff buff)
-    {
-        NewHat = newHat;
-        BuffToApply = buff;
-    }
+    public HatEquippedEventArgs(Hat newHat) => NewHat = newHat;
 }
