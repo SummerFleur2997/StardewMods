@@ -27,7 +27,7 @@ and [CategorizeChests](https://www.nexusmods.com/stardewvalley/mods/1300), and a
 **Bug Fixes**
 
 - Fix a bug causing double ingredient use when crafting.
-  - Merged from [Pull #8](../pull/8) (thanks to DrakeCaesar!) 
+  - Merged from [Pull #8](../../../pull/8) (thanks to DrakeCaesar!) 
 
 ### 1.8.3
 
