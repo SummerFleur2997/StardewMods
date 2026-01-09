@@ -5,7 +5,8 @@
         <Product>BetterHatsAPI</Product>
         <AssemblyVersion>1.0.0</AssemblyVersion>
         <FileVersion>1.0.0</FileVersion>
-        <ImplicitUsings>true</ImplicitUsings>
+        <PublishTrimmed>true</PublishTrimmed>
+        <TrimMode>link</TrimMode>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DebugSymbols>true</DebugSymbols>
@@ -17,6 +18,23 @@
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations"/>
         <PackageReference Include="Pathoschild.Stardew.ModBuildConfig"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="..\UI\Component\IComponent.cs">
+            <Link>UI\Component\IComponent.cs</Link>
+        </Compile>
+        <Compile Include="..\UI\Component\NineSlice.cs">
+            <Link>UI\Component\NineSlice.cs</Link>
+        </Compile>
+        <Compile Include="..\UI\Component\TextLabel.cs">
+            <Link>UI\Component\TextLabel.cs</Link>
+        </Compile>
+        <Compile Include="..\UI\Component\Tooltip.cs">
+            <Link>UI\Component\Tooltip.cs</Link>
+        </Compile>
+        <Compile Include="..\UI\Sprite\*">
+            <Link>UI\Sprite\%(RecursiveDir)%(Filename)%(Extension)</Link>
+        </Compile>
     </ItemGroup>
     <ItemGroup>
         <None Update="manifest.json">

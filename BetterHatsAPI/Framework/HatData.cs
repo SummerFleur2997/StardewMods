@@ -1,6 +1,6 @@
 ﻿#nullable enable
-using System.Text;
-using StardewValley.Triggers;
+using System;
+using StardewModdingAPI;
 
 namespace BetterHatsAPI.Framework;
 
@@ -11,22 +11,29 @@ namespace BetterHatsAPI.Framework;
 /// only need to specify the properties you want to use.
 /// </summary>
 [Serializable]
-public class HatData
+public partial class HatData
 {
-    internal string ContentPackID = "WIP";
-    internal string ContentPackName = "WIP";
+    internal IContentPack Pack = null!;
 
     /// <summary>
     /// The unique id for the converted buff. If not specified, this
     /// will be automatically set to the content pack's unique id.
+    /// 转换得到的 buff 的唯一 id。若未指定，则自动设置为 content pack 的唯一 id。
     /// </summary>
     public string UniqueBuffID { get; set; } = string.Empty;
 
     /// <summary>
     /// The description of the converted buff. Will be shown in the
     /// status bar.
+    /// 转换得到的 buff 的描述。将会在状态栏中显示。
     /// </summary>
-    public string? Description { get; set; }
+    public string? BuffDescription
+    {
+        get => Pack.TryGetTranslation(_buffDescription);
+        set => _buffDescription = value;
+    }
+
+    private string? _buffDescription;
 
     /// <summary>
     /// Combat level bonus.
@@ -101,11 +108,61 @@ public class HatData
     public float Immunity { get; set; } = 0;
 
     /// <summary>
+    /// Attack multiplier bonus.
+    /// 伤害倍率加成。
+    /// </summary>
+    public float AttackMultiplier { get; set; } = 0;
+
+    /// <summary>
+    /// Critical chance multiplier bonus.
+    /// 暴击倍率加成。
+    /// </summary>
+    public float CriticalChanceMultiplier { get; set; } = 0;
+
+    /// <summary>
+    /// Critical power multiplier bonus.
+    /// 暴击力量加成。
+    /// </summary>
+    public float CriticalPowerMultiplier { get; set; } = 0;
+
+    /// <summary>
+    /// Weapon speed multiplier bonus.
+    /// 武器速度加成。
+    /// </summary>
+    public float WeaponSpeedMultiplier { get; set; } = 0;
+
+    /// <summary>
+    /// Weapon precision multiplier bonus.
+    /// 武器精确度加成。
+    /// </summary>
+    public float WeaponPrecisionMultiplier { get; set; } = 0;
+
+    /// <summary>
+    /// Knockback multiplier bonus.
+    /// 武器击退加成。
+    /// </summary>
+    public float KnockbackMultiplier { get; set; } = 0;
+
+    /// <summary>
     /// A game state query that determines whether the buff should be applied.
     /// 游戏状态查询上下文，用于确定是否应用帽子 buff。
     /// </summary>
     /// <seealso cref="StardewValley.GameStateQuery"/>
     public string Condition { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Whether to use a custom condition. This value should be set by the mod's
+    /// API, not by the user.
+    /// 是否使用自定义条件检查器。此项应由 mod 的 API 设置。
+    /// </summary>
+    internal bool UseCustomCondition;
+
+    /// <summary>
+    /// The custom condition to check if the condition is met. External C# mods
+    /// can use API to set this value.
+    /// 自定义条件检查器，外部 SMAPI mod 可以通过 API 设置此值。
+    /// </summary>
+    internal Func<bool>? CustomConditionChecker;
 
     /// <summary>
     /// An action to be performed when the condition is met.
@@ -115,6 +172,20 @@ public class HatData
     public string Action { get; set; } = string.Empty;
 
     /// <summary>
+    /// Whether to use a custom action. This value should be set by the mod's
+    /// API, not by the user.
+    /// 是否使用自定义触发事件。此项应由 mod 的 API 设置。
+    /// </summary>
+    internal bool UseCustomAction;
+
+    /// <summary>
+    /// The custom action to be performed when the condition is met. External
+    /// C# mods can use API to set this value.
+    /// 自定义事件触发器，外部 SMAPI mod 可以通过 API 设置此值。
+    /// </summary>
+    internal Action? CustomAction;
+
+    /// <summary>
     /// Determines when the condition should be checked.
     /// 确定何时检查条件。
     /// </summary>
@@ -122,96 +193,21 @@ public class HatData
     public Trigger Trigger { get; set; } = Trigger.None;
 
     /// <summary>
-    /// Convert this hat data to a buff.
+    /// For internal use only. Set custom condition.
     /// </summary>
-    public Buff ConvertToBuff()
+    internal void SetCustomCondition(Func<bool> condition)
     {
-        var buff = new Buff(UniqueBuffID);
-        var hatName = Game1.player.hat?.Value?.DisplayName ?? string.Empty;
-        buff.source = $"{hatName} ({ContentPackName})";
-
-        if (!string.IsNullOrWhiteSpace(Description))
-            buff.description = Description;
-
-        buff.effects.CombatLevel.Value = CombatLevel;
-        buff.effects.FarmingLevel.Value = FarmingLevel;
-        buff.effects.FishingLevel.Value = FishingLevel;
-        buff.effects.MiningLevel.Value = MiningLevel;
-        buff.effects.LuckLevel.Value = LuckLevel;
-        buff.effects.ForagingLevel.Value = ForagingLevel;
-        buff.effects.MaxStamina.Value = MaxStamina;
-        buff.effects.MagneticRadius.Value = MagneticRadius;
-        buff.effects.Speed.Value = Speed;
-        buff.effects.Attack.Value = Attack;
-        buff.effects.Defense.Value = Defense;
-        buff.effects.Immunity.Value = Immunity;
-        buff.millisecondsDuration = Buff.ENDLESS;
-        return buff;
+        CustomConditionChecker = condition;
+        UseCustomCondition = true;
     }
 
     /// <summary>
-    /// Convert this hat data to an empty buff to overwrite the existing one.
+    /// For internal use only. Set custom action.
     /// </summary>
-    public Buff ConvertToEmptyBuff() => new(UniqueBuffID) { millisecondsDuration = 100 };
-
-    /// <summary>
-    /// Checks if the condition is met.
-    /// </summary>
-    /// <returns>
-    /// True, if the trigger is None or the condition is met;
-    /// False otherwise.
-    /// </returns>
-    public bool CheckCondition() => string.IsNullOrWhiteSpace(Condition) || GameStateQuery.CheckConditions(Condition);
-
-    /// <summary>
-    /// Try to perform the action. If something goes wrong, log the error.
-    /// </summary>
-    public void TryPerformAction()
+    internal void SetCustomAction(Action action)
     {
-        if (string.IsNullOrWhiteSpace(Action)) return;
-        TriggerActionManager.TryRunAction(Action, out var error, out var ex);
-        if (ex != null)
-            ModEntry.Log($"Error while performing action '{Action}' for content pack {ContentPackID}: \n" +
-                         $"{error}", LogLevel.Warn);
-    }
-
-    public override string ToString()
-    {
-        var stringBuilder = new StringBuilder();
-        stringBuilder.AppendLine($"Source content pack: {ContentPackID}({ContentPackName})");
-        stringBuilder.AppendLine($"Unique buff ID: {UniqueBuffID}");
-        stringBuilder.AppendLine($"Description: {Description}");
-        if (FarmingLevel > 0)
-            stringBuilder.AppendLine($"Farming +{FarmingLevel}");
-        if (FishingLevel > 0)
-            stringBuilder.AppendLine($"Fishing +{FishingLevel}");
-        if (ForagingLevel > 0)
-            stringBuilder.AppendLine($"Foraging +{ForagingLevel}");
-        if (MiningLevel > 0)
-            stringBuilder.AppendLine($"Mining +{MiningLevel}");
-        if (CombatLevel > 0)
-            stringBuilder.AppendLine($"Combat +{CombatLevel}");
-        if (LuckLevel > 0)
-            stringBuilder.AppendLine($"Luck +{LuckLevel}");
-        if (MaxStamina > 0)
-            stringBuilder.AppendLine($"Max stamina +{MaxStamina}");
-        if (MagneticRadius > 0)
-            stringBuilder.AppendLine($"Magnetic radius +{MagneticRadius}");
-        if (Speed > 0)
-            stringBuilder.AppendLine($"Speed +{Speed}");
-        if (Attack > 0)
-            stringBuilder.AppendLine($"Attack +{Attack}");
-        if (Defense > 0)
-            stringBuilder.AppendLine($"Defense +{Defense}");
-        if (Immunity > 0)
-            stringBuilder.AppendLine($"Immunity +{Immunity}");
-        if (!string.IsNullOrWhiteSpace(Condition))
-            stringBuilder.AppendLine($"Condition: {Condition}");
-        if (!string.IsNullOrWhiteSpace(Action))
-            stringBuilder.AppendLine($"Action: {Action}");
-        if (Trigger != Trigger.None)
-            stringBuilder.AppendLine($"Trigger type: {Trigger}");
-        return stringBuilder.ToString();
+        CustomAction = action;
+        UseCustomAction = true;
     }
 }
 
