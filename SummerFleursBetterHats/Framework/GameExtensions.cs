@@ -1,7 +1,7 @@
-﻿using StardewValley.Constants;
+﻿using BetterHatsAPI.API;
+using StardewValley.Constants;
 using StardewValley.Delegates;
 using StardewValley.Locations;
-using StardewValley.Triggers;
 
 namespace SummerFleursBetterHats.Framework;
 
@@ -13,32 +13,23 @@ public static class GameExtensions
 {
     public static void RegisterAll()
     {
-        TriggerActionManager.RegisterAction("SFBH_SantaGift", AddMysteryBox);
         GameStateQuery.Register("SFBH_MINE_LEVEL", MINE_LEVEL);
+        var api = ModEntry.ModHelper.ModRegistry.GetApi<ISummerFleurBetterHatsAPI>("SummerFleur.BetterHatsAPI");
+        api?.SetCustomActionTrigger(SantaHatID, "SummerFleur.SummerFleursBetterHatsBHA", AddMysteryBox, out _);
     }
 
     /// <summary>
     /// Effect of Santa Hat: if the player has forage mastery, get a
     /// Golden Mystery Box as santa's gift, otherwise, a Mystery Box.
     /// </summary>
-    private static bool AddMysteryBox(string[] args, TriggerActionContext context, out string error)
+    private static void AddMysteryBox()
     {
-        try
-        {
-            var player = Game1.player;
-            var gift = ItemRegistry.Create(player.stats.Get(StatKeys.Mastery(Farmer.foragingSkill)) != 0
-                ? "(O)GoldenMysteryBox"
-                : "(O)MysteryBox");
-            player.addItemByMenuIfNecessary(gift);
-            Game1.showGlobalMessage("You got a gift from Santa! Happy Feast Of The Winter Star!"); // TODO: i18n
-            error = "no error";
-            return true;
-        }
-        catch (Exception e)
-        {
-            error = e.Message;
-            return false;
-        }
+        var player = Game1.player;
+        var gift = ItemRegistry.Create(player.stats.Get(StatKeys.Mastery(Farmer.foragingSkill)) != 0
+            ? "(O)GoldenMysteryBox"
+            : "(O)MysteryBox");
+        player.addItemByMenuIfNecessary(gift);
+        Game1.showGlobalMessage("You got a gift from Santa! Happy Feast Of The Winter Star!"); // TODO: i18n
     }
 
     /// <summary>

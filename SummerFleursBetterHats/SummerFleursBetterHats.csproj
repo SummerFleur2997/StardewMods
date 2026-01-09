@@ -25,4 +25,9 @@
     <ItemGroup>
         <ContentPacks Include="content" Version="$(Version)" FolderName="[BHA] SummerFleursBetterHats" />
     </ItemGroup>
+    <ItemGroup>
+        <Compile Include="..\BetterHatsAPI\API\ISummerFleurBetterHatsAPI.cs">
+            <Link>DependentAPI\ISummerFleurBetterHatsAPI.cs</Link>
+        </Compile>
+    </ItemGroup>
 </Project>

@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using StardewModdingAPI.Events;
 using SummerFleursBetterHats.Framework;
 using static SummerFleursBetterHats.HatWithPatches.HatWithPatches;
 
@@ -29,8 +30,9 @@ internal class ModEntry : Mod
         ModHelper = Helper;
         Harmony = new Harmony(ModManifest.UniqueID);
 
-        GameExtensions.RegisterAll();
-
         RegisterAllPatches(Harmony);
+        helper.Events.GameLoop.GameLaunched += Test;
     }
+
+    private static void Test(object s, GameLaunchedEventArgs e) => GameExtensions.RegisterAll();
 }

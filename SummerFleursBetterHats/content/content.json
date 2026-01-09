@@ -35,6 +35,10 @@
   "(H)51": {
     "Defense": 1.0
   },
+  // Pirate Hat
+  "(H)62": {
+    "AttackMultiplier": 0.07
+  },
   // Propeller Hat
   "(H)68": {
     "MagneticRadius": 64.0
@@ -42,6 +46,11 @@
   // Witch Hat
   "(H)70": {
     "Immunity": 2.0
+  },
+  // Deluxe Pirate Hat
+  "(H)76": {
+    "AttackMultiplier": 0.1,
+    "Speed": 0.5
   },
   // Forager's Hat
   "(H)90": {

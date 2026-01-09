@@ -8,5 +8,12 @@
     "EntryDll": "SummerFleursBetterHats.dll",
     "UpdateKeys": [
         "Nexus:???" // TODO
+    ],
+    "Dependencies": [
+        {
+            "UniqueID": "SummerFleur.BetterHatsAPI",
+            "MinimumVersion": "1.0.0",
+            "IsRequired": true
+        }
     ]
 }
