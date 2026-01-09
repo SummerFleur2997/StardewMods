@@ -1,14 +1,11 @@
-﻿using System.Linq;
-using BetterRetainingSoils.DirtService;
+﻿using BetterRetainingSoils.DirtService;
 using BetterRetainingSoils.Framework;
 using BetterRetainingSoils.Framework.MultiplayerService;
 using BetterRetainingSoils.Framework.SaveService;
 using BetterRetainingSoils.Patcher;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewValley;
 
 namespace BetterRetainingSoils;
 

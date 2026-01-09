@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewValley;
 using UI;
 
 namespace ConvenientChests.Framework.UserInterfaceService;

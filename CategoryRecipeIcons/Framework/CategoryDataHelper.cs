@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using StardewValley;
+﻿using Object = StardewValley.Object;
 
 namespace CategoryRecipeIcons.Framework;
 

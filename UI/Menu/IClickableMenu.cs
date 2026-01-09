@@ -1,5 +1,4 @@
-﻿using System;
-using UI.Component;
+﻿using UI.Component;
 
 namespace UI.Menu;
 

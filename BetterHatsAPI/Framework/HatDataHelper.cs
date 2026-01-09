@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using JetBrains.Annotations;
-using StardewModdingAPI;
-using StardewValley;
+﻿using JetBrains.Annotations;
 using StardewValley.Objects;
 using StardewValley.Triggers;
 

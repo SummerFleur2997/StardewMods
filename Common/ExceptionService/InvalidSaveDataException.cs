@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Common.ExceptionService;
+﻿namespace Common.ExceptionService;
 
 /// <summary>
 /// An exception to be raised when save data is malformed or fails to

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using StardewValley;
-using StardewValley.Objects;
+﻿using StardewValley.Objects;
 
 namespace ConvenientChests.API;
 

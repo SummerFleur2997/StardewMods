@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace BetterRetainingSoils.Framework.MultiplayerService;
+﻿namespace BetterRetainingSoils.Framework.MultiplayerService;
 
 [Serializable]
 internal struct SyncData

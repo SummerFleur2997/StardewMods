@@ -1,6 +1,4 @@
-﻿using System;
-using HarmonyLib;
-using StardewModdingAPI;
+﻿using HarmonyLib;
 using StardewValley.Locations;
 
 namespace WhyNotJumpInThatMineShaft.ShaftPrompter;

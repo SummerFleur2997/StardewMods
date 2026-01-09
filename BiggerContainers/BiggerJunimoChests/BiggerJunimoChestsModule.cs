@@ -1,7 +1,5 @@
-﻿using System;
-using Common;
+﻿using Common;
 using HarmonyLib;
-using StardewModdingAPI;
 using StardewValley.Objects;
 
 namespace BiggerContainers.BiggerJunimoChests;

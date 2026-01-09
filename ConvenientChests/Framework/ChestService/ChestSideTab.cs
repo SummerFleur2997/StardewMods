@@ -1,10 +1,8 @@
-using System;
 using ConvenientChests.CategorizeChests.Framework;
 using ConvenientChests.Framework.UserInterfaceService;
 using ConvenientChests.StashToChests.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using StardewValley;
 using StardewValley.Menus;
 using StardewValley.Objects;
 using UI.Component;

@@ -1,6 +1,4 @@
-﻿using System;
-using StardewModdingAPI.Events;
-using StardewValley;
+﻿using StardewModdingAPI.Events;
 using StardewValley.Menus;
 
 namespace ConvenientChests.CraftFromChests.Framework;

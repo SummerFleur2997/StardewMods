@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ConvenientChests.Framework.ItemService;
+﻿using ConvenientChests.Framework.ItemService;
 
 namespace ConvenientChests.CategorizeChests.Framework;
 

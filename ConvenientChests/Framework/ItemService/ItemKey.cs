@@ -1,6 +1,4 @@
-using System;
 using System.Diagnostics.Contracts;
-using StardewValley;
 using StardewValley.ItemTypeDefinitions;
 using StardewValley.Tools;
 using Object = StardewValley.Object;

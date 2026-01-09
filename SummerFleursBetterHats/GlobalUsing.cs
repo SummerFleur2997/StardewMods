@@ -1,10 +1,5 @@
-﻿global using System;
-global using System.Collections.Generic;
-global using System.Linq;
-global using System.Reflection;
+﻿global using System.Reflection;
 global using System.Reflection.Emit;
-global using StardewModdingAPI;
-global using StardewValley;
 global using HarmonyLib;
 global using static SummerFleursBetterHats.IdHelper;
 global using static SummerFleursBetterHats.Framework.Utilities;

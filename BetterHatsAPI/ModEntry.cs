@@ -1,7 +1,6 @@
 ﻿using BetterHatsAPI.API;
 using BetterHatsAPI.Framework;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 
 namespace BetterHatsAPI;
 

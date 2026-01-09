@@ -1,6 +1,5 @@
 ﻿using ConvenientChests.Framework.ChestService;
 using ConvenientChests.Framework.InventoryService;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewModdingAPI.Utilities;
 using StardewValley.Menus;

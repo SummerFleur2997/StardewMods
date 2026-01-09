@@ -1,6 +1,4 @@
-﻿using StardewModdingAPI;
-using StardewModdingAPI.Events;
-using StardewValley;
+﻿using StardewModdingAPI.Events;
 using StardewValley.Menus;
 using StardewValley.Objects;
 

@@ -1,7 +1,4 @@
-﻿using System;
-using HarmonyLib;
-using StardewModdingAPI;
-using StardewValley;
+﻿using HarmonyLib;
 using StardewValley.Menus;
 using StardewValley.Objects;
 

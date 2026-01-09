@@ -1,5 +1,4 @@
-﻿using System;
-using StardewValley.TerrainFeatures;
+﻿using StardewValley.TerrainFeatures;
 
 namespace BetterRetainingSoils.DirtService;
 

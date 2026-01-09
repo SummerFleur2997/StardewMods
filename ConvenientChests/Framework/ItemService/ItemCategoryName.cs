@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ConvenientChests.Framework.ItemService;
+﻿namespace ConvenientChests.Framework.ItemService;
 
 /// <summary>
 /// 记录类别在当前语言下的名称和英文名称。

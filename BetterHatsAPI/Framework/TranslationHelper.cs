@@ -1,6 +1,5 @@
 ﻿#nullable enable
 using System.Diagnostics.Contracts;
-using StardewModdingAPI;
 
 namespace BetterHatsAPI.Framework;
 

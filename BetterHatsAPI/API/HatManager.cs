@@ -1,14 +1,9 @@
 ﻿#nullable enable
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
 using BetterHatsAPI.Framework;
 using JetBrains.Annotations;
 using Netcode;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewValley;
 using StardewValley.Objects;
 
 namespace BetterHatsAPI.API;

@@ -3,9 +3,7 @@ using ConvenientChests.Framework.ChestService;
 using ConvenientChests.Framework.InventoryService;
 using ConvenientChests.Framework.ItemService;
 using ConvenientChests.Framework.SaveService;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewValley;
 using StardewValley.Locations;
 using StardewValley.Objects;
 

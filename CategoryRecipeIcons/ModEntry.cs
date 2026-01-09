@@ -1,9 +1,6 @@
-﻿using System;
-using CategoryRecipeIcons.Framework;
+﻿using CategoryRecipeIcons.Framework;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
-using StardewValley;
 
 namespace CategoryRecipeIcons;
 

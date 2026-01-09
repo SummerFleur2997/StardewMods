@@ -1,9 +1,7 @@
 ﻿using BetterRetainingSoils.DirtService;
 using Common;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewValley;
 using StardewValley.TerrainFeatures;
 
 namespace BetterRetainingSoils.Framework.MultiplayerService;

@@ -1,7 +1,4 @@
-﻿using System;
-using StardewValley;
-
-namespace ConvenientChests.Framework.ItemService;
+﻿namespace ConvenientChests.Framework.ItemService;
 
 /// <summary>
 /// 

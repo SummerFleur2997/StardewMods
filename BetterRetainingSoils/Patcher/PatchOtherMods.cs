@@ -1,11 +1,7 @@
 ﻿#nullable enable
-using System;
-using System.Collections.Generic;
 using BetterRetainingSoils.DirtService;
 using HarmonyLib;
 using Microsoft.Xna.Framework;
-using StardewModdingAPI;
-using StardewValley;
 using StardewValley.TerrainFeatures;
 
 namespace BetterRetainingSoils.Patcher;

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using BetterRetainingSoils.DirtService;
+﻿using BetterRetainingSoils.DirtService;
 using Microsoft.Xna.Framework;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;

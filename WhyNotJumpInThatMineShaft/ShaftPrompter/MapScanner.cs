@@ -1,7 +1,5 @@
-﻿using System.Collections.Generic;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using StardewModdingAPI.Events;
-using StardewValley;
 using StardewValley.Extensions;
 using StardewValley.Locations;
 

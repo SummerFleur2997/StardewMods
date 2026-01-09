@@ -3,7 +3,6 @@ using BiggerContainers.BiggerJunimoChests;
 using BiggerContainers.Framework;
 using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
 
 namespace BiggerContainers;

@@ -1,7 +1,4 @@
 ﻿#nullable enable
-using System;
-using StardewModdingAPI;
-
 namespace Common.ConfigurationServices;
 
 /// <summary>Simplifies validated access to mod APIs.</summary>

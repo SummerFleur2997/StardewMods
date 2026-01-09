@@ -1,9 +1,6 @@
-﻿using System;
-using BetterRetainingSoils.DirtService;
+﻿using BetterRetainingSoils.DirtService;
 using BetterRetainingSoils.Framework.MultiplayerService;
 using HarmonyLib;
-using StardewModdingAPI;
-using StardewValley;
 using StardewValley.TerrainFeatures;
 using StardewValley.Tools;
 

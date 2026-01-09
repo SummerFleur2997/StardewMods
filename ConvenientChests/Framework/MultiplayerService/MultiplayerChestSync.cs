@@ -1,5 +1,4 @@
-﻿using System;
-using ConvenientChests.Framework.ChestService;
+﻿using ConvenientChests.Framework.ChestService;
 using ConvenientChests.Framework.ItemService;
 
 namespace ConvenientChests.Framework.MultiplayerService;

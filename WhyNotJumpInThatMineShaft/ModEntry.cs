@@ -1,6 +1,5 @@
 ﻿using HarmonyLib;
 using JetBrains.Annotations;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using WhyNotJumpInThatMineShaft.Framework;
 using WhyNotJumpInThatMineShaft.ShaftPrompter;

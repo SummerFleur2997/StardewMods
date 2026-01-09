@@ -1,12 +1,9 @@
 ﻿#nullable enable
-using System;
 using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using StardewModdingAPI;
 using StardewModdingAPI.Events;
-using StardewValley;
 using Rectangle = xTile.Dimensions.Rectangle;
 
 // This code is copied and modified from Pathoschild.Stardew.Common.UI

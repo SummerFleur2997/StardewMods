@@ -1,7 +1,4 @@
 ﻿#nullable enable
-using System;
-using StardewModdingAPI;
-
 namespace BetterHatsAPI.Framework;
 
 /// <summary>

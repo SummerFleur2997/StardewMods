@@ -16,4 +16,11 @@
         <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
         <ModZipPath Condition="'$(SolutionDir)' != ''">$(SolutionDir)\_releases</ModZipPath>
     </PropertyGroup>
+    <ItemGroup>
+        <Using Include="System"/>
+        <Using Include="System.Collections.Generic"/>
+        <Using Include="System.Linq"/>
+        <Using Include="StardewModdingAPI"/>
+        <Using Include="StardewValley"/>
+    </ItemGroup>
 </Project>

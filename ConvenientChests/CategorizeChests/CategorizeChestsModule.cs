@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Common;
+﻿using Common;
 using ConvenientChests.Framework.ChestService;
 using StardewModdingAPI.Events;
 using StardewValley.Objects;

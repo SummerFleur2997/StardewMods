@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using BetterRetainingSoils.DirtService;
 using Common.ExceptionService;
-using StardewModdingAPI;
-using StardewValley;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 
