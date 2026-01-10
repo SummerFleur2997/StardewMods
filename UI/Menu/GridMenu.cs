@@ -38,7 +38,9 @@ public class GridMenu : IClickableMenu, IClickableComponent
     /// </remarks>
     public int MaxItemColumns
     {
-        get => IsAndroid && IsScrollingEnabled ? _maxItemColumns - 1 : _maxItemColumns;
+        get => IsAndroid && IsScrollingEnabled && ScrollingDirection == ScrollDirection.Vertical
+            ? _maxItemColumns - 1
+            : _maxItemColumns;
         set => _maxItemColumns = value;
     }
 
@@ -54,12 +56,22 @@ public class GridMenu : IClickableMenu, IClickableComponent
     /// the height of the grid menu, the value will be adjusted to fit
     /// in the ctor.
     /// </remarks>
-    public int MaxItemRows { get; set; }
+    public int MaxItemRows
+    {
+        get => IsAndroid && IsScrollingEnabled && ScrollingDirection == ScrollDirection.Horizontal
+            ? _maxItemRows - 1
+            : _maxItemRows;
+        set => _maxItemRows = value;
+    }
+
+    private int _maxItemRows;
 
     /// <summary>
     /// The size of each item displayed in the grid.
     /// </summary>
     public int ItemSize;
+
+    public ScrollDirection ScrollingDirection;
 
     /// <summary>
     /// The index of the first item to display. Used when drawing or
@@ -102,7 +114,9 @@ public class GridMenu : IClickableMenu, IClickableComponent
     /// <param name="itemSize">The size of each item displayed in the grid in pixel.</param>
     /// <param name="maxItemColumns">The maximum number of columns that can be displayed in the grid.</param>
     /// <param name="maxItemRows">The maximum number of rows that can be displayed in the grid.</param>
-    public GridMenu(int x, int y, int width, int height, int itemSize, int maxItemColumns = 99, int maxItemRows = 99)
+    /// <param name="scrollDirection">The scrolling direction of this grid-menu.</param>
+    public GridMenu(int x, int y, int width, int height, int itemSize, int maxItemColumns = 99, int maxItemRows = 99,
+        ScrollDirection scrollDirection = ScrollDirection.Vertical)
     {
         this.SetDestination(x, y, width, height);
         MaxItemColumns = maxItemColumns;
@@ -115,17 +129,31 @@ public class GridMenu : IClickableMenu, IClickableComponent
             MaxItemRows = height / itemSize;
 
         _maxItems = MaxItemColumns * MaxItemRows;
+        ScrollingDirection = scrollDirection;
 
-        if (IsAndroid)
+        if (!IsAndroid) return;
+
+        var anchor = this.RightBottomPosition();
+
+        switch (scrollDirection)
         {
-            var anchor = this.RightBottomPosition();
-            _androidExclusiveNextButton = new SpriteButton(TextureRegion.DownArrow());
-            _androidExclusivePrevButton = new SpriteButton(TextureRegion.UpArrow());
-            _androidExclusiveNextButton.OnPress += () => ReceiveScrollWheelAction(-1);
-            _androidExclusivePrevButton.OnPress += () => ReceiveScrollWheelAction(1);
-            _androidExclusiveNextButton.SetDestination(anchor.X - 50, anchor.Y - 50, 48, 48);
-            _androidExclusivePrevButton.SetDestination(anchor.X - 50, anchor.Y - 100, 48, 48);
+            case ScrollDirection.Horizontal:
+                _androidExclusiveNextButton = new SpriteButton(TextureRegion.RightArrow());
+                _androidExclusivePrevButton = new SpriteButton(TextureRegion.LeftArrow());
+                _androidExclusiveNextButton.SetDestination(anchor.X - 50, anchor.Y - 50, 48, 48);
+                _androidExclusivePrevButton.SetDestination(anchor.X - 100, anchor.Y - 50, 48, 48);
+                break;
+            case ScrollDirection.Vertical:
+            default:
+                _androidExclusiveNextButton = new SpriteButton(TextureRegion.DownArrow());
+                _androidExclusivePrevButton = new SpriteButton(TextureRegion.UpArrow());
+                _androidExclusiveNextButton.SetDestination(anchor.X - 50, anchor.Y - 50, 48, 48);
+                _androidExclusivePrevButton.SetDestination(anchor.X - 50, anchor.Y - 100, 48, 48);
+                break;
         }
+
+        _androidExclusiveNextButton.OnPress += () => ReceiveScrollWheelAction(-1);
+        _androidExclusivePrevButton.OnPress += () => ReceiveScrollWheelAction(1);
     }
 
     /// <summary>
@@ -138,15 +166,34 @@ public class GridMenu : IClickableMenu, IClickableComponent
         var index = 0;
 
         Components.AddRange(components);
-        var maxItemColumns = MaxItemColumns;
-
-        foreach (var component in Components)
+        switch (ScrollingDirection)
         {
-            var column = index % maxItemColumns;
-            var row = index / maxItemColumns;
-            var bound = new Rectangle(X + column * ItemSize, Y + row * ItemSize, ItemSize, ItemSize);
-            component.SetInCenterOfTheBounds(bound);
-            index++;
+            case ScrollDirection.Horizontal:
+                var maxItemRows = MaxItemRows;
+                foreach (var component in Components)
+                {
+                    var row = index % maxItemRows;
+                    var column = index / maxItemRows;
+                    var bound = new Rectangle(X + column * ItemSize, Y + row * ItemSize, ItemSize, ItemSize);
+                    component.SetInCenterOfTheBounds(bound);
+                    index++;
+                }
+
+                return;
+
+            case ScrollDirection.Vertical:
+            default:
+                var maxItemColumns = MaxItemColumns;
+                foreach (var component in Components)
+                {
+                    var column = index % maxItemColumns;
+                    var row = index / maxItemColumns;
+                    var bound = new Rectangle(X + column * ItemSize, Y + row * ItemSize, ItemSize, ItemSize);
+                    component.SetInCenterOfTheBounds(bound);
+                    index++;
+                }
+
+                return;
         }
     }
 
@@ -222,30 +269,62 @@ public class GridMenu : IClickableMenu, IClickableComponent
         if (Components.Count <= MaxVisibleItems)
             return true;
 
-        var newIndex = _firstItemIndex - amount * MaxItemColumns;
-        var maxIndex = ((Components.Count - 1) / MaxItemColumns - MaxItemRows + 1) * MaxItemColumns;
-
-        if (newIndex > maxIndex)
+        int newIndex;
+        int maxIndex;
+        switch (ScrollingDirection)
         {
-            _firstItemIndex = maxIndex;
-            return true;
-        }
+            case ScrollDirection.Horizontal:
+                newIndex = _firstItemIndex - amount * MaxItemRows;
+                maxIndex = ((Components.Count - 1) / MaxItemRows - MaxItemColumns + 1) * MaxItemRows;
 
-        if (newIndex < 0)
-        {
-            _firstItemIndex = 0;
-            return true;
-        }
+                if (newIndex > maxIndex)
+                {
+                    _firstItemIndex = maxIndex;
+                    return true;
+                }
 
-        _firstItemIndex = newIndex;
-        foreach (var component in Components)
-        {
-            var oldX = component.X;
-            var oldY = component.Y;
-            component.SetPosition(oldX, oldY + amount * ItemSize);
-        }
+                if (newIndex < 0)
+                {
+                    _firstItemIndex = 0;
+                    return true;
+                }
 
-        return true;
+                _firstItemIndex = newIndex;
+                foreach (var component in Components)
+                {
+                    var oldX = component.X;
+                    var oldY = component.Y;
+                    component.SetPosition(oldX + amount * ItemSize, oldY);
+                }
+
+                return true;
+            case ScrollDirection.Vertical:
+            default:
+                newIndex = _firstItemIndex - amount * MaxItemColumns;
+                maxIndex = ((Components.Count - 1) / MaxItemColumns - MaxItemRows + 1) * MaxItemColumns;
+
+                if (newIndex > maxIndex)
+                {
+                    _firstItemIndex = maxIndex;
+                    return true;
+                }
+
+                if (newIndex < 0)
+                {
+                    _firstItemIndex = 0;
+                    return true;
+                }
+
+                _firstItemIndex = newIndex;
+                foreach (var component in Components)
+                {
+                    var oldX = component.X;
+                    var oldY = component.Y;
+                    component.SetPosition(oldX, oldY + amount * ItemSize);
+                }
+
+                return true;
+        }
     }
 
     public void Dispose()
@@ -263,5 +342,11 @@ public class GridMenu : IClickableMenu, IClickableComponent
         }
 
         GC.SuppressFinalize(this);
+    }
+
+    public enum ScrollDirection
+    {
+        Vertical,
+        Horizontal
     }
 }
