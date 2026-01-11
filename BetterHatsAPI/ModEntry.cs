@@ -14,6 +14,7 @@ internal class ModEntry : Mod
 
     #region Properties
 
+    public static ModConfig Config { get; private set; }
     public static IManifest Manifest { get; private set; }
     public static IModHelper ModHelper { get; private set; }
     private static IMonitor ModMonitor { get; set; }
@@ -27,6 +28,9 @@ internal class ModEntry : Mod
         ModMonitor = Monitor;
         ModHelper = Helper;
 
+        Config = helper.ReadConfig<ModConfig>();
+
+        HatManager.Initialize();
         HatDataHelper.LoadContentPacks(helper);
         TooltipHelper.RegisterEventsForTooltip(helper);
     }

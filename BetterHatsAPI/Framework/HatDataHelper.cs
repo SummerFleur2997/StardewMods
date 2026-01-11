@@ -1,6 +1,7 @@
 ﻿using JetBrains.Annotations;
 using StardewValley.Objects;
 using StardewValley.Triggers;
+using static BetterHatsAPI.Framework.Utilities;
 
 namespace BetterHatsAPI.Framework;
 
@@ -10,7 +11,7 @@ public static class HatDataHelper
     /// A dictionary of all hat data. The format is
     /// <see cref="StardewValley.Item.QualifiedItemId"/> -> List[<see cref="HatData"/>].
     /// </summary>
-    internal static Dictionary<string, List<HatData>> AllHatData { get; set; }
+    internal static Dictionary<string, List<HatData>> AllHatData { get; private set; }
 
     /// <summary>
     /// Gets the <see cref="HatData"/> of the specified hat.
@@ -25,8 +26,7 @@ public static class HatDataHelper
     /// </summary>
     public static void LoadContentPacks(IModHelper helper)
     {
-        var log = ModEntry.Log;
-        log("Loading content packs and local data files.");
+        Log("Loading content packs and local data files.");
 
         var allHatData = new Dictionary<string, List<HatData>>();
 
@@ -35,7 +35,7 @@ public static class HatDataHelper
          ****/
         foreach (var pack in helper.ContentPacks.GetOwned())
         {
-            log($"Loading content pack: {pack.Manifest.UniqueID}");
+            Log($"Loading content pack - {pack.Manifest.UniqueID}.");
             Dictionary<string, HatData> data;
             try
             {
@@ -44,21 +44,21 @@ public static class HatDataHelper
             }
             catch (Exception ex)
             {
-                log($"Warning: This content pack could not be parsed correctly: {pack.Manifest.Name}", LogLevel.Warn);
-                log("Please edit the content.json file or reinstall the content pack. ", LogLevel.Warn);
-                log("The auto-generated error message is displayed below:", LogLevel.Warn);
-                log("----------", LogLevel.Warn);
-                log($"{ex.Message}", LogLevel.Warn);
+                Error($"Error: This content pack could not be parsed correctly: {pack.Manifest.Name}");
+                Warn("If you are the author, please check your content file.");
+                Warn("If you are its user, please reinstall the content pack or report the issue to the author.");
+                Warn("The auto-generated error message is displayed below:");
+                Warn($"{ex.Message}");
+                Warn("--------------------");
                 continue; // skip to the next content pack
             }
 
             // no config file found for this farm
             if (data == null)
             {
-                log($"Warning: The content.json file for this content pack could not be found: {pack.Manifest.Name}",
-                    LogLevel.Warn);
-                log("Please reinstall the content pack. If you are its author, " +
-                    "please create a config file named content.json in the pack's main folder.", LogLevel.Warn);
+                Warn($"Warning: The content.json file for this content pack could not be found: {pack.Manifest.Name}");
+                Warn("If you are the author, please ensure the file named content.json in the pack's main folder.");
+                Warn("If you are its user, please reinstall the content pack or report the issue to the author.");
                 continue; // skip to the next content pack
             }
 
@@ -74,6 +74,8 @@ public static class HatDataHelper
                 // add the data to the dictionary
                 allHatData.TryAdd(key, hatInfo);
             }
+
+            Log($"Successfully loaded content pack - {pack.Manifest.UniqueID}.");
         }
 
         AllHatData = allHatData;
@@ -111,7 +113,7 @@ public partial class HatData
     {
         var buff = new Buff(UniqueBuffID);
         var hatName = Game1.player.hat?.Value?.DisplayName ?? string.Empty;
-        buff.source = $"{hatName} ({Pack.Manifest.Name})";
+        buff.displaySource = $"{hatName} ({Pack.Manifest.Name})";
 
         if (!string.IsNullOrWhiteSpace(BuffDescription))
             buff.description = BuffDescription;
@@ -136,6 +138,8 @@ public partial class HatData
         buff.effects.KnockbackMultiplier.Value = KnockbackMultiplier;
 
         buff.millisecondsDuration = Buff.ENDLESS;
+        TryApplyModifier(buff);
+
         return buff;
     }
 
@@ -151,7 +155,37 @@ public partial class HatData
     /// True, if the trigger is None or the condition is met;
     /// False otherwise.
     /// </returns>
-    public bool CheckCondition() => GameStateQuery.CheckConditions(Condition);
+    public bool TryCheckCondition()
+    {
+        if (UseCustomCondition)
+        {
+            // Check if custom cc is null, if true, log a warning and set the Trigger to None.
+            if (CustomConditionChecker == null)
+            {
+                Warn($"{Pack.Manifest.Name} uses a custom condition checker, but it is not available.");
+                UseCustomCondition = false;
+                Trigger = Trigger.None;
+                return true;
+            }
+
+            // not null, run it.
+            try
+            {
+                return CustomConditionChecker.Invoke();
+            }
+            catch (Exception e)
+            {
+                var id = Pack.Manifest.UniqueID;
+                Error($"An error occured while using custom condition checker for content pack {id}!");
+                Warn("See detailed information below:");
+                Warn(e.Message);
+                Warn(e.StackTrace);
+                return false;
+            }
+        }
+
+        return GameStateQuery.CheckConditions(Condition);
+    }
 
     /// <summary>
     /// Try to perform the action. If something goes wrong, log the error.
@@ -159,9 +193,59 @@ public partial class HatData
     public void TryPerformAction()
     {
         if (string.IsNullOrWhiteSpace(Action)) return;
+
+        var id = Pack.Manifest.UniqueID;
+        // Check if custom action is null, if true, log a warning and.
+        if (UseCustomAction)
+        {
+            if (CustomAction == null)
+            {
+                Warn($"{Pack.Manifest.Name} uses a custom action, but it seems not available. ");
+                UseCustomAction = false;
+                return;
+            }
+
+            // not null, run it.
+            try
+            {
+                CustomAction.Invoke();
+            }
+            catch (Exception e)
+            {
+                Error($"An error occured while performing custom action for content pack {id}!");
+                Warn("See detailed information below:");
+                Warn(e.Message);
+                Warn(e.StackTrace);
+            }
+        }
+
         TriggerActionManager.TryRunAction(Action, out var error, out var ex);
-        if (ex != null)
-            ModEntry.Log($"Error while performing action '{Action}' for content pack {Pack.Manifest.UniqueID}: \n" +
-                         $"{error}", LogLevel.Warn);
+        if (ex == null) return;
+
+        Error($"An error occured while performing action '{Action}' for content pack {id}!");
+        Warn("See detailed information below:");
+        Warn(error);
+        Warn(ex.Message);
+        Warn(ex.StackTrace);
+    }
+
+    /// <summary>
+    /// Try applying the modifier. If something goes wrong, log the error.
+    /// </summary>
+    public void TryApplyModifier(Buff buff)
+    {
+        if (CustomModifier is null) return;
+        try
+        {
+            CustomModifier.Invoke(buff);
+        }
+        catch (Exception e)
+        {
+            var id = Pack.Manifest.UniqueID;
+            Error($"An error occured while performing custom multiplier for content pack {id}!");
+            Warn("See detailed information below:");
+            Warn(e.Message);
+            Warn(e.StackTrace);
+        }
     }
 }

@@ -183,11 +183,31 @@ public partial class HatData
     internal Action? CustomAction;
 
     /// <summary>
+    /// The custom buff modifier, used to modify the properties of buff effects.
+    /// External C# mods can use API to set this value.
+    /// 自定义 Buff 属性修饰器，用于修饰 Buff 的各项数值，外部 SMAPI mod 可以通过 API 设置此值。
+    /// </summary>
+    internal Action<Buff>? CustomModifier;
+
+    /// <summary>
     /// Determines when the condition should be checked.
     /// 确定何时检查条件。
     /// </summary>
     /// <seealso cref="Framework.Trigger"/>
     public Trigger Trigger { get; set; } = Trigger.None;
+
+    /// <summary>
+    /// Whether this hat contains a dynamic buff effect. If true, the mod will
+    /// forcibly re-apply the buff using the current data when the trigger is
+    /// invoked, regardless of whether the buff ID is already active.
+    /// </summary>
+    /// <remarks>
+    /// Since the game uses <see cref="UniqueBuffID"/> to track active buffs, 
+    /// this mod would normally ignore changes to buff values (like Attack or
+    /// Speed) to avoid redundant processing. Enabling this ensures that
+    /// modifications to the buff's properties take effect immediately.
+    /// </remarks>
+    public bool Dynamic { get; set; } = false;
 
     /// <summary>
     /// For internal use only. Set custom condition.
@@ -213,6 +233,15 @@ public partial class HatData
 /// </summary>
 public enum Trigger
 {
+    /// <summary>Triggered every tick.</summary>
+    TickUpdated,
+
+    /// <summary>Triggered every tick.</summary>
+    SecondUpdated,
+
+    /// <summary>Triggered when the game time changes.</summary>
+    TimeChanged,
+
     /// <summary>Triggered when the current location changes.</summary>
     LocationChanged,
 

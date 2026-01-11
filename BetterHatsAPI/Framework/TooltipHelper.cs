@@ -13,15 +13,29 @@ public static class TooltipHelper
     }
 
     private static void RegisterTooltipDrawingEvent(object s, SaveLoadedEventArgs e) =>
-        ModEntry.ModHelper.Events.Display.RenderedActiveMenu += DrawingTooltip;
+        ModEntry.ModHelper.Events.Input.ButtonsChanged += DrawingTooltip;
 
     private static void UnregisterTooltipDrawingEvent(object s, ReturnedToTitleEventArgs e) =>
-        ModEntry.ModHelper.Events.Display.RenderedActiveMenu -= DrawingTooltip;
+        ModEntry.ModHelper.Events.Input.ButtonsChanged -= DrawingTooltip;
 
-    private static void DrawingTooltip(object s, RenderedActiveMenuEventArgs e)
+    private static void DrawingTooltip(object s, ButtonsChangedEventArgs e)
     {
-        if (Game1.activeClickableMenu is not MenuWithInventory { hoveredItem: Hat hat }) return;
-        var allHatdata = hat.GetHatData();
-        // todo: wip
+        if (e.Held.FirstOrDefault() != SButton.LeftControl)
+            return;
+
+        // The Current menu is not null
+        var menu = Game1.activeClickableMenu;
+        if (menu is null)
+            return;
+
+        switch (menu)
+        {
+            case GameMenu { currentTab: 0 } m when m.GetCurrentPage() is InventoryPage { hoveredItem: Hat }:
+            case ShopMenu { hoveredItem: Hat }:
+            case MenuWithInventory { hoveredItem: Hat }:
+                break;
+            default:
+                return;
+        }
     }
 }

@@ -1,10 +1,9 @@
 ﻿#nullable enable
-using System.Diagnostics.CodeAnalysis;
 using BetterHatsAPI.Framework;
-using JetBrains.Annotations;
 using Netcode;
 using StardewModdingAPI.Events;
 using StardewValley.Objects;
+using static BetterHatsAPI.Framework.Utilities;
 
 namespace BetterHatsAPI.API;
 
@@ -18,7 +17,9 @@ public class HatManager : ISummerFleurBetterHatsAPI
     /// <inheritdoc/>
     public event ISummerFleurBetterHatsAPI.HatEquippedDelegate? OnHatEquipped;
 
-    private List<HatData>? CachedHatData { get; set; }
+    private List<HatData> CachedHatData { get; } = new();
+    private List<HatData> CachedHatDataForOneSecondUpdateTicked { get; } = new();
+    private List<HatData> CachedHatDataForUpdateTicked { get; } = new();
 
     private HatManager()
     {
@@ -26,15 +27,16 @@ public class HatManager : ISummerFleurBetterHatsAPI
         ModEntry.ModHelper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
         ModEntry.ModHelper.Events.GameLoop.DayStarted += TriggerWhenDayStarted;
         ModEntry.ModHelper.Events.Player.Warped += TriggerWhenWarped;
+        ModEntry.ModHelper.Events.GameLoop.TimeChanged += TriggerWhenTimeChanged;
     }
+
+    internal static void Initialize() => _ = Instance;
 
     /// <inheritdoc/>
     public IEnumerable<Buff> GetBuffForThisHat(Hat hat) => hat.GetHatData().Select(d => d.ConvertToBuff()).ToList();
 
     /// <inheritdoc/>
-    [Pure]
-    public bool SetCustomConditionChecker(string qualifiedHatID, string packID, Func<bool> customConditionChecker,
-        [NotNullWhen(false)] out Exception? ex)
+    public void SetCustomConditionChecker(string qualifiedHatID, string packID, Func<bool> customConditionChecker)
     {
         try
         {
@@ -44,26 +46,22 @@ public class HatManager : ISummerFleurBetterHatsAPI
 
             // check if any data belongs to the target pack
             var targetData = data.FirstOrDefault(d => d.Pack.Manifest.UniqueID == packID);
-            if (targetData is null) throw new Exception($"Can't find the data of {qualifiedHatID} in {packID}!");
+            if (targetData is null)
+                throw new Exception($"Can't find the data of {qualifiedHatID} in {packID}!");
 
             targetData.SetCustomCondition(customConditionChecker);
-            ModEntry.Log($"Successfully set custom condition checker for {packID} - {qualifiedHatID}.");
-            ex = null;
-            return true;
+            Log($"Successfully set custom condition checker for {packID} - {qualifiedHatID}.");
         }
         catch (Exception e)
         {
-            ex = e;
-            ModEntry.Log(e.Message, LogLevel.Warn);
-            ModEntry.Log("If you are the content pack author, please check your content! ", LogLevel.Warn);
-            return false;
+            Error($"An error occured when trying to set custom condition checker for {packID}!");
+            Warn(e.Message);
+            Warn("If you are the content pack author, please check your content! ");
         }
     }
 
     /// <inheritdoc/>
-    [Pure]
-    public bool SetCustomActionTrigger(string qualifiedHatID, string packID, Action customActionTrigger,
-        [NotNullWhen(false)] out Exception? ex)
+    public void SetCustomActionTrigger(string qualifiedHatID, string packID, Action customActionTrigger)
     {
         try
         {
@@ -73,32 +71,54 @@ public class HatManager : ISummerFleurBetterHatsAPI
 
             // check if any data belongs to the target pack
             var targetData = data.FirstOrDefault(d => d.Pack.Manifest.UniqueID == packID);
-            if (targetData is null) throw new Exception($"Can't find the data of {qualifiedHatID} in {packID}!");
+            if (targetData is null)
+                throw new Exception($"Can't find the data of {qualifiedHatID} in {packID}!");
 
             targetData.SetCustomAction(customActionTrigger);
-            ModEntry.Log($"Successfully set custom action trigger for {packID} - {qualifiedHatID}.");
-            ex = null;
-            return true;
+            Log($"Successfully set custom action trigger for {packID} - {qualifiedHatID}.");
         }
         catch (Exception e)
         {
-            ex = e;
-            ModEntry.Log(e.Message, LogLevel.Warn);
-            ModEntry.Log("If you are the content pack author, please check your content! ", LogLevel.Warn);
-            return false;
+            Error($"An error occured when trying to set custom action trigger for {packID}!");
+            Warn(e.Message);
+            Warn("If you are the content pack author, please check your content! ");
+        }
+    }
+
+    /// <inheritdoc/>
+    public void SetCustomBuffModifier(string qualifiedHatID, string packID, Action<Buff> customModifier)
+    {
+        try
+        {
+            // check if any hat data exists
+            if (!HatDataHelper.AllHatData.TryGetValue(qualifiedHatID, out var data) || data is null)
+                throw new Exception($"Can't find any data of {qualifiedHatID}!");
+
+            // check if any data belongs to the target pack
+            var targetData = data.FirstOrDefault(d => d.Pack.Manifest.UniqueID == packID);
+            if (targetData is null)
+                throw new Exception($"Can't find the data of {qualifiedHatID} in {packID}!");
+
+            targetData.CustomModifier = customModifier;
+            Log($"Successfully set custom buff modifier for {packID} - {qualifiedHatID}.");
+        }
+        catch (Exception e)
+        {
+            Error($"An error occured when trying to set custom buff modifier for {packID}!");
+            Warn(e.Message);
+            Warn("If you are the content pack author, please check your content! ");
         }
     }
 
     private void OnHatChange(NetRef<Hat> field, Hat? oldHat, Hat? newHat)
     {
+        Dispose();
         if (oldHat != null)
         {
             // Get the hat data.
             var allData = oldHat.GetHatData();
             var args = new HatUnequippedEventArgs(oldHat);
 
-            // Clear the cached data and invoke the event
-            CachedHatData = null;
             OnHatUnequipped?.Invoke(this, args);
 
             // Remove the buff from player.
@@ -112,15 +132,44 @@ public class HatManager : ISummerFleurBetterHatsAPI
             var allData = newHat.GetHatData();
             var args = new HatEquippedEventArgs(newHat);
 
-            // Cache the data and invoke the event 
-            CachedHatData = allData;
             OnHatEquipped?.Invoke(this, args);
+            InitializeHatData(allData);
+        }
+    }
+
+    /// <summary>
+    /// Initialize the hat data. Remember to call <see cref="Dispose"/>
+    /// before calling this method.
+    /// </summary>
+    private void InitializeHatData(List<HatData> allData)
+    {
+        // Fill the cache and invoke the event
+        foreach (var data in allData)
+        {
+            switch (data.Trigger)
+            {
+                case Trigger.TickUpdated when ModEntry.Config.DisableTickUpdateChecker:
+                case Trigger.SecondUpdated:
+                    CachedHatDataForOneSecondUpdateTicked.Add(data);
+                    break;
+                case Trigger.TickUpdated:
+                    CachedHatDataForUpdateTicked.Add(data);
+                    break;
+                default:
+                    CachedHatData.Add(data);
+                    break;
+            }
 
             // Apply the buff to player.
-            foreach (var data in allData)
-                if (data.CheckCondition())
-                    Game1.player.applyBuff(data.ConvertToBuff());
+            if (data.TryCheckCondition()) Game1.player.applyBuff(data.ConvertToBuff());
         }
+
+        // Register events if needed
+        if (CachedHatDataForUpdateTicked.Any())
+            ModEntry.ModHelper.Events.GameLoop.UpdateTicked += TriggerWhenUpdateTicked;
+
+        if (CachedHatDataForOneSecondUpdateTicked.Any())
+            ModEntry.ModHelper.Events.GameLoop.OneSecondUpdateTicked += TriggerWhenOneSecondUpdateTicked;
     }
 
     private void OnSaveLoaded(object? s, SaveLoadedEventArgs e)
@@ -130,28 +179,105 @@ public class HatManager : ISummerFleurBetterHatsAPI
         var hat = Game1.player.hat.Value;
         if (hat is null) return;
 
-        var data = hat.GetHatData();
-        CachedHatData = data;
+        var allData = hat.GetHatData();
+        InitializeHatData(allData);
     }
 
     private void OnReturnedToTitle(object? s, ReturnedToTitleEventArgs e)
     {
         Game1.player.hat.fieldChangeEvent -= OnHatChange;
-        CachedHatData = null;
+        Dispose();
     }
 
-    private void TriggerWhenWarped(object? sender, WarpedEventArgs e)
+    /// <summary>
+    /// Raised after the game state is updated (≈60 times per second).
+    /// This event is marked as a high-cost event, only if there are at
+    /// least 1 content packs that use this event, it will be triggered.
+    /// </summary>
+    /// <remarks>
+    /// If the user toggled <see cref="ModConfig.DisableTickUpdateChecker"/>
+    /// in the config, this event will *convert to*
+    /// <see cref="Trigger.SecondUpdated"/>
+    /// </remarks>
+    private void TriggerWhenUpdateTicked(object? sender, UpdateTickedEventArgs e)
     {
-        var allData = CachedHatData;
-        if (allData is null) return;
-        foreach (var data in allData)
+        foreach (var data in CachedHatDataForUpdateTicked)
         {
-            if (data.Trigger != Trigger.LocationChanged) return;
+            var id = data.UniqueBuffID;
+            if (data.TryCheckCondition())
+            {
+                if (!Game1.player.hasBuff(id) || data.Dynamic)
+                    Game1.player.applyBuff(data.ConvertToBuff());
+                data.TryPerformAction();
+            }
+            else
+            {
+                Game1.player.applyBuff(data.ConvertToEmptyBuff());
+            }
+        }
+    }
+
+    /// <summary>
+    /// Raised once per second after the game state is updated.
+    /// This event is marked as a high-cost event, only if there are at
+    /// least 1 content packs that use this event, it will be triggered.
+    /// </summary>
+    private void TriggerWhenOneSecondUpdateTicked(object? sender, OneSecondUpdateTickedEventArgs e)
+    {
+        foreach (var data in CachedHatDataForOneSecondUpdateTicked)
+        {
+            var id = data.UniqueBuffID;
+            if (data.TryCheckCondition())
+            {
+                if (!Game1.player.hasBuff(id) || data.Dynamic)
+                    Game1.player.applyBuff(data.ConvertToBuff());
+                data.TryPerformAction();
+            }
+            else
+            {
+                Game1.player.applyBuff(data.ConvertToEmptyBuff());
+            }
+        }
+    }
+
+    /// <summary>
+    /// Raised after the in-game clock time changes.
+    /// </summary>
+    private void TriggerWhenTimeChanged(object? sender, TimeChangedEventArgs e)
+    {
+        foreach (var data in CachedHatData)
+        {
+            if (data.Trigger != Trigger.TimeChanged)
+                continue;
 
             var id = data.UniqueBuffID;
-            if (data.CheckCondition())
+            if (data.TryCheckCondition())
             {
-                if (!Game1.player.hasBuff(id))
+                if (!Game1.player.hasBuff(id) || data.Dynamic)
+                    Game1.player.applyBuff(data.ConvertToBuff());
+                data.TryPerformAction();
+            }
+            else
+            {
+                Game1.player.applyBuff(data.ConvertToEmptyBuff());
+            }
+        }
+    }
+
+    /// <summary>
+    /// Raised after the player warps to a new location. 
+    /// </summary>
+    private void TriggerWhenWarped(object? sender, WarpedEventArgs e)
+    {
+        foreach (var data in CachedHatData)
+        {
+            if (data.Trigger != Trigger.LocationChanged)
+                continue;
+
+            var id = data.UniqueBuffID;
+            if (data.TryCheckCondition())
+            {
+                if (!Game1.player.hasBuff(id) || data.Dynamic)
                     Game1.player.applyBuff(data.ConvertToBuff());
                 data.TryPerformAction();
             }
@@ -164,17 +290,30 @@ public class HatManager : ISummerFleurBetterHatsAPI
 
     private void TriggerWhenDayStarted(object? sender, DayStartedEventArgs e)
     {
-        var allData = CachedHatData;
-        if (allData is null) return;
-        foreach (var data in allData)
+        foreach (var data in CachedHatData)
         {
-            if (!data.CheckCondition())
+            if (!data.TryCheckCondition())
                 continue;
 
             Game1.player.applyBuff(data.ConvertToBuff());
             if (data.Trigger == Trigger.DayStarted)
                 data.TryPerformAction();
         }
+    }
+
+    /// <summary>
+    /// Private use only, not inherit from IDisposable.
+    /// </summary>
+    private void Dispose()
+    {
+        // Clear cache
+        CachedHatData.Clear();
+        CachedHatDataForUpdateTicked.Clear();
+        CachedHatDataForOneSecondUpdateTicked.Clear();
+
+        // Unregister events
+        ModEntry.ModHelper.Events.GameLoop.UpdateTicked -= TriggerWhenUpdateTicked;
+        ModEntry.ModHelper.Events.GameLoop.OneSecondUpdateTicked -= TriggerWhenOneSecondUpdateTicked;
     }
 }
 

@@ -1,0 +1,144 @@
+﻿{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Hats Content Pack Configuration",
+  "description": "A dictionary mapping hat IDs to a list of hat data configurations. All properties are optional and default to 0 or empty string.",
+  "type": "object",
+  "patternProperties": {
+    "^\\(H\\).*$": {
+      "type": "object",
+      "description": "Data entry for a specific hat. Use the hat's qualified item id, so it must start with (H). e.g. (H)70",
+      "properties": {
+        "UniqueBuffID": {
+          "type": "string",
+          "description": "The unique id for the converted buff. If not specified, this will be automatically set to the content pack's unique id.",
+          "default": ""
+        },
+        "BuffDescription": {
+          "type": ["string", "null"],
+          "description": "The description of the converted buff. Will be shown in the status bar. Supports localization through content pack translations.",
+          "default": null
+        },
+        "CombatLevel": {
+          "type": "number",
+          "description": "Combat level bonus.",
+          "default": 0
+        },
+        "FarmingLevel": {
+          "type": "number",
+          "description": "Farmer level bonus.",
+          "default": 0
+        },
+        "FishingLevel": {
+          "type": "number",
+          "description": "Fishing level bonus.",
+          "default": 0
+        },
+        "MiningLevel": {
+          "type": "number",
+          "description": "Mining level bonus.",
+          "default": 0
+        },
+        "LuckLevel": {
+          "type": "number",
+          "description": "Luck level bonus.",
+          "default": 0
+        },
+        "ForagingLevel": {
+          "type": "number",
+          "description": "Foraging level bonus.",
+          "default": 0
+        },
+        "MaxStamina": {
+          "type": "number",
+          "description": "Max stamina bonus.",
+          "default": 0
+        },
+        "MagneticRadius": {
+          "type": "number",
+          "description": "Magnetic radius bonus.",
+          "default": 0
+        },
+        "Speed": {
+          "type": "number",
+          "description": "Movement speed bonus.",
+          "default": 0
+        },
+        "Attack": {
+          "type": "number",
+          "description": "Attack bonus.",
+          "default": 0
+        },
+        "Defense": {
+          "type": "number",
+          "description": "Defense bonus.",
+          "default": 0
+        },
+        "Immunity": {
+          "type": "number",
+          "description": "Immunity bonus.",
+          "default": 0
+        },
+        "AttackMultiplier": {
+          "type": "number",
+          "description": "Attack multiplier bonus.",
+          "default": 0
+        },
+        "CriticalChanceMultiplier": {
+          "type": "number",
+          "description": "Critical chance multiplier bonus.",
+          "default": 0
+        },
+        "CriticalPowerMultiplier": {
+          "type": "number",
+          "description": "Critical power multiplier bonus.",
+          "default": 0
+        },
+        "WeaponSpeedMultiplier": {
+          "type": "number",
+          "description": "Weapon speed multiplier bonus.",
+          "default": 0
+        },
+        "WeaponPrecisionMultiplier": {
+          "type": "number",
+          "description": "Weapon precision multiplier bonus.",
+          "default": 0
+        },
+        "KnockbackMultiplier": {
+          "type": "number",
+          "description": "Knockback multiplier bonus.",
+          "default": 0
+        },
+        "Condition": {
+          "type": "string",
+          "description": "A game state query that determines whether the buff should be applied. Uses Stardew Valley's GameStateQuery format.",
+          "default": "",
+          "examples": [
+            "LOCATION_NAME Here 'Mountain'",
+            "SEASON Winter"
+          ]
+        },
+        "Action": {
+          "type": "string",
+          "description": "An action to be performed when the condition is met. Uses Stardew Valley's TriggerActionManager format.",
+          "default": "",
+          "examples": [
+            "AddItem (O)74 5"
+          ]
+        },
+        "Trigger": {
+          "type": "string",
+          "description": "Determines when the condition should be checked.",
+          "enum": ["None", "TickUpdated", "SecondUpdated", "TimeChanged", "LocationChanged", "DayStarted"],
+          "default": "None"
+        },
+        "Dynamic": {
+          "type": "boolean",
+          "description": "Whether this hat contains a dynamic buff effect. If true, the mod will forcibly re-apply the buff using the current data when the trigger is invoked, regardless of whether the buff ID is already active. This is necessary for buffs with values that change based on conditions.",
+          "default": false
+        }
+      },
+      "additionalProperties": false
+    },
+  },
+  "additionalProperties": false
+}

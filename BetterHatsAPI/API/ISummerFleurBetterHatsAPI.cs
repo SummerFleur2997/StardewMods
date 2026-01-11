@@ -1,6 +1,4 @@
 ﻿#nullable enable
-using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 using StardewValley.Objects;
 
 namespace BetterHatsAPI.API;
@@ -42,11 +40,7 @@ public interface ISummerFleurBetterHatsAPI
     /// <param name="qualifiedHatID">The target hat's <see cref="Hat.QualifiedItemId"/>.</param>
     /// <param name="packID">The unique ID of which content pack the data belongs to.</param>
     /// <param name="customConditionChecker">Your custom condition checker.</param>
-    /// <param name="ex">The exception that occurred during the operation, if any.</param>
-    /// <returns>True if the operation is successful, false otherwise.</returns>
-    [Pure]
-    public bool SetCustomConditionChecker(string qualifiedHatID, string packID, Func<bool> customConditionChecker,
-        [NotNullWhen(false)] out Exception? ex);
+    public void SetCustomConditionChecker(string qualifiedHatID, string packID, Func<bool> customConditionChecker);
 
     /// <summary>
     /// Set a custom action trigger for a specific hat.
@@ -54,11 +48,15 @@ public interface ISummerFleurBetterHatsAPI
     /// <param name="qualifiedHatID">The target hat's <see cref="Hat.QualifiedItemId"/>.</param>
     /// <param name="packID">The unique ID of which content pack the data belongs to.</param>
     /// <param name="customActionTrigger">Your custom action trigger.</param>
-    /// <param name="ex">The exception that occurred during the operation, if any.</param>
-    /// <returns>True if the operation is successful, false otherwise.</returns>
-    [Pure]
-    public bool SetCustomActionTrigger(string qualifiedHatID, string packID, Action customActionTrigger,
-        [NotNullWhen(false)] out Exception? ex);
+    public void SetCustomActionTrigger(string qualifiedHatID, string packID, Action customActionTrigger);
+
+    /// <summary>
+    /// Set a custom modifier to the buff for a specific hat.
+    /// </summary>
+    /// <param name="qualifiedHatID">The target hat's <see cref="Hat.QualifiedItemId"/>.</param>
+    /// <param name="packID">The unique ID of which content pack the data belongs to.</param>
+    /// <param name="customModifier">Your custom modifier.</param>
+    public void SetCustomBuffModifier(string qualifiedHatID, string packID, Action<Buff> customModifier);
 
     public delegate void HatUnequippedDelegate(object? sender, IHatUnequippedEventArgs e);
 
