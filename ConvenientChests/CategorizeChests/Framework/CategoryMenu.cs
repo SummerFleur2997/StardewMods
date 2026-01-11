@@ -21,7 +21,7 @@ internal class CategoryMenu : BaseMenu
     private readonly ChestData _chestData;
     private TopRow _topRow;
     private GridMenu _gridMenu;
-    private ItemToggle _hoveredToggle;
+    private Tooltip _tooltip;
 
     private ItemCategoryName ActiveCategory => _topRow.CategorySelector.SelectedValue;
     private static bool IsAndroid => ModEntry.IsAndroid;
@@ -123,7 +123,7 @@ internal class CategoryMenu : BaseMenu
             toggle.OnToggle += () => ToggleItem(entry.ItemKey);
             toggle.OnHover += () =>
             {
-                _hoveredToggle = toggle;
+                _tooltip = toggle.Tooltip;
                 HoveredItem = toggle.Item;
             };
             toggles.Add(toggle);
@@ -182,11 +182,11 @@ internal class CategoryMenu : BaseMenu
 
     private bool AreAllSelected() => _gridMenu.Components.OfType<ItemToggle>().All(t => t.Active);
 
-    public override void Draw(SpriteBatch b) => _hoveredToggle?.Tooltip.Draw(b);
+    public override void Draw(SpriteBatch b) => _tooltip?.Draw(b);
 
     public override bool ReceiveCursorHover(int x, int y)
     {
-        _hoveredToggle = null;
+        _tooltip = null;
         HoveredItem = null;
         return base.ReceiveCursorHover(x, y);
     }
