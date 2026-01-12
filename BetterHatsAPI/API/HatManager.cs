@@ -50,6 +50,7 @@ public class HatManager : ISummerFleurBetterHatsAPI
                 throw new Exception($"Can't find the data of {qualifiedHatID} in {packID}!");
 
             targetData.SetCustomCondition(customConditionChecker);
+            targetData.Condition = HatData.CustomConditionSign;
             Log($"Successfully set custom condition checker for {packID} - {qualifiedHatID}.");
         }
         catch (Exception e)
@@ -75,6 +76,7 @@ public class HatManager : ISummerFleurBetterHatsAPI
                 throw new Exception($"Can't find the data of {qualifiedHatID} in {packID}!");
 
             targetData.SetCustomAction(customActionTrigger);
+            targetData.Action = HatData.CustomActionSign;
             Log($"Successfully set custom action trigger for {packID} - {qualifiedHatID}.");
         }
         catch (Exception e)
@@ -166,10 +168,20 @@ public class HatManager : ISummerFleurBetterHatsAPI
 
         // Register events if needed
         if (CachedHatDataForUpdateTicked.Any())
+        {
             ModEntry.ModHelper.Events.GameLoop.UpdateTicked += TriggerWhenUpdateTicked;
+            Log("Registered UpdateTicked event for these packs:");
+            foreach (var data in CachedHatDataForUpdateTicked)
+                Log($" - {data.Pack.Manifest.UniqueID}");
+        }
 
         if (CachedHatDataForOneSecondUpdateTicked.Any())
+        {
             ModEntry.ModHelper.Events.GameLoop.OneSecondUpdateTicked += TriggerWhenOneSecondUpdateTicked;
+            Log("Registered OneSecondUpdateTicked event for these packs:");
+            foreach (var data in CachedHatDataForUpdateTicked)
+                Log($" - {data.Pack.Manifest.UniqueID}");
+        }
     }
 
     private void OnSaveLoaded(object? s, SaveLoadedEventArgs e)
@@ -208,7 +220,9 @@ public class HatManager : ISummerFleurBetterHatsAPI
             {
                 if (!Game1.player.hasBuff(id) || data.Dynamic)
                     Game1.player.applyBuff(data.ConvertToBuff());
-                data.TryPerformAction();
+
+                if (!string.IsNullOrWhiteSpace(data.Action))
+                    data.TryPerformAction();
             }
             else
             {
@@ -231,7 +245,9 @@ public class HatManager : ISummerFleurBetterHatsAPI
             {
                 if (!Game1.player.hasBuff(id) || data.Dynamic)
                     Game1.player.applyBuff(data.ConvertToBuff());
-                data.TryPerformAction();
+
+                if (!string.IsNullOrWhiteSpace(data.Action))
+                    data.TryPerformAction();
             }
             else
             {
@@ -255,7 +271,12 @@ public class HatManager : ISummerFleurBetterHatsAPI
             {
                 if (!Game1.player.hasBuff(id) || data.Dynamic)
                     Game1.player.applyBuff(data.ConvertToBuff());
+
+                if (string.IsNullOrWhiteSpace(data.Action))
+                    continue;
+
                 data.TryPerformAction();
+                Log($"Successfully performed action for {data.Pack.Manifest.UniqueID} in TimeChanged event.");
             }
             else
             {
@@ -279,7 +300,12 @@ public class HatManager : ISummerFleurBetterHatsAPI
             {
                 if (!Game1.player.hasBuff(id) || data.Dynamic)
                     Game1.player.applyBuff(data.ConvertToBuff());
+
+                if (string.IsNullOrWhiteSpace(data.Action))
+                    continue;
+
                 data.TryPerformAction();
+                Log($"Successfully performed action for {data.Pack.Manifest.UniqueID} in LocationChanged event.");
             }
             else
             {
@@ -296,8 +322,11 @@ public class HatManager : ISummerFleurBetterHatsAPI
                 continue;
 
             Game1.player.applyBuff(data.ConvertToBuff());
-            if (data.Trigger == Trigger.DayStarted)
-                data.TryPerformAction();
+            if (data.Trigger != Trigger.DayStarted)
+                continue;
+
+            data.TryPerformAction();
+            Log($"Successfully performed action for {data.Pack.Manifest.UniqueID} in DayStarted event.");
         }
     }
 
@@ -314,6 +343,7 @@ public class HatManager : ISummerFleurBetterHatsAPI
         // Unregister events
         ModEntry.ModHelper.Events.GameLoop.UpdateTicked -= TriggerWhenUpdateTicked;
         ModEntry.ModHelper.Events.GameLoop.OneSecondUpdateTicked -= TriggerWhenOneSecondUpdateTicked;
+        Log("High-cost events are all unregistered.");
     }
 }
 

@@ -109,7 +109,16 @@
           "default": 0
         },
         "Condition": {
-          "type": "string",
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": ["$CustomCondition"]
+            },
+            {
+              "type": "string",
+              "pattern": "^[^$].*$"
+            }
+          ],
           "description": "A game state query that determines whether the buff should be applied. Uses Stardew Valley's GameStateQuery format.",
           "default": "",
           "examples": [
@@ -118,7 +127,16 @@
           ]
         },
         "Action": {
-          "type": "string",
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": ["$CustomAction"]
+            },
+            {
+              "type": "string",
+              "pattern": "^[^$].*$"
+            }
+          ],
           "description": "An action to be performed when the condition is met. Uses Stardew Valley's TriggerActionManager format.",
           "default": "",
           "examples": [

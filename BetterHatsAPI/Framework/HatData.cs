@@ -10,6 +10,9 @@ namespace BetterHatsAPI.Framework;
 [Serializable]
 public partial class HatData
 {
+    public const string CustomConditionSign = "$CustomCondition";
+    public const string CustomActionSign = "$CustomAction";
+
     internal IContentPack Pack = null!;
 
     /// <summary>

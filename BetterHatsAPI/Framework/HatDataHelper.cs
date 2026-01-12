@@ -1,4 +1,5 @@
 ﻿using JetBrains.Annotations;
+using StardewValley.Extensions;
 using StardewValley.Objects;
 using StardewValley.Triggers;
 using static BetterHatsAPI.Framework.Utilities;
@@ -157,6 +158,8 @@ public partial class HatData
     /// </returns>
     public bool TryCheckCondition()
     {
+        var id = Pack.Manifest.UniqueID;
+        // Check if the custom checker is null, if true, log a warning.
         if (UseCustomCondition)
         {
             // Check if custom cc is null, if true, log a warning and set the Trigger to None.
@@ -175,13 +178,18 @@ public partial class HatData
             }
             catch (Exception e)
             {
-                var id = Pack.Manifest.UniqueID;
                 Error($"An error occured while using custom condition checker for content pack {id}!");
                 Warn("See detailed information below:");
                 Warn(e.Message);
                 Warn(e.StackTrace);
                 return false;
             }
+        }
+
+        if (Condition.EqualsIgnoreCase(CustomConditionSign))
+        {
+            Warn($"Content pack {id} marks the condition as a custom one, but it haven't been set.");
+            return false;
         }
 
         return GameStateQuery.CheckConditions(Condition);
@@ -192,10 +200,8 @@ public partial class HatData
     /// </summary>
     public void TryPerformAction()
     {
-        if (string.IsNullOrWhiteSpace(Action)) return;
-
         var id = Pack.Manifest.UniqueID;
-        // Check if custom action is null, if true, log a warning and.
+        // Check if the custom action is null, if true, log a warning.
         if (UseCustomAction)
         {
             if (CustomAction == null)
@@ -217,6 +223,12 @@ public partial class HatData
                 Warn(e.Message);
                 Warn(e.StackTrace);
             }
+        }
+
+        if (Condition.EqualsIgnoreCase(CustomActionSign))
+        {
+            Warn($"Content pack {id} marks the action as a custom one, but it haven't been set.");
+            return;
         }
 
         TriggerActionManager.TryRunAction(Action, out var error, out var ex);
@@ -242,7 +254,7 @@ public partial class HatData
         catch (Exception e)
         {
             var id = Pack.Manifest.UniqueID;
-            Error($"An error occured while performing custom multiplier for content pack {id}!");
+            Error($"An error occured while performing custom modifier for content pack {id}!");
             Warn("See detailed information below:");
             Warn(e.Message);
             Warn(e.StackTrace);

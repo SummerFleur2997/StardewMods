@@ -29,9 +29,20 @@ public interface ISummerFleurBetterHatsAPI
     public event HatEquippedDelegate OnHatEquipped;
 
     /// <summary>
-    /// Get the buff from the given hat. The returned value is a read-only
-    /// copy of the buff. So what you do to the buff will make no effect.
+    /// Gets all buffs associated with the given hat.
     /// </summary>
+    /// <param name="hat">The hat to query buffs for.</param>
+    /// <returns>
+    /// A new collection containing newly instantiated <see cref="Buff"/> objects.
+    /// Each call creates fresh instances; modifications to the returned buffs or
+    /// collection will not affect the original hat data or other callers.
+    /// </returns>
+    /// <remarks>
+    /// This method allocates new objects on each call. If you need to check
+    /// buffs frequently, consider caching the result. The returned buffs
+    /// reflect the hat's data at the time of the call and will not update if
+    /// the underlying data changes.
+    /// </remarks>
     public IEnumerable<Buff> GetBuffForThisHat(Hat hat);
 
     /// <summary>
