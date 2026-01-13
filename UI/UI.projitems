@@ -10,6 +10,8 @@
     </PropertyGroup>
     <ItemGroup>
         <Compile Include="$(MSBuildThisFileDirectory)BaseOverlay.cs" />
+        <Compile Include="$(MSBuildThisFileDirectory)Component\ItemButton.cs" />
+        <Compile Include="$(MSBuildThisFileDirectory)Component\ItemLabel.cs" />
         <Compile Include="$(MSBuildThisFileDirectory)Component\LabeledCheckBox.cs" />
         <Compile Include="$(MSBuildThisFileDirectory)Component\SpriteButton.cs" />
         <Compile Include="$(MSBuildThisFileDirectory)Component\IClickableComponent.cs" />

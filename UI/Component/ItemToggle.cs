@@ -5,52 +5,34 @@ using Microsoft.Xna.Framework.Graphics;
 namespace UI.Component;
 
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-public class ItemToggle : IClickableComponent, IDisposable
+public class ItemToggle<T> : ItemLabel<T>, IClickableComponent, IDisposable where T : Item
 {
-    /// <inheritdoc/>
-    public Rectangle Bounds => new(X, Y, Width, Height);
-
-    /// <inheritdoc/>
-    public int X { get; set; }
-
-    /// <inheritdoc/>
-    public int Y { get; set; }
-
-    /// <inheritdoc/>
-    public int Width { get; set; }
-
-    /// <inheritdoc/>
-    public int Height { get; set; }
-
-    public Item Item;
     public Tooltip Tooltip;
     public bool Active;
     public event Action OnToggle;
     public event Action OnHover;
 
-    public ItemToggle(Item item, bool active, int x = 0, int y = 0, int width = 64, int height = 64)
+    public ItemToggle(T item, bool active, int x = 0, int y = 0, int width = 64, int height = 64)
+        : base(item, x, y, width, height)
     {
-        Item = item;
         Tooltip = new Tooltip(item);
         Active = active;
-        this.SetDestination(x, y, width, height);
     }
 
-    public ItemToggle(Item item, bool active, Rectangle destination)
+    public ItemToggle(T item, bool active, Rectangle destination)
+        : base(item, destination)
     {
-        Item = item;
         Tooltip = new Tooltip(item);
         Active = active;
-        this.SetDestination(destination);
     }
 
     public ItemToggle(string item, bool active, int x = 0, int y = 0, int width = 64, int height = 64)
-        : this(ItemRegistry.Create(item), active, x, y, width, height) { }
+        : this(ItemRegistry.Create<T>(item), active, x, y, width, height) { }
 
     public ItemToggle(string item, bool active, Rectangle destination)
-        : this(ItemRegistry.Create(item), active, destination) { }
+        : this(ItemRegistry.Create<T>(item), active, destination) { }
 
-    public virtual void Draw(SpriteBatch b)
+    public override void Draw(SpriteBatch b)
     {
         var alpha = Active ? 1.0f : 0.33f;
         Item.drawInMenu(b, new Vector2(X, Y), Width / 64f, alpha, 1, StackDrawType.Hide);
