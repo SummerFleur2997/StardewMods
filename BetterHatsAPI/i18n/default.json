@@ -1,0 +1,33 @@
+﻿{
+  "string.FarmingLevel": "+{{value}} Farming",
+  "string.FishingLevel": "+{{value}} Fishing",
+  "string.ForagingLevel": "+{{value}} Foraging",
+  "string.MiningLevel": "+{{value}} Mining",
+  "string.CombatLevel": "+{{value}} Combat",
+  "string.LuckLevel": "+{{value}} Luck",
+  "string.Speed": "+{{value}} Speed",
+  "string.Defense": "+{{value}} Defense",
+  "string.Immunity": "+{{value}} Immunity",
+  "string.MaxStamina": "+{{value}} Max Energy",
+  "string.MagneticRadius": "+{{value}} Magnetism",
+  "string.Attack": "+{{value}} Attack",
+  "string.AttackMultiplier": "+{{value}} Attack Mult",
+  "string.CriticalChanceMultiplier": "+{{value}} Crit Chance Mult",
+  "string.CriticalPowerMultiplier": "+{{value}} Crit Power Mult",
+  "string.WeaponSpeedMultiplier": "+{{value}} Weapon Speed Mult",
+  "string.WeaponPrecisionMultiplier": "+{{value}} Weapon Precision Mult",
+  "string.KnockbackMultiplier": "+{{value}} Knockback Mult",
+
+  "string.Description": "Description",
+  "string.Condition": "Condition",
+  "string.Action": "Action",
+  "string.Modifier": "Modifier",
+  "string.CustomCondition": "(condition defined by another mod)",
+  "string.CustomAction": "(action defined by another mod)",
+  "string.CustomModifier": "(modifier defined by another mod)",
+  "string.NoDesc": "This hat contains a advanced {{hint}}, but the pack author did not provide any description.",
+
+  // To translators: please use the punctuations based on your locale, and remember the white space if needed.
+  "string.connect": "{{title}}: {{value}}",
+  "punctuation.comma": ", " // for example, in Chinese, we use a full-width comma with no space like this: "、"
+}

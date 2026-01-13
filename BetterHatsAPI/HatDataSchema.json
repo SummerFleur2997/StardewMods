@@ -13,9 +13,9 @@
           "description": "The unique id for the converted buff. If not specified, this will be automatically set to the content pack's unique id.",
           "default": ""
         },
-        "BuffDescription": {
+        "Description": {
           "type": ["string", "null"],
-          "description": "The description of the converted buff. Will be shown in the status bar. Supports localization through content pack translations.",
+          "description": "The description of the hat effect. This will be shown in the guide book menu. Supports localization through content pack translations.",
           "default": null
         },
         "CombatLevel": {
@@ -126,6 +126,11 @@
             "SEASON Winter"
           ]
         },
+        "ConditionDescription": {
+          "type": "string",
+          "description": "A brief description for the Condition. This will be shown in the guide book menu. Supports localization through content pack translations.",
+          "default": null
+        },
         "Action": {
           "oneOf": [
             {
@@ -142,6 +147,16 @@
           "examples": [
             "AddItem (O)74 5"
           ]
+        },
+        "ActionDescription": {
+          "type": "string",
+          "description": "A brief description for the Action. This will be shown in the guide book menu. Supports localization through content pack translations.",
+          "default": null
+        },
+        "ModifierDescription": {
+          "type": "string",
+          "description": "A brief description for the Modifier. This will be shown in the guide book menu. Supports localization through content pack translations.",
+          "default": null
         },
         "Trigger": {
           "type": "string",

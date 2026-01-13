@@ -69,8 +69,8 @@ public static class HatDataHelper
                 hatInfo.Pack = pack;
                 if (string.IsNullOrWhiteSpace(hatInfo.UniqueBuffID))
                     hatInfo.UniqueBuffID = pack.Manifest.UniqueID;
-                if (string.IsNullOrWhiteSpace(hatInfo.BuffDescription))
-                    hatInfo.BuffDescription = null;
+                if (string.IsNullOrWhiteSpace(hatInfo.Description))
+                    hatInfo.Description = null;
 
                 // add the data to the dictionary
                 allHatData.TryAdd(key, hatInfo);
@@ -107,17 +107,101 @@ public static class HatDataHelper
  */
 public partial class HatData
 {
+    public float GetValueByIndex(int index) => index switch
+    {
+        0 => FarmingLevel,
+        1 => FishingLevel,
+        2 => ForagingLevel,
+        3 => MiningLevel,
+        4 => CombatLevel,
+        5 => LuckLevel,
+        6 => Speed,
+        7 => Defense,
+        8 => Immunity,
+        9 => MaxStamina,
+        10 => MagneticRadius,
+        11 => Attack,
+        12 => AttackMultiplier,
+        13 => CriticalChanceMultiplier,
+        14 => CriticalPowerMultiplier,
+        15 => WeaponSpeedMultiplier,
+        16 => WeaponPrecisionMultiplier,
+        17 => KnockbackMultiplier,
+        _ => throw new IndexOutOfRangeException()
+    };
+
+    public string GetTranslationByIndex(int index)
+    {
+        var value = GetValueByIndex(index);
+        var add = index >= 12 ? $" (x{(value + 1f).FormatAndTrim()})" : "";
+        var text = value.FormatAndTrim() + add;
+
+        return index switch
+        {
+            0 => I18n.String_FarmingLevel(text),
+            1 => I18n.String_FishingLevel(text),
+            2 => I18n.String_ForagingLevel(text),
+            3 => I18n.String_MiningLevel(text),
+            4 => I18n.String_CombatLevel(text),
+            5 => I18n.String_LuckLevel(text),
+            6 => I18n.String_Speed(text),
+            7 => I18n.String_Defense(text),
+            8 => I18n.String_Immunity(text),
+            9 => I18n.String_MaxStamina(text),
+            10 => I18n.String_MagneticRadius(text),
+            11 => I18n.String_Attack(text),
+            12 => I18n.String_AttackMultiplier(text),
+            13 => I18n.String_CriticalChanceMultiplier(text),
+            14 => I18n.String_CriticalPowerMultiplier(text),
+            15 => I18n.String_WeaponSpeedMultiplier(text),
+            16 => I18n.String_WeaponPrecisionMultiplier(text),
+            17 => I18n.String_KnockbackMultiplier(text),
+            _ => throw new IndexOutOfRangeException()
+        };
+    }
+
+    public static HatData Combine(IEnumerable<HatData> dataList)
+    {
+        var data = new HatData { UniqueBuffID = CombinedDataSign };
+        foreach (var d in dataList)
+        {
+            data.FarmingLevel += d.FarmingLevel;
+            data.FishingLevel += d.FishingLevel;
+            data.ForagingLevel += d.ForagingLevel;
+            data.MiningLevel += d.MiningLevel;
+            data.CombatLevel += d.CombatLevel;
+            data.LuckLevel += d.LuckLevel;
+            data.Speed += d.Speed;
+            data.Defense += d.Defense;
+            data.Immunity += d.Immunity;
+            data.MaxStamina += d.MaxStamina;
+            data.MagneticRadius += d.MagneticRadius;
+            data.Attack += d.Attack;
+            data.AttackMultiplier += d.AttackMultiplier;
+            data.CriticalChanceMultiplier += d.CriticalChanceMultiplier;
+            data.CriticalPowerMultiplier += d.CriticalPowerMultiplier;
+            data.WeaponSpeedMultiplier += d.WeaponSpeedMultiplier;
+            data.WeaponPrecisionMultiplier += d.WeaponPrecisionMultiplier;
+            data.KnockbackMultiplier += d.KnockbackMultiplier;
+        }
+
+        return data;
+    }
+
     /// <summary>
     /// Convert this hat data to a buff.
     /// </summary>
     public Buff ConvertToBuff()
     {
         var buff = new Buff(UniqueBuffID);
+        if (UniqueBuffID == CombinedDataSign)
+        {
+            buff.millisecondsDuration = 0;
+            return buff;
+        }
+
         var hatName = Game1.player.hat?.Value?.DisplayName ?? string.Empty;
         buff.displaySource = $"{hatName} ({Pack.Manifest.Name})";
-
-        if (!string.IsNullOrWhiteSpace(BuffDescription))
-            buff.description = BuffDescription;
 
         buff.effects.CombatLevel.Value = CombatLevel;
         buff.effects.FarmingLevel.Value = FarmingLevel;
@@ -259,5 +343,21 @@ public partial class HatData
             Warn(e.Message);
             Warn(e.StackTrace);
         }
+    }
+
+    public string GetNoDescriptionWarning()
+    {
+        var hints = new List<string>();
+
+        if (!string.IsNullOrWhiteSpace(Condition) && string.IsNullOrWhiteSpace(_conditionDescription))
+            hints.Add(I18n.String_Condition());
+
+        if (!string.IsNullOrWhiteSpace(Action) && string.IsNullOrWhiteSpace(_actionDescription))
+            hints.Add(I18n.String_Action());
+
+        if (CustomModifier != null && string.IsNullOrWhiteSpace(_modifierDescription))
+            hints.Add(I18n.String_Modifier());
+
+        return hints.Count > 0 ? string.Join(I18n.Punctuation_Comma(), hints).ToLower() : "";
     }
 }
