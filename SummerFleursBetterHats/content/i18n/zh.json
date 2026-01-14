@@ -1,0 +1,19 @@
+﻿{
+  "description.LivingHat": "缓慢恢复生命值与能量值。",
+  "action.LivingHat": "每秒恢复 1 点生命值与 2 点能量值。",
+
+  "description.ButterflyBow": "美洲大树莓成熟季时获得 +1 采集，采摘灌木丛时额外获得 1 个美洲大树莓。",
+  "condition.ButterflyBow": "当前日期为春季 15~18 日。",
+
+  "description.PumpkinMask": "黑莓成熟季时获得 +1 采集，采摘灌木丛时额外获得 1 个黑莓。",
+  "condition.PumpkinMask": "当前日期为秋季 8~11 日。",
+
+  "condition.Souwester": "位于雨天的室外。",
+  "modifier.Souwester": "若为雷雨，则钓鱼等级增益变为 +2。",
+
+  "condition.LogoCap": "位于矿井的 20、60 或 100 层。",
+  "modifier.LogoCap": "位于 60 层获得 2 倍的增益效果，100 层获得 3 倍的增益效果。",
+
+  "condition.SpaceHelmet": "位于危险的矿井或骷髅洞穴中。",
+  "modifier.SpaceHelmet": "获得的增益效果将乘以当前矿井的危险等级。",
+}

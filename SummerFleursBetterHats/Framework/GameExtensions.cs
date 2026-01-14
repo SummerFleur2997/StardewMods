@@ -1,7 +1,6 @@
-﻿using BetterHatsAPI.API;
-using StardewValley.Constants;
-using StardewValley.Delegates;
+﻿using StardewValley.Delegates;
 using StardewValley.Locations;
+using Helpers = StardewValley.GameStateQuery.Helpers;
 
 namespace SummerFleursBetterHats.Framework;
 
@@ -13,23 +12,41 @@ public static class GameExtensions
 {
     public static void RegisterAll()
     {
-        GameStateQuery.Register("SFBH_MINE_LEVEL", MINE_LEVEL);
-        var api = ModEntry.ModHelper.ModRegistry.GetApi<ISummerFleurBetterHatsAPI>("SummerFleur.BetterHatsAPI");
-        api?.SetCustomActionTrigger(SantaHatID, "SummerFleur.SummerFleursBetterHatsBHA", AddMysteryBox, out _);
+        GameStateQuery.Register($"SFBH_{nameof(MINE_LEVEL)}", MINE_LEVEL);
+        GameStateQuery.Register($"SFBH_{nameof(MINE_LEVEL_RANGE)}", MINE_LEVEL_RANGE);
     }
 
     /// <summary>
-    /// Effect of Santa Hat: if the player has forage mastery, get a
-    /// Golden Mystery Box as santa's gift, otherwise, a Mystery Box.
+    /// A query used to check if the current location is the mine,
+    /// and the mine level contains the specified value.
     /// </summary>
-    private static void AddMysteryBox()
+    /// <remarks>
+    /// The query format is:
+    /// <c>MINE_LEVEL Here [Levels]</c>
+    /// For example, the query text <c>"MINE_LEVEL Here 10 20 30"</c>
+    /// will return true if the current location is the mine, and the
+    /// mine level is 10, 20, or 30.
+    /// </remarks>
+    private static bool MINE_LEVEL(string[] query, GameStateQueryContext context)
     {
-        var player = Game1.player;
-        var gift = ItemRegistry.Create(player.stats.Get(StatKeys.Mastery(Farmer.foragingSkill)) != 0
-            ? "(O)GoldenMysteryBox"
-            : "(O)MysteryBox");
-        player.addItemByMenuIfNecessary(gift);
-        Game1.showGlobalMessage("You got a gift from Santa! Happy Feast Of The Winter Star!"); // TODO: i18n
+        var location = context.Location;
+        if (!Helpers.TryGetLocationArg(query, 1, ref location, out var error))
+            return Helpers.ErrorResult(query, error);
+
+        // Check if the location is a mine
+        if (location is not MineShaft mine)
+            return false;
+
+        for (var i = 2; i < query.Length; i += 1)
+        {
+            if (!ArgUtility.TryGetInt(query, i, out var level, out error, "int mineLevel"))
+                return Helpers.ErrorResult(query, error);
+
+            if (mine.mineLevel == level)
+                return true;
+        }
+
+        return false;
     }
 
     /// <summary>
@@ -43,11 +60,11 @@ public static class GameExtensions
     /// will return true if the current location is the mine, and the
     /// mine level is between 40 and 80.
     /// </remarks>
-    private static bool MINE_LEVEL(string[] query, GameStateQueryContext context)
+    private static bool MINE_LEVEL_RANGE(string[] query, GameStateQueryContext context)
     {
         var location = context.Location;
-        if (!GameStateQuery.Helpers.TryGetLocationArg(query, 1, ref location, out var error))
-            return GameStateQuery.Helpers.ErrorResult(query, error);
+        if (!Helpers.TryGetLocationArg(query, 1, ref location, out var error))
+            return Helpers.ErrorResult(query, error);
 
         // Check if the location is a mine
         if (location is not MineShaft mine)
@@ -55,7 +72,7 @@ public static class GameExtensions
 
         if (!ArgUtility.TryGetInt(query, 2, out var minLevel, out error, "int minLevel") ||
             !ArgUtility.TryGetOptionalInt(query, 3, out var maxLevel, out error, int.MaxValue, "int maxLevel"))
-            return GameStateQuery.Helpers.ErrorResult(query, error);
+            return Helpers.ErrorResult(query, error);
 
         // Check if the mine level is in the specified range
         var level = mine.mineLevel;

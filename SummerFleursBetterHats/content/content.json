@@ -5,7 +5,7 @@
    ****/
   // Cowboy Hat
   "(H)0": {
-    "Speed": 1.0
+    "Speed": 1.5
   },
   // Straw Hat
   "(H)4": {
@@ -23,13 +23,10 @@
   "(H)17": {
     "FishingLevel": 1.0
   },
-  // Living Hat
-  "(H)40": {
-    "LuckLevel": 3.0
-  },
   // Knight's Helmet
   "(H)50": {
-    "Defense": 2.0
+    "Defense": 3.0,
+    "Speed": -0.5
   },
   // Squire's Helmet
   "(H)51": {
@@ -87,7 +84,9 @@
   "(H)14": {
     "ForagingLevel": 1.0,
     "Condition": "LOCATION_SEASON Here Spring, SEASON_DAY Spring 15 Spring 16 Spring 17 Spring 18",
-    "Trigger": "LocationChanged"
+    "Trigger": "DayStarted",
+    "Description": "i18n:description.ButterflyBow",
+    "ConditionDescription": "i18n:condition.ButterflyBow"
   },
   // Good Ol' Cap
   "(H)18": {
@@ -104,14 +103,16 @@
   // Santa Hat (Today is winter star festival)
   "(H)25": {
     "Condition": "SEASON_DAY Winter 25",
-    "Action": "SFBH_SantaGift",
+    "Action": "$CustomAction",
     "Trigger": "DayStarted"
   },
   // Sou'wester (Current weather is stormy)
   "(H)28": {
     "FishingLevel": 2.0,
-    "Condition": "LOCATION_IS_OUTDOORS Here, WEATHER Here Storm",
-    "Trigger": "LocationChanged"
+    "Condition": "LOCATION_IS_OUTDOORS Here, WEATHER Here Rain",
+    "Trigger": "LocationChanged",
+    "ConditionDescription": "i18n:condition.Souwester",
+    "ModifierDescription": "i18n:modifier.Souwester"
   },
   // Daisy (Current season is spring)
   "(H)29": {
@@ -127,31 +128,50 @@
     "Condition": "LOCATION_SEASON Here Summer",
     "Trigger": "LocationChanged"
   },
+  // Living Hat
+  "(H)40": {
+    "Action": "$CustomAction",
+    "Trigger": "SecondUpdated",
+    "Description": "i18n:description.LivingHat",
+    "ActionDescription": "i18n:action.LivingHat"
+  },
+  // Logo Cap
+  "(H)45": {
+    "FishingLevel": 1.0,
+    "LuckLevel": 1.0,
+    "Condition": "SFBH_MINE_LEVEL Here 20 60 100",
+    "Trigger": "LocationChanged",
+    "Dynamic": true,
+    "ConditionDescription": "i18n:condition.LogoCap",
+    "ModifierDescription": "i18n:modifier.LogoCap"
+  },
   // Pumpkin Mask (Current date is fall 8~11)
   "(H)48": {
     "ForagingLevel": 1.0,
     "Condition": "LOCATION_SEASON Here Fall, SEASON_DAY Fall 8 Fall 9 Fall 10 Fall 11",
-    "Trigger": "LocationChanged"
+    "Trigger": "DayStarted",
+    "Description": "i18n:description.PumpkinMask",
+    "ConditionDescription": "i18n:condition.PumpkinMask"
   },
   // Party Hat Red (Current location is the mine, and the mine level >= 80)
   "(H)57": {
     "Speed": 1.0,
     "LuckLevel": 1.0,
-    "Condition": "SFBH_MINE_LEVEL Here 80",
+    "Condition": "SFBH_MINE_LEVEL_RANGE Here 80",
     "Trigger": "LocationChanged"
   },
   // Party Hat Blue (Current location is the mine, and the mine level is 40~79)
   "(H)58": {
     "Speed": 1.0,
     "LuckLevel": 1.0,
-    "Condition": "SFBH_MINE_LEVEL Here 40 79",
+    "Condition": "SFBH_MINE_LEVEL_RANGE Here 40 79",
     "Trigger": "LocationChanged"
   },
   // Party Hat Green (Current location is the mine, and the mine level < 40)
   "(H)59": {
     "Speed": 1.0,
     "LuckLevel": 1.0,
-    "Condition": "SFBH_MINE_LEVEL Here 1 39",
+    "Condition": "SFBH_MINE_LEVEL_RANGE Here 1 39",
     "Trigger": "LocationChanged"
   },
   // Paper Hat
@@ -161,4 +181,14 @@
     "Condition": "LOCATION_CONTEXT Here Island",
     "Trigger": "LocationChanged"
   },
+  "(H)SpaceHelmet": {
+    "AttackMultiplier": 0.1,
+    "Defense": 2.0,
+    "Speed": 0.5,
+    "LuckLevel": 1.0,
+    "Condition": "$CustomCondition",
+    "Trigger": "LocationChanged",
+    "ConditionDescription": "i18n:condition.SpaceHelmet",
+    "ModifierDescription": "i18n:modifier.SpaceHelmet"
+  }
 }

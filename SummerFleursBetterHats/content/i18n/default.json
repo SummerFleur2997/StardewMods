@@ -1,0 +1,19 @@
+﻿{
+  "description.LivingHat": "Slowly recover your health and energy.",
+  "action.LivingHat": "Recover 1 health and 2 energy per second.",
+
+  "description.ButterflyBow": "Get forage +1 in salmonberry season, and an additional salmonberry when harvest bushes.",
+  "condition.ButterflyBow": "Current date is Spring 15~18",
+
+  "description.PumpkinMask": "Get forage +1 in blackberry season, and an additional blackberry when harvest bushes.",
+  "condition.PumpkinMask": "Current date is Fall 8~11",
+
+  "condition.Souwester": "Current location is outdoors and the weather is rainy.",
+  "modifier.Souwester": "Fishing level buff will increased to 2 if stormy.",
+
+  "condition.LogoCap": "Current location is the mine, and the level is 20, 60, or 100.",
+  "modifier.LogoCap": "Get double buff effects at level 60, or triple at level 100.",
+
+  "condition.SpaceHelmet": "Current location is the dangerous mine or skull cavern.",
+  "modifier.SpaceHelmet": "Active buff effects will be multiplied by the current mine's difficulty level.",
+}
