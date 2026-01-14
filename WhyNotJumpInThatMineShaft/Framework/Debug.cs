@@ -20,7 +20,9 @@ internal static class Debug
     private static void DrawShaftHere()
     {
         var location = Game1.currentLocation;
-        if (location is not MineShaft) return;
+        if (location is not MineShaft ||
+            Game1.player.farmName.Value != "Debug" ||
+            Game1.player.Name != "SummerFleur") return;
 
         var x = (Game1.getMouseX() + Game1.viewport.X) / 64;
         var y = (Game1.getMouseY() + Game1.viewport.Y) / 64;
