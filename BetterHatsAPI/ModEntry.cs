@@ -1,8 +1,6 @@
 ﻿using BetterHatsAPI.API;
 using BetterHatsAPI.Framework;
-using BetterHatsAPI.GuideBook;
 using JetBrains.Annotations;
-using StardewModdingAPI.Events;
 
 namespace BetterHatsAPI;
 
@@ -21,6 +19,7 @@ internal class ModEntry : Mod
     public static IModHelper ModHelper { get; private set; }
     private static IMonitor ModMonitor { get; set; }
     public static void Log(string s, LogLevel l = LogLevel.Trace) => ModMonitor.Log(s, l);
+    public static List<IContentPack> ContentPacks { get; private set; }
 
     #endregion
 
@@ -32,19 +31,11 @@ internal class ModEntry : Mod
 
         I18n.Init(Helper.Translation);
         Config = helper.ReadConfig<ModConfig>();
+        ContentPacks = helper.ContentPacks.GetOwned().ToList();
 
         HatManager.Initialize();
-        HatDataHelper.LoadContentPacks(helper);
-        TooltipHelper.RegisterEventsForTooltip(helper);
-        helper.Events.Input.ButtonReleased += OnButtonReleased;
-    }
-
-    private void OnButtonReleased(object sender, ButtonReleasedEventArgs e)
-    {
-        if (e.Button == SButton.G)
-            Game1.activeClickableMenu = new GuideMenu(
-                (Game1.uiViewport.Width - 1352) / 2,
-                (Game1.uiViewport.Height - 792) / 2);
+        HatDataHelper.LoadContentPacks();
+        GuideBookHelper.RegisterEventsForGuideBook(helper);
     }
 
     public override object GetApi(IModInfo mod) => HatManager.Instance;

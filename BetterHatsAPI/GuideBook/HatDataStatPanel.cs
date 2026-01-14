@@ -12,8 +12,8 @@ namespace BetterHatsAPI.GuideBook;
 /// </summary>
 public class HatDataStatPanel : IClickableMenu, IClickableComponent
 {
-    public const int RowHeight = 40;
-    private const int ItemsPerColumn = 4;
+    public const int RowHeight = StatDisplay.IconSize + StatDisplay.Padding;
+    public const int ItemsPerColumn = 4;
 
     /// <inheritdoc/>
     public Rectangle Bounds => new(X, Y, Width, Height);
@@ -42,6 +42,7 @@ public class HatDataStatPanel : IClickableMenu, IClickableComponent
     {
         // Update cached data
         _stats.Clear();
+        if (data is null) return;
 
         // Recalculate stats.
         for (var i = 0; i < 18; i++)
@@ -92,8 +93,8 @@ public class HatDataStatPanel : IClickableMenu, IClickableComponent
 /// </summary>
 internal class StatDisplay : IComponent
 {
-    private const int IconSize = 36;
-    private const int Padding = 12;
+    public const int IconSize = 40;
+    public const int Padding = 8;
 
     /// <inheritdoc/>
     public Rectangle Bounds => new(X, Y, Width, Height);
@@ -140,13 +141,13 @@ internal class StatDisplay : IComponent
         _icon = Texture.GetAttrIconByIndex(index);
         _label = new TextLabel(attr, color, Game1.smallFont);
         Width = IconSize + Padding + _label.Width;
-        Height = HatDataStatPanel.RowHeight;
+        Height = IconSize + Padding;
         _label.SetPosition(X + IconSize + Padding, Y + (Height - _label.Height) / 2);
     }
 
     public void Draw(SpriteBatch b)
     {
-        b.Draw(_icon, new Rectangle(X, Y, IconSize, IconSize));
+        b.Draw(_icon, new Rectangle(X, Y + Padding / 2, IconSize, IconSize));
         _label.Draw(b);
     }
 }

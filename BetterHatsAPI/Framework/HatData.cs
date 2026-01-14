@@ -14,9 +14,11 @@ public partial class HatData
 {
     public const string CustomConditionSign = "$CustomCondition";
     public const string CustomActionSign = "$CustomAction";
-    private const string CombinedDataSign = "$CombinedData";
+    public const string CombinedDataSign = "$CombinedData";
 
     internal IContentPack Pack = null!;
+
+    internal string ID = "UnknownPack";
 
     /// <summary>
     /// The unique id for the converted buff. If not specified, this

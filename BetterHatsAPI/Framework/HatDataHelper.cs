@@ -25,7 +25,7 @@ public static class HatDataHelper
     /// <summary>
     /// Initialize the hat data from content packs when the mod is loaded.
     /// </summary>
-    public static void LoadContentPacks(IModHelper helper)
+    public static void LoadContentPacks()
     {
         Log("Loading content packs and local data files.");
 
@@ -34,7 +34,7 @@ public static class HatDataHelper
         /*****
          * Some logic below is copied from Esca-MMC's FTM mod, purported under the MIT license.
          ****/
-        foreach (var pack in helper.ContentPacks.GetOwned())
+        foreach (var pack in ModEntry.ContentPacks)
         {
             Log($"Loading content pack - {pack.Manifest.UniqueID}.");
             Dictionary<string, HatData> data;
@@ -67,6 +67,7 @@ public static class HatDataHelper
             {
                 // set some required fields if they are not set
                 hatInfo.Pack = pack;
+                hatInfo.ID = pack.Manifest.UniqueID;
                 if (string.IsNullOrWhiteSpace(hatInfo.UniqueBuffID))
                     hatInfo.UniqueBuffID = pack.Manifest.UniqueID;
                 if (string.IsNullOrWhiteSpace(hatInfo.Description))
@@ -133,8 +134,9 @@ public partial class HatData
     public string GetTranslationByIndex(int index)
     {
         var value = GetValueByIndex(index);
-        var add = index >= 12 ? $" (x{(value + 1f).FormatAndTrim()})" : "";
-        var text = value.FormatAndTrim() + add;
+        var sign = value >= 0 ? "+" : "";
+        var multi = index >= 12 ? $" (x{(value + 1f).FormatAndTrim()})" : "";
+        var text = sign + value.FormatAndTrim() + multi;
 
         return index switch
         {
@@ -242,7 +244,6 @@ public partial class HatData
     /// </returns>
     public bool TryCheckCondition()
     {
-        var id = Pack.Manifest.UniqueID;
         // Check if the custom checker is null, if true, log a warning.
         if (UseCustomCondition)
         {
@@ -262,7 +263,7 @@ public partial class HatData
             }
             catch (Exception e)
             {
-                Error($"An error occured while using custom condition checker for content pack {id}!");
+                Error($"An error occured while using custom condition checker for content pack {ID}!");
                 Warn("See detailed information below:");
                 Warn(e.Message);
                 Warn(e.StackTrace);
@@ -272,7 +273,7 @@ public partial class HatData
 
         if (Condition.EqualsIgnoreCase(CustomConditionSign))
         {
-            Warn($"Content pack {id} marks the condition as a custom one, but it haven't been set.");
+            Warn($"Content pack {ID} marks the condition as a custom one, but it haven't been set.");
             return false;
         }
 
@@ -284,7 +285,6 @@ public partial class HatData
     /// </summary>
     public void TryPerformAction()
     {
-        var id = Pack.Manifest.UniqueID;
         // Check if the custom action is null, if true, log a warning.
         if (UseCustomAction)
         {
@@ -302,7 +302,7 @@ public partial class HatData
             }
             catch (Exception e)
             {
-                Error($"An error occured while performing custom action for content pack {id}!");
+                Error($"An error occured while performing custom action for content pack {ID}!");
                 Warn("See detailed information below:");
                 Warn(e.Message);
                 Warn(e.StackTrace);
@@ -311,14 +311,14 @@ public partial class HatData
 
         if (Condition.EqualsIgnoreCase(CustomActionSign))
         {
-            Warn($"Content pack {id} marks the action as a custom one, but it haven't been set.");
+            Warn($"Content pack {ID} marks the action as a custom one, but it haven't been set.");
             return;
         }
 
         TriggerActionManager.TryRunAction(Action, out var error, out var ex);
         if (ex == null) return;
 
-        Error($"An error occured while performing action '{Action}' for content pack {id}!");
+        Error($"An error occured while performing action '{Action}' for content pack {ID}!");
         Warn("See detailed information below:");
         Warn(error);
         Warn(ex.Message);
@@ -337,8 +337,7 @@ public partial class HatData
         }
         catch (Exception e)
         {
-            var id = Pack.Manifest.UniqueID;
-            Error($"An error occured while performing custom modifier for content pack {id}!");
+            Error($"An error occured while performing custom modifier for content pack {ID}!");
             Warn("See detailed information below:");
             Warn(e.Message);
             Warn(e.StackTrace);

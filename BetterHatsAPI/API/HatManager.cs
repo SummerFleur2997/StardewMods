@@ -45,7 +45,7 @@ public class HatManager : ISummerFleurBetterHatsAPI
                 throw new Exception($"Can't find any data of {qualifiedHatID}!");
 
             // check if any data belongs to the target pack
-            var targetData = data.FirstOrDefault(d => d.Pack.Manifest.UniqueID == packID);
+            var targetData = data.FirstOrDefault(d => d.ID == packID);
             if (targetData is null)
                 throw new Exception($"Can't find the data of {qualifiedHatID} in {packID}!");
 
@@ -71,7 +71,7 @@ public class HatManager : ISummerFleurBetterHatsAPI
                 throw new Exception($"Can't find any data of {qualifiedHatID}!");
 
             // check if any data belongs to the target pack
-            var targetData = data.FirstOrDefault(d => d.Pack.Manifest.UniqueID == packID);
+            var targetData = data.FirstOrDefault(d => d.ID == packID);
             if (targetData is null)
                 throw new Exception($"Can't find the data of {qualifiedHatID} in {packID}!");
 
@@ -97,7 +97,7 @@ public class HatManager : ISummerFleurBetterHatsAPI
                 throw new Exception($"Can't find any data of {qualifiedHatID}!");
 
             // check if any data belongs to the target pack
-            var targetData = data.FirstOrDefault(d => d.Pack.Manifest.UniqueID == packID);
+            var targetData = data.FirstOrDefault(d => d.ID == packID);
             if (targetData is null)
                 throw new Exception($"Can't find the data of {qualifiedHatID} in {packID}!");
 
@@ -172,7 +172,7 @@ public class HatManager : ISummerFleurBetterHatsAPI
             ModEntry.ModHelper.Events.GameLoop.UpdateTicked += TriggerWhenUpdateTicked;
             Log("Registered UpdateTicked event for these packs:");
             foreach (var data in CachedHatDataForUpdateTicked)
-                Log($" - {data.Pack.Manifest.UniqueID}");
+                Log($" - {data.ID}");
         }
 
         if (CachedHatDataForOneSecondUpdateTicked.Any())
@@ -180,7 +180,7 @@ public class HatManager : ISummerFleurBetterHatsAPI
             ModEntry.ModHelper.Events.GameLoop.OneSecondUpdateTicked += TriggerWhenOneSecondUpdateTicked;
             Log("Registered OneSecondUpdateTicked event for these packs:");
             foreach (var data in CachedHatDataForUpdateTicked)
-                Log($" - {data.Pack.Manifest.UniqueID}");
+                Log($" - {data.ID}");
         }
     }
 
@@ -276,7 +276,7 @@ public class HatManager : ISummerFleurBetterHatsAPI
                     continue;
 
                 data.TryPerformAction();
-                Log($"Successfully performed action for {data.Pack.Manifest.UniqueID} in TimeChanged event.");
+                Log($"Successfully performed action for {data.ID} in TimeChanged event.");
             }
             else
             {
@@ -305,7 +305,7 @@ public class HatManager : ISummerFleurBetterHatsAPI
                     continue;
 
                 data.TryPerformAction();
-                Log($"Successfully performed action for {data.Pack.Manifest.UniqueID} in LocationChanged event.");
+                Log($"Successfully performed action for {data.ID} in LocationChanged event.");
             }
             else
             {
@@ -326,7 +326,7 @@ public class HatManager : ISummerFleurBetterHatsAPI
                 continue;
 
             data.TryPerformAction();
-            Log($"Successfully performed action for {data.Pack.Manifest.UniqueID} in DayStarted event.");
+            Log($"Successfully performed action for {data.ID} in DayStarted event.");
         }
     }
 

@@ -37,14 +37,29 @@ public class HatDataTextPanel : IComponent
         Height = height;
     }
 
-    public void UpdateData(HatData data, bool isCombinedData = false)
+    public void UpdateData(HatData data)
     {
-        // if it is combined data, we shouldn't go further.
-        _isCombinedData = isCombinedData;
-        if (isCombinedData) return;
+        // if it is combined data, we shouldn't go further
+        _isCombinedData = data?.UniqueBuffID == HatData.CombinedDataSign;
+        if (_isCombinedData) return;
 
         // the y position of the next first label
         var y = Y;
+
+        // clear all the text first
+        _dataDesc.Text = "";
+        _dataCondition.Text = "";
+        _dataAction.Text = "";
+        _dataModifier.Text = "";
+
+        // check for null
+        if (data is null)
+        {
+            _dataDesc.Text = I18n.String_NoData();
+            _dataDesc.SetPosition(X, y);
+            return;
+        }
+
         // have a manual set description
         if (!string.IsNullOrWhiteSpace(data.Description))
         {
@@ -56,7 +71,7 @@ public class HatDataTextPanel : IComponent
         else
         {
             var hint = data.GetNoDescriptionWarning();
-            // no desc, but have advanced attributes, so we need to show a warning.
+            // no desc, but have advanced attributes, so we need to show a warning
             if (!string.IsNullOrWhiteSpace(hint))
             {
                 var dText = I18n.String_NoDesc(hint);
@@ -64,11 +79,7 @@ public class HatDataTextPanel : IComponent
                 _dataDesc.SetPosition(X, y);
                 y += _dataDesc.Height + Game1.pixelZoom * 2;
             }
-            // no desc, and have no advanced attributes, nothing else to do.
-            else
-            {
-                _dataDesc.Text = "";
-            }
+            // no desc, and have no advanced attributes, nothing else to do
         }
 
         // get the condition description
@@ -80,10 +91,6 @@ public class HatDataTextPanel : IComponent
             _dataCondition.SetPosition(X, y);
             y += _dataCondition.Height + Game1.pixelZoom * 2;
         }
-        else
-        {
-            _dataCondition.Text = "";
-        }
 
         // get the action description
         var aText = data.ActionDescription;
@@ -94,25 +101,18 @@ public class HatDataTextPanel : IComponent
             _dataAction.SetPosition(X, y);
             y += _dataAction.Height + Game1.pixelZoom * 2;
         }
-        else
-        {
-            _dataAction.Text = "";
-        }
 
         // get the modifier description
-        if (data.CustomModifier is not null)
-        {
-            var mText = I18n.String_Connect(I18n.String_Modifier(), data.ModifierDescription);
-            _dataModifier.Text = Game1.parseText(mText, Game1.smallFont, 640);
-            _dataModifier.SetPosition(X, y);
-            return;
-        }
+        if (data.CustomModifier is null) return;
 
-        _dataModifier.Text = "";
+        var mText = I18n.String_Connect(I18n.String_Modifier(), data.ModifierDescription);
+        _dataModifier.Text = Game1.parseText(mText, Game1.smallFont, 640);
+        _dataModifier.SetPosition(X, y);
     }
 
     public void Draw(SpriteBatch b)
     {
+        // do nothing if is combined data
         if (_isCombinedData) return;
 
         if (!string.IsNullOrWhiteSpace(_dataDesc.Text))
