@@ -111,7 +111,8 @@ public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
     /// Maximum visible options, which is calculated based on the
     /// <see cref="_limitVisibleOptions"/> and the viewport height.
     /// </summary>
-    public int MaxVisibleOptions => Math.Min(_limitVisibleOptions, (Game1.viewport.Height - Y - _height) / ItemHeight);
+    public int MaxVisibleOptions => new[]
+        { _limitVisibleOptions, (Game1.viewport.Height - Y - _height) / ItemHeight, Options.Count }.Min();
 
     /// <summary>
     /// Limited visible options, which is set when constructed.
@@ -320,10 +321,11 @@ public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
 /// <summary>
 /// Auxiliary class for <see cref="DropDownMenu{T}"/>
 /// </summary>
+[UsedImplicitly(ImplicitUseTargetFlags.Members)]
 public class DropDownOption<T>
 {
-    public string Label { get; }
-    public T Value { get; }
+    public string Label { get; set; }
+    public T Value { get; set; }
 
     public DropDownOption(string label, T value)
     {
