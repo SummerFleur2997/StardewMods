@@ -19,7 +19,7 @@ internal class LockMenu : BaseMenu
     private readonly List<ItemKey> _backpackItems;
     private TextLabel _label;
     private GridMenu _gridMenu;
-    private ItemToggle _hoveredToggle;
+    private Tooltip _tooltip;
 
     public LockMenu(int x, int y, int width, int height, InventoryData inventoryData, int padding = 0)
         : base(x, y, width, height)
@@ -61,14 +61,14 @@ internal class LockMenu : BaseMenu
             .OrderBy(itemEntry => itemEntry)
             .ToList();
 
-        var toggles = new List<ItemToggle>();
+        var toggles = new List<ItemToggle<Item>>();
         foreach (var entry in entries)
         {
-            var toggle = new ItemToggle(entry.Item, _inventoryData.Locks(entry.ItemKey));
+            var toggle = new ItemToggle<Item>(entry.Item, _inventoryData.Locks(entry.ItemKey));
             toggle.OnToggle += () => ToggleItem(entry.ItemKey);
             toggle.OnHover += () =>
             {
-                _hoveredToggle = toggle;
+                _tooltip = toggle.Tooltip;
                 HoveredItem = toggle.Item;
             };
             toggles.Add(toggle);
@@ -80,11 +80,11 @@ internal class LockMenu : BaseMenu
 
     private void ToggleItem(ItemKey itemKey) => _inventoryData.Toggle(itemKey);
 
-    public override void Draw(SpriteBatch b) => _hoveredToggle?.Tooltip.Draw(b);
+    public override void Draw(SpriteBatch b) => _tooltip?.Draw(b);
 
     public override bool ReceiveCursorHover(int x, int y)
     {
-        _hoveredToggle = null;
+        _tooltip = null;
         HoveredItem = null;
         return base.ReceiveCursorHover(x, y);
     }

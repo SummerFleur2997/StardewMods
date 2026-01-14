@@ -116,10 +116,10 @@ internal class CategoryMenu : BaseMenu
             .OrderBy(itemEntry => itemEntry)
             .ToList();
 
-        var toggles = new List<ItemToggle>();
+        var toggles = new List<ItemToggle<Item>>();
         foreach (var entry in entries)
         {
-            var toggle = new ItemToggle(entry.Item, _chestData.Accepts(entry.ItemKey));
+            var toggle = new ItemToggle<Item>(entry.Item, _chestData.Accepts(entry.ItemKey));
             toggle.OnToggle += () => ToggleItem(entry.ItemKey);
             toggle.OnHover += () =>
             {
@@ -180,7 +180,7 @@ internal class CategoryMenu : BaseMenu
         _topRow.SelectAllButton.Checked = AreAllSelected();
     }
 
-    private bool AreAllSelected() => _gridMenu.Components.OfType<ItemToggle>().All(t => t.Active);
+    private bool AreAllSelected() => _gridMenu.Components.OfType<ItemToggle<Item>>().All(t => t.Active);
 
     public override void Draw(SpriteBatch b) => _tooltip?.Draw(b);
 
