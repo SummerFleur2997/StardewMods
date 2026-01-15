@@ -260,11 +260,14 @@ internal sealed class TopRow : IClickableMenu, IClickableComponent
         var handled = CategorySelector.ReceiveLeftClick(x, y);
         if (handled) return true;
 
-        foreach (var component in _components)
-            if (component.Contains(x, y))
-                return component.ReceiveLeftClick(x, y);
+        if (!Bounds.Contains(x, y))
+            return false;
 
-        return false;
+        foreach (var component in _components)
+            if (component.ReceiveLeftClick(x, y))
+                return true;
+
+        return true;
     }
 
     public bool ReceiveCursorHover(int x, int y) =>
