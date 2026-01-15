@@ -24,9 +24,10 @@ public class GuideMenu : BaseMenu
     private const int GridMenuHeight = 520;
 
     private const int StatPanelWidth = 400;
-    private const int StatPanelHeight = HatDataStatPanel.RowHeight * HatDataStatPanel.ItemsPerColumn;
 
     private const int TextPanelWidth = 650;
+    private const int TextPanelHeight = 230;
+
     private const int HatIconSize = 128;
 
     private GridMenu _hatGridMenu;
@@ -52,7 +53,7 @@ public class GuideMenu : BaseMenu
         var gridY = 138 + yPositionOnScreen;
 
         var panelX = 840 + xPositionOnScreen;
-        var panelY = 140 + yPositionOnScreen;
+        var panelY = 138 + yPositionOnScreen;
 
         var iconX = 644 + 32 + xPositionOnScreen;
         var iconY = 156 + 32 + yPositionOnScreen;
@@ -60,18 +61,18 @@ public class GuideMenu : BaseMenu
         var textX = 620 + xPositionOnScreen;
 
         var nameY = 310 + yPositionOnScreen;
-        var descY = 350 + yPositionOnScreen;
+        var descY = 360 + yPositionOnScreen;
         var textY = 440 + yPositionOnScreen;
 
         var dropDownX = 964 + xPositionOnScreen;
-        var dropDownY = 12 + yPositionOnScreen;
+        var dropDownY = Math.Max(12 + yPositionOnScreen, 0);
 
+        _hatGridMenu = new GridMenu(gridX, gridY, GridMenuWidth, GridMenuHeight, 65);
         _hatIcon = new ItemLabel<Hat>((Hat)null, iconX, iconY, HatIconSize, HatIconSize);
-        _statPanel = new HatDataStatPanel(panelX, panelY, StatPanelWidth, StatPanelHeight);
-        _textPanel = new HatDataTextPanel(textX, textY, TextPanelWidth, 200);
         _hatName = new TextLabel("", Color.Black, Game1.smallFont, textX, nameY);
         _hatDesc = new TextLabel("", Color.DimGray, Game1.smallFont, textX, descY);
-        _hatGridMenu = new GridMenu(gridX, gridY, GridMenuWidth, GridMenuHeight, 65);
+        _textPanel = new HatDataTextPanel(textX, textY, TextPanelWidth, TextPanelHeight);
+        _statPanel = new HatDataStatPanel(panelX, panelY, StatPanelWidth);
         _dropDownMenu = new DropDownMenu<HatData>(600, dropDownX, dropDownY);
         _dropDownMenu.OnSelectionChanged += UpdateDataByData;
 
@@ -91,12 +92,12 @@ public class GuideMenu : BaseMenu
         _hatGridMenu.AddComponents(buttons);
 
         // Add components to menu
+        AddChild(_hatGridMenu);
         AddChild(_hatIcon);
-        AddChild(_statPanel);
-        AddChild(_textPanel);
         AddChild(_hatName);
         AddChild(_hatDesc);
-        AddChild(_hatGridMenu);
+        AddChild(_textPanel);
+        AddChild(_statPanel);
         AddChild(_dropDownMenu);
     }
 

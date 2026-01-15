@@ -135,8 +135,7 @@ public partial class HatData
     {
         var value = GetValueByIndex(index);
         var sign = value >= 0 ? "+" : "";
-        var multi = index >= 12 ? $" (x{(value + 1f).FormatAndTrim()})" : "";
-        var text = sign + value.FormatAndTrim() + multi;
+        var text = sign + value.FormatAndTrim();
 
         return index switch
         {
