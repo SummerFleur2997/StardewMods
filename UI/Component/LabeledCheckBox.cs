@@ -102,13 +102,13 @@ public sealed class LabeledCheckBox : IClickableComponent, IDisposable
         if (!Bounds.Contains(x, y))
             return false;
 
-        OnToggle?.Invoke(Checked);
         Checked = !Checked;
+        OnToggle?.Invoke(Checked);
         Game1.playSound("drumkit6");
         return true;
     }
 
-    public bool ReceiveCursorHover(int x, int y) => false;
+    public bool ReceiveCursorHover(int x, int y) => Bounds.Contains(x, y);
 
     public void Dispose() => OnToggle = null;
 }

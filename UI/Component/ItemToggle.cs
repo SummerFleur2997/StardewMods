@@ -35,31 +35,27 @@ public class ItemToggle<T> : ItemLabel<T>, IClickableComponent, IDisposable wher
     public override void Draw(SpriteBatch b)
     {
         var alpha = Active ? 1.0f : 0.33f;
-        Item.drawInMenu(b, new Vector2(X, Y), Width / 64f, alpha, 1, StackDrawType.Hide);
+        Item?.drawInMenu(b, new Vector2(X, Y), Width / 64f, alpha, 1, StackDrawType.Hide);
     }
 
-    /// <summary>
-    /// Handle the left click event, assuming the click is within
-    /// the bounds of the component. So this should be checked before
-    /// calling this method.
-    /// </summary>
     /// <inheritdoc/>
     public virtual bool ReceiveLeftClick(int x, int y)
     {
+        if (!Bounds.Contains(x, y))
+            return false;
+
         Active = !Active;
         OnToggle?.Invoke();
         Game1.playSound("dwoop");
         return true;
     }
 
-    /// <summary>
-    /// Handle the mouse hover event, assuming the mouse is within
-    /// the bounds of the component. So this should be checked before
-    /// calling this method.
-    /// </summary>
     /// <inheritdoc/>
     public virtual bool ReceiveCursorHover(int x, int y)
     {
+        if (!Bounds.Contains(x, y))
+            return false;
+
         OnHover?.Invoke();
         return true;
     }

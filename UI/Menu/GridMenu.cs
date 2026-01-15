@@ -225,28 +225,37 @@ public class GridMenu : IClickableMenu, IClickableComponent
     /// <inheritdoc cref="BaseMenu.ReceiveLeftClick"/>
     public virtual bool ReceiveLeftClick(int x, int y)
     {
+        if (!Bounds.Contains(x, y))
+            return false;
+
         var lastItemIndex = Math.Min(_firstItemIndex + MaxVisibleItems, Components.Count);
         for (var i = _firstItemIndex; i < lastItemIndex; i++)
         {
             var component = Components[i];
             if (component is not IClickableComponent c)
-                continue;
-
-            if (!component.Bounds.Contains(x, y))
                 continue;
 
             var handled = c.ReceiveLeftClick(x, y);
             if (handled) return true;
         }
 
-        return IsAndroid && IsScrollingEnabled &&
-               (_androidExclusiveNextButton.ReceiveLeftClick(x, y) ||
-                _androidExclusivePrevButton.ReceiveLeftClick(x, y));
+        if (IsAndroid && IsScrollingEnabled)
+        {
+            var handled =
+                _androidExclusiveNextButton.ReceiveLeftClick(x, y) ||
+                _androidExclusivePrevButton.ReceiveLeftClick(x, y);
+            if (handled) return true;
+        }
+
+        return false;
     }
 
     /// <inheritdoc cref="BaseMenu.ReceiveCursorHover"/>
     public virtual bool ReceiveCursorHover(int x, int y)
     {
+        if (!Bounds.Contains(x, y))
+            return false;
+
         var lastItemIndex = Math.Min(_firstItemIndex + MaxVisibleItems, Components.Count);
         for (var i = _firstItemIndex; i < lastItemIndex; i++)
         {
@@ -254,10 +263,15 @@ public class GridMenu : IClickableMenu, IClickableComponent
             if (component is not IClickableComponent c)
                 continue;
 
-            if (!component.Bounds.Contains(x, y))
-                continue;
-
             var handled = c.ReceiveCursorHover(x, y);
+            if (handled) return true;
+        }
+
+        if (IsAndroid && IsScrollingEnabled)
+        {
+            var handled =
+                _androidExclusiveNextButton.ReceiveCursorHover(x, y) ||
+                _androidExclusivePrevButton.ReceiveCursorHover(x, y);
             if (handled) return true;
         }
 

@@ -82,6 +82,7 @@ public class TextButton : IClickableComponent, IDisposable
     private int _padding;
 
     public event Action OnPress;
+    public event Action OnHover;
 
     /// <summary>
     /// Construct a text button. 
@@ -126,11 +127,19 @@ public class TextButton : IClickableComponent, IDisposable
         return true;
     }
 
-    public virtual bool ReceiveCursorHover(int x, int y) => false;
+    public virtual bool ReceiveCursorHover(int x, int y)
+    {
+        if (!Bounds.Contains(x, y))
+            return false;
+
+        OnHover?.Invoke();
+        return true;
+    }
 
     public virtual void Dispose()
     {
         OnPress = null;
+        OnHover = null;
         GC.SuppressFinalize(this);
     }
 }

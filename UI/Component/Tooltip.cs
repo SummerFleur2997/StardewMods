@@ -36,6 +36,18 @@ public class Tooltip : IComponent
         Height = Name.Height + Description.Height + borderThickness * 2;
     }
 
+    public Tooltip(string name = null, string desc = null)
+    {
+        if (name != null)
+            Name = new TextLabel(name, Color.Black, Game1.dialogueFont);
+        if (desc != null)
+            Description = new TextLabel(desc, Color.Black, Game1.smallFont);
+
+        var borderThickness = Background.LeftBorderThickness;
+        Width = Math.Max(Name?.Width ?? 0, Description?.Width ?? 0) + borderThickness * 2;
+        Height = Name?.Height ?? 0 + Description?.Height ?? 0 + borderThickness * 2;
+    }
+
     /// <summary>
     /// Draw the tooltip at the right bottom corner of the mouse cursor.
     /// </summary>
@@ -50,12 +62,12 @@ public class Tooltip : IComponent
         // Calculate the position of the text
         var startX = Bounds.X + borderThickness;
         var startY = Bounds.Y + borderThickness;
-        Name.SetPosition(startX, startY);
-        Description.SetPosition(startX, startY + Name.Height);
+        Name?.SetPosition(startX, startY);
+        Description?.SetPosition(startX, startY + Name?.Height ?? 0);
 
         // Draw the tooltip
         Background.Draw(b);
-        Name.Draw(b);
-        Description.Draw(b);
+        Name?.Draw(b);
+        Description?.Draw(b);
     }
 }

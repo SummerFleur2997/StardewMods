@@ -28,6 +28,7 @@ public class SpriteButton : IClickableComponent, IDisposable
 
     public TextureRegion Texture;
     public event Action OnPress;
+    public event Action OnHover;
 
     public SpriteButton(TextureRegion texture, int x = 0, int y = 0, int width = 16, int height = 16)
     {
@@ -53,11 +54,19 @@ public class SpriteButton : IClickableComponent, IDisposable
         return true;
     }
 
-    public virtual bool ReceiveCursorHover(int x, int y) => false;
+    public virtual bool ReceiveCursorHover(int x, int y)
+    {
+        if (!Bounds.Contains(x, y))
+            return false;
+
+        OnHover?.Invoke();
+        return true;
+    }
 
     public virtual void Dispose()
     {
         OnPress = null;
+        OnHover = null;
         GC.SuppressFinalize(this);
     }
 }

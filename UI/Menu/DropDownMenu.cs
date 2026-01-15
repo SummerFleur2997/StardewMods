@@ -282,6 +282,7 @@ public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
             return true;
         }
 
+        // !Bounds.Contains(x, y) && !Expanded
         return false;
     }
 
@@ -294,6 +295,7 @@ public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
             return true;
         }
 
+        // !Expanded || !optionsBounds.Contains(x, y)
         _hoveredOptionIndex = -1;
         return false;
     }

@@ -24,27 +24,23 @@ public class ItemButton<T> : ItemLabel<T>, IClickableComponent, IDisposable wher
     public ItemButton(string item, Rectangle destination)
         : this(ItemRegistry.Create<T>(item), destination) { }
 
-    /// <summary>
-    /// Handle the left click event, assuming the click is within
-    /// the bounds of the component. So this should be checked before
-    /// calling this method.
-    /// </summary>
     /// <inheritdoc/>
     public virtual bool ReceiveLeftClick(int x, int y)
     {
+        if (!Bounds.Contains(x, y))
+            return false;
+
         OnPress?.Invoke();
         Game1.playSound("drumkit6");
         return true;
     }
 
-    /// <summary>
-    /// Handle the mouse hover event, assuming the mouse is within
-    /// the bounds of the component. So this should be checked before
-    /// calling this method.
-    /// </summary>
     /// <inheritdoc/>
     public virtual bool ReceiveCursorHover(int x, int y)
     {
+        if (!Bounds.Contains(x, y))
+            return false;
+
         OnHover?.Invoke();
         return true;
     }
