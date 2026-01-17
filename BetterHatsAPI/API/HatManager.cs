@@ -193,6 +193,7 @@ public class HatManager : ISummerFleurBetterHatsAPI
 
         var allData = hat.GetHatData();
         InitializeHatData(allData);
+        OnHatEquipped?.Invoke(this, new HatEquippedEventArgs(hat, true));
     }
 
     private void OnReturnedToTitle(object? s, ReturnedToTitleEventArgs e)
@@ -357,6 +358,11 @@ public class HatUnequippedEventArgs : IHatUnequippedEventArgs
 public class HatEquippedEventArgs : IHatEquippedEventArgs
 {
     public Hat NewHat { get; }
+    public bool InvokedWhenSaveLoaded { get; }
 
-    public HatEquippedEventArgs(Hat newHat) => NewHat = newHat;
+    public HatEquippedEventArgs(Hat newHat, bool invokedWhenSaveLoaded = false)
+    {
+        NewHat = newHat;
+        InvokedWhenSaveLoaded = invokedWhenSaveLoaded;
+    }
 }

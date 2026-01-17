@@ -94,4 +94,9 @@ public interface IHatEquippedEventArgs
     /// The equipped hat.
     /// </summary>
     Hat NewHat { get; }
+
+    /// <summary>
+    /// Whether this event is invoked after a save was loaded.
+    /// </summary>
+    public bool InvokedWhenSaveLoaded { get; }
 }
