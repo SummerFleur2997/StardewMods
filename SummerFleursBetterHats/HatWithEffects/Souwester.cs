@@ -2,7 +2,7 @@
 
 namespace SummerFleursBetterHats.HatWithEffects;
 
-public static partial class HatWithEffects
+public partial class HatWithEffects
 {
     /// <summary>
     /// Modifier for the Sou'wester: +2 Fishing Level in stormy weather

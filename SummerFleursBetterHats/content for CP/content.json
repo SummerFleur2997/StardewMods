@@ -1,0 +1,36 @@
+﻿{
+  "$schema": "https://smapi.io/schemas/content-patcher.json",
+  "Format": "2.8.0",
+  "Changes": [
+    {
+      "Action": "EditData",
+      "Target": "Data/Objects",
+      "Entries": {
+        "SummerFleur.BetterHats.DiscountedTicket": {
+          "Name": "Discounted Ticket",
+          "DisplayName": "{{i18n:object.DiscountedTicket.Name}}",
+          "Description": "{{i18n:object.DiscountedTicket.Desc}}",
+          "Type": "Basic",
+          "Category": 0,
+          "Price": 0,
+          "Texture": null,
+          "SpriteIndex": 809,
+          "ColorOverlayFromNextIndex": false,
+          "Edibility": -300,
+          "IsDrink": false,
+          "Buffs": null,
+          "GeodeDropsDefaultItems": false,
+          "GeodeDrops": null,
+          "ArtifactSpotChances": null,
+          "CanBeGivenAsGift": true,
+          "CanBeTrashed": false,
+          "ExcludeFromFishingCollection": false,
+          "ExcludeFromShippingCollection": false,
+          "ExcludeFromRandomSale": false,
+          "ContextTags": null,
+          "CustomFields": null
+        }
+      }
+    }
+  ]
+}

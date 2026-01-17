@@ -15,7 +15,7 @@
     <ItemGroup>
         <PackageReference Include="JetBrains.Annotations"/>
         <PackageReference Include="Pathoschild.Stardew.ModBuildConfig"/>
-<!--        <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder"/>-->
+        <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder"/>
     </ItemGroup>
     <ItemGroup>
         <None Update="manifest.json">
@@ -23,8 +23,10 @@
         </None>
     </ItemGroup>
     <ItemGroup>
-        <ContentPacks Include="content" Version="$(Version)" FolderName="[BHA] SummerFleursBetterHats" />
+        <ContentPacks Include="content for BHA" Version="$(Version)" FolderName="[BHA] SummerFleursBetterHats" />
+        <ContentPacks Include="content for CP" Version="$(Version)" FolderName="[CP] SummerFleursBetterHats" />
     </ItemGroup>
+    <Import Project="..\Common\Common.projitems" Label="Shared"/>
     <ItemGroup>
       <Compile Include="..\BetterHatsAPI\API\ISummerFleurBetterHatsAPI.cs">
         <Link>Framework\ISummerFleurBetterHatsAPI.cs</Link>

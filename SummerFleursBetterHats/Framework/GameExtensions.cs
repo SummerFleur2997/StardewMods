@@ -1,5 +1,6 @@
 ﻿using StardewValley.Delegates;
 using StardewValley.Locations;
+using StardewValley.Triggers;
 using Helpers = StardewValley.GameStateQuery.Helpers;
 
 namespace SummerFleursBetterHats.Framework;
@@ -10,10 +11,30 @@ namespace SummerFleursBetterHats.Framework;
 /// </summary>
 public static class GameExtensions
 {
-    public static void RegisterAll()
+    public static void RegisterMethods()
     {
         GameStateQuery.Register($"SFBH_{nameof(MINE_LEVEL)}", MINE_LEVEL);
         GameStateQuery.Register($"SFBH_{nameof(MINE_LEVEL_RANGE)}", MINE_LEVEL_RANGE);
+
+        TriggerActionManager.RegisterAction($"SFBH_{nameof(ModifyWorldStatus)}", ModifyWorldStatus);
+    }
+
+    public static bool ModifyWorldStatus(string[] args, TriggerActionContext context, out string error)
+    {
+        if (!ArgUtility.TryGetInt(args, 1, out var value, out error, "ushort mask") ||
+            !ArgUtility.TryGet(args, 1, out var shopID, out error, true, "string shopID"))
+            return false;
+
+        var mask = (ushort)value;
+        var player = Game1.player;
+        if (SaveManager.TryEditWorldStatus(player.UniqueMultiplayerID, mask))
+        {
+            ModEntry.Log($"Successfully modified trade info for player {player.Name} in {shopID}.");
+            return true;
+        }
+
+        ModEntry.Log($"Failed to modify trade info for player {player.Name} in {shopID}.");
+        return false;
     }
 
     /// <summary>

@@ -14,4 +14,6 @@ public static class Utilities
     }
 
     public static Hat? PlayerHat() => Game1.player.hat?.Value;
+
+    public static bool HatIs(this Farmer player, string id) => player.hat?.Value?.QualifiedItemId == id;
 }

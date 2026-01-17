@@ -2,7 +2,7 @@
 
 namespace SummerFleursBetterHats.HatWithPatches;
 
-public static partial class HatWithPatches
+public partial class HatWithPatches
 {
     private static void RegisterPatchForTruckerHat(Harmony harmony)
     {

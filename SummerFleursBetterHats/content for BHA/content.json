@@ -13,7 +13,7 @@
   },
   // Skeleton Mask
   "(H)8": {
-    "Attack": 1.0
+    "Description": "Todo"
   },
   // Hunter's Cap
   "(H)15": {
@@ -73,6 +73,14 @@
     these methods and actions have the same prefix "SFBH_". And you
     can see their implementation in the "GameExtensions.cs" file.
    ****/
+  // Top Hat (Today is the player's first wedding ceremony)
+  "(H)2": {
+    "Condition": "IS_EVENT -2",
+    "Action": "$CustomAction",
+    "Trigger": "DayStarted",
+    "ConditionDescription": "i18n:condition.TopHat",
+    "ActionDescription": "i18n:action.WeddingHat"
+  },
   // Earmuffs (Current season is winter)
   "(H)11": {
     "Speed": 0.5,
@@ -108,8 +116,8 @@
   },
   // Sou'wester (Current weather is stormy)
   "(H)28": {
-    "FishingLevel": 2.0,
-    "Condition": "LOCATION_IS_OUTDOORS Here, WEATHER Here Rain",
+    "FishingLevel": 1.0,
+    "Condition": "LOCATION_IS_OUTDOORS Here, WEATHER Here Rain Storm GreenRain",
     "Trigger": "LocationChanged",
     "ConditionDescription": "i18n:condition.Souwester",
     "ModifierDescription": "i18n:modifier.Souwester"
@@ -121,7 +129,7 @@
     "Condition": "LOCATION_SEASON Here Spring",
     "Trigger": "LocationChanged"
   },
-  // Watermelon Band (Current date is summer)
+  // Watermelon Band (Current season is summer)
   "(H)30": {
     "Speed": 0.5,
     "LuckLevel": 1.0,
@@ -174,6 +182,35 @@
     "Condition": "SFBH_MINE_LEVEL_RANGE Here 1 39",
     "Trigger": "LocationChanged"
   },
+  // Bridal Veil (Today is the player's first wedding ceremony)
+  "(H)69": {
+    "Condition": "IS_EVENT -2",
+    "Action": "$CustomAction",
+    "Trigger": "DayStarted",
+    "ConditionDescription": "i18n:condition.BridalVeil",
+    "ActionDescription": "i18n:action.WeddingHat"
+  },
+  // Sunglasses (Current season is summer)
+  "(H)88": {
+    "Speed": 0.5,
+    "LuckLevel": 1.0,
+    "Condition": "LOCATION_SEASON Here Summer",
+    "Trigger": "LocationChanged"
+  },
+  // Bucket Hat (During the Trout Derby)
+  "(H)BucketHat": {
+    "FishingLevel": 2.0,
+    "MaxStamina": 50.0,
+    "Condition": "SEASON_DAY Summer 20 Summer 21",
+    "Trigger": "DayStarted"
+  },
+  // Squid Hat (During the Squid Fest)
+  "(H)SquidHat": {
+    "FishingLevel": 2.0,
+    "MaxStamina": 50.0,
+    "Condition": "SEASON_DAY Winter 12 Winter 13",
+    "Trigger": "DayStarted"
+  },
   // Paper Hat
   "(H)PaperHat": {
     "Speed": 1.0,
@@ -185,7 +222,6 @@
     "AttackMultiplier": 0.1,
     "Defense": 2.0,
     "Speed": 0.5,
-    "LuckLevel": 1.0,
     "Condition": "$CustomCondition",
     "Trigger": "LocationChanged",
     "ConditionDescription": "i18n:condition.SpaceHelmet",

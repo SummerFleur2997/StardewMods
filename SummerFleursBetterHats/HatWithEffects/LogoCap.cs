@@ -2,7 +2,7 @@
 
 namespace SummerFleursBetterHats.HatWithEffects;
 
-public static partial class HatWithEffects
+public partial class HatWithEffects
 {
     /// <summary>
     /// Modifier for the Logo Cap: Fishing and Luck Level are multiplied by the Mine Level.

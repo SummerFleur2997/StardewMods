@@ -2,7 +2,7 @@
 
 namespace SummerFleursBetterHats.HatWithEffects;
 
-public static partial class HatWithEffects
+public partial class HatWithEffects
 {
     /// <summary>
     /// Checker for the Space Helmet: whether the player

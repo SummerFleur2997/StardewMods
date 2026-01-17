@@ -1,4 +1,8 @@
 ﻿{
+  "condition.BridalVeil": "玩家性别为女性，且当天是玩家首次婚礼。",
+  "condition.TopHat": "玩家性别为男性，且当天是玩家首次婚礼。",
+  "action.WeddingHat": "获得与配偶 1 颗心的好感度。",
+
   "description.LivingHat": "缓慢恢复生命值与能量值。",
   "action.LivingHat": "每秒恢复 1 点生命值与 2 点能量值。",
 

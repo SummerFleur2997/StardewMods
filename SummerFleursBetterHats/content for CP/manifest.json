@@ -1,0 +1,15 @@
+﻿{
+  "Name": "SummerFleursBetterHats",
+  "Author": "SummerFleur",
+  "Version": "1.0.0",
+  "Description": "Description", // TODO
+  "UniqueID": "SummerFleur.SummerFleursBetterHatsCP",
+  "MinimumApiVersion": "4.1.10",
+  "UpdateKeys": [
+    "Nexus:???" // TODO
+  ],
+  "ContentPackFor": {
+    "UniqueID": "Pathoschild.ContentPatcher",
+    "MinimumVersion": "2.8.0"
+  }
+}

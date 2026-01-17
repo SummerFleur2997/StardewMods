@@ -2,7 +2,7 @@
 
 namespace SummerFleursBetterHats.HatWithEffects;
 
-public static partial class HatWithEffects
+public partial class HatWithEffects
 {
     /// <summary>
     /// Effect of Santa Hat: if the player has forage mastery, get a
@@ -15,6 +15,6 @@ public static partial class HatWithEffects
             ? "(O)GoldenMysteryBox"
             : "(O)MysteryBox");
         player.addItemByMenuIfNecessary(gift);
-        Game1.showGlobalMessage("You got a gift from Santa! Happy Feast Of The Winter Star!"); // TODO: i18n
+        Game1.showGlobalMessage(I18n.String_SantaHat());
     }
 }

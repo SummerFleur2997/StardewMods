@@ -21,32 +21,32 @@ public partial class HatWithPatches
     /// <summary>
     /// Scare the NPC and make them unavailable to talk.
     /// </summary>
-    public static bool ScareNPC(NPC __instance)
+    public static bool ScareNPC(NPC npc)
     {
         if (!PlayerHatIs(GoblinMaskID))
             return false;
 
-        if (__instance.Name is "Krobus" or "Dwarf")
+        if (npc.Name is "Krobus" or "Dwarf")
             return false;
 
-        if (__instance.yJumpVelocity != 0f || __instance.Sprite.CurrentAnimation != null)
+        if (npc.yJumpVelocity != 0f || npc.Sprite.CurrentAnimation != null)
             return true;
 
-        switch (__instance.Manners)
+        switch (npc.Manners)
         {
             case NPC.rude:
-                __instance.doEmote(Character.angryEmote);
+                npc.doEmote(Character.angryEmote);
                 break;
             case NPC.polite:
-                __instance.doEmote(Character.questionMarkEmote);
+                npc.doEmote(Character.questionMarkEmote);
                 break;
             default:
-                __instance.doEmote(Character.exclamationEmote);
-                __instance.jump();
+                npc.doEmote(Character.exclamationEmote);
+                npc.jump();
                 break;
         }
 
-        __instance.faceTowardFarmerForPeriod(2000, 3, false, Game1.player);
+        npc.faceTowardFarmerForPeriod(2000, 3, false, Game1.player);
         return true;
     }
 
@@ -54,31 +54,54 @@ public partial class HatWithPatches
     /// Add a transpiler to the <see cref="NPC.checkAction"/> method
     /// to scare the npc.
     /// </summary>
-    public static IEnumerable<CodeInstruction> Patch_GoblinMask_checkAction(IEnumerable<CodeInstruction> ci,
-        ILGenerator il)
+    public static IEnumerable<CodeInstruction> Patch_GoblinMask_checkAction
+        (IEnumerable<CodeInstruction> ci, ILGenerator il)
     {
         var matcher = new CodeMatcher(ci);
 
-        // Find an anchor instruction for the injection
-        var target = new CodeMatch(OpCodes.Call, AccessTools.Method(typeof(NPC), nameof(NPC.CanReceiveGifts)));
-        matcher.MatchStartForward(target).Advance(-1);
-
-        // If the anchor instruction is not found, throw an exception.
-        if (matcher.IsInvalid) throw new Exception("This method seems to have changed.");
-
-        var label = il.DefineLabel();
-        matcher.AddLabels(new[] { label });
-
-        // Add the injection to the codes
-        var injection = new List<CodeInstruction>
+        // Find anchor instructions for the injection
+        var target1 = new CodeMatch[]
         {
             new(OpCodes.Ldarg_0),
-            new(OpCodes.Call, AccessTools.Method(typeof(HatWithPatches), nameof(ScareNPC))),
-            new(OpCodes.Brfalse_S, label),
-            new(OpCodes.Ldc_I4_0),
-            new(OpCodes.Ret)
+            new(OpCodes.Callvirt),
+            new(OpCodes.Callvirt),
+            new(OpCodes.Ldc_I4_1)
         };
-        matcher.InsertAndAdvance(injection);
+        var target2 = new CodeMatch[]
+        {
+            new(OpCodes.Ldloc_2),
+            new(OpCodes.Brfalse)
+        };
+
+        foreach (var target in new[] { target1, target2 })
+        {
+            matcher.MatchStartForward(target);
+
+            // If the anchor instruction is not found, throw an exception.
+            if (matcher.IsInvalid)
+                throw new Exception("This method seems to have changed.");
+
+            // Create a new instruction to replace the old one
+            var oldEntrance = matcher.InstructionAt(0);
+            var newEntrance = new CodeInstruction(OpCodes.Ldarg_0);
+            newEntrance.labels.AddRange(oldEntrance.labels);
+            oldEntrance.labels.Clear();
+
+            // Add a label to the old entrance for the jump instruction
+            var label = il.DefineLabel();
+            oldEntrance.labels.Add(label);
+
+            // Add the injection to the codes
+            var injection = new List<CodeInstruction>
+            {
+                newEntrance, // this
+                new(OpCodes.Call, AccessTools.Method(typeof(HatWithPatches), nameof(ScareNPC))),
+                new(OpCodes.Brfalse_S, label),
+                new(OpCodes.Ldc_I4_0), // false
+                new(OpCodes.Ret)
+            };
+            matcher.InsertAndAdvance(injection);
+        }
 
         return matcher.InstructionEnumeration();
     }

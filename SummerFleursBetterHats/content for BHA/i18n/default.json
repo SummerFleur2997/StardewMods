@@ -1,4 +1,8 @@
 ﻿{
+  "condition.BridalVeil": "Player's gender is female, and today is player's first wedding ceremony.",
+  "condition.TopHat": "Player's gender is male, and today is player's first wedding ceremony.",
+  "action.WeddingHat": "Get +1 friendship heart with your spouse.",
+
   "description.LivingHat": "Slowly recover your health and energy.",
   "action.LivingHat": "Recover 1 health and 2 energy per second.",
 

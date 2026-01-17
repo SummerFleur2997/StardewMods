@@ -8,8 +8,12 @@ public static partial class HatWithPatches
         RegisterPatchForChefHat(harmony);
         RegisterPatchForCowboyHats(harmony);
         RegisterPatchForGarbageHat(harmony);
+        RegisterPatchForGnomesCap(harmony);
         RegisterPatchForGoldenHelmet(harmony);
         RegisterPatchForGoblinMask(harmony);
+        RegisterPatchForJesterHat(harmony);
+        RegisterPatchForMonsterHats(harmony);
+        RegisterPatchForPolkaBow(harmony);
         RegisterPatchForQiMask(harmony);
         RegisterPatchForTruckerHat(harmony);
     }

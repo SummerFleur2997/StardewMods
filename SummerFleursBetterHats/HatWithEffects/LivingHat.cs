@@ -1,6 +1,6 @@
 ﻿namespace SummerFleursBetterHats.HatWithEffects;
 
-public static partial class HatWithEffects
+public partial class HatWithEffects
 {
     /// <summary>
     /// Effect of Living Hat: slowly recover health and energy.
