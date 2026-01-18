@@ -2,11 +2,8 @@
 
 public partial class HatRelatedToShops
 {
-    private const ushort DarkVelvetBowMask = 1; // 0b0001
-
     /// <summary>
-    /// Item roller for the dark velvet bow. See the detailed item
-    /// list in the README.
+    /// Item roller for the dark velvet bow.
     /// </summary>
     private static Item RollRandomItemForDarkVelvetBow()
     {

@@ -11,8 +11,11 @@ public static partial class HatWithPatches
         RegisterPatchForGnomesCap(harmony);
         RegisterPatchForGoldenHelmet(harmony);
         RegisterPatchForGoblinMask(harmony);
+        RegisterPatchForGovernorsHat(harmony);
         RegisterPatchForJesterHat(harmony);
+        RegisterPatchForLuckyBow(harmony);
         RegisterPatchForMonsterHats(harmony);
+        RegisterPatchForPetsHats(harmony);
         RegisterPatchForPolkaBow(harmony);
         RegisterPatchForQiMask(harmony);
         RegisterPatchForTruckerHat(harmony);

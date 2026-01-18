@@ -110,23 +110,28 @@ internal static class SaveManager
     /// </summary>
     private static void OnDayStarted(object s, DayStartedEventArgs e)
     {
-        // Reset trade info every 28 days (monthly flags)
-        if (Game1.stats.DaysPlayed % 28 == 0)
+        // Clear the higher 4 bits of the info (monthly flags)
+        if (Game1.Date.DayOfMonth == 1)
         {
             foreach (var player in WorldStatus.Keys)
-                WorldStatus[player] = 0;
-
-            return;
+            {
+                var newValue = (ushort)(WorldStatus[player] & 0x0FFF);
+                WorldStatus[player] = newValue;
+            }
         }
 
-        // Reset weekly trade flags every 7 days
-        if (Game1.stats.DaysPlayed % 7 != 0)
-            return;
+        // Clear the center 8 bits of the info (weekly flags)
+        if (Game1.Date.DayOfWeek == DayOfWeek.Sunday)
+            foreach (var player in WorldStatus.Keys)
+            {
+                var newValue = (ushort)(WorldStatus[player] & 0xF00F);
+                WorldStatus[player] = newValue;
+            }
 
+        // Clear the lower 4 bits of the info (daily flags)
         foreach (var player in WorldStatus.Keys)
         {
-            // Clear the lower 4 bits of the trade info (weekly flags)
-            var newValue = (ushort)(WorldStatus[player] & 0xFF00);
+            var newValue = (ushort)(WorldStatus[player] & 0xFFF0);
             WorldStatus[player] = newValue;
         }
     }

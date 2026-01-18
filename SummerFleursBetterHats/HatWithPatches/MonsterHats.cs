@@ -48,37 +48,43 @@ public partial class HatWithPatches
 
     public static void Patch_Bat_takeDamage(Bat __instance, ref int __result)
     {
-        if (PlayerHatIs(GoldenMaskID) && __instance.Name == "Iridium Bat")
-            __result *= 2;
+        switch (__instance.Name)
+        {
+            case "Iridium Bat" when PlayerHatIs(GoldenMaskID):
+            case "Magma Sprite" when PlayerHatIs(SwashbucklerHatID):
+            case "Magma Sparker" when PlayerHatIs(SwashbucklerHatID):
+                __result = (int)(1.5 * __result);
+                return;
+        }
     }
 
     public static void Patch_Duggy_takeDamage(ref int __result)
     {
         if (PlayerHatIs(HardHatID))
-            __result *= 2;
+            __result = (int)(1.5 * __result);
     }
 
     public static void Patch_Ghost_takeDamage(ref int __result)
     {
         if (PlayerHatIs(ArcaneHatID))
-            __result *= 2;
+            __result = (int)(1.5 * __result);
     }
 
     public static void Patch_Mummy_takeDamage(ref int __result)
     {
         if (PlayerHatIs(ArcaneHatID))
-            __result *= 2;
+            __result = (int)(1.5 * __result);
     }
 
     public static void Patch_Serpent_takeDamage(ref int __result)
     {
         if (PlayerHatIs(GoldenMaskID))
-            __result *= 2;
+            __result = (int)(1.5 * __result);
     }
 
     public static void Patch_Skeleton_takeDamage(ref int __result)
     {
         if (PlayerHatIs(SkeletonMaskID))
-            __result *= 2;
+            __result = (int)(1.5 * __result);
     }
 }

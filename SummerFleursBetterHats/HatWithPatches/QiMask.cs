@@ -1,14 +1,21 @@
 ﻿namespace SummerFleursBetterHats.HatWithPatches;
 
+/* After my injection, the method would like this:
+    ...
+    int numToHarvest = 1;
+
+    var r = Utility.CreateRandom(xTile * 7.0, yTile * 5.0, Game1.stats.DaysPlayed, Game1.uniqueIDForThisGame);
+    if (crop.indexOfHarvest.Value == "889" && PlayerHatIs(QiMaskID) && r.NextDouble() < 0.1)
+        numToHarvest++;
+
+    if (data != null)
+    ...
+*/
+
 public partial class HatWithPatches
 {
     private static void RegisterPatchForQiMask(Harmony harmony)
     {
-        /* After my injection, the method would like this:
-            int numToHarvest = 1;
-            AddQiMelonCount();
-            if (data != null) ...
-        */
         try
         {
             var original = AccessTools.Method(typeof(Crop), nameof(Crop.harvest));

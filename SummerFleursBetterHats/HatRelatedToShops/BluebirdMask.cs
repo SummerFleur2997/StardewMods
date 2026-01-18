@@ -2,11 +2,8 @@
 
 public partial class HatRelatedToShops
 {
-    private const ushort BluebirdMaskMask = 8; // 0b1000
-
     /// <summary>
-    /// Item roller for the bluebird mask. See the detailed item
-    /// list in the README.
+    /// Item roller for the bluebird mask.
     /// </summary>
     private static Item RollRandomItemForBluebirdMask()
     {

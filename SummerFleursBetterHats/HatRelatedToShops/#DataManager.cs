@@ -25,6 +25,11 @@ public static partial class HatRelatedToShops
         // Determine the shop type and corresponding hat requirements
         switch (shopMenu.ShopId)
         {
+            case "Raccoon" when PlayerHatIs(RaccoonHatID):
+                price = 0;
+                mask = RaccoonHatMask;
+                itemGetter = RollRandomItemForRaccoonHat;
+                break;
             case "ShadowShop" when PlayerHatIs(DarkVelvetBowID):
                 price = 0;
                 mask = DarkVelvetBowMask;
@@ -49,6 +54,11 @@ public static partial class HatRelatedToShops
                 price = DiscountedTicketPrice;
                 mask = JesterHatMask;
                 itemGetter = GetDiscountedTicketForJesterHat;
+                break;
+            case "Traveler" when PlayerHatIs(RedFezID):
+                price = 0;
+                mask = RedFezMask;
+                itemGetter = RollRandomItemForRedFezHat;
                 break;
             default:
                 return;

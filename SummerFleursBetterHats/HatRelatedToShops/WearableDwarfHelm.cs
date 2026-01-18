@@ -2,11 +2,8 @@
 
 public partial class HatRelatedToShops
 {
-    private const ushort WearableDwarfHelmMask = 2; // 0b0010
-
     /// <summary>
-    /// Item roller for the wearable dwarf helm. See the detailed item
-    /// list in the README.
+    /// Item roller for the wearable dwarf helm.
     /// </summary>
     private static Item RollRandomItemForWearableDwarfHelm()
     {

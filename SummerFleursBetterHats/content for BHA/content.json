@@ -7,9 +7,9 @@
   "(H)0": {
     "Speed": 1.5
   },
-  // Straw Hat
-  "(H)4": {
-    "FarmingLevel": 1.0
+  // Official Cap
+  "(H)5": {
+    "MiningLevel": 1
   },
   // Skeleton Mask
   "(H)8": {
@@ -17,50 +17,98 @@
   },
   // Hunter's Cap
   "(H)15": {
-    "Attack": 1.0
+    "Attack": 1
+  },
+  // Cool Cap
+  "(H)20": {
+    "FarmingLevel": 1
   },
   // Sailor's Cap
   "(H)17": {
-    "FishingLevel": 1.0
+    "FishingLevel": 1
+  },
+  // Tiara
+  "(H)26": {
+    "Defense": 1,
+    "Immunity": 1
+  },
+  // Archer's Cap
+  "(H)35": {
+    "WeaponSpeedMultiplier": 0.3
   },
   // Knight's Helmet
   "(H)50": {
-    "Defense": 3.0,
+    "Defense": 3,
     "Speed": -0.5
   },
   // Squire's Helmet
   "(H)51": {
-    "Defense": 1.0
+    "Defense": 1
   },
   // Pirate Hat
   "(H)62": {
-    "AttackMultiplier": 0.07
+    "AttackMultiplier": 07
+  },
+  // Elegant Turban
+  "(H)64": {
+    "Attack": 2,
+    "Defense": 2,
+    "Immunity": 2,
+    "Speed": 1,
+    "MaxStamina": 50,
+    "MagneticRadius": 64
   },
   // Propeller Hat
   "(H)68": {
-    "MagneticRadius": 64.0
+    "MagneticRadius": 64
   },
   // Witch Hat
   "(H)70": {
-    "Immunity": 2.0
+    "Immunity": 2
+  },
+  // Green Turban
+  "(H)72": {
+    "Immunity": 1
   },
   // Deluxe Pirate Hat
   "(H)76": {
     "AttackMultiplier": 0.1,
     "Speed": 0.5
   },
+  // Star Helmet
+  "(H)87": {
+    "LuckLevel": 1
+  },
   // Forager's Hat
   "(H)90": {
-    "ForagingLevel": 1.0
+    "ForagingLevel": 1
   },
   // Tiger Hat
   "(H)91": {
-    "Attack": 2.0
+    "Attack": 2
+  },
+  // ???
+  "(H)92": {
+    "FarmingLevel": 2,
+    "FishingLevel": 2,
+    "MiningLevel": 2,
+    "LuckLevel": 2,
+    "ForagingLevel": 2
   },
   // Warrior Helmet
   "(H)93": {
-    "Attack": 2.0,
+    "Attack": 2,
     "Speed": 0.5
+  },
+  // White Bow
+  "(H)WhiteBow": {
+    "LuckLevel": 2
+  },
+  // Infinity Crown
+  "(H)InfinityCrown": {
+    "AttackMultiplier": 0.1,
+    "CriticalChanceMultiplier": 0.2,
+    "CriticalPowerMultiplier": 0.2
   },
 
   /**** 
@@ -84,13 +132,13 @@
   // Earmuffs (Current season is winter)
   "(H)11": {
     "Speed": 0.5,
-    "LuckLevel": 1.0,
+    "LuckLevel": 1,
     "Condition": "LOCATION_SEASON Here Winter",
     "Trigger": "LocationChanged"
   },
   // Butterfly Bow (Current date is spring 15~18)
   "(H)14": {
-    "ForagingLevel": 1.0,
+    "ForagingLevel": 1,
     "Condition": "LOCATION_SEASON Here Spring, SEASON_DAY Spring 15 Spring 16 Spring 17 Spring 18",
     "Trigger": "DayStarted",
     "Description": "i18n:description.ButterflyBow",
@@ -104,7 +152,7 @@
   // Fedora (Current season is fall)
   "(H)19": {
     "Speed": 0.5,
-    "LuckLevel": 1.0,
+    "LuckLevel": 1,
     "Condition": "LOCATION_SEASON Here Fall",
     "Trigger": "LocationChanged"
   },
@@ -116,7 +164,7 @@
   },
   // Sou'wester (Current weather is stormy)
   "(H)28": {
-    "FishingLevel": 1.0,
+    "FishingLevel": 1,
     "Condition": "LOCATION_IS_OUTDOORS Here, WEATHER Here Rain Storm GreenRain",
     "Trigger": "LocationChanged",
     "ConditionDescription": "i18n:condition.Souwester",
@@ -125,14 +173,14 @@
   // Daisy (Current season is spring)
   "(H)29": {
     "Speed": 0.5,
-    "LuckLevel": 1.0,
+    "LuckLevel": 1,
     "Condition": "LOCATION_SEASON Here Spring",
     "Trigger": "LocationChanged"
   },
   // Watermelon Band (Current season is summer)
   "(H)30": {
     "Speed": 0.5,
-    "LuckLevel": 1.0,
+    "LuckLevel": 1,
     "Condition": "LOCATION_SEASON Here Summer",
     "Trigger": "LocationChanged"
   },
@@ -145,8 +193,8 @@
   },
   // Logo Cap
   "(H)45": {
-    "FishingLevel": 1.0,
-    "LuckLevel": 1.0,
+    "FishingLevel": 1,
+    "LuckLevel": 1,
     "Condition": "SFBH_MINE_LEVEL Here 20 60 100",
     "Trigger": "LocationChanged",
     "Dynamic": true,
@@ -155,30 +203,35 @@
   },
   // Pumpkin Mask (Current date is fall 8~11)
   "(H)48": {
-    "ForagingLevel": 1.0,
+    "ForagingLevel": 1,
     "Condition": "LOCATION_SEASON Here Fall, SEASON_DAY Fall 8 Fall 9 Fall 10 Fall 11",
     "Trigger": "DayStarted",
     "Description": "i18n:description.PumpkinMask",
     "ConditionDescription": "i18n:condition.PumpkinMask"
   },
+  "(H)56": {
+    "FishingLevel": 2,
+    "Condition": "LOCATION_NAME Here Submarine",
+    "Trigger": "LocationChanged"
+  },
   // Party Hat Red (Current location is the mine, and the mine level >= 80)
   "(H)57": {
-    "Speed": 1.0,
-    "LuckLevel": 1.0,
+    "Speed": 1,
+    "LuckLevel": 1,
     "Condition": "SFBH_MINE_LEVEL_RANGE Here 80",
     "Trigger": "LocationChanged"
   },
   // Party Hat Blue (Current location is the mine, and the mine level is 40~79)
   "(H)58": {
-    "Speed": 1.0,
-    "LuckLevel": 1.0,
+    "Speed": 1,
+    "LuckLevel": 1,
     "Condition": "SFBH_MINE_LEVEL_RANGE Here 40 79",
     "Trigger": "LocationChanged"
   },
   // Party Hat Green (Current location is the mine, and the mine level < 40)
   "(H)59": {
-    "Speed": 1.0,
-    "LuckLevel": 1.0,
+    "Speed": 1,
+    "LuckLevel": 1,
     "Condition": "SFBH_MINE_LEVEL_RANGE Here 1 39",
     "Trigger": "LocationChanged"
   },
@@ -193,34 +246,34 @@
   // Sunglasses (Current season is summer)
   "(H)88": {
     "Speed": 0.5,
-    "LuckLevel": 1.0,
+    "LuckLevel": 1,
     "Condition": "LOCATION_SEASON Here Summer",
     "Trigger": "LocationChanged"
   },
   // Bucket Hat (During the Trout Derby)
   "(H)BucketHat": {
-    "FishingLevel": 2.0,
-    "MaxStamina": 50.0,
+    "FishingLevel": 2,
+    "MaxStamina": 50,
     "Condition": "SEASON_DAY Summer 20 Summer 21",
     "Trigger": "DayStarted"
   },
   // Squid Hat (During the Squid Fest)
   "(H)SquidHat": {
-    "FishingLevel": 2.0,
-    "MaxStamina": 50.0,
+    "FishingLevel": 2,
+    "MaxStamina": 50,
     "Condition": "SEASON_DAY Winter 12 Winter 13",
     "Trigger": "DayStarted"
   },
   // Paper Hat
   "(H)PaperHat": {
-    "Speed": 1.0,
-    "LuckLevel": 1.0,
+    "Speed": 1,
+    "LuckLevel": 1,
     "Condition": "LOCATION_CONTEXT Here Island",
     "Trigger": "LocationChanged"
   },
   "(H)SpaceHelmet": {
     "AttackMultiplier": 0.1,
-    "Defense": 2.0,
+    "Defense": 2,
     "Speed": 0.5,
     "Condition": "$CustomCondition",
     "Trigger": "LocationChanged",

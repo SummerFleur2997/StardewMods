@@ -23,31 +23,39 @@ public partial class HatWithPatches
     /// </summary>
     public static bool ScareNPC(NPC npc)
     {
-        if (!PlayerHatIs(GoblinMaskID))
-            return false;
-
-        if (npc.Name is "Krobus" or "Dwarf")
-            return false;
-
-        if (npc.yJumpVelocity != 0f || npc.Sprite.CurrentAnimation != null)
-            return true;
-
-        switch (npc.Manners)
+        try
         {
-            case NPC.rude:
-                npc.doEmote(Character.angryEmote);
-                break;
-            case NPC.polite:
-                npc.doEmote(Character.questionMarkEmote);
-                break;
-            default:
-                npc.doEmote(Character.exclamationEmote);
-                npc.jump();
-                break;
-        }
+            if (!PlayerHatIs(GoblinMaskID))
+                return false;
 
-        npc.faceTowardFarmerForPeriod(2000, 3, false, Game1.player);
-        return true;
+            if (npc.Name is "Krobus" or "Dwarf")
+                return false;
+
+            if (npc.yJumpVelocity != 0f || npc.Sprite.CurrentAnimation != null)
+                return true;
+
+            switch (npc.Manners)
+            {
+                case NPC.rude:
+                    npc.doEmote(Character.angryEmote);
+                    break;
+                case NPC.polite:
+                    npc.doEmote(Character.questionMarkEmote);
+                    break;
+                default:
+                    npc.doEmote(Character.exclamationEmote);
+                    npc.jump();
+                    break;
+            }
+
+            npc.faceTowardFarmerForPeriod(2000, 3, false, Game1.player);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            ModEntry.Log("Failed to scare NPC: " + ex.Message, LogLevel.Error);
+            return false;
+        }
     }
 
     /// <summary>

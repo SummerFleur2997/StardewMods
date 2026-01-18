@@ -18,12 +18,13 @@ public static partial class HatRelyOnEvents
             case GoldPanHatID:
             case SteelPanHatID:
             case CopperPanID:
-                ModEntry.ModHelper.Events.Input.ButtonPressed += PanHatButtonPressed;
+                ModEntry.ModHelper.Events.Input.ButtonPressed += PanHatsButtonPressed;
+                return;
+            case TotemMaskID:
+                ModEntry.ModHelper.Events.Input.ButtonsChanged += TotemMaskButtonsChanged;
                 return;
             case MummyMaskID:
-                ModEntry.ModHelper.Events.Player.Warped += MonsterHatLocationChanged;
-                break;
-            default:
+                ModEntry.ModHelper.Events.Player.Warped += MummyMaskLocationChanged;
                 return;
         }
     }
@@ -37,8 +38,9 @@ public static partial class HatRelyOnEvents
                 break;
         }
 
-        ModEntry.ModHelper.Events.Player.Warped -= MonsterHatLocationChanged;
-        ModEntry.ModHelper.Events.Input.ButtonPressed -= PanHatButtonPressed;
+        ModEntry.ModHelper.Events.Player.Warped -= MummyMaskLocationChanged;
+        ModEntry.ModHelper.Events.Input.ButtonPressed -= PanHatsButtonPressed;
+        ModEntry.ModHelper.Events.Input.ButtonsChanged -= TotemMaskButtonsChanged;
         ModEntry.ModHelper.Events.Player.InventoryChanged -= WearPanHatBack;
     }
 }

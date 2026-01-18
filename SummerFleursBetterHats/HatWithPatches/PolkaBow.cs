@@ -18,12 +18,20 @@ public partial class HatWithPatches
         }
     }
 
+    /// <summary>
+    /// Get an extra 10 friendship when wearing polka bow and
+    /// talking to a NPC.
+    /// </summary>
     public static void AddFriendship(ref int amount)
     {
         if (PlayerHatIs(PolkaBowID))
             amount += 10;
     }
 
+    /// <summary>
+    /// Add a transpiler to the <see cref="NPC.grantConversationFriendship"/>
+    /// method to add extra friendship.
+    /// </summary>
     public static IEnumerable<CodeInstruction> Patch_PolkaBow_grantConversationFriendship
         (IEnumerable<CodeInstruction> ci)
     {

@@ -2,11 +2,8 @@
 
 public partial class HatRelatedToShops
 {
-    private const ushort MagicTurbanMask = 4; // 0b0100
-
     /// <summary>
-    /// Item roller for the magic turban. See the detailed item
-    /// list in the README.
+    /// Item roller for the magic turban.
     /// </summary>
     private static Item RollRandomItemForMagicTurban()
     {

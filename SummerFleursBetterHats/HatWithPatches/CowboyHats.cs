@@ -8,7 +8,6 @@ public partial class HatWithPatches
         CowpokeHatID,
         BlueCowboyHatID,
         RedCowboyHatID,
-        DeluxeCowboyHatID,
         DarkCowboyHatID
     };
 

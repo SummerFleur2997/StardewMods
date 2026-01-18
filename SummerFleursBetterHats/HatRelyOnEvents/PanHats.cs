@@ -9,18 +9,18 @@ namespace SummerFleursBetterHats.HatRelyOnEvents;
 public partial class HatRelyOnEvents
 {
     /// <summary>
-    /// Event for the pan hat, make it possible to unequip it with left click
+    /// Event for the pan hats, make it possible to unequip it with left click
     /// when a panning spot is nearby.
     /// </summary>
-    private static void PanHatButtonPressed(object sender, ButtonPressedEventArgs e)
+    private static void PanHatsButtonPressed(object sender, ButtonPressedEventArgs e)
     {
         // 仅当按下左键时
         // only when the player clicked the left mouse button
         if (e.Button != SButton.MouseLeft)
             return;
 
-        // 如果玩家没有帽子，则直接注销本事件
-        // if the player is not wearing a hat, unregister this event
+        // 如果玩家的帽子不是淘盘帽，则直接注销本事件
+        // if the player's hat is not a pan, unregister this event
         var hat = PlayerHat();
         switch (hat?.QualifiedItemId)
         {
@@ -30,7 +30,7 @@ public partial class HatRelyOnEvents
             case CopperPanID:
                 break;
             default:
-                ModEntry.ModHelper.Events.Input.ButtonPressed -= PanHatButtonPressed;
+                ModEntry.ModHelper.Events.Input.ButtonPressed -= PanHatsButtonPressed;
                 return;
         }
 
@@ -44,14 +44,14 @@ public partial class HatRelyOnEvents
         // if the hat can't be transformed into a pan, unregister this event
         if (Utility.PerformSpecialItemGrabReplacement(hat) is not Pan pan)
         {
-            ModEntry.ModHelper.Events.Input.ButtonPressed -= PanHatButtonPressed;
+            ModEntry.ModHelper.Events.Input.ButtonPressed -= PanHatsButtonPressed;
             return;
         }
 
-        // 如果玩家手上有东西，或者打开了某个菜单，退出
-        // return if the player is holding something or has opened a menu
+        // 如果玩家手上有东西、不可移动或打开了某个菜单，退出
+        // return if the player is holding something, cannot move, or has opened a menu
         var player = Game1.player;
-        if (player.ActiveItem is not null || Game1.activeClickableMenu is not null)
+        if (player.ActiveItem is not null || !player.canMove || Game1.activeClickableMenu is not null)
             return;
 
         // 若摸不到闪光点，退出
@@ -83,12 +83,14 @@ public partial class HatRelyOnEvents
         // Experimental feature: chain panning
         var location = Game1.currentLocation;
         if (location.orePanPoint != null && !location.orePanPoint.Value.Equals(Point.Zero))
+        {
             if (ModEntry.Config.ExperimentalFeatures &&
                 IsPanningPointAvailable(pan, location.orePanPoint.Value.X * 64, location.orePanPoint.Value.Y * 64))
             {
                 pan.beginUsing(location, location.orePanPoint.X * 64, location.orePanPoint.Y * 64, player);
                 return;
             }
+        }
 
         if (Utility.PerformSpecialItemPlaceReplacement(pan) is not Hat hat)
         {

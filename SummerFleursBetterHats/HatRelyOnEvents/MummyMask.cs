@@ -14,11 +14,11 @@ public partial class HatRelyOnEvents
     /// When entering a new location with mummy mask worn,
     /// the mummies will be pacified.
     /// </summary>
-    private static void MonsterHatLocationChanged(object s, WarpedEventArgs e)
+    private static void MummyMaskLocationChanged(object s, WarpedEventArgs e)
     {
         if (!PlayerHatIs(MummyMaskID))
         {
-            ModEntry.ModHelper.Events.Player.Warped -= MonsterHatLocationChanged;
+            ModEntry.ModHelper.Events.Player.Warped -= MummyMaskLocationChanged;
             return;
         }
 

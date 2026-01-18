@@ -1,7 +1,10 @@
 ﻿namespace SummerFleursBetterHats;
 
-public static class IdHelper
+internal static class ConstantHelper
 {
+    /*****
+     * Hat id
+     *****/
     public const string CowboyHatID = "(H)0";
     public const string BowlerHatID = "(H)1";
     public const string TopHatID = "(H)2";
@@ -123,4 +126,25 @@ public static class IdHelper
     public const string WhiteBowID = "(H)WhiteBow";
     public const string SpaceHelmetID = "(H)SpaceHelmet";
     public const string InfinityCrownID = "(H)InfinityCrown";
+
+    /*****
+     * Daily flags -> lower 4 bits
+     *****/
+    public const ushort TotemMaskMask = 1;
+    public const ushort RaccoonHatMask = 2;
+
+    /*****
+     * Weekly flags -> center 8 bits
+     *****/
+    public const ushort DarkVelvetBowMask = 16; // 0x0010
+    public const ushort WearableDwarfHelmMask = 32; // 0x0020
+    public const ushort MagicTurbanMask = 64; // 0x0040
+    public const ushort BluebirdMaskMask = 128; // 0x0080
+    public const ushort JesterHatMask = 256; // 0x0100
+
+    /*****
+     * Monthly flags -> higher 4 bits
+     *****/
+    public const ushort RedFezMask = 4096; // 0x1000
+    public const ushort MrQisHatMask = 8192; // 0x2000
 }
