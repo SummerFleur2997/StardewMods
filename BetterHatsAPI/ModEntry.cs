@@ -36,7 +36,23 @@ internal class ModEntry : Mod
         HatManager.Initialize();
         HatDataHelper.LoadContentPacks();
         GuideBookHelper.RegisterEventsForGuideBook(helper);
+
+        ModHelper.ConsoleCommands.Add(
+            "BHA_Reload",
+            "Reload specified content pack by its unique id",
+            Reload);
     }
 
     public override object GetApi(IModInfo mod) => HatManager.Instance;
+
+    private static void Reload(string command, string[] args)
+    {
+        if (args.Length != 1)
+        {
+            Log("Usage: BHA_Reload <content pack id>", LogLevel.Error);
+            return;
+        }
+
+        HatDataHelper.ReloadContentPacks(args[0]);
+    }
 }

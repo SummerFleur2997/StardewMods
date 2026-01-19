@@ -30,6 +30,6 @@
 
   "string.CombinedData": "总计",
 
-  "string.connect": "{{title}}: {{value}}",
+  "string.connect": "{{title}}：{{value}}",
   "punctuation.comma": "、",
 }

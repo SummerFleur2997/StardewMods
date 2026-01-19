@@ -84,6 +84,61 @@ public static class HatDataHelper
     }
 
     /// <summary>
+    /// Initialize the hat data from content packs when the mod is loaded.
+    /// </summary>
+    public static void ReloadContentPacks(string id)
+    {
+        Info($"Reloading for content packs {id} ...");
+
+        foreach (var pack in ModEntry.ContentPacks)
+        {
+            if (pack.Manifest.UniqueID != id)
+                continue;
+
+            Info($"Found content pack {id}, preparing to reload ...");
+            foreach (var (_, oldData) in AllHatData)
+                oldData.RemoveAll(d => d.ID == id); // delete old data
+
+            Dictionary<string, HatData> data;
+            try
+            {
+                // load the content pack's farm config (null if it doesn't exist)
+                data = pack.ReadJsonFile<Dictionary<string, HatData>>("content.json");
+                if (data == null)
+                    throw new Exception("Null data returned.");
+            }
+            catch (Exception ex)
+            {
+                Error($"Error: Failed to reload content pack {pack.Manifest.Name}!");
+                Warn("The auto-generated error message is displayed below:");
+                Warn($"{ex.Message}");
+                Warn("--------------------");
+                return;
+            }
+
+            foreach (var (key, newData) in data)
+            {
+                // set some required fields if they are not set
+                newData.Pack = pack;
+                newData.ID = pack.Manifest.UniqueID;
+                if (string.IsNullOrWhiteSpace(newData.UniqueBuffID))
+                    newData.UniqueBuffID = pack.Manifest.UniqueID;
+                if (string.IsNullOrWhiteSpace(newData.Description))
+                    newData.Description = null;
+
+                // add the data to the dictionary
+                AllHatData.TryAdd(key, newData);
+            }
+        }
+
+        foreach (var key in AllHatData.Keys)
+            if (!AllHatData[key].Any())
+                AllHatData.Remove(key);
+
+        Info($"Successfully reloaded content pack {id}.");
+    }
+
+    /// <summary>
     /// Try to add a HatData object to the dictionary. 
     /// </summary>
     /// <param name="dict"> The target dictionary, where the key is
@@ -135,7 +190,7 @@ public partial class HatData
     {
         var value = GetValueByIndex(index);
         var sign = value >= 0 ? "+" : "";
-        var text = sign + value.FormatAndTrim();
+        var text = sign + (index >= 12 ? value.FormatAndTrim("P0") : value.FormatAndTrim());
 
         return index switch
         {

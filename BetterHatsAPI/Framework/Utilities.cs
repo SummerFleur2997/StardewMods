@@ -20,9 +20,10 @@ internal static class Utilities
     /// the trailing zeros. For example, 1.50 will be formatted to 1.5.
     /// </summary>
     /// <param name="value">The value needs to format and trim.</param>
+    /// <param name="format">The numeric format string for the formatter, e.g., F2.</param>
     /// <returns>Formated number as a string.</returns>
-    public static string FormatAndTrim(this float value)
-        => value.ToString("F").TrimEnd('0').TrimEnd('.');
+    public static string FormatAndTrim(this float value, string format = "F")
+        => value.ToString(format).TrimEnd('0').TrimEnd('.');
 
     /// <summary>
     /// Load description from the item's data if necessary.
@@ -68,6 +69,7 @@ internal static class Utilities
     #region Log Warpper
 
     public static void Log(string m) => ModEntry.Log(m);
+    public static void Info(string m) => ModEntry.Log(m, LogLevel.Info);
     public static void Warn(string m) => ModEntry.Log(m, LogLevel.Warn);
     public static void Error(string m) => ModEntry.Log(m, LogLevel.Error);
 
