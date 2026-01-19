@@ -1,5 +1,17 @@
 ﻿namespace SummerFleursBetterHats.HatWithPatches;
 
+/* After my injection, the method would like this:
+    ...
+    var num = Game1.getFarm().hasMatureFairyRoseTonight ? 0.007 : 0.0;
+
+    foreach (var player in Game1.getOnlineFarmers())
+        if (player.HatIs(GnomesCapID))
+            num += 0.01
+
+    Game1.getFarm().hasMatureFairyRoseTonight = false;
+    ...
+*/
+
 public partial class HatWithPatches
 {
     private static void RegisterPatchForGnomesCap(Harmony harmony)
@@ -43,7 +55,8 @@ public partial class HatWithPatches
         matcher.MatchStartForward(target).Advance(2);
 
         // If the anchor instruction is not found, throw an exception.
-        if (matcher.IsInvalid) throw new Exception("This method seems to have changed.");
+        if (matcher.IsInvalid)
+            throw new Exception("This method seems to have changed.");
 
         // Add the injection to the codes
         var injection = new List<CodeInstruction>

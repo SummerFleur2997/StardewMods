@@ -1,4 +1,7 @@
 ﻿{
   "object.DiscountedTicket.Name": "Fool's Ticket",
-  "object.DiscountedTicket.Desc": "Hee hee! Only a certified fool would pay full price for this movie."
+  "object.DiscountedTicket.Desc": "Hee hee! Only a certified fool would pay full price for this movie.",
+
+  "mail.JojaCap": "Yo @!^^You hit the jackpot! You're our 10,000th winner for the limited joja cap. Here’s your gift, enjoy! ^^ - Joja Corp. %item id (O)167 99 %%[#]Joja Cap gift",
+  "mail.DarkBallcap": "Greetings, @!^^You are the 99,999th fan to receive our team’s limited edition baseball cap. Thank you for your support. ^^ - Black Meteor Baseball Club %item money 1000 1001 %%[#]Acknowledgement from Black Meteor Baseball Club",
 }

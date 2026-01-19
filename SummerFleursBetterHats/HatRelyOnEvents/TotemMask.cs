@@ -36,15 +36,15 @@ public partial class HatRelyOnEvents
             return;
         }
 
-        // 如果玩家手上有东西、不可移动或打开了某个菜单，退出
-        // return if the player is holding something, cannot move, or has opened a menu
+        // 如果玩家手上有东西、不可移动或已经使用过了图腾面具，退出
+        // return if the player is holding something, cannot move, or has already used the mask today
         var player = Game1.player;
-        if (player.ActiveItem is not null || !player.canMove || Game1.activeClickableMenu is not null)
+        if (player.ActiveItem is not null || !player.canMove || player.TryGetWorldStatus(TotemMaskMask))
             return;
 
-        // 检查玩家今天是否已经用过图腾面具了
-        // Check if player has already visited this shop in the current period
-        if (player.TryGetWorldStatus(TotemMaskMask))
+        // 检查是否有正在活动的菜单或节日
+        // Check if there is an active menu or festival
+        if (Game1.activeClickableMenu is not null || Game1.currentLocation.currentEvent is not null)
             return;
 
         // 传送回家

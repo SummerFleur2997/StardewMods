@@ -2,9 +2,17 @@
 
 namespace SummerFleursBetterHats.HatWithPatches;
 
+/* After my injection, the method would like this:
+    ...
+    friendshipTowardFarmer.Set(...);
+
+    if (... < (GetPetData().GiftChance + AddGiftChance(this pet)))
+    ...
+*/
+
 public partial class HatWithPatches
 {
-    private static void RegisterPatchForPetsHats(Harmony harmony)
+    private static void RegisterPatchForHatsForPets(Harmony harmony)
     {
         try
         {
@@ -14,7 +22,7 @@ public partial class HatWithPatches
             var transpiler = AccessTools.Method(
                 typeof(HatWithPatches), nameof(Patch_PetsHats_checkAction));
             harmony.Patch(original, transpiler: new HarmonyMethod(transpiler));
-            ModEntry.Log("Patched Utility.pickFarmEvent for pet's hat successfully.");
+            ModEntry.Log("Patched Pet.checkAction for pet's hat successfully.");
         }
         catch (Exception ex)
         {

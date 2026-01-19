@@ -21,13 +21,12 @@ public static class GameExtensions
 
     public static bool ModifyWorldStatus(string[] args, TriggerActionContext context, out string error)
     {
-        if (!ArgUtility.TryGetInt(args, 1, out var value, out error, "ushort mask") ||
+        if (!ArgUtility.TryGetInt(args, 1, out var mask, out error, "uint mask") ||
             !ArgUtility.TryGet(args, 1, out var shopID, out error, true, "string shopID"))
             return false;
 
-        var mask = (ushort)value;
         var player = Game1.player;
-        if (SaveManager.TryEditWorldStatus(player.UniqueMultiplayerID, mask))
+        if (SaveManager.TryEditWorldStatus(player.UniqueMultiplayerID, (uint)mask))
         {
             ModEntry.Log($"Successfully modified trade info for player {player.Name} in {shopID}.");
             return true;

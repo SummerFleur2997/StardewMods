@@ -1,4 +1,5 @@
 ﻿using BetterHatsAPI.API;
+using StardewModdingAPI.Events;
 
 namespace SummerFleursBetterHats.HatRelyOnEvents;
 
@@ -8,6 +9,8 @@ public static partial class HatRelyOnEvents
     {
         api.OnHatEquipped += HatEquipListener;
         api.OnHatUnequipped += HatUnequipListener;
+
+        ModEntry.ModHelper.Events.GameLoop.ReturnedToTitle += UnRegisterAll;
     }
 
     private static void HatEquipListener(object s, IHatEquippedEventArgs e)
@@ -26,6 +29,18 @@ public static partial class HatRelyOnEvents
             case MummyMaskID:
                 ModEntry.ModHelper.Events.Player.Warped += MummyMaskLocationChanged;
                 return;
+            case GilsHatID:
+                ModEntry.ModHelper.Events.Player.Warped += GilsHatLocationChanged;
+                return;
+            case BlueRibbonID:
+                ModEntry.ModHelper.Events.Player.Warped += BlueRibbonLocationChanged;
+                return;
+            case JojaCapID:
+                Game1.addMailForTomorrow("SFBH_JojaCap");
+                return;
+            case DarkBallcapID:
+                Game1.addMailForTomorrow("SFBH_DarkBallcap");
+                return;
         }
     }
 
@@ -36,11 +51,23 @@ public static partial class HatRelyOnEvents
             case MummyMaskID:
                 UpdateForThisLocationWhenDisable();
                 break;
+            case GilsHatID:
+                Game1.player.team.calicoEggSkullCavernRating.Value -= ExtraEggScore;
+                break;
         }
 
+        UnRegisterAll();
+    }
+
+    private static void UnRegisterAll(object s, ReturnedToTitleEventArgs e) => UnRegisterAll();
+
+    private static void UnRegisterAll()
+    {
+        ModEntry.ModHelper.Events.Player.Warped -= BlueRibbonLocationChanged;
+        ModEntry.ModHelper.Events.Player.Warped -= GilsHatLocationChanged;
         ModEntry.ModHelper.Events.Player.Warped -= MummyMaskLocationChanged;
+        ModEntry.ModHelper.Events.Player.InventoryChanged -= WearPanHatBack;
         ModEntry.ModHelper.Events.Input.ButtonPressed -= PanHatsButtonPressed;
         ModEntry.ModHelper.Events.Input.ButtonsChanged -= TotemMaskButtonsChanged;
-        ModEntry.ModHelper.Events.Player.InventoryChanged -= WearPanHatBack;
     }
 }

@@ -26,7 +26,7 @@ public partial class HatWithPatches
             var postfix3 = AccessTools.Method(
                 typeof(HatWithPatches), nameof(Patch_MovieTheater_answerDialogueAction));
             harmony.Patch(original3, postfix: new HarmonyMethod(postfix3));
-            ModEntry.Log("Patched GameLocation.performAction for movie theater successfully.");
+            ModEntry.Log("Patched GameLocation.answerDialogueAction for movie theater successfully.");
         }
         catch (Exception ex)
         {

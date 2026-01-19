@@ -1,4 +1,7 @@
 ﻿{
   "object.DiscountedTicket.Name": "小丑专属特价票",
-  "object.DiscountedTicket.Desc": "花原价买票的大冤种才是真正的小丑，嘻嘻！"
+  "object.DiscountedTicket.Desc": "花原价买票的大冤种才是真正的小丑，嘻嘻！",
+
+  "mail.JojaCap": "嘿，@！^^恭喜您成为了第 10000 位获得我们限定款 Joja 棒球帽的“天选之子”！请收下这份我们赠予您的礼物，祝您生活愉快！^^ - Joja 潜力有限公司 %item id (O)167 99 %%[#]Joja 棒球帽幸运礼物",
+  "mail.DarkBallcap": "您好，@！^^您是 99999 位获得本球队限量发行的棒球帽的粉丝！感谢您对我们球队的支持！^^ - 黑色流星棒球俱乐部 %item money 1000 1001 %%[#]黑色流星棒球俱乐部的致谢",
 }

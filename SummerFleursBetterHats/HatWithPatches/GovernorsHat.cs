@@ -1,5 +1,13 @@
 ﻿namespace SummerFleursBetterHats.HatWithPatches;
 
+/* After my injection, the method would like this:
+    ...
+    Utility.improveFriendshipWithEveryoneInRegion(Game1.player, 120 * (PlayerHatIs(GovernorsHatID) ? 2 : 1), "Town");
+    ...
+    Utility.improveFriendshipWithEveryoneInRegion(Game1.player, 60 * (PlayerHatIs(GovernorsHatID) ? 2 : 1), "Town");
+    ...
+*/
+
 public partial class HatWithPatches
 {
     private static void RegisterPatchForGovernorsHat(Harmony harmony)

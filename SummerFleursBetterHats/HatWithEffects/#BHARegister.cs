@@ -11,6 +11,7 @@ public static partial class HatWithEffects
         api.SetCustomActionTrigger(BridalVeilID, PackID, Action_WeddingHats_AddFriendShip);
         api.SetCustomActionTrigger(LivingHatID, PackID, Action_LivingHat_Healing);
         api.SetCustomActionTrigger(SantaHatID, PackID, Action_SantaHat_AddMysteryBox);
+        api.SetCustomActionTrigger(SombreroID, PackID, Action_Sombrero_AddMoney);
         api.SetCustomActionTrigger(TopHatID, PackID, Action_WeddingHats_AddFriendShip);
 
         api.SetCustomConditionChecker(BridalVeilID, PackID, Condition_WeddingHats_IsFirstWedding);

@@ -36,7 +36,7 @@ public class MultiplayerServer : IModule
     /// <summary>
     /// For farmhands: send a request to edit data when the world status changed.
     /// </summary>
-    public void SendEditRequest(ushort newData) =>
+    public void SendEditRequest(uint newData) =>
         MultiplayerHelper.SendMessage(newData, "MultiplayerDataEdit",
             new[] { ModEntry.Manifest.UniqueID }, new[] { Game1.MasterPlayer.UniqueMultiplayerID });
 
@@ -69,7 +69,7 @@ public class MultiplayerServer : IModule
             // When receiving the "MultiplayerInit" message from the host, sync WorldStatus.
             // 收到来自房主的 MultiplayerInit 消息后，同步 SaveData
             case "MultiplayerInit" when e.FromPlayerID == Game1.MasterPlayer.UniqueMultiplayerID:
-                var worldStatus = e.ReadAs<Dictionary<long, ushort>>();
+                var worldStatus = e.ReadAs<Dictionary<long, uint>>();
                 ModEntry.Log($"Received save data from {e.FromPlayerID}.", LogLevel.Info);
                 SaveManager.WorldStatus = worldStatus;
                 break;
@@ -82,7 +82,7 @@ public class MultiplayerServer : IModule
             // When receiving the "MultiplayerDataEdit" message from other players, edit WorldStatus.
             // 收到其他玩家的 MultiplayerDataEdit 消息后，修正 WorldStatus
             case "MultiplayerDataEdit":
-                var mask = e.ReadAs<ushort>();
+                var mask = e.ReadAs<uint>();
                 SaveManager.TryEditWorldStatus(e.FromPlayerID, mask);
                 break;
         }

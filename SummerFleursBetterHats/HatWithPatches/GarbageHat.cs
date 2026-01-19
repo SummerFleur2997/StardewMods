@@ -1,5 +1,17 @@
 ﻿namespace SummerFleursBetterHats.HatWithPatches;
 
+/* After my injection, the method would like this:
+    ...
+    baseChance += (float)dailyLuck;
+
+    if (PlayerHatIs(GarbageHatID))
+        baseChance += 0.1f;
+
+    if (Game1.player.stats.Get("Book_Trash") != 0)
+        baseChance += 0.2f;
+    ...
+*/
+
 public partial class HatWithPatches
 {
     private static void RegisterPatchForGarbageHat(Harmony harmony)
@@ -36,11 +48,17 @@ public partial class HatWithPatches
         var matcher = new CodeMatcher(ci);
 
         // Find an anchor instruction for the injection
-        var target = new CodeMatch(OpCodes.Ldstr, "Book_Trash");
-        matcher.MatchStartForward(target).Advance(-2);
+        var target = new CodeMatch[]
+        {
+            new(OpCodes.Call),
+            new(OpCodes.Ldfld),
+            new(OpCodes.Ldstr, "Book_Trash")
+        };
+        matcher.MatchStartForward(target);
 
         // If the anchor instruction is not found, throw an exception.
-        if (matcher.IsInvalid) throw new Exception("This method seems to have changed.");
+        if (matcher.IsInvalid)
+            throw new Exception("This method seems to have changed.");
 
         // Add the injection to the codes
         var injection = new List<CodeInstruction>

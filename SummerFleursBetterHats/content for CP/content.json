@@ -31,6 +31,14 @@
           "CustomFields": null
         }
       }
-    }
+    },
+    {
+      "Action": "EditData",
+      "Target": "Data/Mail",
+      "Entries": {
+        "SFBH_JojaCap": "{{i18n:mail.JojaCap}}",
+        "SFBH_DarkBallcap": "{{i18n:mail.DarkBallcap}}"
+      }
+    },
   ]
 }

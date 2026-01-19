@@ -20,9 +20,9 @@ internal static class SaveManager
 
     /// <summary>
     /// Dictionary to store various status with player IDs as keys
-    /// and ushort values as flags.
+    /// and uint values as flags.
     /// </summary>
-    internal static Dictionary<long, ushort> WorldStatus { get; set; }
+    internal static Dictionary<long, uint> WorldStatus { get; set; }
 
     public static void RegisterEvents()
     {
@@ -34,14 +34,14 @@ internal static class SaveManager
     /// <summary>
     /// Extension method to attempt to modify world status for a player.
     /// </summary>
-    public static bool TryEditWorldStatus(long who, ushort mask)
+    public static bool TryEditWorldStatus(long who, uint mask)
     {
         // Try to get existing world status for the player
         if (!WorldStatus.TryGetValue(who, out var tradeInfo))
             return false;
 
         // Update the world status using bitwise OR operation with the mask
-        WorldStatus[who] = (ushort)(tradeInfo | mask);
+        WorldStatus[who] = tradeInfo | mask;
         if (Context.IsMultiplayer && !Context.IsMainPlayer)
             MultiplayerServer.Instance.SendEditRequest(mask);
 
@@ -51,7 +51,7 @@ internal static class SaveManager
     /// <summary>
     /// Extension method to check specific world status for a player.
     /// </summary>
-    public static bool TryGetWorldStatus(this Farmer player, ushort mask)
+    public static bool TryGetWorldStatus(this Farmer player, uint mask)
     {
         var id = player.UniqueMultiplayerID;
         // use the binary mask to check specific world status
@@ -71,17 +71,17 @@ internal static class SaveManager
         if (!Context.IsMainPlayer) return;
         if (!File.Exists(AbsoluteSavePath))
         {
-            WorldStatus = new Dictionary<long, ushort>();
+            WorldStatus = new Dictionary<long, uint>();
             return;
         }
 
         try
         {
-            WorldStatus = ModEntry.ModHelper.Data.ReadJsonFile<Dictionary<long, ushort>>(SavePath);
+            WorldStatus = ModEntry.ModHelper.Data.ReadJsonFile<Dictionary<long, uint>>(SavePath);
         }
         catch (InvalidSaveDataException ex)
         {
-            WorldStatus = new Dictionary<long, ushort>();
+            WorldStatus = new Dictionary<long, uint>();
             ModEntry.Log($"Error loading data from {SavePath}, an empty data is created instead.", LogLevel.Error);
             ModEntry.Log(ex.ToString(), LogLevel.Error);
         }
@@ -115,7 +115,7 @@ internal static class SaveManager
         {
             foreach (var player in WorldStatus.Keys)
             {
-                var newValue = (ushort)(WorldStatus[player] & 0x0FFF);
+                var newValue = WorldStatus[player] & 0x0FFF;
                 WorldStatus[player] = newValue;
             }
         }
@@ -124,14 +124,14 @@ internal static class SaveManager
         if (Game1.Date.DayOfWeek == DayOfWeek.Sunday)
             foreach (var player in WorldStatus.Keys)
             {
-                var newValue = (ushort)(WorldStatus[player] & 0xF00F);
+                var newValue = WorldStatus[player] & 0xF00F;
                 WorldStatus[player] = newValue;
             }
 
         // Clear the lower 4 bits of the info (daily flags)
         foreach (var player in WorldStatus.Keys)
         {
-            var newValue = (ushort)(WorldStatus[player] & 0xFFF0);
+            var newValue = WorldStatus[player] & 0xFFF0;
             WorldStatus[player] = newValue;
         }
     }

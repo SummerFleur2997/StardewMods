@@ -19,7 +19,7 @@ public static partial class HatRelatedToShops
             return;
 
         int price;
-        ushort mask;
+        uint mask;
         Func<Item> itemGetter;
 
         // Determine the shop type and corresponding hat requirements

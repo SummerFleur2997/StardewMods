@@ -1,5 +1,15 @@
 ﻿namespace SummerFleursBetterHats.HatWithPatches;
 
+/* After my injection, the property would like this:
+
+    public double DailyLuck => Math.Min(
+        Math.Max(
+            sharedDailyLuck + (double)(hasSpecialCharm ? 0.025f : 0f) + PlayerHatIs(LuckyBowID) ? 0.015 : 0,
+            -0.2),
+        0.2);
+
+*/
+
 public partial class HatWithPatches
 {
     private static void RegisterPatchForLuckyBow(Harmony harmony)
@@ -18,7 +28,7 @@ public partial class HatWithPatches
         }
     }
 
-    public static double AddDailyLuck() => PlayerHatIs(LuckyBowID) ? 0.015f : 0;
+    public static double AddDailyLuck() => PlayerHatIs(LuckyBowID) ? 0.015 : 0;
 
     public static IEnumerable<CodeInstruction> Patch_LuckyBow_DailyLuck(IEnumerable<CodeInstruction> ci)
     {

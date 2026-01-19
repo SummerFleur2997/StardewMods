@@ -1,5 +1,17 @@
 ﻿namespace SummerFleursBetterHats.HatWithPatches;
 
+/* After my injection, the method would like this:
+    ...
+    if (who.hasBuff("statue_of_blessings_4"))
+        amount = 60;
+
+    if (PlayerHatIs(PolkaBowID))
+        amount += 10;
+
+    who.changeFriendship(amount, this);
+    ...
+*/
+
 public partial class HatWithPatches
 {
     private static void RegisterPatchForPolkaBow(Harmony harmony)
@@ -22,7 +34,7 @@ public partial class HatWithPatches
     /// Get an extra 10 friendship when wearing polka bow and
     /// talking to a NPC.
     /// </summary>
-    public static void AddFriendship(ref int amount)
+    public static void AddFriendshipToVillager(ref int amount)
     {
         if (PlayerHatIs(PolkaBowID))
             amount += 10;
@@ -60,7 +72,7 @@ public partial class HatWithPatches
         var injection = new List<CodeInstruction>
         {
             newEntrance, // amount
-            new(OpCodes.Call, AccessTools.Method(typeof(HatWithPatches), nameof(AddFriendship)))
+            new(OpCodes.Call, AccessTools.Method(typeof(HatWithPatches), nameof(AddFriendshipToVillager)))
         };
         matcher.InsertAndAdvance(injection);
 

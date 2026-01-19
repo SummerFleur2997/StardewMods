@@ -29,12 +29,13 @@
   },
   // Tiara
   "(H)26": {
+    "Attack": 1,
     "Defense": 1,
     "Immunity": 1
   },
   // Archer's Cap
   "(H)35": {
-    "WeaponSpeedMultiplier": 0.3
+    "WeaponSpeedMultiplier": 0.5
   },
   // Knight's Helmet
   "(H)50": {
@@ -47,7 +48,7 @@
   },
   // Pirate Hat
   "(H)62": {
-    "AttackMultiplier": 07
+    "AttackMultiplier": 0.07
   },
   // Elegant Turban
   "(H)64": {
@@ -100,6 +101,10 @@
     "Attack": 2,
     "Speed": 0.5
   },
+  // Gil's hat
+  "(H)GilsHat": {
+    "AttackMultiplier": 0.15
+  },
   // White Bow
   "(H)WhiteBow": {
     "LuckLevel": 2
@@ -123,11 +128,15 @@
    ****/
   // Top Hat (Today is the player's first wedding ceremony)
   "(H)2": {
-    "Condition": "IS_EVENT -2",
+    "Condition": "$CustomCondition",
     "Action": "$CustomAction",
     "Trigger": "DayStarted",
     "ConditionDescription": "i18n:condition.TopHat",
     "ActionDescription": "i18n:action.WeddingHat"
+  },
+  "(H)3": {
+    "Action": "$CustomAction",
+    "Trigger": "DayStarted",
   },
   // Earmuffs (Current season is winter)
   "(H)11": {
@@ -237,7 +246,7 @@
   },
   // Bridal Veil (Today is the player's first wedding ceremony)
   "(H)69": {
-    "Condition": "IS_EVENT -2",
+    "Condition": "$CustomCondition",
     "Action": "$CustomAction",
     "Trigger": "DayStarted",
     "ConditionDescription": "i18n:condition.BridalVeil",

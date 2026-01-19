@@ -7,7 +7,7 @@ public partial class HatWithPatches
     /// <summary>
     /// Patch for monster hats, double the damage to the special monsters.
     /// </summary>
-    private static void RegisterPatchForMonsterHats(Harmony harmony)
+    private static void RegisterPatchForHatsForMonsters(Harmony harmony)
     {
         try
         {
