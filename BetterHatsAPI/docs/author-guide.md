@@ -23,7 +23,11 @@
 ---
 
 **目录**
-- [使用 JSON 配置基础 Buff](#使用-json-配置基础-buff)
+- [前言：实用功能](#前言实用功能)
+    - [帽子图鉴菜单：快速查看所有帽子的数据](#帽子图鉴菜单快速查看所有帽子的数据)
+    - [控制台命令：热重载您的数据包](#控制台命令热重载您的数据包)
+    - [JSON Schema：配合 IDE 实现数据检查和自动补全](#json-schema配合-ide-实现数据检查和自动补全)
+- [基础：使用 JSON 配置基础 Buff](#基础使用-json-配置基础-buff)
     - [`content.json` 的基本结构](#contentjson-的基本结构)
     - [可用的 Buff 属性](#可用的-buff-属性)
     - [为条件和事件选择合适的触发器](#为条件和事件选择合适的触发器)
@@ -32,7 +36,7 @@
     - [综合条件和事件的进阶效果](#综合条件和事件的进阶效果)
     - [动态效果标志](#动态效果标志)
     - [自定义条件事件及其占位符](#自定义条件事件及其占位符)
-- [使用 C# API 实现复杂功能](#使用-c-api-实现复杂功能)
+- [进阶：使用 C# API 实现复杂功能](#进阶使用-c-api-实现复杂功能)
     - [获取 API](#获取-api)
     - [设置自定义条件检查器](#设置自定义条件检查器)
     - [设置自定义操作触发器](#设置自定义操作触发器)
@@ -44,7 +48,37 @@
 
 ---
 
-## 使用 JSON 配置基础 Buff
+## 前言：实用功能
+
+BHA 提供了一些实用功能，或许能够在您的开发过程中带来帮助。
+
+### 帽子图鉴菜单：快速查看所有帽子的数据
+
+BHA 提供了一个内置的帽子图鉴菜单，您可以使用快捷键 `LeftCtrl + LeftAlt + H` 打开它。这个菜单展示了所有已加载数据包中的帽子数据与配置，包括基础属性、条件、事件和您的描述。
+
+![](pic/WitchHat_zh.png)
+
+对于带有复杂效果的帽子，您可以通过 JSON 为其配置各种描述，这些描述能够更好的让用户知道您设计的帽子效果是什么。
+
+![](pic/SpaceHelmet_zh.png)
+
+这个菜单的设计意图是为了让玩家能够更好的了解您在数据包中所做的更改，而不是用于进行可视化的数据编辑。在未来的版本中，不会新增任何能够通过这一菜单来修改数据包内容的功能。
+
+### 控制台命令：热重载您的数据包
+
+BHA 提供了一个控制台命令 `BHA_Reload`，您可以在游戏运行时使用它来重新加载您的数据包。这可以帮助您在开发过程中快速测试您的数据包，而无需重新启动游戏。
+
+```bash
+BHA_Reload <your_pack_id>
+```
+
+### JSON Schema：配合 IDE 实现数据检查和自动补全
+
+BHA 提供了一个 JSON Schema 文件，您可以使用它来验证您的 `content.json` 文件，并实现 IDE 的数据检查和自动补全功能。您可以在 [这里](../HatDataSchema.json) 找到这个文件。关于如何使用 JSON Schema，此处不再赘述，若您不清楚如何使用 JSON schema，您可以询问 AI 或自行查找使用方法。
+
+---
+
+## 基础：使用 JSON 配置基础 Buff
 
 要为 BHA 创建数据包（content pack），您需要：
 
@@ -94,26 +128,26 @@
 
 BHA 支持所有标准的 Stardew Valley buff 属性，这些属性直接用于给定的帽子。
 
-| 属性                          | 描述        | 类型     |
-|-----------------------------|-----------|--------|
-| `CombatLevel`               | 战斗技能加成    | number |
-| `FarmingLevel`              | 耕种技能加成    | number |
-| `FishingLevel`              | 钓鱼技能加成    | number |
-| `MiningLevel`               | 采矿技能加成    | number |
-| `LuckLevel`                 | 运气技能加成    | number |
-| `ForagingLevel`             | 采集技能加成    | number |
-| `Speed`                     | 移动速度加成    | number |
-| `Defense`                   | 防御加成      | number |
-| `Immunity`                  | 免疫加成      | number |
-| `MaxStamina`                | 最大体力加成    | number |
-| `MagneticRadius`            | 磁力半径加成    | number |
-| `Attack`                    | 攻击加成      | number |
-| `AttackMultiplier`          | 攻击倍率加成    | number |
-| `CriticalChanceMultiplier`  | 暴击率倍率加成   | number |
-| `CriticalPowerMultiplier`   | 暴击力量倍率加成  | number |
-| `WeaponSpeedMultiplier`     | 武器速度倍率加成  | number |
-| `WeaponPrecisionMultiplier` | 武器精确度倍率加成 | number |
-| `KnockbackMultiplier`       | 击退倍率加成    | number |
+| 属性                          | 描述        | 类型 |
+|-----------------------------|-----------|----|
+| `CombatLevel`               | 战斗技能加成    | 数字 |
+| `FarmingLevel`              | 耕种技能加成    | 数字 |
+| `FishingLevel`              | 钓鱼技能加成    | 数字 |
+| `MiningLevel`               | 采矿技能加成    | 数字 |
+| `LuckLevel`                 | 运气技能加成    | 数字 |
+| `ForagingLevel`             | 采集技能加成    | 数字 |
+| `Speed`                     | 移动速度加成    | 数字 |
+| `Defense`                   | 防御加成      | 数字 |
+| `Immunity`                  | 免疫加成      | 数字 |
+| `MaxStamina`                | 最大体力加成    | 数字 |
+| `MagneticRadius`            | 磁力半径加成    | 数字 |
+| `Attack`                    | 攻击加成      | 数字 |
+| `AttackMultiplier`          | 攻击倍率加成    | 数字 |
+| `CriticalChanceMultiplier`  | 暴击率倍率加成   | 数字 |
+| `CriticalPowerMultiplier`   | 暴击力量倍率加成  | 数字 |
+| `WeaponSpeedMultiplier`     | 武器速度倍率加成  | 数字 |
+| `WeaponPrecisionMultiplier` | 武器精确度倍率加成 | 数字 |
+| `KnockbackMultiplier`       | 击退倍率加成    | 数字 |
 
 **示例**：带来强大战斗属性的帽子
 ```json
@@ -193,7 +227,7 @@ BHA 支持所有标准的 Stardew Valley buff 属性，这些属性直接用于�
 }
 ```
 
-**基于天气的条件**：一顶仅在雨天应用 buff 的帽子。
+**基于天气的条件**：一顶仅在雨天提供 buff 的帽子。
 
 ```json
 {
@@ -263,7 +297,7 @@ BHA 支持所有标准的 Stardew Valley buff 属性，这些属性直接用于�
 }
 ```
 
-默认情况下，BHA 仅在条件首次满足时应用一次帽子的 buff。 当 buff 已经激活，且触发器再次触发时，即使条件仍然满足，BHA 也不会重新应用 buff。这导致具有动态数值的 buff 效果可能无法及时更新。当 `Dynamic: true` 时，BHA 会在触发器每次触发时重新应用 buff，即使 buff 已经激活。这确保了通过 API 设置的自定义修饰器能够动态地更新 buff 数值。
+默认情况下，BHA 仅在条件首次满足时应用一次帽子的 buff。 当 buff 已经激活，且触发器再次触发时，即使条件仍然满足，BHA 也不会重新应用 buff。这导致具有动态数值的 buff 效果可能无法及时更新。当 `Dynamic: true` 时，不论 buff 是否已经激活，BHA 都会在触发器每次触发时重新应用 buff。这确保了通过 API 设置的自定义修饰器能够动态地更新 buff 数值。
 
 ### 自定义条件、事件及其占位符
 
@@ -333,7 +367,7 @@ default.json 文件作为回退语言（通常是英语）。如果找不到玩�
 
 ---
 
-## 使用 C# API 实现复杂功能
+## 进阶：使用 C# API 实现复杂功能
 
 当 JSON 无法实现某些更高级的功能时，您可以使用 BHA 提供的 API 与 C# 进行深度集成。相关的接口为 [`ISummerFleurBetterHatsAPI`](../../BetterHatsAPI/API/ISummerFleurBetterHatsAPI.cs)。
 

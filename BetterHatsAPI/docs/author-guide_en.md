@@ -33,7 +33,11 @@ even more powerful hats.
 ---
 
 **Content**
-- [Using JSON for Basic Buff Configuration](#using-json-for-basic-buff-configuration)
+- [Prerequisites: Useful Features](#prerequisites-useful-features)
+  - [Guide Book Menu: Quick Overview of All Hats' Data](#guide-book-menu-quick-overview-of-all-hats-data)
+  - [Console Command: Hot Reload Your Pack](#console-command-hot-reload-your-pack)
+  - [JSON Schema: Enabling Data Checking and Auto-Completion with IDEs](#json-schema-enabling-data-checking-and-auto-completion-with-ides)
+- [Basic: Using JSON for Basic Buff Configuration](#basic-using-json-for-basic-buff-configuration)
   - [Basic Structure for `content.json`](#basic-structure-for-contentjson)
   - [Available Buff Properties](#available-buff-properties)
   - [Using Conditions with GameStateQuery](#condition-system)
@@ -41,7 +45,7 @@ even more powerful hats.
   - [Combining Conditions and Actions](#combining-conditions-and-actions)
   - [The Dynamic Flag](#the-dynamic-flag)
   - [Custom Condition and Action Placeholders](#custom-condition-and-action-placeholders)
-- [Using C# API for Complex Functionality](#using-c-api-for-complex-functionality)
+- [Intermediate: Using C# API for Complex Functionality](#intermediate-using-c-api-for-complex-functionality)
   - [Getting the API](#getting-the-api)
   - [Setting Custom Condition Checkers](#setting-custom-condition-checkers)
   - [Setting Custom Action Triggers](#setting-custom-action-triggers)
@@ -53,7 +57,45 @@ even more powerful hats.
 
 ---
 
-## Using JSON for Basic Buff Configuration
+## Prerequisites: Useful Features
+
+### Guide Book Menu: Quick Overview of All Hats' Data
+
+BHA provides an in-game guide book menu that you can open with the shortcut 
+`LeftCtrl + LeftAlt + H`. This menu displays all loaded content pack data for hats, including base
+properties, conditions, actions, and your descriptions.
+
+![](pic/WitchHat_en.png)
+
+For hats with complex effects, you can configure various descriptions in JSON, which help users
+understand the effects of your designed hats better.
+
+![](pic/SpaceHelmet_en.png)
+
+This menu is designed to help players better understand the changes you've made in your content
+pack, rather than for visual data editing. In future versions, no functionality will be added to
+modify content pack data through this menu.
+
+### Console Command: Hot Reload Your Pack
+
+BHA provides a console command `BHA_Reload` that you can use to reload your data pack while the 
+game is running. This can help you quickly test your data pack during development without having
+to restart the game.
+
+```bash
+BHA_Reload <your_pack_id>
+```
+
+### JSON Schema: Enabling Data Checking and Auto-Completion with IDEs
+
+BHA provides a JSON Schema file that you can use it to validate your `content.json` file and enable
+data checking and auto-completion in your IDE. You can find the schema file [here](../HatDataSchema.json). 
+For more information on how to use JSON Schema, please ask AI or search for it yourself if you
+don't know about it.
+
+---
+
+## Basic: Using JSON for Basic Buff Configuration
 
 To create a content pack for BHA, you should:
 
@@ -276,8 +318,8 @@ using API-set custom modifiers.
     "Condition": "SFBH_MINE_LEVEL Here 20 60 100",
     "Trigger": "LocationChanged",
     "Dynamic": true,
-    "ConditionDescription": "In specific mine levels",
-    "ModifierDescription": "Scales with mine level"
+    "ConditionDescription": "Current location is the mine, and the level is 20, 60, or 100.",
+    "ModifierDescription": "Get double buff effects at level 60, or triple at level 100."
   }
 }
 ```
@@ -367,7 +409,7 @@ descriptions, you will need to manually translate them.
 
 ---
 
-## Using C# API for Complex Functionality
+## Intermediate: Using C# API for Complex Functionality
 
 When JSON isn't enough, BHA's API allows deep integration through C#. The main interface is
 [`ISummerFleurBetterHatsAPI`](../../BetterHatsAPI/API/ISummerFleurBetterHatsAPI.cs).
