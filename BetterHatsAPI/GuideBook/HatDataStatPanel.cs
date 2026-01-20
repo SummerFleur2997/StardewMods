@@ -153,6 +153,10 @@ public class HatDataStatPanel : IClickableMenu, IClickableComponent
 
     public bool ReceiveScrollWheelAction(int amount)
     {
+        var cursorPos = Game1.getMousePosition();
+        if (!Bounds.Contains(cursorPos))
+            return false;
+
         switch (amount)
         {
             //scroll up when expanded and first visible index is 0, we should collapse the panel

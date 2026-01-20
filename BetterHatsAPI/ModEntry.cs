@@ -35,6 +35,7 @@ internal class ModEntry : Mod
 
         HatManager.Initialize();
         HatDataHelper.LoadContentPacks();
+        GameExtensions.RegisterMethods();
         GuideBookHelper.RegisterEventsForGuideBook(helper);
 
         ModHelper.ConsoleCommands.Add(

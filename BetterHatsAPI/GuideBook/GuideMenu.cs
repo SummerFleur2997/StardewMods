@@ -1,4 +1,5 @@
-﻿using BetterHatsAPI.Framework;
+﻿using System.IO;
+using BetterHatsAPI.Framework;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using StardewValley.Objects;
@@ -34,10 +35,12 @@ public class GuideMenu : BaseMenu
     private ItemLabel<Hat> _hatIcon;
     private HatDataStatPanel _statPanel;
     private HatDataTextPanel _textPanel;
-    private DropDownMenu<HatData> _dropDownMenu;
+    private DropDownMenu<HatDataWithPackID> _dropDownMenu;
 
     private TextLabel _hatName;
     private TextLabel _hatDesc;
+
+    private static string _currentActivePackId;
 
     public GuideMenu(int x, int y, Hat targetHat)
         : base(x, y, MenuWidth, MenuHeight)
@@ -73,23 +76,22 @@ public class GuideMenu : BaseMenu
         _hatDesc = new TextLabel("", Color.DimGray, Game1.smallFont, textX, descY);
         _textPanel = new HatDataTextPanel(textX, textY, TextPanelWidth, TextPanelHeight);
         _statPanel = new HatDataStatPanel(panelX, panelY, StatPanelWidth);
-        _dropDownMenu = new DropDownMenu<HatData>(600, dropDownX, dropDownY);
-        _dropDownMenu.OnSelectionChanged += UpdateDataByData;
+        _dropDownMenu = new DropDownMenu<HatDataWithPackID>(600, dropDownX, dropDownY);
+        _dropDownMenu.OnSelectionChanged += UpdateDataByContentPack;
 
         foreach (var pack in ModEntry.ContentPacks)
-            _dropDownMenu.AddOption(pack.Manifest.Name, null);
-        _dropDownMenu.AddOption(I18n.String_CombinedData(), null);
+        {
+            _currentActivePackId ??= pack.Manifest.UniqueID;
+            _dropDownMenu.AddOption(pack.Manifest.Name, new HatDataWithPackID(pack.Manifest.UniqueID, null));
+        }
+
+        _dropDownMenu.AddOption(I18n.String_CombinedData(), new HatDataWithPackID(HatData.CombinedDataSign, null));
+
+        if (_currentActivePackId == null)
+            throw new InvalidDataException();
 
         UpdateDataByHat(hat);
-
-        var buttons = HatDataHelper.AllHatData.Keys
-            .Select(h => new ItemButton<Hat>(h))
-            .ToList();
-
-        foreach (var button in buttons)
-            button.OnPress += () => UpdateDataByHat(button.Item!);
-
-        _hatGridMenu.AddComponents(buttons);
+        UpdateGridMenu();
 
         // Add components to menu
         AddChild(_hatGridMenu);
@@ -99,6 +101,20 @@ public class GuideMenu : BaseMenu
         AddChild(_textPanel);
         AddChild(_statPanel);
         AddChild(_dropDownMenu);
+    }
+
+    private void UpdateGridMenu()
+    {
+        _hatGridMenu.RemoveAllComponents();
+
+        var buttons = HatDataHelper.Order[_currentActivePackId]
+            .Select(h => new ItemButton<Hat>(h))
+            .ToList();
+
+        foreach (var button in buttons)
+            button.OnPress += () => UpdateDataByHat(button.Item!);
+
+        _hatGridMenu.AddComponents(buttons);
     }
 
 #nullable enable
@@ -113,24 +129,24 @@ public class GuideMenu : BaseMenu
     {
         _hatIcon.Item = hat;
         var dataList = hat.GetHatData();
-        var menuSelected = _dropDownMenu.SelectedValue;
+        var menuSelected = _dropDownMenu.SelectedValue.Data;
 
         var packs = ModEntry.ContentPacks;
         var i = 0;
         for (; i < packs.Count; i++)
         {
             var id = packs[i].Manifest.UniqueID;
-            var d = dataList.FirstOrDefault(d => d.UniqueBuffID == id);
-            _dropDownMenu.Options[i].Value = d;
+            var d = dataList.FirstOrDefault(d => d.ID == id);
+            _dropDownMenu.Options[i].Value.SetData(d);
         }
 
         // combine the data from all the content packs, and assign to the last option
         var combinedData = HatData.Combine(dataList);
-        _dropDownMenu.Options[i].Value = combinedData;
+        _dropDownMenu.Options[i].Value.SetData(combinedData);
 
         var data = menuSelected is null // null means the menu is first opened 
             ? dataList.FirstOrDefault() // so we use the first hat data temporarily, can be null
-            : menuSelected.UniqueBuffID != HatData.CombinedDataSign // check for combined data
+            : menuSelected.ID != HatData.CombinedDataSign // check for combined data
                 ? dataList.FirstOrDefault(d => d.ID == menuSelected.ID) ?? null // no data found, return null
                 : combinedData; // use combined data
         UpdateDataByData(data);
@@ -143,6 +159,21 @@ public class GuideMenu : BaseMenu
     }
 
     /// <summary>
+    /// Update the grid menu with the selected content pack. Then
+    /// call <see cref="UpdateDataByData"/> to update the stat and text.
+    /// </summary>
+    private void UpdateDataByContentPack(HatDataWithPackID data)
+    {
+        if (_currentActivePackId != data.PackID)
+        {
+            _currentActivePackId = data.PackID;
+            UpdateGridMenu();
+        }
+
+        UpdateDataByData(data.Data);
+    }
+
+    /// <summary>
     /// Update the stat and text panel with specific data from the
     /// selected content pack. This method is called when click the
     /// drop-down menu to change target content pack and when the
@@ -152,5 +183,19 @@ public class GuideMenu : BaseMenu
     {
         _statPanel.UpdateStats(data);
         _textPanel.UpdateData(data);
+    }
+
+    private struct HatDataWithPackID
+    {
+        public string PackID { get; }
+        public HatData? Data { get; private set; }
+
+        public HatDataWithPackID(string packID, HatData? data)
+        {
+            PackID = packID;
+            Data = data;
+        }
+
+        public void SetData(HatData? data) => Data = data;
     }
 }

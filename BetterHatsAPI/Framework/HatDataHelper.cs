@@ -15,6 +15,12 @@ public static class HatDataHelper
     internal static Dictionary<string, List<HatData>> AllHatData { get; private set; }
 
     /// <summary>
+    /// The default order of hats for each content pack.
+    /// The format is ContentPackID -> List[HatID].
+    /// </summary>
+    internal static Dictionary<string, List<string>> Order { get; private set; }
+
+    /// <summary>
     /// Gets the <see cref="HatData"/> of the specified hat.
     /// 获取指定帽子的 <see cref="HatData"/> 数据。
     /// </summary>
@@ -30,6 +36,12 @@ public static class HatDataHelper
         Log("Loading content packs and local data files.");
 
         var allHatData = new Dictionary<string, List<HatData>>();
+        var allOrder = new Dictionary<string, List<string>>();
+
+        var defaultOrder = DataLoader.Hats(Game1.content).Keys
+            .Select(h => ItemRegistry.ManuallyQualifyItemId(h, ItemRegistry.type_hat))
+            .ToList();
+        allOrder.Add(HatData.CombinedDataSign, defaultOrder);
 
         /*****
          * Some logic below is copied from Esca-MMC's FTM mod, purported under the MIT license.
@@ -63,6 +75,7 @@ public static class HatDataHelper
                 continue; // skip to the next content pack
             }
 
+            var order = new List<string>();
             foreach (var (key, hatInfo) in data)
             {
                 // set some required fields if they are not set
@@ -75,12 +88,15 @@ public static class HatDataHelper
 
                 // add the data to the dictionary
                 allHatData.TryAdd(key, hatInfo);
+                order.Add(key);
             }
 
+            allOrder.Add(pack.Manifest.UniqueID, order);
             Log($"Successfully loaded content pack - {pack.Manifest.UniqueID}.");
         }
 
         AllHatData = allHatData;
+        Order = allOrder;
     }
 
     /// <summary>
@@ -116,6 +132,7 @@ public static class HatDataHelper
                 return;
             }
 
+            var order = new List<string>();
             foreach (var (key, newData) in data)
             {
                 // set some required fields if they are not set
@@ -128,7 +145,10 @@ public static class HatDataHelper
 
                 // add the data to the dictionary
                 AllHatData.TryAdd(key, newData);
+                order.Add(key);
             }
+
+            Order[id] = order;
         }
 
         foreach (var key in AllHatData.Keys)
@@ -218,7 +238,7 @@ public partial class HatData
 
     public static HatData Combine(IEnumerable<HatData> dataList)
     {
-        var data = new HatData { UniqueBuffID = CombinedDataSign };
+        var data = new HatData { ID = CombinedDataSign };
         foreach (var d in dataList)
         {
             data.FarmingLevel += d.FarmingLevel;
@@ -250,7 +270,7 @@ public partial class HatData
     public Buff ConvertToBuff()
     {
         var buff = new Buff(UniqueBuffID);
-        if (UniqueBuffID == CombinedDataSign)
+        if (ID == CombinedDataSign)
         {
             buff.millisecondsDuration = 0;
             return buff;

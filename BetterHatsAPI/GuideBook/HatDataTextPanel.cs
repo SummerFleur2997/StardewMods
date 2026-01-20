@@ -40,7 +40,7 @@ public class HatDataTextPanel : IComponent
     public void UpdateData(HatData data)
     {
         // if it is combined data, we shouldn't go further
-        _isCombinedData = data?.UniqueBuffID == HatData.CombinedDataSign;
+        _isCombinedData = data?.ID == HatData.CombinedDataSign;
         if (_isCombinedData) return;
 
         // the y position of the next first label

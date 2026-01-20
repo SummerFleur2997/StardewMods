@@ -1,4 +1,5 @@
-﻿using BetterHatsAPI.GuideBook;
+﻿using System.IO;
+using BetterHatsAPI.GuideBook;
 using StardewModdingAPI.Events;
 using StardewValley.Menus;
 using StardewValley.Objects;
@@ -13,12 +14,21 @@ public static class GuideBookHelper
         helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
     }
 
+    /// <summary>
+    /// Enable the guide book shortcut when the player loads a save.
+    /// </summary>
     private static void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
         => ModEntry.ModHelper.Events.Input.ButtonsChanged += OnButtonChanged;
 
+    /// <summary>
+    /// Disable the guide book shortcut when the player returns to the title screen.
+    /// </summary>
     private static void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
         => ModEntry.ModHelper.Events.Input.ButtonsChanged -= OnButtonChanged;
 
+    /// <summary>
+    /// Response the shortcut of opening the guide book.
+    /// </summary>
     private static void OnButtonChanged(object sender, ButtonsChangedEventArgs e)
     {
         if (!ModEntry.Config.OpenGuideBookKey.JustPressed())
@@ -44,10 +54,17 @@ public static class GuideBookHelper
                 break;
         }
 
-        var x = (Game1.uiViewport.Width - GuideMenu.MenuWidth) / 2;
-        var y = (Game1.uiViewport.Height - GuideMenu.MenuHeight) / 2;
-        var guideBook = new GuideMenu(x, y, hat ?? Game1.player.hat?.Value ?? ItemRegistry.Create<Hat>("(H)70"));
-        if (m is not null) guideBook.exitFunction = () => Game1.activeClickableMenu = m;
-        Game1.activeClickableMenu = guideBook;
+        try
+        {
+            var x = (Game1.uiViewport.Width - GuideMenu.MenuWidth) / 2;
+            var y = (Game1.uiViewport.Height - GuideMenu.MenuHeight) / 2;
+            var guideBook = new GuideMenu(x, y, hat ?? Game1.player.hat?.Value ?? ItemRegistry.Create<Hat>("(H)70"));
+            if (m is not null) guideBook.exitFunction = () => Game1.activeClickableMenu = m;
+            Game1.activeClickableMenu = guideBook;
+        }
+        catch (InvalidDataException)
+        {
+            ModEntry.Log("You haven't installed any content packs, so you can't use the guide book!", LogLevel.Warn);
+        }
     }
 }
