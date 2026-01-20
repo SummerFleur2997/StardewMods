@@ -280,6 +280,10 @@ public class GridMenu : IClickableMenu, IClickableComponent
 
     public virtual bool ReceiveScrollWheelAction(int amount)
     {
+        var cursorPos = Game1.getMousePosition();
+        if (!Bounds.Contains(cursorPos))
+            return false;
+
         if (Components.Count <= MaxVisibleItems)
             return true;
 
