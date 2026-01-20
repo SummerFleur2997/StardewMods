@@ -2,11 +2,11 @@
     "Name": "BetterHatsAPI",
     "Author": "SummerFleur",
     "Version": "1.0.0",
-    "Description": "Description", // TODO
+    "Description": "Framework for adding custom buffs to hats.",
     "UniqueID": "SummerFleur.BetterHatsAPI",
     "MinimumApiVersion": "4.0.0",
     "EntryDll": "BetterHatsAPI.dll",
     "UpdateKeys": [
-        "Nexus:???" // TODO
+        "Nexus:41438"
     ]
 }
