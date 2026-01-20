@@ -22,4 +22,12 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
     </ItemGroup>
+    <ItemGroup>
+        <Compile Include="..\Common\ConfigurationServices\IGenericModConfigMenuApi.cs">
+            <Link>Integration\IGenericModConfigMenuApi.cs</Link>
+        </Compile>
+        <Compile Include="..\Common\ConfigurationServices\IntergrationHelper.cs">
+            <Link>Integration\IntergrationHelper.cs</Link>
+        </Compile>
+    </ItemGroup>
 </Project>

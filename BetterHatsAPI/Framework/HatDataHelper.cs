@@ -111,7 +111,7 @@ public static class HatDataHelper
             if (pack.Manifest.UniqueID != id)
                 continue;
 
-            Info($"Found content pack {id}, preparing to reload ...");
+            Log($"Found content pack {id}, preparing to reload ...");
             foreach (var (_, oldData) in AllHatData)
                 oldData.RemoveAll(d => d.ID == id); // delete old data
 
@@ -149,8 +149,13 @@ public static class HatDataHelper
             }
 
             Order[id] = order;
+            goto Success;
         }
 
+        Error($"Error: Content pack {id} not found!");
+        return;
+
+        Success:
         foreach (var key in AllHatData.Keys)
             if (!AllHatData[key].Any())
                 AllHatData.Remove(key);

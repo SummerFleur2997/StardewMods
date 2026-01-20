@@ -1,6 +1,8 @@
 ﻿using BetterHatsAPI.API;
 using BetterHatsAPI.Framework;
+using BetterHatsAPI.Integration;
 using JetBrains.Annotations;
+using StardewModdingAPI.Events;
 
 namespace BetterHatsAPI;
 
@@ -31,12 +33,19 @@ internal class ModEntry : Mod
 
         I18n.Init(Helper.Translation);
         Config = helper.ReadConfig<ModConfig>();
-        ContentPacks = helper.ContentPacks.GetOwned().ToList();
 
-        HatManager.Initialize();
+        helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+    }
+
+    private void OnGameLaunched(object s, GameLaunchedEventArgs e)
+    {
+        ContentPacks = Helper.ContentPacks.GetOwned().ToList();
+
+        HatsAPICore.Initialize();
         HatDataHelper.LoadContentPacks();
         GameExtensions.RegisterMethods();
-        GuideBookHelper.RegisterEventsForGuideBook(helper);
+        GuideBookHelper.RegisterEventsForGuideBook(Helper);
+        GenericModConfigMenuIntegration.Register(Manifest, ModHelper.ModRegistry, ResetConfig, SaveConfig);
 
         ModHelper.ConsoleCommands.Add(
             "BHA_Reload",
@@ -44,7 +53,7 @@ internal class ModEntry : Mod
             Reload);
     }
 
-    public override object GetApi(IModInfo mod) => HatManager.Instance;
+    public override object GetApi(IModInfo mod) => HatsAPICore.Instance;
 
     private static void Reload(string command, string[] args)
     {
@@ -56,4 +65,16 @@ internal class ModEntry : Mod
 
         HatDataHelper.ReloadContentPacks(args[0]);
     }
+
+    /// <summary>
+    /// 读取模组配置更新并重新载入配置。
+    /// Save the update of modconfig and reload them.
+    /// </summary>
+    private static void SaveConfig()
+    {
+        ModHelper.WriteConfig(Config);
+        Config = ModHelper.ReadConfig<ModConfig>();
+    }
+
+    private static void ResetConfig() => Config = new ModConfig();
 }

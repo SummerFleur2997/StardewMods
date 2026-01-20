@@ -7,9 +7,9 @@ using static BetterHatsAPI.Framework.Utilities;
 
 namespace BetterHatsAPI.API;
 
-public class HatManager : ISummerFleurBetterHatsAPI
+public class HatsAPICore : ISummerFleurBetterHatsAPI
 {
-    public static readonly HatManager Instance = new();
+    public static readonly HatsAPICore Instance = new();
 
     /// <inheritdoc/>
     public event ISummerFleurBetterHatsAPI.HatUnequippedDelegate? OnHatUnequipped;
@@ -21,7 +21,7 @@ public class HatManager : ISummerFleurBetterHatsAPI
     private List<HatData> CachedHatDataForOneSecondUpdateTicked { get; } = new();
     private List<HatData> CachedHatDataForUpdateTicked { get; } = new();
 
-    private HatManager()
+    private HatsAPICore()
     {
         ModEntry.ModHelper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
         ModEntry.ModHelper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;

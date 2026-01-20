@@ -32,5 +32,10 @@
 
   // To translators: please use the punctuations based on your locale, and remember the white space if needed.
   "string.connect": "{{title}}: {{value}}",
-  "punctuation.comma": ", " // for example, in Chinese, we use a full-width comma with no space like this: "、"
+  "punctuation.comma": ", ", // for example, in Chinese, we use a full-width comma with no space like this: "、"
+
+  "config.GuideBook.Name": "Hat Guide Book Menu Shortcut",
+  "config.GuideBook.Desc": "The shortcut key to open the Hat Guide Book menu.",
+  "config.DisableTickUpdate.Name": "Disable Per-Tick Condition Check",
+  "config.DisableTickUpdate.Desc": "Disables the per-tick condition checker (60 times per second) registered in the data pack and lowers its frequency to once per second, which may help reduce stuttering."
 }
