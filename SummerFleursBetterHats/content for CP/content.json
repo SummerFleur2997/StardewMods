@@ -32,6 +32,7 @@
         }
       }
     },
+    // Mails
     {
       "Action": "EditData",
       "Target": "Data/Mail",
@@ -40,5 +41,139 @@
         "SFBH_DarkBallcap": "{{i18n:mail.DarkBallcap}}"
       }
     },
+    // Datable npc's hat dialogues
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Abigail",
+      "Entries": {
+        "SFBH_AbigailsBow": "{{i18n:dialogue.Abigail.AbigailsBow}}"
+      },
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Sam",
+      "Entries": {
+        "SFBH_Beanie": "{{i18n:dialogue.Sam.Beanie}}"
+      },
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Victor",
+      "Entries": {
+        "SFBH_BowlerHat": "{{i18n:dialogue.Victor.BowlerHat}}"
+      },
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Harvey",
+      "Entries": {
+        "SFBH_ChefHat": "{{i18n:dialogue.Harvey.ChefHat}}"
+      },
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Shane",
+      "Entries": {
+        "SFBH_ChickenMask": "{{i18n:dialogue.Shane.ChickenMask}}"
+      },
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Olivia",
+      "Entries": {
+        "SFBH_ConeHat": "{{i18n:dialogue.Olivia.ConeHat}}"
+      },
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Sophia",
+      "Entries": {
+        "SFBH_DeluxeCowboyHat": "{{i18n:dialogue.Sophia.DeluxeCowboyHat}}"
+      },
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Lance",
+      "Entries": {
+        "SFBH_EyePatch": "{{i18n:dialogue.Lance.EyePatch}}"
+      },
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Claire",
+      "Entries": {
+        "SFBH_FashionHat": "{{i18n:dialogue.Claire.FashionHat}}"
+      },
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Magnus",
+      "Entries": {
+        "SFBH_FlatToppedHat": "{{i18n:dialogue.Magnus.FlatToppedHat}}"
+      },
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Emily",
+      "Entries": {
+        "SFBH_FloppyBeanie": "{{i18n:dialogue.Emily.FloppyBeanie}}"
+      },
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Sebastian",
+      "Entries": {
+        "SFBH_FrogHat": "{{i18n:dialogue.Sebastian.FrogHat}}"
+      },
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Maru",
+      "Entries": {
+        "SFBH_Goggles": "{{i18n:dialogue.Maru.Goggles}}"
+      },
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Leah",
+      "Entries": {
+        "SFBH_LeprechuanHat": "{{i18n:dialogue.Leah.LeprechuanHat}}"
+      },
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Penny",
+      "Entries": {
+        "SFBH_PageboyCap": "{{i18n:dialogue.Penny.PageboyCap}}"
+      },
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Scarlett",
+      "Entries": {
+        "SFBH_PlumChapeau": "{{i18n:dialogue.Scarlett.PlumChapeau}}"
+      },
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Alex",
+      "Entries": {
+        "SFBH_SportsCap": "{{i18n:dialogue.Alex.SportsCap}}"
+      },
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Elliott",
+      "Entries": {
+        "SFBH_TricornHat": "{{i18n:dialogue.Elliott.TricornHat}}"
+      },
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Haley",
+      "Entries": {
+        "SFBH_Tropiclip": "{{i18n:dialogue.Haley.Tropiclip}}"
+      },
+    }
   ]
 }

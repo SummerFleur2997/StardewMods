@@ -37,6 +37,29 @@ public partial class HatRelyOnEvents
     }
 
     /// <summary>
+    /// For FTM compatible, set the value of new spawned mummies
+    /// </summary>
+    private static void MummyMaskMonsterSpawned(object s, NpcListChangedEventArgs e)
+    {
+        if (!PlayerHatIs(MummyMaskID))
+        {
+            ModEntry.ModHelper.Events.World.NpcListChanged -= MummyMaskMonsterSpawned;
+            return;
+        }
+
+        var monsters = e.Added.OfType<Mummy>().ToList();
+
+        foreach (var mummy in monsters)
+        {
+            _cachedMaxAttack = Math.Max(_cachedMaxAttack, mummy.DamageToFarmer);
+            _cachedMaxMtp = Math.Max(_cachedMaxMtp, mummy.moveTowardPlayerThreshold.Value);
+            mummy.DamageToFarmer = 0;
+            mummy.moveTowardPlayerThreshold.Value = -2;
+            Reflection.GetField<int>(mummy, "_damageToFarmer", false).SetValue(0);
+        }
+    }
+
+    /// <summary>
     /// When the player takes off the hat, the mummies will be enraged,
     /// gain double damage.
     /// </summary>

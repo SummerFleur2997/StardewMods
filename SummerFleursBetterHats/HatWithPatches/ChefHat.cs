@@ -1,10 +1,17 @@
-﻿using StardewValley.Menus;
+﻿// using StardewValley.Menus;
 
 namespace SummerFleursBetterHats.HatWithPatches;
 
 public partial class HatWithPatches
 {
-    private static void RegisterPatchForChefHat(Harmony harmony)
+    /******
+     * A previous trying to patch the CraftingPage.clickCraftingRecipe method
+     * to set the crafted dish's quality to silver quality if the player is
+     * wearing the chef hat. But there are also a lot of mods patching this
+     * method too, so it's not reliable and hard to consistently work.
+     ****/
+
+    /*private static void RegisterPatchForChefHat(Harmony harmony)
     {
         try
         {
@@ -75,5 +82,5 @@ public partial class HatWithPatches
         }
 
         return codes;
-    }
+    }*/
 }

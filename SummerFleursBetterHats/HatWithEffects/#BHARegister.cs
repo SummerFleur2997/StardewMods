@@ -15,6 +15,7 @@ public static partial class HatWithEffects
         api.SetCustomActionTrigger(TopHatID, PackID, Action_WeddingHats_AddFriendShip);
 
         api.SetCustomConditionChecker(BridalVeilID, PackID, Condition_WeddingHats_IsFirstWedding);
+        api.SetCustomConditionChecker(MagicCowboyHatID, PackID, Condition_MagicCowboyHat_TimeRandom);
         api.SetCustomConditionChecker(SpaceHelmetID, PackID, Condition_SpaceHelmet_InDifficultyMine);
         api.SetCustomConditionChecker(TopHatID, PackID, Condition_WeddingHats_IsFirstWedding);
 

@@ -7,7 +7,7 @@ public partial class HatRelatedToShops
     /// </summary>
     private static Item RollRandomItemForMagicTurban()
     {
-        var week = Game1.stats.DaysPlayed / 7;
+        var week = Game1.Date.TotalSundayWeeks;
         var r = Utility.CreateRandom(
             week,
             Game1.uniqueIDForThisGame,

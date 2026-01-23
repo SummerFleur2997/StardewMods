@@ -2,17 +2,16 @@
 
 /* After my injection, the method would like this:
     ...
-    int numToHarvest = 1;
+    int numToHarvest = ??; // this equals to the original value
 
     Random r = Utility.CreateRandom(xTile * 7.0, yTile * 5.0, Game1.stats.DaysPlayed, Game1.uniqueIDForThisGame);
-    if (r.NextDouble() > 0.1)
-        return;
+    double i = r.NextDouble();
 
-    var amount = crop.indexOfHarvest.Value switch
+    int amount = crop.indexOfHarvest.Value switch
     {
-        _ when PlayerHatIs(JunimoHatID) => 1,
-        "889" when PlayerHatIs(QiMaskID) => 1,
-        "417" when PlayerHatIs(WhiteTurbanID) => 1,
+        _ when PlayerHatIs(JunimoHatID) && i > 0.8 => 1,
+        "889" when PlayerHatIs(QiMaskID) && i > 0.9 => 1,
+        "417" when PlayerHatIs(WhiteTurbanID) && i > 0.9 => 1,
         _ => 0
     };
 
@@ -47,14 +46,13 @@ public partial class HatWithPatches
     {
         // create an exclusive random, avoid potential effect to the original logic 
         var r = Utility.CreateRandom(xTile * 7.0, yTile * 5.0, Game1.stats.DaysPlayed, Game1.uniqueIDForThisGame);
-        if (r.NextDouble() > 0.1)
-            return;
+        var i = r.NextDouble();
 
         var amount = crop.indexOfHarvest.Value switch
         {
-            _ when PlayerHatIs(JunimoHatID) => 1,
-            "889" when PlayerHatIs(QiMaskID) => 1,
-            "417" when PlayerHatIs(WhiteTurbanID) => 1,
+            _ when PlayerHatIs(JunimoHatID) && i > 0.8 => 1,
+            "889" when PlayerHatIs(QiMaskID) && i > 0.9 => 1,
+            "417" when PlayerHatIs(WhiteTurbanID) && i > 0.9 => 1,
             _ => 0
         };
 

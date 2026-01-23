@@ -4,7 +4,7 @@ public static partial class HatWithPatches
 {
     public static void RegisterAllPatches(Harmony harmony)
     {
-        RegisterPatchForChefHat(harmony);
+        // RegisterPatchForChefHat(harmony);
         RegisterPatchForGarbageHat(harmony);
         RegisterPatchForGnomesCap(harmony);
         RegisterPatchForGoldenHelmet(harmony);
@@ -19,7 +19,9 @@ public static partial class HatWithPatches
         RegisterPatchForJesterHat(harmony);
         RegisterPatchForLuckyBow(harmony);
         RegisterPatchForMushroomCap(harmony);
+        RegisterPatchForMysteryHat(harmony);
         RegisterPatchForPolkaBow(harmony);
+        RegisterPatchForRadioactiveGoggles(harmony);
         RegisterPatchForTruckerHat(harmony);
     }
 }

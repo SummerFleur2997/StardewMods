@@ -7,6 +7,10 @@
   "(H)0": {
     "Speed": 1.5
   },
+  // Straw Hat
+  "(H)4": {
+    "FarmingLevel": 1
+  },
   // Official Cap
   "(H)5": {
     "MiningLevel": 1
@@ -18,10 +22,6 @@
   // Hunter's Cap
   "(H)15": {
     "Attack": 1
-  },
-  // Cool Cap
-  "(H)20": {
-    "FarmingLevel": 1
   },
   // Sailor's Cap
   "(H)17": {
@@ -218,6 +218,13 @@
     "Description": "i18n:description.PumpkinMask",
     "ConditionDescription": "i18n:condition.PumpkinMask"
   },
+  // Spotted Headscarf
+  "(H)52": {
+    "FarmingLevel": 2,
+    "Condition": "SEASON Fall",
+    "Trigger": "DayStarted"
+  },
+  // Blobfish Mask
   "(H)56": {
     "FishingLevel": 2,
     "Condition": "LOCATION_NAME Here Submarine",
@@ -251,6 +258,12 @@
     "Trigger": "DayStarted",
     "ConditionDescription": "i18n:condition.BridalVeil",
     "ActionDescription": "i18n:action.WeddingHat"
+  },
+  // Magic Cowboy Hat (about 33% random chance)
+  "(H)73": {
+    "Speed": 2,
+    "Condition": "$CustomCondition",
+    "Trigger": "TimeChanged"
   },
   // Sunglasses (Current season is summer)
   "(H)88": {

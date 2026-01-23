@@ -60,6 +60,11 @@ public static partial class HatRelatedToShops
                 mask = RedFezMask;
                 itemGetter = RollRandomItemForRedFezHat;
                 break;
+            case "QiGemShop" when PlayerHatIs(MrQisHatID):
+                price = 0;
+                mask = MrQisHatMask;
+                itemGetter = RollRandomItemForMrQisHat;
+                break;
             default:
                 return;
         }

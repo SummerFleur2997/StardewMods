@@ -22,7 +22,7 @@ public static class GameExtensions
     public static bool ModifyWorldStatus(string[] args, TriggerActionContext context, out string error)
     {
         if (!ArgUtility.TryGetInt(args, 1, out var mask, out error, "uint mask") ||
-            !ArgUtility.TryGet(args, 1, out var shopID, out error, true, "string shopID"))
+            !ArgUtility.TryGet(args, 2, out var shopID, out error, true, "string shopID"))
             return false;
 
         var player = Game1.player;

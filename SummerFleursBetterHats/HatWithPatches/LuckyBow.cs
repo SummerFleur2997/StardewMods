@@ -28,8 +28,15 @@ public partial class HatWithPatches
         }
     }
 
+    /// <summary>
+    /// Add 0.015 daily luck point if the player is wearing the lucky bow.
+    /// </summary>
     public static double AddDailyLuck() => PlayerHatIs(LuckyBowID) ? 0.015 : 0;
 
+    /// <summary>
+    /// Add a transpiler to the <see cref="Farmer.DailyLuck"/> property
+    /// to add the daily luck.
+    /// </summary>
     public static IEnumerable<CodeInstruction> Patch_LuckyBow_DailyLuck(IEnumerable<CodeInstruction> ci)
     {
         var matcher = new CodeMatcher(ci);

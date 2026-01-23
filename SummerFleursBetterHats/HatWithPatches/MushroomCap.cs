@@ -20,8 +20,16 @@ public partial class HatWithPatches
         }
     }
 
+    /// <summary>
+    /// Add 5% of the chance to get mixed-seeds from the weed if
+    /// the player is wearing the mushroom cap.
+    /// </summary>
     public static double AddMixedSeedChance() => PlayerHatIs(MushroomCapID) ? 0.05 : 0;
 
+    /// <summary>
+    /// Add a transpiler to the <see cref="Object.cutWeed"/> method
+    /// to add the drop chance of mixed-seeds.
+    /// </summary>
     public static IEnumerable<CodeInstruction> Patch_MushroomCap_cutWeed(IEnumerable<CodeInstruction> ci)
     {
         var matcher = new CodeMatcher(ci);

@@ -110,28 +110,30 @@ internal static class SaveManager
     /// </summary>
     private static void OnDayStarted(object s, DayStartedEventArgs e)
     {
-        // Clear the higher 4 bits of the info (monthly flags)
+        // Clear the mid-higher 8 bits of the info (monthly flags)
         if (Game1.Date.DayOfMonth == 1)
         {
             foreach (var player in WorldStatus.Keys)
             {
-                var newValue = WorldStatus[player] & 0x0FFF;
+                var newValue = WorldStatus[player] & 0x00FFFF;
                 WorldStatus[player] = newValue;
             }
         }
 
-        // Clear the center 8 bits of the info (weekly flags)
+        // Clear the mid-lower 8 bits of the info (weekly flags)
         if (Game1.Date.DayOfWeek == DayOfWeek.Sunday)
+        {
             foreach (var player in WorldStatus.Keys)
             {
-                var newValue = WorldStatus[player] & 0xF00F;
+                var newValue = WorldStatus[player] & 0xFF00FF;
                 WorldStatus[player] = newValue;
             }
+        }
 
         // Clear the lower 4 bits of the info (daily flags)
         foreach (var player in WorldStatus.Keys)
         {
-            var newValue = WorldStatus[player] & 0xFFF0;
+            var newValue = WorldStatus[player] & 0xFFFF00;
             WorldStatus[player] = newValue;
         }
     }
