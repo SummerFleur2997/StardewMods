@@ -11,14 +11,6 @@
   "(H)4": {
     "FarmingLevel": 1
   },
-  // Official Cap
-  "(H)5": {
-    "MiningLevel": 1
-  },
-  // Skeleton Mask
-  "(H)8": {
-    "Description": "Todo"
-  },
   // Hunter's Cap
   "(H)15": {
     "Attack": 1
@@ -61,7 +53,7 @@
   },
   // Propeller Hat
   "(H)68": {
-    "MagneticRadius": 64
+    "MiningLevel": 1
   },
   // Witch Hat
   "(H)70": {
@@ -274,7 +266,7 @@
   },
   // Bucket Hat (During the Trout Derby)
   "(H)BucketHat": {
-    "FishingLevel": 2,
+    "FishingLevel": 1,
     "MaxStamina": 50,
     "Condition": "SEASON_DAY Summer 20 Summer 21",
     "Trigger": "DayStarted"

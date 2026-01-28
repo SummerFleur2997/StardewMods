@@ -41,7 +41,6 @@ public partial class HatWithPatches
         _ => 0
     };
 
-
     /// <summary>
     /// Add a transpiler to the <see cref="Pet.checkAction"/> method
     /// to add the chance of gifts.
