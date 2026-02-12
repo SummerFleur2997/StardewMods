@@ -3,8 +3,8 @@
 public partial class HatWithEffects
 {
     /// <summary>
-    /// Effect of Santa Hat: if the player has forage mastery, get a
-    /// Golden Mystery Box as santa's gift, otherwise, a Mystery Box.
+    /// Effect of Sombrero: Get 0.5% of total money earned on Sunday
+    /// morning, with no limit.
     /// </summary>
     private static void Action_Sombrero_AddMoney()
     {

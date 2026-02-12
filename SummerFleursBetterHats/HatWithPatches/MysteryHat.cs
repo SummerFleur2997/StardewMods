@@ -10,11 +10,11 @@ public partial class HatWithPatches
             var transpiler = AccessTools.Method(
                 typeof(HatWithPatches), nameof(Patch_MysteryHat_tryRollMysteryBox));
             harmony.Patch(original, transpiler: new HarmonyMethod(transpiler));
-            ModEntry.Log("Patched Utility.tryRollMysteryBox for mystery hat successfully.");
+            Log("Patched Utility.tryRollMysteryBox for mystery hat successfully.");
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed to patch for mystery hat: {ex.Message}", LogLevel.Error);
+            Error($"Failed to patch for mystery hat: {ex.Message}");
         }
     }
 

@@ -14,6 +14,11 @@ public partial class HatRelatedToShops
             Game1.player.UniqueMultiplayerID,
             46); // id of the wearable dwarf helm
 
+        var k = r.Next() & 15;
+        for (var j = 0; j < k; j++)
+        for (var i = 0; i < j; i++)
+            r.Next();
+
         return r.NextDouble() switch
         {
             < 0.20 => ItemRegistry.Create("(O)286", 20), // cherry bomb

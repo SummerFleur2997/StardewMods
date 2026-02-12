@@ -3,16 +3,21 @@
 public partial class HatRelatedToShops
 {
     /// <summary>
-    /// Item roller for the magic turban.
+    /// Item roller for the green turban.
     /// </summary>
-    private static Item RollRandomItemForMagicTurban()
+    private static Item RollRandomItemForGreenTurban()
     {
         var week = Game1.Date.TotalSundayWeeks;
         var r = Utility.CreateRandom(
             week,
             Game1.uniqueIDForThisGame,
             Game1.player.UniqueMultiplayerID,
-            74); // id of the magic turban
+            72); // id of the green turban
+
+        var k = r.Next() & 15;
+        for (var j = 0; j < k; j++)
+        for (var i = 0; i < j; i++)
+            r.Next();
 
         return r.NextDouble() switch
         {

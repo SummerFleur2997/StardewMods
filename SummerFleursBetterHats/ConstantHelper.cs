@@ -140,7 +140,7 @@ internal static class ConstantHelper
      *****/
     public const uint DarkVelvetBowMask     = 1 << 8;
     public const uint WearableDwarfHelmMask = 1 << 9;
-    public const uint MagicTurbanMask       = 1 << 10;
+    public const uint GreenTurbanMask       = 1 << 10;
     public const uint BluebirdMaskMask      = 1 << 11;
     public const uint JesterHatMask         = 1 << 12;
 

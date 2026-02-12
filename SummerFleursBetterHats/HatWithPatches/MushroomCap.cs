@@ -12,11 +12,11 @@ public partial class HatWithPatches
             var transpiler = AccessTools.Method(
                 typeof(HatWithPatches), nameof(Patch_MushroomCap_cutWeed));
             harmony.Patch(original, transpiler: new HarmonyMethod(transpiler));
-            ModEntry.Log("Patched Object.cutWeed for mushroom cap successfully.");
+            Log("Patched Object.cutWeed for mushroom cap successfully.");
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed to patch for mushroom cap: {ex.Message}", LogLevel.Error);
+            Error($"Failed to patch for mushroom cap: {ex.Message}");
         }
     }
 

@@ -9,28 +9,29 @@ public class MultiplayerServer : IModule
 
     public bool IsActive { get; private set; }
 
-    private IMultiplayerHelper MultiplayerHelper => ModEntry.ModHelper.Multiplayer;
+    private static IMultiplayerHelper MultiplayerHelper => ModEntry.ModHelper.Multiplayer;
+    private static IModEvents EventsHelper => ModEntry.ModHelper.Events;
 
     private MultiplayerServer() { }
 
     public void Activate()
     {
         IsActive = true;
-        ModEntry.ModHelper.Events.Multiplayer.ModMessageReceived += OnMessageReceived;
-        ModEntry.ModHelper.Events.GameLoop.DayStarted += OnDayStarted;
+        EventsHelper.Multiplayer.ModMessageReceived += OnMessageReceived;
+        EventsHelper.GameLoop.DayStarted += OnDayStarted;
     }
 
     public void Deactivate()
     {
         IsActive = false;
-        ModEntry.ModHelper.Events.Multiplayer.ModMessageReceived -= OnMessageReceived;
-        ModEntry.ModHelper.Events.GameLoop.DayStarted -= OnDayStarted;
+        EventsHelper.Multiplayer.ModMessageReceived -= OnMessageReceived;
+        EventsHelper.GameLoop.DayStarted -= OnDayStarted;
     }
 
     public static void RegisterEvents()
     {
-        ModEntry.ModHelper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
-        ModEntry.ModHelper.Events.GameLoop.ReturnedToTitle += OnReturnToTitle;
+        EventsHelper.GameLoop.SaveLoaded += OnSaveLoaded;
+        EventsHelper.GameLoop.ReturnedToTitle += OnReturnToTitle;
     }
 
     /// <summary>
@@ -59,7 +60,7 @@ public class MultiplayerServer : IModule
         if (!Context.IsMainPlayer)
             SendSyncRequest();
 
-        ModEntry.ModHelper.Events.GameLoop.DayStarted -= OnDayStarted;
+        EventsHelper.GameLoop.DayStarted -= OnDayStarted;
     }
 
     private void OnMessageReceived(object sender, ModMessageReceivedEventArgs e)

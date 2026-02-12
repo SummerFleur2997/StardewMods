@@ -3,7 +3,7 @@
 public partial class HatRelatedToShops
 {
     /// <summary>
-    /// Item roller for the magic turban.
+    /// Item roller for the mr. qi's hat.
     /// </summary>
     private static Item RollRandomItemForMrQisHat()
     {
@@ -13,6 +13,11 @@ public partial class HatRelatedToShops
             Game1.uniqueIDForThisGame,
             Game1.player.UniqueMultiplayerID,
             82); // id of the mr. qi's hat
+
+        var k = r.Next() & 15;
+        for (var j = 0; j < k; j++)
+        for (var i = 0; i < j; i++)
+            r.Next();
 
         return r.NextDouble() switch
         {

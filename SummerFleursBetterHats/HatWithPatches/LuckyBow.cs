@@ -20,11 +20,11 @@ public partial class HatWithPatches
             var transpiler = AccessTools.Method(
                 typeof(HatWithPatches), nameof(Patch_LuckyBow_DailyLuck));
             harmony.Patch(original, transpiler: new HarmonyMethod(transpiler));
-            ModEntry.Log("Patched Farmer.DailyLuck for lucky bow successfully.");
+            Log("Patched Farmer.DailyLuck for lucky bow successfully.");
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed to patch for lucky bow: {ex.Message}", LogLevel.Error);
+            Error($"Failed to patch for lucky bow: {ex.Message}");
         }
     }
 

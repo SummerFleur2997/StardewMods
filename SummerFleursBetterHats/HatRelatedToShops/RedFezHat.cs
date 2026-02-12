@@ -15,6 +15,11 @@ public partial class HatRelatedToShops
             Game1.player.UniqueMultiplayerID,
             105); // index of the red fez hat
 
+        var k = r.Next() & 15;
+        for (var j = 0; j < k; j++)
+        for (var i = 0; i < j; i++)
+            r.Next();
+
         string id;
         Item item;
         do

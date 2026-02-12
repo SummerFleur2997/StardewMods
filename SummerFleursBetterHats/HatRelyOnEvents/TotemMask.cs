@@ -32,7 +32,7 @@ public partial class HatRelyOnEvents
         // if the player's hat is not a totem mask, unregister this event
         if (!PlayerHatIs(TotemMaskID))
         {
-            ModEntry.ModHelper.Events.Input.ButtonsChanged -= TotemMaskButtonsChanged;
+            ModEvents.Input.ButtonsChanged -= TotemMaskButtonsChanged;
             return;
         }
 

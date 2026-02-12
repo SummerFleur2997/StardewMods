@@ -12,7 +12,7 @@ public partial class HatWithPatches
             var transpiler1 = AccessTools.Method(
                 typeof(HatWithPatches), nameof(Patch_Ticket_tryToReceiveActiveObject));
             harmony.Patch(original1, transpiler: new HarmonyMethod(transpiler1));
-            ModEntry.Log("Patched NPC.tryToReceiveActiveObject for discount ticket successfully.");
+            Log("Patched NPC.tryToReceiveActiveObject for discount ticket successfully.");
 
             var original2 = AccessTools.Method(
                 typeof(GameLocation), nameof(GameLocation.performAction),
@@ -20,17 +20,17 @@ public partial class HatWithPatches
             var transpiler2 = AccessTools.Method(
                 typeof(HatWithPatches), nameof(Patch_MovieTheater_performAction));
             harmony.Patch(original2, transpiler: new HarmonyMethod(transpiler2));
-            ModEntry.Log("Patched GameLocation.performAction for movie theater successfully.");
+            Log("Patched GameLocation.performAction for movie theater successfully.");
 
             var original3 = AccessTools.Method(typeof(GameLocation), nameof(GameLocation.answerDialogueAction));
             var postfix3 = AccessTools.Method(
                 typeof(HatWithPatches), nameof(Patch_MovieTheater_answerDialogueAction));
             harmony.Patch(original3, postfix: new HarmonyMethod(postfix3));
-            ModEntry.Log("Patched GameLocation.answerDialogueAction for movie theater successfully.");
+            Log("Patched GameLocation.answerDialogueAction for movie theater successfully.");
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed to patch for jester hat: {ex.Message}", LogLevel.Error);
+            Error($"Failed to patch for jester hat: {ex.Message}");
         }
     }
 

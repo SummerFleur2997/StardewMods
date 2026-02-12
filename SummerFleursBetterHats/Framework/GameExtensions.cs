@@ -13,13 +13,14 @@ public static class GameExtensions
 {
     public static void RegisterMethods()
     {
-        GameStateQuery.Register($"SFBH_{nameof(MINE_LEVEL)}", MINE_LEVEL);
-        GameStateQuery.Register($"SFBH_{nameof(MINE_LEVEL_RANGE)}", MINE_LEVEL_RANGE);
+        TriggerActionManager.RegisterAction($"SummerFleur.BetterHats.{nameof(ModifyModData)}", ModifyModData);
+        TriggerActionManager.RegisterAction($"SummerFleur.BetterHats.{nameof(ResponseHatTopic)}", ResponseHatTopic);
 
-        TriggerActionManager.RegisterAction($"SFBH_{nameof(ModifyWorldStatus)}", ModifyWorldStatus);
+        GameStateQuery.Register($"SummerFleur.BetterHats.{nameof(MINE_LEVEL)}", MINE_LEVEL);
+        GameStateQuery.Register($"SummerFleur.BetterHats.{nameof(MINE_LEVEL_RANGE)}", MINE_LEVEL_RANGE);
     }
 
-    public static bool ModifyWorldStatus(string[] args, TriggerActionContext context, out string error)
+    public static bool ModifyModData(string[] args, TriggerActionContext context, out string error)
     {
         if (!ArgUtility.TryGetInt(args, 1, out var mask, out error, "uint mask") ||
             !ArgUtility.TryGet(args, 2, out var shopID, out error, true, "string shopID"))
@@ -36,18 +37,37 @@ public static class GameExtensions
         return false;
     }
 
+    public static bool ResponseHatTopic(string[] args, TriggerActionContext context, out string error)
+    {
+        if (!ArgUtility.TryGet(args, 1, out var hatName, out error, true, "string hatName") ||
+            !ArgUtility.TryGet(args, 2, out var npcName, out error, true, "string npcName"))
+            return false;
+
+        var npc = Game1.getCharacterFromName(npcName);
+        if (npc == null)
+        {
+            error = "no NPC found with name '" + npcName + "'";
+            return false;
+        }
+
+        var player = Game1.player;
+        player.changeFriendship(150, npc);
+        player.mailReceived.Add($"SummerFleur.BetterHats.{hatName}");
+        return true;
+    }
+
     /// <summary>
     /// A query used to check if the current location is the mine,
     /// and the mine level contains the specified value.
     /// </summary>
     /// <remarks>
     /// The query format is:
-    /// <c>MINE_LEVEL Here [Levels]</c>
-    /// For example, the query text <c>"MINE_LEVEL Here 10 20 30"</c>
+    /// <c>SummerFleur.BetterHats.MINE_LEVEL Here [Levels]</c>
+    /// For example, the query text <c>"SummerFleur.BetterHats.MINE_LEVEL Here 10 20 30"</c>
     /// will return true if the current location is the mine, and the
     /// mine level is 10, 20, or 30.
     /// </remarks>
-    private static bool MINE_LEVEL(string[] query, GameStateQueryContext context)
+    public static bool MINE_LEVEL(string[] query, GameStateQueryContext context)
     {
         var location = context.Location;
         if (!Helpers.TryGetLocationArg(query, 1, ref location, out var error))
@@ -75,12 +95,12 @@ public static class GameExtensions
     /// </summary>
     /// <remarks>
     /// The query format is:
-    /// <c>SFBH_MINE_LEVEL Here MinLevel [MaxLevel]</c>
-    /// For example, the query text <c>"SFBH_MINE_LEVEL Here 40 80"</c>
+    /// <c>SummerFleur.BetterHats.MINE_LEVEL Here MinLevel [MaxLevel]</c>
+    /// For example, the query text <c>"SummerFleur.BetterHats.MINE_LEVEL Here 40 80"</c>
     /// will return true if the current location is the mine, and the
     /// mine level is between 40 and 80.
     /// </remarks>
-    private static bool MINE_LEVEL_RANGE(string[] query, GameStateQueryContext context)
+    public static bool MINE_LEVEL_RANGE(string[] query, GameStateQueryContext context)
     {
         var location = context.Location;
         if (!Helpers.TryGetLocationArg(query, 1, ref location, out var error))

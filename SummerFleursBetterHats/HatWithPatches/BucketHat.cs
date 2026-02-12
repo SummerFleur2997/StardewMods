@@ -12,11 +12,11 @@ public partial class HatWithPatches
             var transpiler = AccessTools.Method(
                 typeof(HatWithPatches), nameof(Patch_BucketHat_doneHoldingFish));
             harmony.Patch(original, transpiler: new HarmonyMethod(transpiler));
-            ModEntry.Log("Patched FishingRod.doneHoldingFish for bucket hat successfully.");
+            Log("Patched FishingRod.doneHoldingFish for bucket hat successfully.");
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed to patch for bucket hat: {ex.Message}", LogLevel.Error);
+            Error($"Failed to patch for bucket hat: {ex.Message}");
         }
     }
 
@@ -24,7 +24,7 @@ public partial class HatWithPatches
     /// Multiply the chance of golden tag by 1.5 when the player is
     /// wearing the bucket hat.
     /// </summary>
-    public static double AddGoldenTagChance() => PlayerHatIs(OfficialCapID) ? 1.5 : 1.0;
+    public static double AddGoldenTagChance() => PlayerHatIs(BucketHatID) ? 1.5 : 1.0;
 
     /// <summary>
     /// Add a transpiler to the <see cref="FishingRod.doneHoldingFish"/>
@@ -37,8 +37,7 @@ public partial class HatWithPatches
         // Find anchor instructions for the injection
         var target = new CodeMatch[]
         {
-            new(OpCodes.Mul),
-            new(OpCodes.Bge_Un_S),
+            new(OpCodes.Ldc_R8, 0.33),
             new(OpCodes.Ldarg_0)
         };
         matcher.MatchStartForward(target).Advance(1);
@@ -50,8 +49,8 @@ public partial class HatWithPatches
         // Add the injection to the codes
         var injection = new List<CodeInstruction>
         {
-            new(OpCodes.Mul),
-            new(OpCodes.Call, AccessTools.Method(typeof(HatWithPatches), nameof(AddGoldenTagChance)))
+            new(OpCodes.Call, AccessTools.Method(typeof(HatWithPatches), nameof(AddGoldenTagChance))),
+            new(OpCodes.Mul)
         };
         matcher.InsertAndAdvance(injection);
 

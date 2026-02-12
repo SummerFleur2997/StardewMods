@@ -13,11 +13,11 @@ public partial class HatWithPatches
             var transpiler = AccessTools.Method(
                 typeof(HatWithPatches), nameof(Patch_BlueBonnet_DoFunction));
             harmony.Patch(original, transpiler: new HarmonyMethod(transpiler));
-            ModEntry.Log("Patched Hoe.DoFunction for blue bonnet successfully.");
+            Log("Patched Hoe.DoFunction for blue bonnet successfully.");
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed to patch for blue bonnet: {ex.Message}", LogLevel.Error);
+            Error($"Failed to patch for blue bonnet: {ex.Message}");
         }
     }
 

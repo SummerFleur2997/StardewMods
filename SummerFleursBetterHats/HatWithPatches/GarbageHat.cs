@@ -22,11 +22,11 @@ public partial class HatWithPatches
             var transpiler = AccessTools.Method(
                 typeof(HatWithPatches), nameof(Patch_GarbageHat_TryGetGarbageItem));
             harmony.Patch(original, transpiler: new HarmonyMethod(transpiler));
-            ModEntry.Log("Patched GameLocation.TryGetGarbageItem for garbage hat successfully.");
+            Log("Patched GameLocation.TryGetGarbageItem for garbage hat successfully.");
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed to patch for garbage hat: {ex.Message}", LogLevel.Error);
+            Error($"Failed to patch for garbage hat: {ex.Message}");
         }
     }
 

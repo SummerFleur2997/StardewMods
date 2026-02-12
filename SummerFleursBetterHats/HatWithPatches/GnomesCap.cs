@@ -24,11 +24,11 @@ public partial class HatWithPatches
             var transpiler = AccessTools.Method(
                 typeof(HatWithPatches), nameof(Patch_GnomesCap_pickFarmEvent));
             harmony.Patch(original, transpiler: new HarmonyMethod(transpiler));
-            ModEntry.Log("Patched Utility.pickFarmEvent for gnome's cap successfully.");
+            Log("Patched Utility.pickFarmEvent for gnome's cap successfully.");
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed to patch for gnome's cap: {ex.Message}", LogLevel.Error);
+            Error($"Failed to patch for gnome's cap: {ex.Message}");
         }
     }
 

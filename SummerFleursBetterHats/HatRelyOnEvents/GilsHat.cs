@@ -22,7 +22,7 @@ public partial class HatRelyOnEvents
         // Check whether gil's hat is worn
         if (!PlayerHatIs(GilsHatID))
         {
-            ModEntry.ModHelper.Events.Player.Warped -= GilsHatLocationChanged;
+            ModEvents.Player.Warped -= GilsHatLocationChanged;
             return;
         }
 

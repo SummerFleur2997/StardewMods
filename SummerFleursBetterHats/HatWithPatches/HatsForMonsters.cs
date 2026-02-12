@@ -34,11 +34,11 @@ public partial class HatWithPatches
             harmony.Patch(original5, postfix: new HarmonyMethod(postfix5));
             harmony.Patch(original6, postfix: new HarmonyMethod(postfix6));
 
-            ModEntry.Log("Patched Monster.takeDamage for monster hats successfully.");
+            Log("Patched Monster.takeDamage for monster hats successfully.");
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed to patch for monster hats: {ex.Message}", LogLevel.Error);
+            Error($"Failed to patch for monster hats: {ex.Message}");
         }
     }
 

@@ -18,7 +18,7 @@ public partial class HatRelyOnEvents
     {
         if (!PlayerHatIs(MummyMaskID))
         {
-            ModEntry.ModHelper.Events.Player.Warped -= MummyMaskLocationChanged;
+            ModEvents.Player.Warped -= MummyMaskLocationChanged;
             return;
         }
 
@@ -43,7 +43,7 @@ public partial class HatRelyOnEvents
     {
         if (!PlayerHatIs(MummyMaskID))
         {
-            ModEntry.ModHelper.Events.World.NpcListChanged -= MummyMaskMonsterSpawned;
+            ModEvents.World.NpcListChanged -= MummyMaskMonsterSpawned;
             return;
         }
 

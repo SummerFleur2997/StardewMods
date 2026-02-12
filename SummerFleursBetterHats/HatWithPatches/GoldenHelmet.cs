@@ -13,11 +13,11 @@ public partial class HatWithPatches
             var prefix = AccessTools.Method(
                 typeof(HatWithPatches), nameof(Patch_GoldenHelmet_TryGetDrop));
             harmony.Patch(original, new HarmonyMethod(prefix));
-            ModEntry.Log("Patched Tree.TryGetDrop for golden helmet successfully.");
+            Log("Patched Tree.TryGetDrop for golden helmet successfully.");
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed to patch for golden helmet: {ex.Message}", LogLevel.Error);
+            Error($"Failed to patch for golden helmet: {ex.Message}");
         }
     }
 

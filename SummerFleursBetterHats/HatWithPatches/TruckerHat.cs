@@ -14,11 +14,11 @@ public partial class HatWithPatches
                 typeof(HatWithPatches), nameof(Patch_TruckerHat));
             harmony.Patch(original1, transpiler: new HarmonyMethod(transpiler));
             harmony.Patch(original2, transpiler: new HarmonyMethod(transpiler));
-            ModEntry.Log("Patched BusStop for trucker hat successfully.");
+            Log("Patched BusStop for trucker hat successfully.");
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed to patch BusStop: {ex.Message}", LogLevel.Error);
+            Error($"Failed to patch BusStop: {ex.Message}");
         }
     }
 

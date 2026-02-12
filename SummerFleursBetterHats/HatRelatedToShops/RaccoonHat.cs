@@ -13,6 +13,11 @@ public partial class HatRelatedToShops
             Game1.player.UniqueMultiplayerID,
             106); // index of the raccoon hat
 
+        var k = r.Next() & 15;
+        for (var j = 0; j < k; j++)
+        for (var i = 0; i < j; i++)
+            r.Next();
+
         return r.NextDouble() switch
         {
             < 0.40 => Utility.getRaccoonSeedForCurrentTimeOfYear(Game1.player, r),

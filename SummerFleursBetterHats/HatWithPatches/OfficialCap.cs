@@ -12,11 +12,11 @@ public partial class HatWithPatches
             var transpiler = AccessTools.Method(
                 typeof(HatWithPatches), nameof(Patch_OfficialCap_startMinigameEndFunction));
             harmony.Patch(original, transpiler: new HarmonyMethod(transpiler));
-            ModEntry.Log("Patched FishingRod.startMinigameEndFunction for official cap successfully.");
+            Log("Patched FishingRod.startMinigameEndFunction for official cap successfully.");
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed to patch for official cap: {ex.Message}", LogLevel.Error);
+            Error($"Failed to patch for official cap: {ex.Message}");
         }
     }
 

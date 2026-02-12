@@ -40,10 +40,10 @@ public static partial class HatRelatedToShops
                 mask = WearableDwarfHelmMask;
                 itemGetter = RollRandomItemForWearableDwarfHelm;
                 break;
-            case "DesertTrade" when PlayerHatIs(MagicTurbanID):
+            case "DesertTrade" when PlayerHatIs(GreenTurbanID):
                 price = 0;
-                mask = MagicTurbanMask;
-                itemGetter = RollRandomItemForMagicTurban;
+                mask = GreenTurbanMask;
+                itemGetter = RollRandomItemForGreenTurban;
                 break;
             case "IslandTrade" when PlayerHatIs(BluebirdMaskID):
                 price = 0;
@@ -76,7 +76,7 @@ public static partial class HatRelatedToShops
         // Generate a random item for the shop, then add the item to the shop for sale
         var item = itemGetter.Invoke();
         var actionOnPurchase = new List<string>
-            { $"SFBH_{nameof(GameExtensions.ModifyWorldStatus)} {mask} {shopMenu.ShopId}" };
+            { $"SummerFleur.BetterHats.{nameof(GameExtensions.ModifyModData)} {mask} {shopMenu.ShopId}" };
         var info = new ItemStockInformation(price, 1, actionsOnPurchase: actionOnPurchase);
         shopMenu.AddForSale(item, info);
     }

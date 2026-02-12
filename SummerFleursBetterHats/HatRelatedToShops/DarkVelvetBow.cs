@@ -14,6 +14,11 @@ public partial class HatRelatedToShops
             Game1.player.UniqueMultiplayerID,
             100); // id of the dark velvet bow
 
+        var k = r.Next() & 15;
+        for (var j = 0; j < k; j++)
+        for (var i = 0; i < j; i++)
+            r.Next();
+
         return r.NextDouble() switch
         {
             < 0.30 => ItemRegistry.Create($"(O){r.Next(194, 244)}", 5), // random dish

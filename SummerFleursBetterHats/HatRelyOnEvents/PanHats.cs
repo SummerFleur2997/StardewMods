@@ -30,7 +30,7 @@ public partial class HatRelyOnEvents
             case CopperPanID:
                 break;
             default:
-                ModEntry.ModHelper.Events.Input.ButtonPressed -= PanHatsButtonPressed;
+                ModEvents.Input.ButtonPressed -= PanHatsButtonPressed;
                 return;
         }
 
@@ -44,7 +44,7 @@ public partial class HatRelyOnEvents
         // if the hat can't be transformed into a pan, unregister this event
         if (Utility.PerformSpecialItemGrabReplacement(hat) is not Pan pan)
         {
-            ModEntry.ModHelper.Events.Input.ButtonPressed -= PanHatsButtonPressed;
+            ModEvents.Input.ButtonPressed -= PanHatsButtonPressed;
             return;
         }
 
@@ -65,7 +65,7 @@ public partial class HatRelyOnEvents
         player.hat.Value = null;
         player.ActiveItem = pan;
 
-        ModEntry.ModHelper.Events.Player.InventoryChanged += WearPanHatBack;
+        ModEvents.Player.InventoryChanged += WearPanHatBack;
     }
 
     private static void WearPanHatBack(object s, InventoryChangedEventArgs e)
@@ -76,7 +76,7 @@ public partial class HatRelyOnEvents
 
         if (player.ActiveItem is not Pan pan || PlayerHat() is not null)
         {
-            ModEntry.ModHelper.Events.Player.InventoryChanged -= WearPanHatBack;
+            ModEvents.Player.InventoryChanged -= WearPanHatBack;
             return;
         }
 
@@ -94,13 +94,13 @@ public partial class HatRelyOnEvents
 
         if (Utility.PerformSpecialItemPlaceReplacement(pan) is not Hat hat)
         {
-            ModEntry.ModHelper.Events.Player.InventoryChanged -= WearPanHatBack;
+            ModEvents.Player.InventoryChanged -= WearPanHatBack;
             return;
         }
 
         player.ActiveItem = null;
         player.hat.Value = hat;
-        ModEntry.ModHelper.Events.Player.InventoryChanged -= WearPanHatBack;
+        ModEvents.Player.InventoryChanged -= WearPanHatBack;
     }
 
     /// <summary>

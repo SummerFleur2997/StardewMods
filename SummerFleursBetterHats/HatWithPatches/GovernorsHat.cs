@@ -18,11 +18,11 @@ public partial class HatWithPatches
             var transpiler = AccessTools.Method(
                 typeof(HatWithPatches), nameof(Patch_GovernorsHat_governorTaste));
             harmony.Patch(original, transpiler: new HarmonyMethod(transpiler));
-            ModEntry.Log("Patched Event.governorTaste for governor's hat successfully.");
+            Log("Patched Event.governorTaste for governor's hat successfully.");
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed to patch for governor's hat: {ex.Message}", LogLevel.Error);
+            Error($"Failed to patch for governor's hat: {ex.Message}");
         }
     }
 

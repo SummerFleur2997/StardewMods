@@ -19,11 +19,11 @@ public partial class HatWithPatches
             var transpiler = AccessTools.Method(
                 typeof(HatWithPatches), nameof(Patch_HatsForHorse_getMovementSpeed));
             harmony.Patch(original, transpiler: new HarmonyMethod(transpiler));
-            ModEntry.Log("Patched Farmer.getMovementSpeed for horse hats successfully.");
+            Log("Patched Farmer.getMovementSpeed for horse hats successfully.");
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed to patch for horse hats: {ex.Message}", LogLevel.Error);
+            Error($"Failed to patch for horse hats: {ex.Message}");
         }
     }
 

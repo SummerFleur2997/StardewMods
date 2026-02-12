@@ -12,11 +12,11 @@ public partial class HatWithPatches
             var transpiler = AccessTools.Method(
                 typeof(HatWithPatches), nameof(Patch_RadioactiveGoggles_createLitterObject));
             harmony.Patch(original, transpiler: new HarmonyMethod(transpiler));
-            ModEntry.Log("Patched MineShaft.createLitterObject for radioactive goggles successfully.");
+            Log("Patched MineShaft.createLitterObject for radioactive goggles successfully.");
         }
         catch (Exception ex)
         {
-            ModEntry.Log($"Failed to patch for radioactive goggles: {ex.Message}", LogLevel.Error);
+            Error($"Failed to patch for radioactive goggles: {ex.Message}");
         }
     }
 
