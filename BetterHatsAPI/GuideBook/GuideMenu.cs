@@ -85,7 +85,9 @@ public class GuideMenu : BaseMenu
             _dropDownMenu.AddOption(pack.Manifest.Name, new HatDataWithPackID(pack.Manifest.UniqueID, null));
         }
 
-        _dropDownMenu.AddOption(I18n.String_CombinedData(), new HatDataWithPackID(HatData.CombinedDataSign, null));
+        _dropDownMenu.AddOption(
+            I18n.String_CombinedData(),
+            new HatDataWithPackID(HatData.CombinedDataSign, new HatData()));
 
         if (_currentActivePackId == null)
             throw new InvalidDataException();
@@ -129,30 +131,29 @@ public class GuideMenu : BaseMenu
     {
         _hatIcon.Item = hat;
         var dataList = hat.GetHatData();
-        var menuSelected = _dropDownMenu.SelectedValue.Data;
+        var menuSelected = _dropDownMenu.SelectedValue;
 
         var packs = ModEntry.ContentPacks;
         var i = 0;
         for (; i < packs.Count; i++)
         {
             var id = packs[i].Manifest.UniqueID;
-            var d = dataList.FirstOrDefault(d => d.ID == id);
-            _dropDownMenu.Options[i].Value.SetData(d);
+            _dropDownMenu.Options[i].Value.Data = dataList.FirstOrDefault(d => d.ID == id);
         }
 
         // combine the data from all the content packs, and assign to the last option
         var combinedData = HatData.Combine(dataList);
-        _dropDownMenu.Options[i].Value.SetData(combinedData);
+        _dropDownMenu.Options[i].Value.Data = combinedData;
 
-        var data = menuSelected is null // null means the menu is first opened 
+        var data = menuSelected.Data is null // null means the menu is first opened 
             ? dataList.FirstOrDefault() // so we use the first hat data temporarily, can be null
-            : menuSelected.ID != HatData.CombinedDataSign // check for combined data
-                ? dataList.FirstOrDefault(d => d.ID == menuSelected.ID) ?? null // no data found, return null
+            : menuSelected.PackID != HatData.CombinedDataSign // check for combined data
+                ? dataList.FirstOrDefault(d => d.ID == menuSelected.PackID) ?? null // no data found, return null
                 : combinedData; // use combined data
         UpdateDataByData(data);
 
         // it's so weired that the first time we open the menu, the hat desc is null
-        var rawDesc = hat.description ?? hat.LoadDescription();
+        var rawDesc = (hat.description ?? hat.LoadDescription()).Split("\n")[0];
         var desc = Game1.parseText(rawDesc, Game1.smallFont, 640);
         _hatName.Text = hat.DisplayName;
         _hatDesc.Text = desc;
@@ -185,17 +186,15 @@ public class GuideMenu : BaseMenu
         _textPanel.UpdateData(data);
     }
 
-    private struct HatDataWithPackID
+    private class HatDataWithPackID
     {
         public string PackID { get; }
-        public HatData? Data { get; private set; }
+        public HatData? Data { get; set; }
 
         public HatDataWithPackID(string packID, HatData? data)
         {
             PackID = packID;
             Data = data;
         }
-
-        public void SetData(HatData? data) => Data = data;
     }
 }

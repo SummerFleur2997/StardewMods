@@ -61,9 +61,9 @@ public class HatDataTextPanel : IComponent
         }
 
         // have a manual set description
-        if (!string.IsNullOrWhiteSpace(data.Description))
+        var dText = data.Description;
+        if (!string.IsNullOrWhiteSpace(dText))
         {
-            var dText = I18n.String_Connect(I18n.String_Description(), data.Description);
             _dataDesc.Text = Game1.parseText(dText, Game1.smallFont, 640);
             _dataDesc.SetPosition(X, y);
             y += _dataDesc.Height + Game1.pixelZoom * 2;
@@ -74,7 +74,7 @@ public class HatDataTextPanel : IComponent
             // no desc, but have advanced attributes, so we need to show a warning
             if (!string.IsNullOrWhiteSpace(hint))
             {
-                var dText = I18n.String_NoDesc(hint);
+                dText = I18n.String_NoDesc(hint);
                 _dataDesc.Text = Game1.parseText(dText, Game1.smallFont, 640);
                 _dataDesc.SetPosition(X, y);
                 y += _dataDesc.Height + Game1.pixelZoom * 2;
