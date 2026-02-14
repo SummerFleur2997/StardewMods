@@ -1,4 +1,5 @@
-﻿using BetterRetainingSoils.DirtService;
+﻿using BetterRetainingSoils.API;
+using BetterRetainingSoils.DirtService;
 using BetterRetainingSoils.Framework;
 using BetterRetainingSoils.Framework.MultiplayerService;
 using BetterRetainingSoils.Framework.SaveService;
@@ -22,6 +23,7 @@ internal class ModEntry : Mod
     public static IModHelper ModHelper { get; private set; }
     private static Harmony Harmony { get; set; }
     private static IMonitor ModMonitor { get; set; }
+    private static BrsApi Api { get; } = new();
     public static void Log(string s, LogLevel l = LogLevel.Trace) => ModMonitor.Log(s, l);
 
     /// <summary>
@@ -138,4 +140,6 @@ internal class ModEntry : Mod
         SaveManager.Save();
     }
     #endregion
+
+    public override object GetApi() => Api;
 }

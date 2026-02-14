@@ -14,4 +14,6 @@ public class BrsApi : IBrsApi
     {
         return hoeDirt.GetHoeDirtData().WaterRemainDays;
     }
+
+    public void RefreshWaterRemainDays(HoeDirt hoeDirt) => hoeDirt.GetHoeDirtData().RefreshStatus();
 }

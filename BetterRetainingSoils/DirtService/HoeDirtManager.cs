@@ -34,13 +34,11 @@ public static class HoeDirtManager
     /// 获取当前地点的所有可耕种土地。
     /// Get all tillable dirt in the current location.
     /// </summary>
-    public static IEnumerable<HoeDirt> GetHoeDirt(this GameLocation location)
-    {
-        return location.terrainFeatures.Pairs
+    public static IEnumerable<HoeDirt> GetHoeDirt(this GameLocation location) =>
+        location.terrainFeatures.Pairs
             .Select(pair => pair.Value)
             .OfType<HoeDirt>()
             .Where(h => h.state.Value != 2);
-    }
 
     /// <summary>
     /// 获取当前地点的所有花盆内的土地。
