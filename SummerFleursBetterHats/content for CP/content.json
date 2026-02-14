@@ -37,8 +37,8 @@
       "Action": "EditData",
       "Target": "Data/Mail",
       "Entries": {
-        "SFBH_JojaCap": "{{i18n:mail.JojaCap}}",
-        "SFBH_DarkBallcap": "{{i18n:mail.DarkBallcap}}"
+        "SummerFleur.BetterHats.JojaCap": "{{i18n:mail.JojaCap}}",
+        "SummerFleur.BetterHats.DarkBallcap": "{{i18n:mail.DarkBallcap}}"
       }
     },
     // Datable npc's hat dialogues
@@ -46,133 +46,133 @@
       "Action": "EditData",
       "Target": "Characters/Dialogue/Abigail",
       "Entries": {
-        "SFBH_AbigailsBow": "{{i18n:dialogue.Abigail.AbigailsBow}}"
+        "SummerFleur.BetterHats.Abigail'sBow": "{{i18n:dialogue.AbigailsBow.Abigail}}"
+      },
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Wizard",
+      "Entries": {
+        "SummerFleur.BetterHats.ArcaneHat": "{{i18n:dialogue.ArcaneHat.Wizard}}"
       },
     },
     {
       "Action": "EditData",
       "Target": "Characters/Dialogue/Sam",
       "Entries": {
-        "SFBH_Beanie": "{{i18n:dialogue.Sam.Beanie}}"
+        "SummerFleur.BetterHats.Beanie": "{{i18n:dialogue.Beanie.Sam}}"
       },
     },
     {
       "Action": "EditData",
       "Target": "Characters/Dialogue/Victor",
       "Entries": {
-        "SFBH_BowlerHat": "{{i18n:dialogue.Victor.BowlerHat}}"
+        "SummerFleur.BetterHats.BowlerHat": "{{i18n:dialogue.BowlerHat.Victor}}"
       },
     },
     {
       "Action": "EditData",
       "Target": "Characters/Dialogue/Harvey",
       "Entries": {
-        "SFBH_ChefHat": "{{i18n:dialogue.Harvey.ChefHat}}"
+        "SummerFleur.BetterHats.ChefHat": "{{i18n:dialogue.ChefHat.Harvey}}"
       },
     },
     {
       "Action": "EditData",
       "Target": "Characters/Dialogue/Shane",
       "Entries": {
-        "SFBH_ChickenMask": "{{i18n:dialogue.Shane.ChickenMask}}"
+        "SummerFleur.BetterHats.ChickenMask": "{{i18n:dialogue.ChickenMask.Shane}}"
       },
     },
     {
       "Action": "EditData",
       "Target": "Characters/Dialogue/Olivia",
       "Entries": {
-        "SFBH_ConeHat": "{{i18n:dialogue.Olivia.ConeHat}}"
+        "SummerFleur.BetterHats.ConeHat": "{{i18n:dialogue.ConeHat.Olivia}}"
       },
     },
     {
       "Action": "EditData",
       "Target": "Characters/Dialogue/Sophia",
       "Entries": {
-        "SFBH_DeluxeCowboyHat": "{{i18n:dialogue.Sophia.DeluxeCowboyHat}}"
-      },
-    },
-    {
-      "Action": "EditData",
-      "Target": "Characters/Dialogue/Lance",
-      "Entries": {
-        "SFBH_EyePatch": "{{i18n:dialogue.Lance.EyePatch}}"
+        "SummerFleur.BetterHats.DeluxeCowboyHat": "{{i18n:dialogue.DeluxeCowboyHat.Sophia}}"
       },
     },
     {
       "Action": "EditData",
       "Target": "Characters/Dialogue/Claire",
       "Entries": {
-        "SFBH_FashionHat": "{{i18n:dialogue.Claire.FashionHat}}"
-      },
-    },
-    {
-      "Action": "EditData",
-      "Target": "Characters/Dialogue/Magnus",
-      "Entries": {
-        "SFBH_FlatToppedHat": "{{i18n:dialogue.Magnus.FlatToppedHat}}"
+        "SummerFleur.BetterHats.FashionHat": "{{i18n:dialogue.FashionHat.Claire}}"
       },
     },
     {
       "Action": "EditData",
       "Target": "Characters/Dialogue/Emily",
       "Entries": {
-        "SFBH_FloppyBeanie": "{{i18n:dialogue.Emily.FloppyBeanie}}"
+        "SummerFleur.BetterHats.FloppyBeanie": "{{i18n:dialogue.FloppyBeanie.Emily}}"
       },
     },
     {
       "Action": "EditData",
       "Target": "Characters/Dialogue/Sebastian",
       "Entries": {
-        "SFBH_FrogHat": "{{i18n:dialogue.Sebastian.FrogHat}}"
+        "SummerFleur.BetterHats.FrogHat": "{{i18n:dialogue.FrogHat.Sebastian}}"
       },
     },
     {
       "Action": "EditData",
       "Target": "Characters/Dialogue/Maru",
       "Entries": {
-        "SFBH_Goggles": "{{i18n:dialogue.Maru.Goggles}}"
+        "SummerFleur.BetterHats.Goggles": "{{i18n:dialogue.Goggles.Maru}}"
       },
     },
     {
       "Action": "EditData",
       "Target": "Characters/Dialogue/Leah",
       "Entries": {
-        "SFBH_LeprechuanHat": "{{i18n:dialogue.Leah.LeprechuanHat}}"
+        "SummerFleur.BetterHats.LeprechaunHat": "{{i18n:dialogue.LeprechaunHat.Leah}}"
       },
     },
     {
       "Action": "EditData",
       "Target": "Characters/Dialogue/Penny",
       "Entries": {
-        "SFBH_PageboyCap": "{{i18n:dialogue.Penny.PageboyCap}}"
+        "SummerFleur.BetterHats.PageboyCap": "{{i18n:dialogue.PageboyCap.Penny}}"
       },
     },
     {
       "Action": "EditData",
       "Target": "Characters/Dialogue/Scarlett",
       "Entries": {
-        "SFBH_PlumChapeau": "{{i18n:dialogue.Scarlett.PlumChapeau}}"
+        "SummerFleur.BetterHats.PlumChapeau": "{{i18n:dialogue.PlumChapeau.Scarlett}}"
       },
     },
     {
       "Action": "EditData",
       "Target": "Characters/Dialogue/Alex",
       "Entries": {
-        "SFBH_SportsCap": "{{i18n:dialogue.Alex.SportsCap}}"
+        "SummerFleur.BetterHats.SportsCap": "{{i18n:dialogue.SportsCap.Alex}}"
+      },
+    },
+    {
+      "Action": "EditData",
+      "Target": "Characters/Dialogue/Lance",
+      "Entries": {
+        "SummerFleur.BetterHats.SwashbucklerHat": "{{i18n:dialogue.SwashbucklerHat.Lance}}"
       },
     },
     {
       "Action": "EditData",
       "Target": "Characters/Dialogue/Elliott",
       "Entries": {
-        "SFBH_TricornHat": "{{i18n:dialogue.Elliott.TricornHat}}"
+        "SummerFleur.BetterHats.TricornHat": "{{i18n:dialogue.TricornHat.Elliott}}"
       },
     },
     {
       "Action": "EditData",
       "Target": "Characters/Dialogue/Haley",
       "Entries": {
-        "SFBH_Tropiclip": "{{i18n:dialogue.Haley.Tropiclip}}"
+        "SummerFleur.BetterHats.Tropiclip": "{{i18n:dialogue.Tropiclip.Haley}}"
       },
     }
   ]

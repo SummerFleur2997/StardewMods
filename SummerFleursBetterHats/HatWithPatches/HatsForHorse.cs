@@ -32,7 +32,7 @@ public partial class HatWithPatches
     /// speed if the horse is wearing a small cap.
     /// </summary>
     public static float AddRidingHorseSpeed(Farmer farmer) =>
-        (PlayerHatIn(CowboyHatsID) ? 0.5f : 0) + (farmer.mount.hat.Value?.QualifiedItemId == SmallCapID ? 1f : 0);
+        (PlayerHatIn(CowboyHatsID) ? 0.7f : 0) + (farmer.mount.hat.Value?.QualifiedItemId == SmallCapID ? 1f : 0);
 
     /// <summary>
     /// Add a transpiler to the <see cref="Farmer.getMovementSpeed"/> method

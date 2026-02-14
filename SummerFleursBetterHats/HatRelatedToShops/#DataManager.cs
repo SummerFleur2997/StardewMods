@@ -1,5 +1,6 @@
 ﻿using StardewModdingAPI.Events;
 using StardewValley.Menus;
+using StardewValley.Objects;
 using SummerFleursBetterHats.Framework;
 
 namespace SummerFleursBetterHats.HatRelatedToShops;
@@ -7,6 +8,7 @@ namespace SummerFleursBetterHats.HatRelatedToShops;
 public static partial class HatRelatedToShops
 {
     public static void RegisterShopRelatedEvents() => ModEntry.ModHelper.Events.Display.MenuChanged += OnMenuChanged;
+    private static bool _hasAddedAnItem;
 
     /// <summary>
     /// Event handler for changes in game menus. Used to handle
@@ -14,6 +16,12 @@ public static partial class HatRelatedToShops
     /// </summary>
     private static void OnMenuChanged(object s, MenuChangedEventArgs e)
     {
+        if (e.NewMenu is null && e.OldMenu is ShopMenu)
+        {
+            _hasAddedAnItem = false;
+            return;
+        }
+
         // Check if the new menu is a ShopMenu
         if (e.NewMenu is not ShopMenu shopMenu)
             return;
@@ -55,6 +63,12 @@ public static partial class HatRelatedToShops
                 mask = JesterHatMask;
                 itemGetter = GetDiscountedTicketForJesterHat;
                 break;
+            case "HatMouse" when PlayerHatIs(MouseEarsID):
+                price = 0;
+                mask = MouseEarsMask;
+                itemGetter = RollRandomItemForMouseEars;
+                _availableHats = shopMenu.forSale.OfType<Hat>().Select(h => h.QualifiedItemId).ToList();
+                break;
             case "Traveler" when PlayerHatIs(RedFezID):
                 price = 0;
                 mask = RedFezMask;
@@ -70,7 +84,7 @@ public static partial class HatRelatedToShops
         }
 
         // Check if player has already visited this shop in the current period
-        if (Game1.player.TryGetWorldStatus(mask))
+        if (Game1.player.TryGetWorldStatus(mask) || _hasAddedAnItem)
             return;
 
         // Generate a random item for the shop, then add the item to the shop for sale
@@ -79,5 +93,6 @@ public static partial class HatRelatedToShops
             { $"SummerFleur.BetterHats.{nameof(GameExtensions.ModifyModData)} {mask} {shopMenu.ShopId}" };
         var info = new ItemStockInformation(price, 1, actionsOnPurchase: actionOnPurchase);
         shopMenu.AddForSale(item, info);
+        _hasAddedAnItem = true;
     }
 }

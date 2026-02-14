@@ -3,21 +3,63 @@
     Belows are hat data with no extra conditions, you can directly
     edit them if you want to customize them. 
    ****/
-  // Cowboy Hat
-  "(H)0": {
-    "Speed": 1.5
-  },
   // Straw Hat
   "(H)4": {
     "FarmingLevel": 1
+  },
+  // Sailor's Cap
+  "(H)17": {
+    "FishingLevel": 1
+  },
+  // Forager's Hat
+  "(H)90": {
+    "ForagingLevel": 1
+  },
+  // Propeller Hat
+  "(H)68": {
+    "MiningLevel": 1
+  },
+  // Star Helmet
+  "(H)87": {
+    "LuckLevel": 1
+  },
+  // White Bow
+  "(H)WhiteBow": {
+    "LuckLevel": 2
+  },
+  // Cowboy Hat
+  "(H)0": {
+    "Speed": 1.5
   },
   // Hunter's Cap
   "(H)15": {
     "Attack": 1
   },
-  // Sailor's Cap
-  "(H)17": {
-    "FishingLevel": 1
+  // Tiger Hat
+  "(H)91": {
+    "Attack": 2
+  },
+  // Squire's Helmet
+  "(H)51": {
+    "Defense": 1
+  },
+  // Witch Hat
+  "(H)70": {
+    "Immunity": 2
+  },
+  // Magic Turban
+  "(H)74": {
+    "Immunity": 3
+  },
+  // Warrior Helmet
+  "(H)93": {
+    "Attack": 2,
+    "Speed": 0.5
+  },
+  // Knight's Helmet
+  "(H)50": {
+    "Defense": 3,
+    "Speed": -0.5
   },
   // Tiara
   "(H)26": {
@@ -25,81 +67,19 @@
     "Defense": 1,
     "Immunity": 1
   },
-  // Archer's Cap
-  "(H)35": {
-    "WeaponSpeedMultiplier": 0.5
-  },
-  // Knight's Helmet
-  "(H)50": {
-    "Defense": 3,
-    "Speed": -0.5
-  },
-  // Squire's Helmet
-  "(H)51": {
-    "Defense": 1
-  },
   // Pirate Hat
   "(H)62": {
     "AttackMultiplier": 0.07
   },
-  // Elegant Turban
-  "(H)64": {
-    "Attack": 2,
-    "Defense": 2,
-    "Immunity": 2,
-    "Speed": 1,
-    "MaxStamina": 50,
-    "MagneticRadius": 64
-  },
-  // Propeller Hat
-  "(H)68": {
-    "MiningLevel": 1
-  },
-  // Witch Hat
-  "(H)70": {
-    "Immunity": 2
-  },
-  // Green Turban
-  "(H)72": {
-    "Immunity": 1
-  },
+
   // Deluxe Pirate Hat
   "(H)76": {
     "AttackMultiplier": 0.1,
     "Speed": 0.5
   },
-  // Star Helmet
-  "(H)87": {
-    "LuckLevel": 1
-  },
-  // Forager's Hat
-  "(H)90": {
-    "ForagingLevel": 1
-  },
-  // Tiger Hat
-  "(H)91": {
-    "Attack": 2
-  },
-  // ???
-  "(H)92": {
-    "FarmingLevel": 2,
-    "FishingLevel": 2,
-    "MiningLevel": 2,
-    "LuckLevel": 2,
-    "ForagingLevel": 2
-  },
-  // Warrior Helmet
-  "(H)93": {
-    "Attack": 2,
-    "Speed": 0.5
-  },
-  // Gil's hat
-  "(H)GilsHat": {
-    "AttackMultiplier": 0.15
-  },
-  // White Bow
-  "(H)WhiteBow": {
-    "LuckLevel": 2
+  // Archer's Cap
+  "(H)35": {
+    "WeaponSpeedMultiplier": 0.5
   },
   // Infinity Crown
   "(H)InfinityCrown": {
@@ -115,27 +95,48 @@
     not work. 
 
     This mod defines some other query methods and trigger actions, 
-    these methods and actions have the same prefix "SFBH_". And you
-    can see their implementation in the "GameExtensions.cs" file.
+    these methods and actions starts with "SummerFleur.BetterHats".
+    And you can see their implementation in the `GameExtensions.cs`.
    ****/
-  // Top Hat (Today is the player's first wedding ceremony)
-  "(H)2": {
-    "Condition": "$CustomCondition",
-    "Action": "$CustomAction",
+  // Daisy (Current season is spring)
+  "(H)29": {
+    "Speed": 0.5,
+    "LuckLevel": 1,
+    "Condition": "SEASON Spring",
     "Trigger": "DayStarted",
-    "ConditionDescription": "i18n:condition.TopHat",
-    "ActionDescription": "i18n:action.WeddingHat"
+    "ConditionDescription": "i18n:condition.Spring"
   },
-  "(H)3": {
-    "Action": "$CustomAction",
+  // Sunglasses (Current season is summer)
+  "(H)88": {
+    "Speed": 0.5,
+    "LuckLevel": 1,
+    "Condition": "SEASON Summer",
     "Trigger": "DayStarted",
+    "ConditionDescription": "i18n:condition.Summer"
+  },
+  // Watermelon Band (Current season is summer)
+  "(H)30": {
+    "Speed": 0.5,
+    "LuckLevel": 1,
+    "Condition": "SEASON Summer",
+    "Trigger": "DayStarted",
+    "ConditionDescription": "i18n:condition.Summer"
+  },
+  // Fedora (Current season is fall)
+  "(H)19": {
+    "Speed": 0.5,
+    "LuckLevel": 1,
+    "Condition": "SEASON Fall",
+    "Trigger": "DayStarted",
+    "ConditionDescription": "i18n:condition.Fall"
   },
   // Earmuffs (Current season is winter)
   "(H)11": {
     "Speed": 0.5,
     "LuckLevel": 1,
-    "Condition": "LOCATION_SEASON Here Winter",
-    "Trigger": "LocationChanged"
+    "Condition": "SEASON Winter",
+    "Trigger": "DayStarted",
+    "ConditionDescription": "i18n:condition.Winter"
   },
   // Butterfly Bow (Current date is spring 15~18)
   "(H)14": {
@@ -145,62 +146,14 @@
     "Description": "i18n:description.ButterflyBow",
     "ConditionDescription": "i18n:condition.ButterflyBow"
   },
-  // Good Ol' Cap
-  "(H)18": {
-    "Action": "AddMoney 20",
-    "Trigger": "DayStarted"
-  },
-  // Fedora (Current season is fall)
-  "(H)19": {
-    "Speed": 0.5,
-    "LuckLevel": 1,
-    "Condition": "LOCATION_SEASON Here Fall",
-    "Trigger": "LocationChanged"
-  },
-  // Santa Hat (Today is winter star festival)
-  "(H)25": {
-    "Condition": "SEASON_DAY Winter 25",
-    "Action": "$CustomAction",
-    "Trigger": "DayStarted"
-  },
-  // Sou'wester (Current weather is stormy)
-  "(H)28": {
-    "FishingLevel": 1,
-    "Condition": "LOCATION_IS_OUTDOORS Here, WEATHER Here Rain Storm GreenRain",
-    "Trigger": "LocationChanged",
-    "ConditionDescription": "i18n:condition.Souwester",
-    "ModifierDescription": "i18n:modifier.Souwester"
-  },
-  // Daisy (Current season is spring)
-  "(H)29": {
-    "Speed": 0.5,
-    "LuckLevel": 1,
-    "Condition": "LOCATION_SEASON Here Spring",
-    "Trigger": "LocationChanged"
-  },
-  // Watermelon Band (Current season is summer)
-  "(H)30": {
-    "Speed": 0.5,
-    "LuckLevel": 1,
-    "Condition": "LOCATION_SEASON Here Summer",
-    "Trigger": "LocationChanged"
-  },
-  // Living Hat
-  "(H)40": {
-    "Action": "$CustomAction",
-    "Trigger": "SecondUpdated",
-    "Description": "i18n:description.LivingHat",
-    "ActionDescription": "i18n:action.LivingHat"
-  },
-  // Logo Cap
-  "(H)45": {
-    "FishingLevel": 1,
-    "LuckLevel": 1,
-    "Condition": "SFBH_MINE_LEVEL Here 20 60 100",
-    "Trigger": "LocationChanged",
-    "Dynamic": true,
-    "ConditionDescription": "i18n:condition.LogoCap",
-    "ModifierDescription": "i18n:modifier.LogoCap"
+  // Bucket Hat (During the Trout Derby)
+  "(H)BucketHat": {
+    "FishingLevel": 2,
+    "MaxStamina": 50,
+    "Condition": "SEASON_DAY Summer 20 Summer 21",
+    "Trigger": "DayStarted",
+    "Description": "i18n:description.BucketHat",
+    "ConditionDescription": "i18n:condition.BucketHat"
   },
   // Pumpkin Mask (Current date is fall 8~11)
   "(H)48": {
@@ -210,38 +163,105 @@
     "Description": "i18n:description.PumpkinMask",
     "ConditionDescription": "i18n:condition.PumpkinMask"
   },
+  // Squid Hat (During the Squid Fest)
+  "(H)SquidHat": {
+    "FishingLevel": 2,
+    "MaxStamina": 50,
+    "Condition": "SEASON_DAY Winter 12 Winter 13",
+    "Trigger": "DayStarted",
+    "Description": "i18n:description.SquidHat",
+    "ConditionDescription": "i18n:condition.SquidHat"
+  },
   // Spotted Headscarf
   "(H)52": {
     "FarmingLevel": 2,
-    "Condition": "SEASON Fall",
-    "Trigger": "DayStarted"
+    "Condition": "DAY_OF_MONTH 22 23 24 25 26 27 28",
+    "Trigger": "DayStarted",
+    "ConditionDescription": "i18n:condition.SpottedHeadscarf"
   },
-  // Blobfish Mask
-  "(H)56": {
-    "FishingLevel": 2,
-    "Condition": "LOCATION_NAME Here Submarine",
-    "Trigger": "LocationChanged"
-  },
-  // Party Hat Red (Current location is the mine, and the mine level >= 80)
-  "(H)57": {
+  // Paper Hat
+  "(H)PaperHat": {
     "Speed": 1,
     "LuckLevel": 1,
-    "Condition": "SFBH_MINE_LEVEL_RANGE Here 80",
-    "Trigger": "LocationChanged"
-  },
-  // Party Hat Blue (Current location is the mine, and the mine level is 40~79)
-  "(H)58": {
-    "Speed": 1,
-    "LuckLevel": 1,
-    "Condition": "SFBH_MINE_LEVEL_RANGE Here 40 79",
-    "Trigger": "LocationChanged"
+    "Condition": "LOCATION_CONTEXT Here Island",
+    "Trigger": "LocationChanged",
+    "ConditionDescription": "i18n:condition.PaperHat"
   },
   // Party Hat Green (Current location is the mine, and the mine level < 40)
   "(H)59": {
     "Speed": 1,
     "LuckLevel": 1,
-    "Condition": "SFBH_MINE_LEVEL_RANGE Here 1 39",
-    "Trigger": "LocationChanged"
+    "Condition": "SummerFleur.BetterHats.MINE_LEVEL_RANGE Here 1 39",
+    "Trigger": "LocationChanged",
+    "ConditionDescription": "i18n:condition.PartyHatGreen"
+  },
+  // Party Hat Blue (Current location is the mine, and the mine level is 40~79)
+  "(H)58": {
+    "Speed": 1,
+    "LuckLevel": 1,
+    "Condition": "SummerFleur.BetterHats.MINE_LEVEL_RANGE Here 40 79",
+    "Trigger": "LocationChanged",
+    "ConditionDescription": "i18n:condition.PartyHatBlue"
+  },
+  // Party Hat Red (Current location is the mine, and the mine level >= 80)
+  "(H)57": {
+    "Speed": 1,
+    "LuckLevel": 1,
+    "Condition": "SummerFleur.BetterHats.MINE_LEVEL_RANGE Here 80",
+    "Trigger": "LocationChanged",
+    "ConditionDescription": "i18n:condition.PartyHatRed"
+  },
+  // Logo Cap
+  "(H)45": {
+    "FishingLevel": 1,
+    "LuckLevel": 1,
+    "Condition": "SummerFleur.BetterHats.MINE_LEVEL Here 20 60 100",
+    "Trigger": "LocationChanged",
+    "Dynamic": true,
+    "Description": "i18n:description.LogoCap",
+    "ConditionDescription": "i18n:condition.LogoCap",
+    "ModifierDescription": "i18n:modifier.LogoCap"
+  },
+  // Space Helmet (Current location is the difficult mine)
+  "(H)SpaceHelmet": {
+    "AttackMultiplier": 0.1,
+    "Defense": 2,
+    "Speed": 0.5,
+    "Condition": "$CustomCondition",
+    "Trigger": "LocationChanged",
+    "Description": "i18n:description.SpaceHelmet",
+    "ConditionDescription": "i18n:condition.SpaceHelmet",
+    "ModifierDescription": "i18n:modifier.SpaceHelmet"
+  },
+  // Sou'wester (Current weather is stormy)
+  "(H)28": {
+    "FishingLevel": 2,
+    "Condition": "LOCATION_IS_OUTDOORS Here, WEATHER Here Rain Storm GreenRain",
+    "Trigger": "LocationChanged",
+    "ConditionDescription": "i18n:condition.Souwester",
+    "ModifierDescription": "i18n:modifier.Souwester"
+  },
+  // Blobfish Mask (Current location is the submarine)
+  "(H)56": {
+    "FishingLevel": 2,
+    "Condition": "LOCATION_NAME Here Submarine",
+    "Trigger": "LocationChanged",
+    "ConditionDescription": "i18n:condition.BlobfishMask"
+  },
+  // Magic Cowboy Hat (about 33% random chance)
+  "(H)73": {
+    "Speed": 2,
+    "Condition": "TIME 1700 2600",
+    "Trigger": "TimeChanged",
+    "ConditionDescription": "i18n:condition.MagicCowboyHat",
+  },
+  // Top Hat (Today is the player's first wedding ceremony)
+  "(H)2": {
+    "Condition": "$CustomCondition",
+    "Action": "$CustomAction",
+    "Trigger": "DayStarted",
+    "ConditionDescription": "i18n:condition.TopHat",
+    "ActionDescription": "i18n:action.WeddingHat"
   },
   // Bridal Veil (Today is the player's first wedding ceremony)
   "(H)69": {
@@ -251,47 +271,373 @@
     "ConditionDescription": "i18n:condition.BridalVeil",
     "ActionDescription": "i18n:action.WeddingHat"
   },
-  // Magic Cowboy Hat (about 33% random chance)
-  "(H)73": {
+  // Good Ol' Cap
+  "(H)18": {
+    "Action": "AddMoney 20",
+    "Trigger": "DayStarted",
+    "ActionDescription": "i18n:action.GoodOlCap"
+  },
+  // Sombrero (Every Sunday morning)
+  "(H)3": {
+    "Action": "$CustomAction",
+    "Trigger": "DayStarted",
+    "ActionDescription": "i18n:action.Sombrero"
+  },
+  // Santa Hat (Today is fall 25)
+  "(H)63": {
+    "Condition": "SEASON_DAY Fall 25",
+    "Action": "$CustomAction",
+    "Trigger": "DayStarted",
+    "Description": "i18n:description.FlatToppedHat",
+    "ConditionDescription": "i18n:condition.FlatToppedHat",
+    "ActionDescription": "i18n:action.FlatToppedHat"
+  },
+  // Santa Hat (Today is winter star festival)
+  "(H)25": {
+    "Condition": "SEASON_DAY Winter 25",
+    "Action": "$CustomAction",
+    "Trigger": "DayStarted",
+    "Description": "i18n:description.SantaHat",
+    "ConditionDescription": "i18n:condition.SantaHat",
+    "ActionDescription": "i18n:action.SantaHat"
+  },
+  // Living Hat
+  "(H)40": {
+    "Action": "$CustomAction",
+    "Trigger": "SecondUpdated",
+    "Description": "i18n:description.LivingHat",
+    "ActionDescription": "i18n:action.LivingHat"
+  },
+  // Cat Ears
+  "(H)32": {
+    "Action": "$CustomAction",
+    "Trigger": "SecondUpdated",
+    "Description": "i18n:description.CatEars",
+    "ActionDescription": "$Hide"
+  },
+
+  /**** 
+    Belows are some hats with a hard-coded data, we use BHA only to 
+    show the detail info of them better. So edit the value of buffs 
+    of them makes no sense.
+   ****/
+  /* Cowboy hats */
+  // Cowgal Hat
+  "(H)33": {
+    "Speed": 0.7,
+    "Condition": "FALSE",
+    "Description": "i18n:description.CowboyHat"
+  },
+  // Cowpoke Hat
+  "(H)34": {
+    "Speed": 0.7,
+    "Condition": "FALSE",
+    "Description": "i18n:description.CowboyHat"
+  },
+  // Blue Cowboy Hat
+  "(H)37": {
+    "Speed": 0.7,
+    "Condition": "FALSE",
+    "Description": "i18n:description.CowboyHat"
+  },
+  // Red Cowboy Hat
+  "(H)38": {
+    "Speed": 0.7,
+    "Condition": "FALSE",
+    "Description": "i18n:description.CowboyHat"
+  },
+  // Dark Cowboy Hat
+  "(H)83": {
+    "Speed": 0.7,
+    "Condition": "FALSE",
+    "Description": "i18n:description.CowboyHat"
+  },
+
+  /**** 
+    Belows are hat data with special mechanics and effects with no
+    buffs, we use BHA to show the description of them. 
+   ****/
+
+  /* Hats related to a shop */
+  // Raccoon Hat
+  "(H)RaccoonHat": {
+    "Description": "i18n:description.RaccoonHat"
+  },
+  // Dark Velvet Bow
+  "(H)DarkVelvetBow": {
+    "Description": "i18n:description.WeeklyShop"
+  },
+  // Wearable Dwarf Helm
+  "(H)46": {
+    "Description": "i18n:description.WeeklyShop"
+  },
+  // Green Turban
+  "(H)72": {
+    "Description": "i18n:description.WeeklyShop"
+  },
+  // Bluebird Mask
+  "(H)80": {
+    "Description": "i18n:description.WeeklyShop"
+  },
+  // Mouse Ears
+  "(H)31": {
+    "Description": "i18n:description.WeeklyShop"
+  },
+  // Red Fez
+  "(H)RedFez": {
+    "Description": "i18n:description.MonthlyShop"
+  },
+  // Mr. Qi's Hat
+  "(H)82": {
+    "Description": "i18n:description.MonthlyShop"
+  },
+  // Jester Hat
+  "(H)JesterHat": {
+    "Description": "i18n:description.JesterHat"
+  },
+
+  /* Hats related to a datable character */
+  // Abigail's Bow
+  "(H)AbigailsBow": {
+    "Description": "i18n:description.FriendShipHat"
+  },
+  // Beanie
+  "(H)53": {
+    "Description": "i18n:description.FriendShipHat"
+  },
+  // Bowler Hat
+  "(H)1": {
+    "Description": "i18n:description.FriendShipHat"
+  },
+  // Chef Hat
+  "(H)61": {
+    "Description": "i18n:description.FriendShipHat"
+  },
+  // Chicken Mask
+  "(H)10": {
+    "Description": "i18n:description.FriendShipHat"
+  },
+  // Cone Hat
+  "(H)39": {
+    "Description": "i18n:description.FriendShipHat"
+  },
+  // Deluxe Cowboy Hat
+  "(H)81": {
+    "Description": "i18n:description.FriendShipHat"
+  },
+  // Fashion Hat
+  "(H)47": {
+    "Description": "i18n:description.FriendShipHat"
+  },
+  // Floppy Beanie
+  "(H)54": {
+    "Description": "i18n:description.FriendShipHat"
+  },
+  // Frog Hat
+  "(H)78": {
+    "Description": "i18n:description.FriendShipHat"
+  },
+  // Goggles
+  "(H)89": {
+    "Description": "i18n:description.FriendShipHat"
+  },
+  // Leprechaun Hat
+  "(H)LeprechuanHat": {
+    "Description": "i18n:description.FriendShipHat"
+  },
+  // Pageboy Cap
+  "(H)PageboyCap": {
+    "Description": "i18n:description.FriendShipHat"
+  },
+  // Plum Chapeau
+  "(H)7": {
+    "Description": "i18n:description.FriendShipHat"
+  },
+  // Sports Cap
+  "(H)SportsCap": {
+    "Description": "i18n:description.FriendShipHat"
+  },
+  // Tricorn Hat
+  "(H)TricornHat": {
+    "Description": "i18n:description.FriendShipHat"
+  },
+  // Tropiclip
+  "(H)13": {
+    "Description": "i18n:description.FriendShipHat"
+  },
+  // Arcane Hat
+  "(H)60": {
+    "Description": "i18n:description.ArcaneHat"
+  },
+  // Swashbuckler Hat
+  "(H)85": {
+    "Description": "i18n:description.SwashbucklerHat"
+  },
+  // Skeleton Mask
+  "(H)8": {
+    "Description": "i18n:description.SkeletonMask"
+  },
+  // Hard Hat
+  "(H)27": {
+    "Description": "i18n:description.HardHat"
+  },
+  // Dinosaur Hat
+  "(H)43": {
+    "Description": "i18n:description.DinosaurHat"
+  },
+  // Golden Mask
+  "(H)67": {
+    "Description": "i18n:description.GoldenMask"
+  },
+  // Gil's hat
+  "(H)GilsHat": {
+    "AttackMultiplier": 0.15,
+    "Description": "i18n:description.GilsHat"
+  },
+  // Totem Mask
+  "(H)44": {
+    "Description": "i18n:description.TotemMask"
+  },
+  // Delicate Bow
+  "(H)12": {
+    "Description": "i18n:description.DelicateBow"
+  },
+  // Cool Cap
+  "(H)20": {
+    "Description": "i18n:description.CoolCap"
+  },
+  // Pan Hats
+  "(H)71": {
+    "Description": "i18n:description.PanHat"
+  },
+  "(H)SteelPanHat": {
+    "Description": "i18n:description.PanHat"
+  },
+  "(H)GoldPanHat": {
+    "Description": "i18n:description.PanHat"
+  },
+  "(H)IridiumPanHat": {
+    "Description": "i18n:description.PanHat"
+  },
+  // Blue Ribbon
+  "(H)BlueRibbon": {
+    "Description": "i18n:description.BlueRibbon"
+  },
+  // Mummy Mask
+  "(H)MummyMask": {
+    "Description": "i18n:description.MummyMask"
+  },
+  // Lucky Bow
+  "(H)21": {
+    "Description": "i18n:description.LuckyBow"
+  },
+  // Junimo Hat
+  "(H)JunimoHat": {
+    "Description": "i18n:description.JunimoHat"
+  },
+  // Qi Mask
+  "(H)86": {
+    "Description": "i18n:description.QiMask"
+  },
+  // White Turban
+  "(H)65": {
+    "Description": "i18n:description.WhiteTurban"
+  },
+  // Gnomes Cap
+  "(H)23": {
+    "Description": "i18n:description.GnomesCap"
+  },
+  // Official Cap
+  "(H)5": {
+    "Description": "i18n:description.OfficialCap"
+  },
+  // Eye Patch
+  "(H)24": {
+    "Description": "i18n:description.EyePatch"
+  },
+  // Blue Bonnet
+  "(H)6": {
+    "Description": "i18n:description.BlueBonnet"
+  },
+  // Mushroom Cap
+  "(H)42": {
+    "Description": "i18n:description.MushroomCap"
+  },
+  // Garbage Hat
+  "(H)66": {
+    "Description": "i18n:description.GarbageHat"
+  },
+  // Golden Helmet
+  "(H)75": {
+    "Description": "i18n:description.GoldenHelmet"
+  },
+  // Mystery Hat
+  "(H)MysteryHat": {
+    "Description": "i18n:description.MysteryHat"
+  },
+  // Radioactive Goggles
+  "(H)84": {
+    "Description": "i18n:description.RadioactiveGoggles"
+  },
+  // Polka Bow
+  "(H)22": {
+    "Description": "i18n:description.PolkaBow"
+  },
+  // Governors Hat
+  "(H)GovernorsHat": {
+    "Description": "i18n:description.GovernorsHat"
+  },
+  // Goblin Mask
+  "(H)9": {
+    "Description": "i18n:description.GoblinMask"
+  },
+  // Trucker Hat
+  "(H)16": {
+    "Description": "i18n:description.TruckerHat"
+  },
+  // Hair Bone
+  "(H)49": {
+    "Description": "i18n:description.HairBone"
+  },
+  // Fishing Hat
+  "(H)55": {
+    "Description": "i18n:description.FishingHat"
+  },
+  // Small Cap
+  "(H)79": {
+    "Description": "i18n:description.SmallCap"
+  },
+  // Blue Bow
+  "(H)BlueBow": {
+    "Description": "i18n:description.BlueBow"
+  },
+  // Pink Bow
+  "(H)77": {
+    "Description": "i18n:description.PinkBow"
+  },
+  // Joja Cap
+  "(H)JojaCap": {
+    "Description": "i18n:description.Limit"
+  },
+  // Dark Ballcap
+  "(H)DarkBallcap": {
+    "Description": "i18n:description.Limit"
+  },
+
+  // Elegant Turban
+  "(H)64": {
+    "Attack": 5,
+    "Defense": 5,
+    "Immunity": 5,
     "Speed": 2,
-    "Condition": "$CustomCondition",
-    "Trigger": "TimeChanged"
+    "MagneticRadius": 128
   },
-  // Sunglasses (Current season is summer)
-  "(H)88": {
-    "Speed": 0.5,
-    "LuckLevel": 1,
-    "Condition": "LOCATION_SEASON Here Summer",
-    "Trigger": "LocationChanged"
-  },
-  // Bucket Hat (During the Trout Derby)
-  "(H)BucketHat": {
-    "FishingLevel": 1,
-    "MaxStamina": 50,
-    "Condition": "SEASON_DAY Summer 20 Summer 21",
-    "Trigger": "DayStarted"
-  },
-  // Squid Hat (During the Squid Fest)
-  "(H)SquidHat": {
-    "FishingLevel": 2,
-    "MaxStamina": 50,
-    "Condition": "SEASON_DAY Winter 12 Winter 13",
-    "Trigger": "DayStarted"
-  },
-  // Paper Hat
-  "(H)PaperHat": {
-    "Speed": 1,
-    "LuckLevel": 1,
-    "Condition": "LOCATION_CONTEXT Here Island",
-    "Trigger": "LocationChanged"
-  },
-  "(H)SpaceHelmet": {
-    "AttackMultiplier": 0.1,
-    "Defense": 2,
-    "Speed": 0.5,
-    "Condition": "$CustomCondition",
-    "Trigger": "LocationChanged",
-    "ConditionDescription": "i18n:condition.SpaceHelmet",
-    "ModifierDescription": "i18n:modifier.SpaceHelmet"
+  // ???
+  "(H)92": {
+    "FarmingLevel": 3,
+    "FishingLevel": 3,
+    "MiningLevel": 3,
+    "LuckLevel": 3,
+    "ForagingLevel": 3
   }
 }

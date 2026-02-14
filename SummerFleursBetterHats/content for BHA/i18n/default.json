@@ -13,7 +13,7 @@
   "condition.PumpkinMask": "Current date is Fall 8~11",
 
   "condition.Souwester": "Current location is outdoors and the weather is rainy.",
-  "modifier.Souwester": "Fishing level buff will increased to 2 if stormy.",
+  "modifier.Souwester": "Fishing level buff will increased to 3 if stormy.",
 
   "condition.LogoCap": "Current location is the mine, and the level is 20, 60, or 100.",
   "modifier.LogoCap": "Get double buff effects at level 60, or triple at level 100.",

@@ -10,6 +10,6 @@ public partial class HatWithEffects
     private static void Modifier_Souwester_Stormy(Buff buff)
     {
         if (Game1.currentLocation.GetWeather().Weather.EqualsIgnoreCase("Storm"))
-            buff.effects.FishingLevel.Value = 2;
+            buff.effects.FishingLevel.Value = 3;
     }
 }

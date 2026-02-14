@@ -9,6 +9,8 @@ public static partial class HatWithEffects
     public static void RegisterCustomMethods(ISummerFleurBetterHatsAPI api)
     {
         api.SetCustomActionTrigger(BridalVeilID, PackID, Action_WeddingHats_AddFriendShip);
+        api.SetCustomActionTrigger(CatEarsID, PackID, Action_CatEars);
+        api.SetCustomActionTrigger(FlatToppedHatID, PackID, Action_FlatToppedHat_AddThanksGivingGift);
         api.SetCustomActionTrigger(LivingHatID, PackID, Action_LivingHat_Healing);
         api.SetCustomActionTrigger(SantaHatID, PackID, Action_SantaHat_AddMysteryBox);
         api.SetCustomActionTrigger(SombreroID, PackID, Action_Sombrero_AddMoney);

@@ -132,8 +132,10 @@ internal static class ConstantHelper
     /*****
      * Daily flags -> lower 8 bits
      *****/
-    public const uint TotemMaskMask  = 1;
-    public const uint RaccoonHatMask = 1 << 1;
+    public const uint RaccoonHatMask    = 1;
+    public const uint GilsHatMask       = 1 << 1;
+    public const uint TotemMaskMask     = 1 << 2;
+    public const uint DelicateBowMask   = 1 << 3;
 
     /*****
      * Weekly flags -> mid-lower 8 bits
@@ -143,6 +145,7 @@ internal static class ConstantHelper
     public const uint GreenTurbanMask       = 1 << 10;
     public const uint BluebirdMaskMask      = 1 << 11;
     public const uint JesterHatMask         = 1 << 12;
+    public const uint MouseEarsMask         = 1 << 13;
 
     /*****
      * Monthly flags -> mid-higher 8 bits

@@ -19,6 +19,7 @@ public partial class HatWithPatches
             var original4 = AccessTools.Method(typeof(Mummy), nameof(Monster.takeDamage), parameters);
             var original5 = AccessTools.Method(typeof(Serpent), nameof(Monster.takeDamage), parameters);
             var original6 = AccessTools.Method(typeof(Skeleton), nameof(Monster.takeDamage), parameters);
+            var original7 = AccessTools.Method(typeof(Monster), nameof(Monster.takeDamage), parameters);
 
             var postfix1 = AccessTools.Method(typeof(HatWithPatches), nameof(Patch_Bat_takeDamage));
             var postfix2 = AccessTools.Method(typeof(HatWithPatches), nameof(Patch_Duggy_takeDamage));
@@ -26,6 +27,7 @@ public partial class HatWithPatches
             var postfix4 = AccessTools.Method(typeof(HatWithPatches), nameof(Patch_Mummy_takeDamage));
             var postfix5 = AccessTools.Method(typeof(HatWithPatches), nameof(Patch_Serpent_takeDamage));
             var postfix6 = AccessTools.Method(typeof(HatWithPatches), nameof(Patch_Skeleton_takeDamage));
+            var postfix7 = AccessTools.Method(typeof(HatWithPatches), nameof(Patch_Dino_takeDamage));
 
             harmony.Patch(original1, postfix: new HarmonyMethod(postfix1));
             harmony.Patch(original2, postfix: new HarmonyMethod(postfix2));
@@ -33,6 +35,7 @@ public partial class HatWithPatches
             harmony.Patch(original4, postfix: new HarmonyMethod(postfix4));
             harmony.Patch(original5, postfix: new HarmonyMethod(postfix5));
             harmony.Patch(original6, postfix: new HarmonyMethod(postfix6));
+            harmony.Patch(original7, postfix: new HarmonyMethod(postfix7));
 
             Log("Patched Monster.takeDamage for monster hats successfully.");
         }
@@ -85,6 +88,12 @@ public partial class HatWithPatches
     public static void Patch_Skeleton_takeDamage(ref int __result)
     {
         if (PlayerHatIs(SkeletonMaskID))
+            __result = (int)(1.5 * __result);
+    }
+
+    public static void Patch_Dino_takeDamage(Monster __instance, ref int __result)
+    {
+        if (__instance is DinoMonster && PlayerHatIs(DinosaurHatID))
             __result = (int)(1.5 * __result);
     }
 }

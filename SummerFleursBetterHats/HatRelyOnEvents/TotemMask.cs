@@ -1,32 +1,20 @@
 ﻿using StardewModdingAPI.Events;
+using StardewValley.Tools;
 using SummerFleursBetterHats.Framework;
 
 namespace SummerFleursBetterHats.HatRelyOnEvents;
 
 public partial class HatRelyOnEvents
 {
-    private static int _timer;
-
     /// <summary>
     /// Event for the totem mask, long press to warp home, once per day.
     /// </summary>
-    private static void TotemMaskButtonsChanged(object sender, ButtonsChangedEventArgs e)
+    private static void TotemMaskButtonsChanged(object s, ButtonsChangedEventArgs e)
     {
-        // 仅当长按左键时
-        // only when the player is holding the left mouse button
-        if (e.Held.FirstOrDefault() != SButton.MouseLeft)
-        {
-            _timer = 0;
+        // 仅当按下快捷键时
+        // only when press the keybind
+        if (!ModEntry.Config.HatActionKeybind.JustPressed())
             return;
-        }
-
-        // 如果计时器未到 60 帧，则继续计时
-        // if the timer has not reached 60 frames, continue counting
-        if (_timer < 60)
-        {
-            _timer++;
-            return;
-        }
 
         // 如果玩家帽子不是图腾面具，则直接注销本事件
         // if the player's hat is not a totem mask, unregister this event
@@ -36,16 +24,24 @@ public partial class HatRelyOnEvents
             return;
         }
 
-        // 如果玩家手上有东西、不可移动或已经使用过了图腾面具，退出
-        // return if the player is holding something, cannot move, or has already used the mask today
+        // 如果玩家手上有东西、不可移动，退出
+        // return if the player is holding something, cannot move
         var player = Game1.player;
-        if (player.ActiveItem is not null || !player.canMove || player.TryGetWorldStatus(TotemMaskMask))
+        if (player.ActiveItem is Wand || !player.canMove)
             return;
 
         // 检查是否有正在活动的菜单或节日
         // Check if there is an active menu or festival
         if (Game1.activeClickableMenu is not null || Game1.currentLocation.currentEvent is not null)
             return;
+
+        // 如果玩家已经使用过了图腾面具，退出并显示消息
+        // return and show a message if the player has already used the mask today
+        if (player.TryGetWorldStatus(TotemMaskMask))
+        {
+            Game1.showRedMessage(I18n.String_Hat_Used(PlayerHat()!.DisplayName));
+            return;
+        }
 
         // 传送回家
         // Warp home

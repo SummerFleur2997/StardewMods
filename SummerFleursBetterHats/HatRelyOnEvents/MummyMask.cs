@@ -74,6 +74,7 @@ public partial class HatRelyOnEvents
         foreach (var mummy in monsters)
         {
             mummy.DamageToFarmer = _cachedMaxAttack * 2;
+            mummy.speed += 1;
             mummy.moveTowardPlayerThreshold.Value = _cachedMaxMtp;
             Reflection.GetField<int>(mummy, "_damageToFarmer", false).SetValue(_cachedMaxAttack * 2);
         }

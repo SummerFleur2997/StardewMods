@@ -142,11 +142,11 @@ internal static class SaveManager
     /// 在载入游戏存档时加载模组。
     /// Load modules when loading a game save.
     /// </summary>
-    private static void OnSaveLoaded(object sender, SaveLoadedEventArgs e) => Load();
+    private static void OnSaveLoaded(object s, SaveLoadedEventArgs e) => Load();
 
     /// <summary>
     /// 在游戏向存档文件写入数据前触发（除了新建存档时）。
     /// Raised before the game begins writes data to the save file (except the initial save creation).
     /// </summary>
-    private static void OnSaving(object sender, SavingEventArgs e) => Save();
+    private static void OnSaving(object s, SavingEventArgs e) => Save();
 }

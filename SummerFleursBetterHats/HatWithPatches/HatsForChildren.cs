@@ -26,8 +26,8 @@ public partial class HatWithPatches
     /// </summary>
     public static int AddFriendshipToChild(Child child) => child.hat.Value?.QualifiedItemId switch
     {
-        BlueBowID when child.Gender is Gender.Male => 20,
-        PinkBowID when child.Gender is Gender.Female => 20,
+        BlueBowID when child.Gender is Gender.Male => 30,
+        PinkBowID when child.Gender is Gender.Female => 30,
         _ => 0
     };
 

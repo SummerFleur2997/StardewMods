@@ -1,23 +1,105 @@
 ﻿{
-  "condition.BridalVeil": "玩家性别为女性，且当天是玩家首次婚礼。",
-  "condition.TopHat": "玩家性别为男性，且当天是玩家首次婚礼。",
-  "action.WeddingHat": "获得与配偶 1 颗心的好感度。",
+  "condition.Spring": "当前季节为春季。",
+  "condition.Summer": "当前季节为夏季。",
+  "condition.Fall": "当前季节为秋季。",
+  "condition.Winter": "当前季节为冬季。",
+
+  "description.ButterflyBow": "美洲大树莓成熟季时获得采集加成，采摘灌木丛时额外获得 1 个美洲大树莓。",
+  "condition.ButterflyBow": "当前日期为春季 15~18 日。",
+
+  "description.BucketHat": "鳟鱼大赛时获得钓鱼加成，小幅提高钓到黄金标签的概率。",
+  "condition.BucketHat": "当前日期为夏季 20~21 日。",
+
+  "description.PumpkinMask": "黑莓成熟季时获得采集加成，采摘灌木丛时额外获得 1 个黑莓。",
+  "condition.PumpkinMask": "当前日期为秋季 8~11 日。",
+
+  "description.SquidHat": "鱿鱼节时获得钓鱼加成，小幅降低鱿鱼的捕获难度。",
+  "condition.SquidHat": "当前日期为冬季 12~13 日。",
+
+  "condition.SpottedHeadscarf": "当前日期是这个季节的最后 7 天。",
+  "condition.PaperHat": "位于姜岛上。",
+  "condition.PartyHatGreen": "位于矿井的 1~39 层。",
+  "condition.PartyHatBlue": "位于矿井的 40~79 层。",
+  "condition.PartyHatRed": "位于矿井的 80 层及以上或骷髅洞穴。",
+
+  "description.LogoCap": "在矿井中钓鱼时获得额外的钓鱼和运气加成。",
+  "condition.LogoCap": "位于矿井的 20、60 或 100 层。",
+  "modifier.LogoCap": "位于 60 层获得 2 倍的增益效果，100 层获得 3 倍的增益效果。",
+
+  "description.SpaceHelmet": "在危险矿井或骷髅洞穴中时获得战斗属性加成，矿井越危险，加成越高。",
+  "condition.SpaceHelmet": "位于危险的矿井或骷髅洞穴中。",
+  "modifier.SpaceHelmet": "获得的增益效果将乘以当前矿井的危险等级。",
+
+  "condition.Souwester": "位于雨天的室外。",
+  "modifier.Souwester": "若为雷雨，则钓鱼等级增益变为 +3。",
+  
+  "condition.BlobfishMask": "位于夜市的钓鱼潜水艇中。",
+  "condition.MagicCowboyHat": "当前时间是 17:00 后。",
+
+  "condition.BridalVeil": "玩家性别为女性，且当天是玩家首次婚礼。（海王不准上桌吃饭~）",
+  "condition.TopHat": "玩家性别为男性，且当天是玩家首次婚礼。（海王不准上桌吃饭~）",
+  "action.WeddingHat": "获得与配偶 1 颗心的友谊值。",
+
+  "action.GoodOlCap": "每天开始时获得 20 金币。",
+  "action.Sombrero": "每周日醒来时获得相当于总收入 0.5% 的金币，无上限。",
+
+  "description.FlatToppedHat": "庆祝秋季的丰收。",
+  "condition.FlatToppedHat": "当前日期为秋季的最后一个星期四。",
+  "action.FlatToppedHat": "醒来时获得 1 份红莓酱、塞料面包和农夫午餐。",
+
+  "description.SantaHat": "来自圣诞老人的礼物？",
+  "condition.SantaHat": "当前日期为冬季 25 日。",
+  "action.SantaHat": "醒来时获得 1 个谜之盒，若已获得采集精通，转而获得 1 个金色谜之盒。",
 
   "description.LivingHat": "缓慢恢复生命值与能量值。",
   "action.LivingHat": "每秒恢复 1 点生命值与 2 点能量值。",
 
-  "description.ButterflyBow": "美洲大树莓成熟季时获得 +1 采集，采摘灌木丛时额外获得 1 个美洲大树莓。",
-  "condition.ButterflyBow": "当前日期为春季 15~18 日。",
+  "description.CatEars": "这顶帽子时可能偶尔会发出喵喵的声音……",
+  "description.CowboyHat": "在骑马时获得额外速度加成，状态栏上不会显示此增益效果的图标。",
 
-  "description.PumpkinMask": "黑莓成熟季时获得 +1 采集，采摘灌木丛时额外获得 1 个黑莓。",
-  "condition.PumpkinMask": "当前日期为秋季 8~11 日。",
+  "description.RaccoonHat": "你的一个动物邻居似乎对这顶帽子很感兴趣，戴着这顶帽子前往它的商店每天都可以获得一个免费的物品。",
+  "description.WeeklyShop": "某个商店的店主似乎对这顶帽子很感兴趣，戴着这顶帽子前往它的商店每周都可以获得一个免费的物品。",
+  "description.MonthlyShop": "某个商店的店主似乎对这顶帽子很感兴趣，戴着这顶帽子前往它的商店每个季节都可以获得一个免费的物品。",
+  "description.JesterHat": "听说戴着这顶帽子可以去电影院买到特价票？",
+  "description.FriendShipHat": "看起来有一个可结婚的村民很喜欢这顶帽子，何不戴着这顶帽子找 Ta 聊聊天呢？",
 
-  "condition.Souwester": "位于雨天的室外。",
-  "modifier.Souwester": "若为雷雨，则钓鱼等级增益变为 +2。",
+  "description.ArcaneHat": "对幽灵和木乃伊的伤害 ×1.5，看起来有一个可结婚的村民很喜欢这顶帽子，何不戴着这顶帽子找 Ta 聊聊天呢？",
+  "description.SwashbucklerHat": "对熔岩精灵和熔岩火球的伤害 ×1.5，看起来有一个可结婚的村民很喜欢这顶帽子，何不戴着这顶帽子找 Ta 聊聊天呢？",
+  "description.SkeletonMask": "对骷髅的伤害 ×1.5。",
+  "description.HardHat": "对掘地虫的伤害 ×1.5。",
+  "description.DinosaurHat": "对霸王喷火龙的伤害 ×1.5。",
+  "description.GoldenMask": "对飞蛇和铱蝠的伤害 ×1.5。",
 
-  "condition.LogoCap": "位于矿井的 20、60 或 100 层。",
-  "modifier.LogoCap": "位于 60 层获得 2 倍的增益效果，100 层获得 3 倍的增益效果。",
+  "description.GilsHat": "沙漠节时戴着这顶帽子进入骷髅洞穴可以额外获得 10 点卡利科三花蛋分数，若中途摘下则会将这些分数扣除。",
+  "description.TotemMask": "戴着它按下主动效果快捷键，可以传送回家，每天一次。",
+  "description.DelicateBow": "戴着它按下主动效果快捷键，可以在接下来的 30 秒内持续回复生命值与能量值，每天一次。",
+  "description.CoolCap": "戴着它按下主动效果快捷键，若当前日期为季节的前 3 天，则可以立即浇灌当前位置下的所有农作物。",
 
-  "condition.SpaceHelmet": "位于危险的矿井或骷髅洞穴中。",
-  "modifier.SpaceHelmet": "获得的增益效果将乘以当前矿井的危险等级。",
+  "description.PanHat": "当附近有闪光点时，“空手”与闪光点互动可以直接把帽子变成淘盘并开始淘金，淘金完成后淘盘会变回帽子回到你的头上。",
+  "description.BlueRibbon": "进入星露谷展览会节日时，可以获得 998 个星星币。",
+  "description.MummyMask": "木乃伊不再伤害你。（警告：千万不要拿它来糊弄木乃伊们，否则它们可能会很生气……）",
+  "description.Limit": "这好像是一顶限量发行的帽子……",
+
+  "description.LuckyBow": "每日运气 +0.015。",
+  "description.JunimoHat": "收获农作物时，有 20% 的概率额外获得一个作物。",
+  "description.QiMask": "收获齐瓜时，有 10% 的概率额外获得一个齐瓜。",
+  "description.WhiteTurban": "收获宝石甜莓时，有 10% 的概率额外获得一颗宝石甜莓。",
+  "description.GnomesCap": "夜晚出现农作物仙子的概率 +1%，多人游戏中此概率可以叠加。",
+  "description.OfficialCap": "钓鱼宝箱有更大的概率变为金色钓鱼宝箱。",
+  "description.EyePatch": "大幅增加钓鱼小游戏“钓鱼条”的长度，同时降低 25% 鱼的捕获难度。",
+  "description.BlueBonnet": "使用锄头挖掘土地时有 1% 的概率获得一个古物宝藏。",
+  "description.MushroomCap": "破坏杂草掉落混合种子或混合花卉种子的概率 +5%。",
+  "description.GarbageHat": "在垃圾桶中发现东西的概率 +10%。",
+  "description.GoldenHelmet": "摇晃姜岛的棕榈树获得金色椰子的概率 +10%。",
+  "description.MysteryHat": "获得谜之盒（或金色谜之盒）的概率提升 25%。",
+  "description.RadioactiveGoggles": "显著提高放射性矿生成的概率。",
+  "description.PolkaBow": "与村民对话时额外获得 10 点友谊值。",
+  "description.GovernorsHat": "在夏威夷宴会上与村民们增加的友谊值翻倍。",
+  "description.GoblinMask": "是的，它确实会吓到你的左邻右舍……",
+  "description.TruckerHat": "前往沙漠的车票价格降低至 1 金币。",
+  "description.BlueBow": "给你的男孩戴上后，抚摸时获得的友谊值 +30。",
+  "description.PinkBow": "给你的女孩戴上后，抚摸时获得的友谊值 +30。",
+  "description.HairBone": "给你的宠物小狗戴上后，抚摸时掉落礼物的概率 +10%。",
+  "description.FishingHat": "给你的宠物小猫戴上后，抚摸时掉落礼物的概率 +10%。",
+  "description.SmallCap": "给马戴上后，骑行的速度 +1。"
 }

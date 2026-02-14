@@ -15,6 +15,12 @@ public partial class HatRelyOnEvents
     /// </summary>
     private static void BlueRibbonLocationChanged(object s, WarpedEventArgs e)
     {
+        if (!PlayerHatIs(BlueRibbonID))
+        {
+            ModEvents.Player.Warped -= BlueRibbonLocationChanged;
+            return;
+        }
+
         if (e.NewLocation is not Town { Name: "Temp" } || Game1.Date.Year == _blueRibbonLastTriggeredYear)
             return;
 

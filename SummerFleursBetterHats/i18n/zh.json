@@ -1,0 +1,6 @@
+﻿{
+  "string.FlatToppedHat": "感恩节到了，祝你在这个秋天取得丰收！",
+  "string.SantaHat": "你收到了一份来自圣诞老人的礼物，冬日星快乐！",
+  "string.Hat.Used": "你今天已经使用过了{{hat}}的主动效果！",
+  "string.CoolCap.Unavailable": "凉帽的主动效果仅在季节的前 3 天可用。",
+}

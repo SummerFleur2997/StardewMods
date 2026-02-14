@@ -12,7 +12,7 @@ public partial class HatRelyOnEvents
     /// Event for the pan hats, make it possible to unequip it with left click
     /// when a panning spot is nearby.
     /// </summary>
-    private static void PanHatsButtonPressed(object sender, ButtonPressedEventArgs e)
+    private static void PanHatsButtonPressed(object s, ButtonPressedEventArgs e)
     {
         // 仅当按下左键时
         // only when the player clicked the left mouse button

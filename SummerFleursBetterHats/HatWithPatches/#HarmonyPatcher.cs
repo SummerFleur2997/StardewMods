@@ -7,6 +7,7 @@ public static partial class HatWithPatches
         RegisterPatchForBlueBonnet(harmony);
         RegisterPatchForBucketHat(harmony);
         // RegisterPatchForChefHat(harmony);
+        RegisterPatchForEyePatch(harmony);
         RegisterPatchForGarbageHat(harmony);
         RegisterPatchForGnomesCap(harmony);
         RegisterPatchForGoldenHelmet(harmony);
@@ -25,10 +26,11 @@ public static partial class HatWithPatches
         RegisterPatchForOfficialCap(harmony);
         RegisterPatchForPolkaBow(harmony);
         RegisterPatchForRadioactiveGoggles(harmony);
+        RegisterPatchForSquidHat(harmony);
         RegisterPatchForTruckerHat(harmony);
     }
 
-    #region  Log Wrappers
+    #region Log Wrappers
 
     private static void Log(string s) => ModEntry.Log(s);
     private static void Error(string s) => ModEntry.Log(s, LogLevel.Error);

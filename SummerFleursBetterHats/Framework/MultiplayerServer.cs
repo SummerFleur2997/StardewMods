@@ -55,7 +55,7 @@ public class MultiplayerServer : IModule
         MultiplayerHelper.SendMessage(SaveManager.WorldStatus, "MultiplayerInit",
             new[] { ModEntry.Manifest.UniqueID }, new[] { fromWho });
 
-    private void OnDayStarted(object sender, DayStartedEventArgs e)
+    private void OnDayStarted(object s, DayStartedEventArgs e)
     {
         if (!Context.IsMainPlayer)
             SendSyncRequest();
@@ -63,7 +63,7 @@ public class MultiplayerServer : IModule
         EventsHelper.GameLoop.DayStarted -= OnDayStarted;
     }
 
-    private void OnMessageReceived(object sender, ModMessageReceivedEventArgs e)
+    private void OnMessageReceived(object s, ModMessageReceivedEventArgs e)
     {
         switch (e.Type)
         {

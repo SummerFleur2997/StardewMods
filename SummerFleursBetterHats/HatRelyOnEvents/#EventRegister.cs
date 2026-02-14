@@ -1,5 +1,6 @@
 ﻿using BetterHatsAPI.API;
 using StardewModdingAPI.Events;
+using SummerFleursBetterHats.Framework;
 
 namespace SummerFleursBetterHats.HatRelyOnEvents;
 
@@ -46,10 +47,21 @@ public static partial class HatRelyOnEvents
                 ModEvents.Input.ButtonPressed += PanHatsButtonPressed;
                 return;
 
+            // Cool cap, watering the crops in one click
+            case CoolCapID:
+                ModEvents.Input.ButtonsChanged += CoolCapButtonsChanged;
+                return;
+
+            // Delicate bow, heal the player continuously
+            case DelicateBowID:
+                ModEvents.Input.ButtonsChanged += DelicateBowButtonsChanged;
+                return;
+
             // Totem mask, using as a warp totem, once per day
             case TotemMaskID:
                 ModEvents.Input.ButtonsChanged += TotemMaskButtonsChanged;
                 return;
+
 
             /*****
              * Content patcher related events
@@ -66,15 +78,14 @@ public static partial class HatRelyOnEvents
             // NPC special dialogue
 
             case AbigailsBowID: // abigail
+            case ArcaneHatID: // magnus
             case BeanieID when Game1.season is Season.Winter: // sam
             case BowlerHatID: // victor
             case ChefHatID: // harvey
-            case ChickenMaskID: // shane
+            case ChickenMaskID when Game1.player.getFriendshipHeartLevelForNPC("Shane") >= 6: // shane
             case ConeHatID: // olivia
             case DeluxeCowboyHatID: // sophia
-            case EyePatchID: // lance
-            case FashionHatID: // claire
-            case FlatToppedHatID: // magnus
+            case FashionHatID when Game1.player.getFriendshipHeartLevelForNPC("Claire") >= 6: // claire
             case FloppyBeanieID when Game1.season is Season.Winter: // emily
             case FrogHatID: // sebastian
             case GogglesID: // maru
@@ -82,6 +93,7 @@ public static partial class HatRelyOnEvents
             case PageboyCapID when Game1.player.achievements.Contains(35): // penny
             case PlumChapeauID: // scarlett
             case SportsCapID: // alex
+            case SwashbucklerHatID: // lance
             case TricornHatID: // elliott
             case TropiclipID: // haley
                 var trimmedName = e.NewHat.Name.Replace(" ", "");
@@ -97,20 +109,19 @@ public static partial class HatRelyOnEvents
             case MummyMaskID:
                 UpdateForThisLocationWhenDisable();
                 break;
-            case GilsHatID:
+            case GilsHatID when Game1.player.TryGetWorldStatus(GilsHatMask):
                 Game1.player.team.calicoEggSkullCavernRating.Value -= ExtraEggScore;
                 break;
 
             case AbigailsBowID: // abigail
+            case ArcaneHatID: // magnus
             case BeanieID: // sam
             case BowlerHatID: // victor
             case ChefHatID: // harvey
             case ChickenMaskID: // shane
             case ConeHatID: // olivia
             case DeluxeCowboyHatID: // sophia
-            case EyePatchID: // lance
             case FashionHatID: // claire
-            case FlatToppedHatID: // magnus
             case FloppyBeanieID: // emily
             case FrogHatID: // sebastian
             case GogglesID: // maru
@@ -118,6 +129,7 @@ public static partial class HatRelyOnEvents
             case PageboyCapID: // penny
             case PlumChapeauID: // scarlett
             case SportsCapID: // alex
+            case SwashbucklerHatID: // lance
             case TricornHatID: // elliott
             case TropiclipID: // haley
                 var trimmedName = e.OldHat.Name.Replace(" ", "");
@@ -140,8 +152,11 @@ public static partial class HatRelyOnEvents
         ModEvents.Player.Warped -= MummyMaskLocationChanged;
         ModEvents.Player.InventoryChanged -= WearPanHatBack;
         ModEvents.Input.ButtonPressed -= PanHatsButtonPressed;
+        ModEvents.Input.ButtonsChanged -= CoolCapButtonsChanged;
+        ModEvents.Input.ButtonsChanged -= DelicateBowButtonsChanged;
         ModEvents.Input.ButtonsChanged -= TotemMaskButtonsChanged;
         ModEvents.World.NpcListChanged -= MummyMaskMonsterSpawned;
+        ModEvents.GameLoop.OneSecondUpdateTicked -= DelicateBowHeal;
     }
 
     private static IModEvents ModEvents => ModEntry.ModHelper.Events;

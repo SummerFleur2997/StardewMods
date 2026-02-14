@@ -14,6 +14,6 @@ public partial class HatWithEffects
         var health = player.health;
 
         player.health = Math.Min(player.maxHealth, health + 1);
-        player.Stamina += 2;
+        player.Stamina += 2.2f;
     }
 }

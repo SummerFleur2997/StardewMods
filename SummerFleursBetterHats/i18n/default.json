@@ -1,3 +1,5 @@
 ﻿{
-  "string.SantaHat": "You got a gift from Santa! Happy Feast Of The Winter Star!"
+  "string.SantaHat": "You got a gift from Santa! Happy Feast Of The Winter Star!",
+  "string.Hat.Used": "You've already used the effect of {{hat}} today!",
+  "string.CoolCap.Unavailable": "Cool Cap can only be used during the first 3 days of the season.",
 }

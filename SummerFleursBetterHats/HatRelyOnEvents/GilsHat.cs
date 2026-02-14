@@ -1,13 +1,12 @@
 ﻿using StardewModdingAPI.Events;
 using StardewValley.Locations;
+using SummerFleursBetterHats.Framework;
 
 namespace SummerFleursBetterHats.HatRelyOnEvents;
 
 public partial class HatRelyOnEvents
 {
     private const int ExtraEggScore = 10;
-
-    private static int _gilsHatLastTriggeredDate;
 
     /// <summary>
     /// When entering the skull cavern with gil's hat worn
@@ -28,11 +27,12 @@ public partial class HatRelyOnEvents
 
         // Check whether it is the desert festival, and 
         // whether the effect has been triggered today
+        var player = Game1.player;
         var desertFestivalDate = Utility.GetDayOfPassiveFestival("DesertFestival");
-        if (desertFestivalDate <= 0 || _gilsHatLastTriggeredDate == desertFestivalDate)
+        if (desertFestivalDate <= 0 || player.TryGetWorldStatus(GilsHatMask))
             return;
 
-        Game1.player.team.calicoEggSkullCavernRating.Value += ExtraEggScore;
-        _gilsHatLastTriggeredDate = desertFestivalDate;
+        player.team.calicoEggSkullCavernRating.Value += ExtraEggScore;
+        SaveManager.TryEditWorldStatus(player.UniqueMultiplayerID, GilsHatMask);
     }
 }
