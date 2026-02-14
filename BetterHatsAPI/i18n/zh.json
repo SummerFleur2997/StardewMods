@@ -18,7 +18,6 @@
   "string.WeaponPrecisionMultiplier": "{{value}} 武器精度倍率",
   "string.KnockbackMultiplier": "{{value}} 武器重量倍率",
 
-  "string.Description": "描述",
   "string.Condition": "条件",
   "string.Action": "事件",
   "string.Modifier": "修饰器",

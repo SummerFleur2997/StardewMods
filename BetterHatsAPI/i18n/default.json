@@ -18,7 +18,6 @@
   "string.WeaponPrecisionMultiplier": "{{value}} Weapon Precision Mult",
   "string.KnockbackMultiplier": "{{value}} Knockback Mult",
 
-  "string.Description": "Description",
   "string.Condition": "Condition",
   "string.Action": "Action",
   "string.Modifier": "Modifier",

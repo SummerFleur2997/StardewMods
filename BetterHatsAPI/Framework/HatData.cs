@@ -15,6 +15,7 @@ public partial class HatData
     public const string CustomConditionSign = "$CustomCondition";
     public const string CustomActionSign = "$CustomAction";
     public const string CombinedDataSign = "$CombinedData";
+    public const string HideSign = "$Hide";
 
     internal IContentPack Pack = null!;
 
@@ -166,11 +167,13 @@ public partial class HatData
     {
         get
         {
-            var rawCondition = Condition;
-            if (string.IsNullOrWhiteSpace(rawCondition))
+            var rawCondition = Condition.Trim();
+            if (string.IsNullOrWhiteSpace(rawCondition) || rawCondition is "TRUE" or "FALSE")
                 return string.Empty;
 
             var desc = Pack.TryGetTranslation(_conditionDescription);
+            if (desc == HideSign)
+                return string.Empty;
             if (!string.IsNullOrWhiteSpace(desc))
                 return desc;
 
@@ -222,6 +225,8 @@ public partial class HatData
                 return string.Empty;
 
             var desc = Pack.TryGetTranslation(_actionDescription);
+            if (desc == HideSign)
+                return string.Empty;
             if (!string.IsNullOrWhiteSpace(desc))
                 return desc;
 
@@ -303,6 +308,7 @@ public partial class HatData
     {
         CustomConditionChecker = condition;
         UseCustomCondition = true;
+        Condition = CustomActionSign;
     }
 
     /// <summary>
@@ -312,6 +318,7 @@ public partial class HatData
     {
         CustomAction = action;
         UseCustomAction = true;
+        Action = CustomActionSign;
     }
 }
 

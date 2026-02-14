@@ -50,7 +50,6 @@ public class HatsAPICore : ISummerFleurBetterHatsAPI
                 throw new Exception($"Can't find the data of {qualifiedHatID} in {packID}!");
 
             targetData.SetCustomCondition(customConditionChecker);
-            targetData.Condition = HatData.CustomConditionSign;
             Log($"Successfully set custom condition checker for {packID} - {qualifiedHatID}.");
         }
         catch (Exception e)
@@ -76,7 +75,6 @@ public class HatsAPICore : ISummerFleurBetterHatsAPI
                 throw new Exception($"Can't find the data of {qualifiedHatID} in {packID}!");
 
             targetData.SetCustomAction(customActionTrigger);
-            targetData.Action = HatData.CustomActionSign;
             Log($"Successfully set custom action trigger for {packID} - {qualifiedHatID}.");
         }
         catch (Exception e)
