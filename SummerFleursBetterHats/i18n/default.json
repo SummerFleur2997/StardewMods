@@ -1,5 +1,11 @@
 ﻿{
+  "string.FlatToppedHat": "Thanksgiving is coming, hope you have a bountiful harvest this fall!",
   "string.SantaHat": "You got a gift from Santa! Happy Feast Of The Winter Star!",
   "string.Hat.Used": "You've already used the effect of {{hat}} today!",
   "string.CoolCap.Unavailable": "Cool Cap can only be used during the first 3 days of the season.",
+
+  "config.ActiveEffect.Title": "Active Effect Keybind",
+  "config.ActiveEffect.desc": "Trigger the active effect of the current hat, if any. Default is LeftCtrl + Space.",
+  "config.ChainPanning.Title": "Chain Panning (BETA)",
+  "config.ChainPanning.desc": "After panning, automatically continue if a new panning spot appears nearby, repeating until no spots remain. Only available when using the mod's panning feature of pan hats.",
 }

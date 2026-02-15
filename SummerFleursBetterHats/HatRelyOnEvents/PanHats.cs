@@ -84,7 +84,7 @@ public partial class HatRelyOnEvents
         var location = Game1.currentLocation;
         if (location.orePanPoint != null && !location.orePanPoint.Value.Equals(Point.Zero))
         {
-            if (ModEntry.Config.ExperimentalFeatures &&
+            if (ModEntry.Config.ChainPanning &&
                 IsPanningPointAvailable(pan, location.orePanPoint.Value.X * 64, location.orePanPoint.Value.Y * 64))
             {
                 pan.beginUsing(location, location.orePanPoint.X * 64, location.orePanPoint.Y * 64, player);

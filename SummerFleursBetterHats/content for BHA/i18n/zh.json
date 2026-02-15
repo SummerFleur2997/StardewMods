@@ -70,20 +70,18 @@
   "description.DinosaurHat": "对霸王喷火龙的伤害 ×1.5。",
   "description.GoldenMask": "对飞蛇和铱蝠的伤害 ×1.5。",
 
+  "description.MummyMask": "木乃伊不再伤害你。（警告：千万不要拿它来糊弄木乃伊们，否则它们可能会很生气……）",
   "description.GilsHat": "沙漠节时戴着这顶帽子进入骷髅洞穴可以额外获得 10 点卡利科三花蛋分数，若中途摘下则会将这些分数扣除。",
+  "description.BlueRibbon": "进入星露谷展览会节日时，可以获得 998 个星星币。",
+  "description.PanHat": "当附近有闪光点时，“空手”与闪光点互动可以直接把帽子变成淘盘并开始淘金，淘金完成后淘盘会变回帽子回到你的头上。",
+  "description.LuckyBow": "每日运气 +0.015。",
   "description.TotemMask": "戴着它按下主动效果快捷键，可以传送回家，每天一次。",
   "description.DelicateBow": "戴着它按下主动效果快捷键，可以在接下来的 30 秒内持续回复生命值与能量值，每天一次。",
   "description.CoolCap": "戴着它按下主动效果快捷键，若当前日期为季节的前 3 天，则可以立即浇灌当前位置下的所有农作物。",
 
-  "description.PanHat": "当附近有闪光点时，“空手”与闪光点互动可以直接把帽子变成淘盘并开始淘金，淘金完成后淘盘会变回帽子回到你的头上。",
-  "description.BlueRibbon": "进入星露谷展览会节日时，可以获得 998 个星星币。",
-  "description.MummyMask": "木乃伊不再伤害你。（警告：千万不要拿它来糊弄木乃伊们，否则它们可能会很生气……）",
-  "description.Limit": "这好像是一顶限量发行的帽子……",
-
-  "description.LuckyBow": "每日运气 +0.015。",
-  "description.JunimoHat": "收获农作物时，有 20% 的概率额外获得一个作物。",
-  "description.QiMask": "收获齐瓜时，有 10% 的概率额外获得一个齐瓜。",
   "description.WhiteTurban": "收获宝石甜莓时，有 10% 的概率额外获得一颗宝石甜莓。",
+  "description.QiMask": "收获齐瓜时，有 10% 的概率额外获得一个齐瓜。",
+  "description.JunimoHat": "收获农作物时，有 20% 的概率额外获得一个作物。",
   "description.GnomesCap": "夜晚出现农作物仙子的概率 +1%，多人游戏中此概率可以叠加。",
   "description.OfficialCap": "钓鱼宝箱有更大的概率变为金色钓鱼宝箱。",
   "description.EyePatch": "大幅增加钓鱼小游戏“钓鱼条”的长度，同时降低 25% 鱼的捕获难度。",
@@ -91,7 +89,7 @@
   "description.MushroomCap": "破坏杂草掉落混合种子或混合花卉种子的概率 +5%。",
   "description.GarbageHat": "在垃圾桶中发现东西的概率 +10%。",
   "description.GoldenHelmet": "摇晃姜岛的棕榈树获得金色椰子的概率 +10%。",
-  "description.MysteryHat": "获得谜之盒（或金色谜之盒）的概率提升 25%。",
+  "description.MysteryHat": "获得谜之盒（或金色谜之盒）的概率 ×1.25。",
   "description.RadioactiveGoggles": "显著提高放射性矿生成的概率。",
   "description.PolkaBow": "与村民对话时额外获得 10 点友谊值。",
   "description.GovernorsHat": "在夏威夷宴会上与村民们增加的友谊值翻倍。",
@@ -101,5 +99,6 @@
   "description.PinkBow": "给你的女孩戴上后，抚摸时获得的友谊值 +30。",
   "description.HairBone": "给你的宠物小狗戴上后，抚摸时掉落礼物的概率 +10%。",
   "description.FishingHat": "给你的宠物小猫戴上后，抚摸时掉落礼物的概率 +10%。",
-  "description.SmallCap": "给马戴上后，骑行的速度 +1。"
+  "description.SmallCap": "给马戴上后，骑行的速度 +1。",
+  "description.Limit": "这好像是一顶限量发行的帽子……"
 }

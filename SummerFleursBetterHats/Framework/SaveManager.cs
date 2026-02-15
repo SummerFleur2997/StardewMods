@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using Common.ExceptionService;
 using StardewModdingAPI.Events;
 
 namespace SummerFleursBetterHats.Framework;
@@ -79,7 +78,7 @@ internal static class SaveManager
         {
             WorldStatus = ModEntry.ModHelper.Data.ReadJsonFile<Dictionary<long, uint>>(SavePath);
         }
-        catch (InvalidSaveDataException ex)
+        catch (Exception ex)
         {
             WorldStatus = new Dictionary<long, uint>();
             ModEntry.Log($"Error loading data from {SavePath}, an empty data is created instead.", LogLevel.Error);
@@ -97,7 +96,7 @@ internal static class SaveManager
         {
             ModEntry.ModHelper.Data.WriteJsonFile(SavePath, WorldStatus);
         }
-        catch (InvalidSaveDataException ex)
+        catch (Exception ex)
         {
             ModEntry.Log($"Error saving data to {SavePath}", LogLevel.Error);
             ModEntry.Log(ex.ToString(), LogLevel.Error);

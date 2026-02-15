@@ -24,5 +24,4 @@
   "dialogue.SwashbucklerHat.Lance": "$action SummerFleur.BetterHats.ResponseHatTopic SwashbucklerHat Lance#*chuckles* Legend has it that the hat on your head is imbued with the power of Dragon Teeth, able to help against the monsters in the volcano.#$e#Me? I'd like to verify the truth of that rumor, but forgive me for not knowing how to craft these hats myself. So, I hope if you can help me verify it...",
   "dialogue.TricornHat.Elliott": "$action SummerFleur.BetterHats.ResponseHatTopic TricornHat Elliott#I purchased this hat from a pen pal. Though the style is a bit dated, it is truly exquisite.#$e#Oh, by the by, he also lives by the sea. Doesn't it feel like a marvelous coincidence?$h",
   "dialogue.Tropiclip.Haley": "This headpiece will look perfect on a summer beach!$h#$action SummerFleur.BetterHats.ResponseHatTopic Tropiclip Haley"
-
 }

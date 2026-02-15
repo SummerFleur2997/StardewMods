@@ -16,7 +16,7 @@ public partial class HatRelyOnEvents
     {
         // 仅当按下快捷键时
         // only when press the keybind
-        if (!ModEntry.Config.HatActionKeybind.JustPressed())
+        if (!ModEntry.Config.ActiveEffectKeybind.JustPressed())
             return;
 
         // 如果玩家帽子不是精美蝴蝶结，则直接注销本事件

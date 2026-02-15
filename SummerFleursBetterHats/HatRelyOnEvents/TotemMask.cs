@@ -13,7 +13,7 @@ public partial class HatRelyOnEvents
     {
         // 仅当按下快捷键时
         // only when press the keybind
-        if (!ModEntry.Config.HatActionKeybind.JustPressed())
+        if (!ModEntry.Config.ActiveEffectKeybind.JustPressed())
             return;
 
         // 如果玩家帽子不是图腾面具，则直接注销本事件

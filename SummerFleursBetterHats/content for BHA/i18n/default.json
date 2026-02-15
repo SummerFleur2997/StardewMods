@@ -1,23 +1,104 @@
 ﻿{
-  "condition.BridalVeil": "Player's gender is female, and today is player's first wedding ceremony.",
-  "condition.TopHat": "Player's gender is male, and today is player's first wedding ceremony.",
-  "action.WeddingHat": "Get +1 friendship heart with your spouse.",
-
-  "description.LivingHat": "Slowly recover your health and energy.",
-  "action.LivingHat": "Recover 1 health and 2 energy per second.",
+  "condition.Spring": "Current season is Spring.",
+  "condition.Summer": "Current season is Summer.",
+  "condition.Fall": "Current season is Fall.",
+  "condition.Winter": "Current season is Winter.",
 
   "description.ButterflyBow": "Get forage +1 in salmonberry season, and an additional salmonberry when harvest bushes.",
-  "condition.ButterflyBow": "Current date is Spring 15~18",
+  "condition.ButterflyBow": "Current date is Spring 15~18.",
+
+  "description.BucketHat": "Gain a fishing bonus during the Trout Derby, slightly increasing the chance of finding Golden Tags.",
+  "condition.BucketHat": "Current date is Summer 20~21.",
 
   "description.PumpkinMask": "Get forage +1 in blackberry season, and an additional blackberry when harvest bushes.",
-  "condition.PumpkinMask": "Current date is Fall 8~11",
+  "condition.PumpkinMask": "Current date is Fall 8~11.",
+
+  "description.SquidHat": "Gain a fishing bonus during the Squid Festival, slightly reducing the difficulty of catching Squid.",
+  "condition.SquidHat": "Current date is Winter 12~13.",
+
+  "condition.SpottedHeadscarf": "Current date is within the last 7 days of the season.",
+  "condition.PaperHat": "Current location is Ginger Island.",
+  "condition.PartyHatGreen": "Current location is Mine level 1~39.",
+  "condition.PartyHatBlue": "Current location is Mine level 40~79.",
+  "condition.PartyHatRed": "Current location is Mine level 80 or deeper, or the Skull Cavern.",
+
+  "description.LogoCap": "Gain extra Fishing and Luck bonus when fishing in the mineshaft.",
+  "condition.LogoCap": "Current location is the mine, and the level is 20, 60, or 100.",
+  "modifier.LogoCap": "Get double buff effects at level 60, or triple at level 100.",
+
+  "description.SpaceHelmet": "Gain combat bonuses while in the Dangerous Mines or Skull Cavern. The more dangerous the mine, the higher the bonus.",
+  "condition.SpaceHelmet": "Current location is the dangerous mine or skull cavern.",
+  "modifier.SpaceHelmet": "Active buff effects will be multiplied by the current mine's difficulty level.",
 
   "condition.Souwester": "Current location is outdoors and the weather is rainy.",
   "modifier.Souwester": "Fishing level buff will increased to 3 if stormy.",
 
-  "condition.LogoCap": "Current location is the mine, and the level is 20, 60, or 100.",
-  "modifier.LogoCap": "Get double buff effects at level 60, or triple at level 100.",
+  "condition.BlobfishMask": "Current location is the Night Market fishing submarine.",
+  "condition.MagicCowboyHat": "Current time is after 17:00.",
 
-  "condition.SpaceHelmet": "Current location is the dangerous mine or skull cavern.",
-  "modifier.SpaceHelmet": "Active buff effects will be multiplied by the current mine's difficulty level.",
+  "condition.BridalVeil": "Player's gender is female, and today is player's first wedding ceremony.",
+  "condition.TopHat": "Player's gender is male, and today is player's first wedding ceremony.",
+  "action.WeddingHat": "Get +1 friendship heart with your spouse.",
+
+  "action.GoodOlCap": "Gain 20 gold at the start of each day.",
+  "action.Sombrero": "Wake up on Sundays to gain gold equal to 0.5% of total earnings, with no cap.",
+
+  "description.FlatToppedHat": "Celebrating the fall harvest.",
+  "condition.FlatToppedHat": "Current date is the last Thursday of Fall.",
+  "action.FlatToppedHat": "Wake up to receive 1 Cranberry Sauce, 1 Stuffing, and 1 Farmer's Lunch.",
+
+  "description.SantaHat": "A gift from Santa?",
+  "condition.SantaHat": "Current date is Winter 25.",
+  "action.SantaHat": "Wake up to receive 1 Mystery Box. If you have the Foraging Mastery, receive 1 Golden Mystery Box instead.",
+
+  "description.LivingHat": "Slowly recover your health and energy.",
+  "action.LivingHat": "Recover 1 health and 2 energy per second.",
+
+  "description.CatEars": "This hat might occasionally make meowing sounds...",
+  "description.CowboyHat": "Gain an extra speed bonus while riding a horse. This buff icon will not appear on the status bar.",
+
+  "description.RaccoonHat": "One of your animal neighbors seems interested in this hat. Wear it to their shop to get a free item every day.",
+  "description.WeeklyShop": "A shop owner seems interested in this hat. Wear it to their shop to get a free item every week.",
+  "description.MonthlyShop": "A shop owner seems interested in this hat. Wear it to their shop to get a free item every season.",
+  "description.JesterHat": "It's said that wearing this hat lets you buy discounted tickets at the movie theater?",
+  "description.FriendShipHat": "It seems a marriageable villager likes this hat. Why not wear it and chat with them?",
+
+  "description.ArcaneHat": "Deals ×1.5 damage to Ghosts and Mummies. It seems a marriageable villager likes this hat. Why not wear it and chat with them?",
+  "description.SwashbucklerHat": "Deals ×1.5 damage to Magma Sprites and Magma Sparkers. It seems a marriageable villager likes this hat. Why not wear it and chat with them?",
+  "description.SkeletonMask": "Deals ×1.5 damage to Skeletons.",
+  "description.HardHat": "Deals ×1.5 damage to Duggies.",
+  "description.DinosaurHat": "Deals ×1.5 damage to Pepper Rex.",
+  "description.GoldenMask": "Deals ×1.5 damage to Serpents and Iridium Bats.",
+
+  "description.MummyMask": "Mummies no longer harm you. (Warning: Do not use this to tease those Mummies, or they might get very angry...)",
+  "description.GilsHat": "Entering the Skull Cavern during the Desert Festival with this hat grants an additional 10 Calico Egg points. If you take it off, these points will be deducted.",
+  "description.BlueRibbon": "Upon entering the Stardew Valley Fair, you will receive 998 Star Tokens.",
+  "description.PanHat": "When near a shiny spot, interacting with it 'empty-handed' will transform the hat into a Pan and start panning. Once done, the Pan turns back into a hat and returns to your head.",
+  "description.LuckyBow": "Daily Luck +0.015.",
+  "description.TotemMask": "Press the active effect hotkey while wearing this to warp home. Once per day.",
+  "description.DelicateBow": "Press the active effect hotkey while wearing this to continuously regenerate health and energy for 30 seconds. Once per day.",
+  "description.CoolCap": "Press the active effect hotkey while wearing this. If it's the first 3 days of the season, it will instantly water all crops at your current location.",
+
+  "description.WhiteTurban": "When harvesting Sweet Gem Berries, 10% chance to get an extra one.",
+  "description.QiMask": "When harvesting Qi Fruit, 10% chance to get an extra one.",
+  "description.JunimoHat": "When harvesting crops, 20% chance to get an extra crop.",
+  "description.GnomesCap": "Increases the chance of a Crop Fairy appearing at night by 1%. This chance can be stack in multiplayer.",
+  "description.OfficialCap": "Fishing treasure chests have a higher chance of becoming Golden Treasure Chests.",
+  "description.EyePatch": "Greatly increases the fishing bar size in the fishing mini-game and reduces fish difficulty by 25%.",
+  "description.BlueBonnet": "When using a Hoe to till dirts, 1% of chance to find an Artifact Trove.",
+  "description.MushroomCap": "Increases the chance of finding Mixed Seeds or Mixed Flower Seeds when destroying Weeds by 5%.",
+  "description.GarbageHat": "Increases the chance of finding items in Garbage Cans by 10%.",
+  "description.GoldenHelmet": "Increases the chance of getting a Golden Coconut when shaking Palm Trees on Ginger Island by 10%.",
+  "description.MysteryHat": "Multiplies the chance of finding Mystery Boxes (or Golden Mystery Boxes) by 1.25.",
+  "description.RadioactiveGoggles": "Significantly increases the spawn rate of Radioactive Ore.",
+  "description.PolkaBow": "Gain an additional 10 friendship points when talking to villagers.",
+  "description.GovernorsHat": "Doubles the friendship increase with villagers at the Luau.",
+  "description.GoblinMask": "Yes, indeed, it can freak out your neighbors…",
+  "description.TruckerHat": "Reduces the price of a ticket to the Desert to 1g.",
+  "description.BlueBow": "Put it on your son to gain +30 friendship when petting him.",
+  "description.PinkBow": "Put it on your daughter to gain +30 friendship when petting her.",
+  "description.HairBone": "Put it on your pet dog to increase the chance of dropping a gift when petting by 10%.",
+  "description.FishingHat": "Put it on your pet cat to increase the chance of dropping a gift when petting by 10%.",
+  "description.SmallCap": "Put it on your horse to increase riding speed by +1.",
+  "description.Limit": "This seems to be a limited edition hat..."
 }

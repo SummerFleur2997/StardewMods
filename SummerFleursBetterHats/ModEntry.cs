@@ -63,5 +63,15 @@ internal class ModEntry : Mod
         SaveManager.RegisterEvents();
         GameExtensions.RegisterMethods();
         MultiplayerServer.RegisterEvents();
+
+        GenericModConfigMenuIntegration.Register(Manifest, ModHelper.ModRegistry, ResetConfig, SaveConfig);
     }
+
+    private static void SaveConfig()
+    {
+        ModHelper.WriteConfig(Config);
+        Config = ModHelper.ReadConfig<ModConfig>();
+    }
+
+    private static void ResetConfig() => Config = new ModConfig();
 }

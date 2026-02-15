@@ -283,7 +283,7 @@
     "Trigger": "DayStarted",
     "ActionDescription": "i18n:action.Sombrero"
   },
-  // Santa Hat (Today is fall 25)
+  // Flat Topped Hat (Today is fall 25)
   "(H)63": {
     "Condition": "SEASON_DAY Fall 25",
     "Action": "$CustomAction",
@@ -489,22 +489,18 @@
   "(H)67": {
     "Description": "i18n:description.GoldenMask"
   },
+  // Mummy Mask
+  "(H)MummyMask": {
+    "Description": "i18n:description.MummyMask"
+  },
   // Gil's hat
   "(H)GilsHat": {
     "AttackMultiplier": 0.15,
     "Description": "i18n:description.GilsHat"
   },
-  // Totem Mask
-  "(H)44": {
-    "Description": "i18n:description.TotemMask"
-  },
-  // Delicate Bow
-  "(H)12": {
-    "Description": "i18n:description.DelicateBow"
-  },
-  // Cool Cap
-  "(H)20": {
-    "Description": "i18n:description.CoolCap"
+  // Blue Ribbon
+  "(H)BlueRibbon": {
+    "Description": "i18n:description.BlueRibbon"
   },
   // Pan Hats
   "(H)71": {
@@ -519,29 +515,33 @@
   "(H)IridiumPanHat": {
     "Description": "i18n:description.PanHat"
   },
-  // Blue Ribbon
-  "(H)BlueRibbon": {
-    "Description": "i18n:description.BlueRibbon"
-  },
-  // Mummy Mask
-  "(H)MummyMask": {
-    "Description": "i18n:description.MummyMask"
-  },
   // Lucky Bow
   "(H)21": {
     "Description": "i18n:description.LuckyBow"
   },
-  // Junimo Hat
-  "(H)JunimoHat": {
-    "Description": "i18n:description.JunimoHat"
+  // Totem Mask
+  "(H)44": {
+    "Description": "i18n:description.TotemMask"
+  },
+  // Delicate Bow
+  "(H)12": {
+    "Description": "i18n:description.DelicateBow"
+  },
+  // Cool Cap
+  "(H)20": {
+    "Description": "i18n:description.CoolCap"
+  },
+  // White Turban
+  "(H)65": {
+    "Description": "i18n:description.WhiteTurban"
   },
   // Qi Mask
   "(H)86": {
     "Description": "i18n:description.QiMask"
   },
-  // White Turban
-  "(H)65": {
-    "Description": "i18n:description.WhiteTurban"
+  // Junimo Hat
+  "(H)JunimoHat": {
+    "Description": "i18n:description.JunimoHat"
   },
   // Gnomes Cap
   "(H)23": {
@@ -595,6 +595,14 @@
   "(H)16": {
     "Description": "i18n:description.TruckerHat"
   },
+  // Blue Bow
+  "(H)BlueBow": {
+    "Description": "i18n:description.BlueBow"
+  },
+  // Pink Bow
+  "(H)77": {
+    "Description": "i18n:description.PinkBow"
+  },
   // Hair Bone
   "(H)49": {
     "Description": "i18n:description.HairBone"
@@ -606,14 +614,6 @@
   // Small Cap
   "(H)79": {
     "Description": "i18n:description.SmallCap"
-  },
-  // Blue Bow
-  "(H)BlueBow": {
-    "Description": "i18n:description.BlueBow"
-  },
-  // Pink Bow
-  "(H)77": {
-    "Description": "i18n:description.PinkBow"
   },
   // Joja Cap
   "(H)JojaCap": {

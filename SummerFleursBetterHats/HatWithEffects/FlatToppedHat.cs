@@ -15,6 +15,6 @@ public partial class HatWithEffects
             ItemRegistry.Create("(O)240")
         };
         Game1.player.addItemsByMenuIfNecessary(gift);
-        Game1.showGlobalMessage(I18n.String_SantaHat());
+        Game1.showGlobalMessage(I18n.String_FlatToppedHat());
     }
 }

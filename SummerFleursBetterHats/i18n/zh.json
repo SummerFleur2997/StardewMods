@@ -3,4 +3,9 @@
   "string.SantaHat": "你收到了一份来自圣诞老人的礼物，冬日星快乐！",
   "string.Hat.Used": "你今天已经使用过了{{hat}}的主动效果！",
   "string.CoolCap.Unavailable": "凉帽的主动效果仅在季节的前 3 天可用。",
+
+  "config.ActiveEffect.Title": "主动效果快捷键",
+  "config.ActiveEffect.desc": "触发当前帽子所对应的主动效果，若有。默认为 LeftCtrl + Space。",
+  "config.ChainPanning.Title": "连锁淘金（实验性功能）",
+  "config.ChainPanning.desc": "淘金完成后，若附近又出现了一个闪光点，自动对其进行下一次淘金直至不再出现闪光点。（仅当使用本模组提供的淘盘帽淘金功能时生效）"
 }
