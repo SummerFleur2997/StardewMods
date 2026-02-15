@@ -40,6 +40,14 @@ public class HatsAPICore : ISummerFleurBetterHatsAPI
     {
         try
         {
+            // Check for null
+            if (string.IsNullOrEmpty(qualifiedHatID))
+                throw new ArgumentNullException(nameof(qualifiedHatID));
+            if (string.IsNullOrEmpty(packID))
+                throw new ArgumentNullException(nameof(packID));
+            if (customConditionChecker == null)
+                throw new ArgumentNullException(nameof(customConditionChecker));
+
             // check if any hat data exists
             if (!HatDataHelper.AllHatData.TryGetValue(qualifiedHatID, out var data) || data is null)
                 throw new Exception($"Can't find any data of {qualifiedHatID}!");
@@ -65,6 +73,14 @@ public class HatsAPICore : ISummerFleurBetterHatsAPI
     {
         try
         {
+            // Check for null
+            if (string.IsNullOrEmpty(qualifiedHatID))
+                throw new ArgumentNullException(nameof(qualifiedHatID));
+            if (string.IsNullOrEmpty(packID))
+                throw new ArgumentNullException(nameof(packID));
+            if (customActionTrigger == null)
+                throw new ArgumentNullException(nameof(customActionTrigger));
+
             // check if any hat data exists
             if (!HatDataHelper.AllHatData.TryGetValue(qualifiedHatID, out var data) || data is null)
                 throw new Exception($"Can't find any data of {qualifiedHatID}!");
@@ -90,6 +106,14 @@ public class HatsAPICore : ISummerFleurBetterHatsAPI
     {
         try
         {
+            // Check for null
+            if (string.IsNullOrEmpty(qualifiedHatID))
+                throw new ArgumentNullException(nameof(qualifiedHatID));
+            if (string.IsNullOrEmpty(packID))
+                throw new ArgumentNullException(nameof(packID));
+            if (customModifier == null)
+                throw new ArgumentNullException(nameof(customModifier));
+
             // check if any hat data exists
             if (!HatDataHelper.AllHatData.TryGetValue(qualifiedHatID, out var data) || data is null)
                 throw new Exception($"Can't find any data of {qualifiedHatID}!");
@@ -177,7 +201,7 @@ public class HatsAPICore : ISummerFleurBetterHatsAPI
         {
             ModEntry.ModHelper.Events.GameLoop.OneSecondUpdateTicked += TriggerWhenOneSecondUpdateTicked;
             Log("Registered OneSecondUpdateTicked event for these packs:");
-            foreach (var data in CachedHatDataForUpdateTicked)
+            foreach (var data in CachedHatDataForOneSecondUpdateTicked)
                 Log($" - {data.ID}");
         }
     }

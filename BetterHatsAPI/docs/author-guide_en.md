@@ -205,9 +205,12 @@ suffices for your needs. BHA provides a toggle in the GMCM for players to disabl
 it converts to `SecondUpdated`. It is recommended to choose a trigger that fits your condition best
 while minimizing performance impact.
 
-**Tips**: If you really need to use `TickUpdated`, consider using C# code with the API to set
-custom conditions or actions, as opposed to setting strings in JSON and having the game parse them,
-this method avoids unnecessary overhead.
+**Tips**: 
+- If you really need to use `TickUpdated`, consider using C# code with the API to set custom 
+  conditions or actions, as opposed to setting strings in JSON and having the game parse them,
+  this method avoids unnecessary overhead.
+- If a condition or action is set without a trigger, it defaults to `None`, meaning the condition
+  or action is only checked or executed when the hat is equipped.
 
 ### Condition System
 
@@ -349,8 +352,31 @@ For advanced integration with C# mods, use the special placeholders:
 
 These markers tell BHA that a C# mod will provide the actual logic through the API. It is actually
 optional to use these placeholders; you can still register custom logic for hats without use them.
-However, using them improves clarity and may help avoid mistakes because BHA will checks these
+However, using them improves clarity and may help avoid mistakes because BHA will check these
 placeholders and throw warnings if you forget to register your custom logic.
+
+When customizing advanced conditions and actions, if you do not use the `ConditionDescription` or
+`ActionDescription` fields in the data pack, BHA will notify you in the guide book menu, prompting
+that you may have forgotten to set a description. If you indeed wish to hide the descriptions of
+these conditions or events for certain needs, you can use the `$Hide` placeholder:
+
+```json
+{
+  "(H)64": {
+    "Attack": 10,
+    "Defense": 10,
+    "Immunity": 10,
+    "Speed": 2,
+    "Condition": "$CustomCondition",
+    "Trigger": "DayStarted",
+    "Description": "Great power awaits you to explore.",
+    "ConditionDescription": "$Hide"
+  }
+}
+```
+
+After setting `ConditionDescription` or `ActionDescription` to `$Hide`, BHA will hide the 
+description of that condition or event and will no longer indicate that they are missing.
 
 ### Using Localization (i18n)
 

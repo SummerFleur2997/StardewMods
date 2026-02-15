@@ -308,7 +308,7 @@ public partial class HatData
     {
         CustomConditionChecker = condition;
         UseCustomCondition = true;
-        Condition = CustomActionSign;
+        Condition = CustomConditionSign;
     }
 
     /// <summary>

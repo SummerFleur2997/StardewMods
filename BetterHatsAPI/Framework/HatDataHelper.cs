@@ -323,13 +323,15 @@ public partial class HatData
     /// </returns>
     public bool TryCheckCondition()
     {
+        var hatName = Game1.player.hat?.Value?.BaseName ?? "Unknown Hat";
+
         // Check if the custom checker is null, if true, log a warning.
         if (UseCustomCondition)
         {
             // Check if custom cc is null, if true, log a warning and set the Trigger to None.
             if (CustomConditionChecker == null)
             {
-                Warn($"{Pack.Manifest.Name} uses a custom condition checker, but it is not available.");
+                Warn($"{Pack.Manifest.Name} uses a custom condition checker for {hatName}, but it is not available.");
                 UseCustomCondition = false;
                 Trigger = Trigger.None;
                 return true;
@@ -342,7 +344,7 @@ public partial class HatData
             }
             catch (Exception e)
             {
-                Error($"An error occured while using custom condition checker for content pack {ID}!");
+                Error($"An error occured while using custom condition checker for content pack {ID} - {hatName}!");
                 Warn("See detailed information below:");
                 Warn(e.Message);
                 Warn(e.StackTrace);
@@ -352,7 +354,7 @@ public partial class HatData
 
         if (Condition.EqualsIgnoreCase(CustomConditionSign))
         {
-            Warn($"Content pack {ID} marks the condition as a custom one, but it haven't been set.");
+            Warn($"Content pack {ID} marks the condition of {hatName} as a custom one, but it haven't been set.");
             return false;
         }
 
@@ -364,12 +366,14 @@ public partial class HatData
     /// </summary>
     public void TryPerformAction()
     {
+        var hatName = Game1.player.hat?.Value?.BaseName ?? "Unknown Hat";
+
         // Check if the custom action is null, if true, log a warning.
         if (UseCustomAction)
         {
             if (CustomAction == null)
             {
-                Warn($"{Pack.Manifest.Name} uses a custom action, but it seems not available. ");
+                Warn($"{Pack.Manifest.Name} uses a custom action for {hatName}, but it seems not available. ");
                 UseCustomAction = false;
                 return;
             }
@@ -381,23 +385,25 @@ public partial class HatData
             }
             catch (Exception e)
             {
-                Error($"An error occured while performing custom action for content pack {ID}!");
+                Error($"An error occured while performing custom action for content pack {ID} - {hatName}!");
                 Warn("See detailed information below:");
                 Warn(e.Message);
                 Warn(e.StackTrace);
             }
+
+            return;
         }
 
-        if (Condition.EqualsIgnoreCase(CustomActionSign))
+        if (Action.EqualsIgnoreCase(CustomActionSign))
         {
-            Warn($"Content pack {ID} marks the action as a custom one, but it haven't been set.");
+            Warn($"Content pack {ID} marks the action of {hatName} as a custom one, but it haven't been set.");
             return;
         }
 
         TriggerActionManager.TryRunAction(Action, out var error, out var ex);
         if (ex == null) return;
 
-        Error($"An error occured while performing action '{Action}' for content pack {ID}!");
+        Error($"An error occured while performing action '{Action}' for content pack {ID} - {hatName}!");
         Warn("See detailed information below:");
         Warn(error);
         Warn(ex.Message);
@@ -409,6 +415,8 @@ public partial class HatData
     /// </summary>
     public void TryApplyModifier(Buff buff)
     {
+        var hatName = Game1.player.hat?.Value?.BaseName ?? "Unknown Hat";
+
         if (CustomModifier is null) return;
         try
         {
@@ -416,7 +424,7 @@ public partial class HatData
         }
         catch (Exception e)
         {
-            Error($"An error occured while performing custom modifier for content pack {ID}!");
+            Error($"An error occured while performing custom modifier of {hatName} for content pack {ID}!");
             Warn("See detailed information below:");
             Warn(e.Message);
             Warn(e.StackTrace);
