@@ -1,4 +1,4 @@
-﻿namespace Common.ExceptionService;
+﻿namespace ConvenientChests.Framework;
 
 /// <summary>
 /// An exception to be raised when save data is malformed or fails to

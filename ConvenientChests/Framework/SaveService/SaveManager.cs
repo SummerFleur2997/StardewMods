@@ -1,5 +1,4 @@
 ﻿using System.IO;
-using Common.ExceptionService;
 using ConvenientChests.Framework.ChestService;
 using ConvenientChests.Framework.InventoryService;
 

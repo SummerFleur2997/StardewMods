@@ -1,5 +1,4 @@
-﻿using Common.ExceptionService;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using StardewValley.Locations;
 using StardewValley.Objects;
 

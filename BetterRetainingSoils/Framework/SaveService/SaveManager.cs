@@ -1,6 +1,5 @@
 ﻿using System.IO;
 using BetterRetainingSoils.DirtService;
-using Common.ExceptionService;
 using StardewValley.Objects;
 using StardewValley.TerrainFeatures;
 
@@ -39,7 +38,7 @@ internal static class SaveManager
             ModEntry.ModHelper.Data.WriteJsonFile(SavePath(date), saveData);
             CleanCache(date);
         }
-        catch (InvalidSaveDataException ex)
+        catch (Exception ex)
         {
             ModEntry.Log($"Error saving chest data to {SavePath(date)}", LogLevel.Error);
             ModEntry.Log(ex.ToString(), LogLevel.Error);
@@ -75,7 +74,7 @@ internal static class SaveManager
                 }
             }
         }
-        catch (InvalidSaveDataException ex)
+        catch (Exception ex)
         {
             ModEntry.Log($"Error loading chest data from {SavePath(date)}", LogLevel.Error);
             ModEntry.Log(ex.ToString(), LogLevel.Error);
