@@ -2,11 +2,11 @@
   "Name": "SummerFleursBetterHats",
   "Author": "SummerFleur",
   "Version": "1.0.0",
-  "Description": "Description", // TODO
+  "Description": "The CP parts of SummerFleur's Better Hats.",
   "UniqueID": "SummerFleur.SummerFleursBetterHatsCP",
   "MinimumApiVersion": "4.1.10",
   "UpdateKeys": [
-    "Nexus:???" // TODO
+    "Nexus:41441"
   ],
   "ContentPackFor": {
     "UniqueID": "Pathoschild.ContentPatcher",

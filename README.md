@@ -11,6 +11,10 @@ individual mods for documentation and release notes.
 ## Mods
 ### Active mods:
 
+* **Better Hats API** <small>([Nexus](https://www.nexusmods.com/stardewvalley/mods/41439) | [source](BetterHatsAPI))</small>  
+  _Framework for Stardew Valley mod developers that enables the
+  creation of hats with custom buff effects, conditional logic, 
+  and unique behaviors._
 * **Better Retaining Soils** <small>([Nexus](https://www.nexusmods.com/stardewvalley/mods/36007) | [source](BetterRetainingSoils))</small>  
   _Enhance and optimize retaining-soil's mechanic to make them able 
   to keep the crop watered for multiple days._
@@ -24,6 +28,9 @@ individual mods for documentation and release notes.
 * **Skull Cavern Floor Capping** <small>([Nexus](https://www.nexusmods.com/stardewvalley/mods/37716) | [source](SkullCavernFloorCapping))</small>  
   _Add a new rule to prevent the treasure rooms in Skull Cavern level 
   200 and 300 to be skipped when entering a mine shaft._
+* **SummerFleur's Better Hats** <small>([Nexus](https://www.nexusmods.com/stardewvalley/mods/41441) | [source](SummerFleursBetterHats))</small>  
+  _Makes the hats more useful! Add unique buff, event and game mechanic 
+  for hats. Also, an implementation of Better Hats API._
 * **Why Not Jump In That Mine Shaft** <small>([Nexus](https://www.nexusmods.com/stardewvalley/mods/37452) | [source](WhyNotJumpInThatMineShaft))</small>  
   _Useful prompts that can enhance your mining experience in the mine 
   and skull cavern._

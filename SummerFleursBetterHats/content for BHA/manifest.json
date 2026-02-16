@@ -2,11 +2,11 @@
   "Name": "SummerFleursBetterHats",
   "Author": "SummerFleur",
   "Version": "1.0.0",
-  "Description": "Description", // TODO
+  "Description": "The BHA parts of SummerFleur's Better Hats.",
   "UniqueID": "SummerFleur.SummerFleursBetterHatsBHA",
   "MinimumApiVersion": "4.0.0",
   "UpdateKeys": [
-    "Nexus:???" // TODO
+    "Nexus:41441"
   ],
   "ContentPackFor": {
     "UniqueID": "SummerFleur.BetterHatsAPI",

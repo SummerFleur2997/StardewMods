@@ -1,10 +1,9 @@
 ﻿using System.IO;
-using BetterHatsAPI.GuideBook;
 using StardewModdingAPI.Events;
 using StardewValley.Menus;
 using StardewValley.Objects;
 
-namespace BetterHatsAPI.Framework;
+namespace BetterHatsAPI.GuideBook;
 
 public static class GuideBookHelper
 {

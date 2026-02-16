@@ -13,3 +13,38 @@ values. The design emphasizes flexibility: simple effects are achievable via JSO
 complex behaviors can be implemented through the C# API.
 
 For further information, see the [developer guide](./docs/author-guide_en.md).
+
+## Update logs
+
+### 1.0.0
+
+First upload
+
+## TODO Lists
+
+See [Chinese version README](README_zh.md).
+
+## Translating the mods
+The mods can be translated into any language supported by the game, and SMAPI will automatically
+use the right translations.
+
+Contributions are welcome! See [Modding:Translations](https://stardewvalleywiki.com/Modding:Translations)
+on the wiki for help contributing translations.
+
+(❑ = untranslated, ↻ = partly translated, ✓ = fully translated)
+
+| Language   |         Status         | Language   |   Status   |
+|:-----------|:----------------------:|:-----------|:----------:|
+| English    | [↻](i18n/default.json) | 한국어        | [❑](i18n)  |
+| Français   |       [❑](i18n)        | Português  | [❑](i18n)  |
+| Deutsch    |       [❑](i18n)        | Русский    | [❑](i18n)  |
+| Magyar     |       [❑](i18n)        | Español    | [❑](i18n)  |
+| Italiano   |       [❑](i18n)        | Türkçe     | [❑](i18n)  |
+| 日本語        |       [❑](i18n)        | 中文         |    O.o     |
+
+## Requirements
+Stardew Valley 1.6  
+[SMAPI 4.0](https://smapi.io)
+
+## Thanks to...
+* [Pathoschild](https://github.com/Pathoschild) for [SMAPI](https://github.com/Pathoschild/SMAPI)

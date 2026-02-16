@@ -2,18 +2,22 @@
     "Name": "SummerFleursBetterHats",
     "Author": "SummerFleur",
     "Version": "1.0.0",
-    "Description": "Description", // TODO
+    "Description": "Makes the hats more useful! Add unique buff, event and game mechanic for hats.",
     "UniqueID": "SummerFleur.SummerFleursBetterHats",
     "MinimumApiVersion": "4.0.0",
     "EntryDll": "SummerFleursBetterHats.dll",
     "UpdateKeys": [
-        "Nexus:???" // TODO
+        "Nexus:41441"
     ],
     "Dependencies": [
         {
             "UniqueID": "SummerFleur.BetterHatsAPI",
             "MinimumVersion": "1.0.0",
             "IsRequired": true
+        },
+        {
+            "UniqueID": "spacechase0.GenericModConfigMenu",
+            "IsRequired": false
         }
     ]
 }

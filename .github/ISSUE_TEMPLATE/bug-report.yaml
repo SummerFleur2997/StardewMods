@@ -30,10 +30,12 @@ body:
       label: Mod name
       description: please provide the mod that has the issue
       options:
+        - Better Hats API
         - Better Retaining Soils
         - Bigger Containers
         - Convenient Chests
         - Skull Cavern Floor Capping
+        - SummerFleur's Better Hats
         - Why Not Jump In That Mine Shaft
     validations:
       required: true

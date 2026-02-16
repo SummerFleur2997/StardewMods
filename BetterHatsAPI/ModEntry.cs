@@ -1,5 +1,6 @@
 ﻿using BetterHatsAPI.API;
 using BetterHatsAPI.Framework;
+using BetterHatsAPI.GuideBook;
 using BetterHatsAPI.Integration;
 using JetBrains.Annotations;
 using StardewModdingAPI.Events;

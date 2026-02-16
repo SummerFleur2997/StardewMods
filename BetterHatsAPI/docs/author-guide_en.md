@@ -509,7 +509,8 @@ Dynamically modify buff values based on context:
 api.SetCustomBuffModifier(
     qualifiedHatID: "(H)SpaceHelmet",
     packID: "YourMod.ContentPackID",
-    customModifier: MyBuffModifier_SpaceHelmet_ScaleWithMineDifficulty);
+    customModifier: MyBuffModifier_SpaceHelmet_ScaleWithMineDifficulty
+);
 
 private void MyBuffModifier_SpaceHelmet_ScaleWithMineDifficulty(Buff buff)
 {
