@@ -74,7 +74,8 @@ understand the effects of your designed hats better.
 
 This menu is designed to help players better understand the changes you've made in your content
 pack, rather than for visual data editing. In future versions, no functionality will be added to
-modify content pack data through this menu.
+modify content pack data through this menu. And don't forget to tell your players about this
+menu in your mod's description!
 
 ### Console Command: Hot Reload Your Pack
 
