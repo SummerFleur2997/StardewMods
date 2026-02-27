@@ -1,0 +1,10 @@
+﻿{
+    "Name": "RoleRecovery",
+    "Author": "SummerFleur",
+    "Version": "1.0.0",
+    "Description": "从多人游戏中恢复自己的角色。",
+    "UniqueID": "SummerFleur.RoleRecovery",
+    "MinimumApiVersion": "4.0.0",
+    "EntryDll": "RoleRecovery.dll",
+    "UpdateKeys": []
+}

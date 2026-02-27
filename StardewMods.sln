@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterHatsAPI", "BetterHats
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinThereSavedThat", "BinThereSavedThat\BinThereSavedThat.csproj", "{8C98F39F-C53C-4F9A-8327-ED679F576415}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoleRecovery", "RoleRecovery\RoleRecovery.csproj", "{B89EC4A0-5338-4BF1-B113-AF2E0FC33B0C}"
+EndProject
 
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
@@ -81,6 +83,10 @@ Global
 		{8C98F39F-C53C-4F9A-8327-ED679F576415}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8C98F39F-C53C-4F9A-8327-ED679F576415}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8C98F39F-C53C-4F9A-8327-ED679F576415}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B89EC4A0-5338-4BF1-B113-AF2E0FC33B0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B89EC4A0-5338-4BF1-B113-AF2E0FC33B0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B89EC4A0-5338-4BF1-B113-AF2E0FC33B0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B89EC4A0-5338-4BF1-B113-AF2E0FC33B0C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
