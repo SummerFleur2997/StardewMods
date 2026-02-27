@@ -77,7 +77,8 @@ public partial class HatWithPatches
         return matcher.InstructionEnumeration();
     }
 
-    public static IEnumerable<CodeInstruction> Patch_MovieTheater_performAction(IEnumerable<CodeInstruction> ci)
+    public static IEnumerable<CodeInstruction> Patch_MovieTheater_performAction
+        (IEnumerable<CodeInstruction> ci, ILGenerator il)
     {
         var matcher = new CodeMatcher(ci);
 
@@ -96,7 +97,7 @@ public partial class HatWithPatches
         if (matcher.IsInvalid)
             throw new Exception("This method seems to have changed.");
 
-        var operand4 = matcher.InstructionAt(4).operand;
+        var label4 = il.DefineLabel();
         var operand5 = matcher.InstructionAt(5).operand;
 
         var oldEntrance = matcher.InstructionAt(0);
@@ -104,13 +105,14 @@ public partial class HatWithPatches
             AccessTools.Method(typeof(HatWithPatches), nameof(HaveDiscountTicket)));
         newEntrance.labels.AddRange(oldEntrance.labels);
         oldEntrance.labels.Clear();
+        oldEntrance.labels.Add(label4);
 
         var exit = new CodeInstruction(OpCodes.Br);
 
         var injection = new List<CodeInstruction>
         {
             newEntrance,
-            new(OpCodes.Brfalse_S, operand4), // goto no ticket
+            new(OpCodes.Brfalse_S, label4), // goto vanilla logic
             new(OpCodes.Ldloc_S, operand5), // invited_npc
             new(OpCodes.Call, AccessTools.Method(typeof(HatWithPatches), nameof(DrawDialogue))),
             exit

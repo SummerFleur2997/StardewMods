@@ -1,7 +1,7 @@
 ﻿{
     "Name": "SummerFleursBetterHats",
     "Author": "SummerFleur",
-    "Version": "1.0.0",
+    "Version": "1.0.1",
     "Description": "Makes the hats more useful! Add unique buff, event and game mechanic for hats.",
     "UniqueID": "SummerFleur.SummerFleursBetterHats",
     "MinimumApiVersion": "4.0.0",
