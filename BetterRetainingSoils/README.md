@@ -27,6 +27,19 @@ such as:
 
 ## Update logs
 
+### 1.1.0
+
+**Optimize**
+
+- Refactor the structure of the mod to improve performance, discard the design of separate 
+  save data files.
+
+**Warning**
+
+This version contains a breaking change. Save data from old version (located in the mod's 
+folder) is incompatible with this version. As a result, after updating, the water retention 
+of all your retaining soil will be reset to 0. You may need to water your crops again.
+
 ### 1.0.1
 
 **Bug Fixes**
