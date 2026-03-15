@@ -1,12 +1,11 @@
 ﻿#nullable enable
-using BetterRetainingSoils.DirtService;
+using BetterRetainingSoils.Framework;
 using HarmonyLib;
-using Microsoft.Xna.Framework;
 using StardewValley.TerrainFeatures;
 
 namespace BetterRetainingSoils.Patcher;
 
-internal static class PatchOtherMods
+internal static class OtherModsPatcher
 {
     /// <summary>
     /// Patch UIInfoSuite2.UIElements.ShowCropAndBarrelTime.DetailRenderers.CropRender method.
@@ -21,7 +20,7 @@ internal static class PatchOtherMods
             if (!__result || terrain is not HoeDirt hoeDirt) return;
             // 添加自定义文本。
             // Add custom strings.
-            var waterRemain = hoeDirt.GetHoeDirtData().WaterRemainDays;
+            var waterRemain = hoeDirt.GetWaterRemainDays();
             if (waterRemain < 1) return;
             entries.Add(I18n.String_WaterRemain(waterRemain));
         }
@@ -33,16 +32,6 @@ internal static class PatchOtherMods
         }
     }
 
-    /// <summary>
-    /// Patch BetterSprinklersPlus.BetterSprinklersPlus.WaterTile method.
-    /// 更新耕地信息。 Refresh dirt status.
-    /// </summary>
-    public static void Patch_WaterTile(GameLocation location, Vector2 tile)
-    {
-        if (location.terrainFeatures.TryGetValue(tile, out var feature) && feature is HoeDirt hoeDirt)
-            hoeDirt.GetHoeDirtData().RefreshStatus();
-    }
-
     public static void RegisterHarmonyPatchesToUI2(Harmony harmony)
     {
         try
@@ -50,30 +39,13 @@ internal static class PatchOtherMods
             if (ModEntry.ModHelper.ModRegistry.Get("Annosz.UiInfoSuite2") is null) return;
             var type = Type.GetType("UIInfoSuite2.UIElements.ShowCropAndBarrelTime+DetailRenderers, UIInfoSuite2");
             var originalM1 = AccessTools.Method(type, "CropRender");
-            var postfixM1 = AccessTools.Method(typeof(PatchOtherMods), nameof(Patch_DetailRenderers));
+            var postfixM1 = AccessTools.Method(typeof(OtherModsPatcher), nameof(Patch_DetailRenderers));
             harmony.Patch(original: originalM1, postfix: new HarmonyMethod(postfixM1));
             ModEntry.Log("Patched UIInfoSuite2 successfully.");
         }
         catch (Exception ex)
         {
             ModEntry.Log($"Failed to patch UIInfoSuite2: {ex.Message}", LogLevel.Warn);
-        }
-    }
-
-    public static void RegisterHarmonyPatchesToBetterSprinkler(Harmony harmony)
-    {
-        try
-        {
-            if (ModEntry.ModHelper.ModRegistry.Get("com.CodesThings.BetterSprinklersPlus") is null) return;
-            var type = Type.GetType("BetterSprinklersPlus.BetterSprinklersPlus, BetterSprinklersPlus");
-            var originalM2 = AccessTools.Method(type, "WaterTile");
-            var postfixM2 = AccessTools.Method(typeof(PatchOtherMods), nameof(Patch_WaterTile));
-            harmony.Patch(original: originalM2, postfix: new HarmonyMethod(postfixM2));
-            ModEntry.Log("Patched BetterSprinklersPlus successfully.");
-        }
-        catch (Exception ex)
-        {
-            ModEntry.Log($"Failed to patch BetterSprinklersPlus: {ex.Message}", LogLevel.Warn);
         }
     }
 }

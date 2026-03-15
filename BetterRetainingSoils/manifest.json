@@ -1,7 +1,7 @@
 ﻿{
   "Name": "Better Retaining Soils",
   "Author": "SummerFleur",
-  "Version": "1.0.2-alpha",
+  "Version": "%ProjectVersion%",
   "Description": "Enhance retaining-soils, make them more valuable.",
   "UniqueID": "SummerFleur.BetterRetainingSoils",
   "MinimumApiVersion": "4.0.0",

@@ -1,8 +1,5 @@
 ﻿using BetterRetainingSoils.API;
-using BetterRetainingSoils.DirtService;
 using BetterRetainingSoils.Framework;
-using BetterRetainingSoils.Framework.MultiplayerService;
-using BetterRetainingSoils.Framework.SaveService;
 using BetterRetainingSoils.Patcher;
 using HarmonyLib;
 using JetBrains.Annotations;
@@ -21,15 +18,10 @@ internal class ModEntry : Mod
     public static ModConfig Config { get; private set; }
     public static IManifest Manifest { get; private set; }
     public static IModHelper ModHelper { get; private set; }
-    private static Harmony Harmony { get; set; }
     private static IMonitor ModMonitor { get; set; }
     private static BrsApi Api { get; } = new();
     public static void Log(string s, LogLevel l = LogLevel.Trace) => ModMonitor.Log(s, l);
 
-    /// <summary>
-    /// <see cref="MultiplayerServer"/> module.
-    /// </summary>
-    private static MultiplayerServer MultiplayerServer { get; set; }
     #endregion
 
     /// <summary>
@@ -43,10 +35,6 @@ internal class ModEntry : Mod
         ModHelper = Helper;
 
         helper.Events.GameLoop.GameLaunched += OnGameLaunched;
-        helper.Events.GameLoop.SaveLoaded += OnGameLoaded;
-        helper.Events.GameLoop.ReturnedToTitle += OnGameUnload;
-        helper.Events.GameLoop.DayStarted += OnDayStarted;
-        helper.Events.GameLoop.Saving += OnSaving;
 
         I18n.Init(Helper.Translation);
         Config = helper.ReadConfig<ModConfig>();
@@ -67,23 +55,6 @@ internal class ModEntry : Mod
      ** Event handlers
      ****/
     #region Event handlers
-    /// <summary>
-    /// 在载入游戏存档时加载模组。
-    /// Load modules when loading a game save.
-    /// </summary>
-    private static void OnGameLoaded(object sender, SaveLoadedEventArgs e)
-    {
-        Harmony = new Harmony(Manifest.UniqueID);
-        PatchWaterRetention.RegisterHarmonyPatches(Harmony);
-        PatchOtherMods.RegisterHarmonyPatchesToUI2(Harmony);
-        PatchOtherMods.RegisterHarmonyPatchesToBetterSprinkler(Harmony);
-
-        SaveManager.Load();
-
-        MultiplayerServer = new MultiplayerServer();
-        if (Context.IsMultiplayer)
-            MultiplayerServer.Activate();
-    }
 
     /// <summary>
     /// 在游戏加载时读取配置选项。
@@ -97,48 +68,14 @@ internal class ModEntry : Mod
             ReloadConfig,
             Log
         );
+
+        var harmony = new Harmony(Manifest.UniqueID);
+        VanillaPatcher.RegisterHarmonyPatches(harmony);
+        OtherModsPatcher.RegisterHarmonyPatchesToUI2(harmony);
+
+        ModDataManager.TryCleanLegacyCache();
     }
 
-    /// <summary>
-    /// 在返回游戏标题界面时卸载模组。
-    /// Unload modules when back to the title page.
-    /// </summary>
-    private static void OnGameUnload(object sender, ReturnedToTitleEventArgs e)
-    {
-        Harmony.UnpatchAll(Manifest.UniqueID);
-        Harmony = null;
-
-        if (MultiplayerServer.IsActive)
-            MultiplayerServer.Deactivate();
-
-        HoeDirtManager.ClearHoeDirtData();
-    }
-
-    /// <summary>
-    /// 在每日开始时更新耕地信息。
-    /// Update hoedirt data when a new day started.
-    /// </summary>
-    private static void OnDayStarted(object sender, DayStartedEventArgs e)
-    {
-        if (!Context.IsMainPlayer) return;
-        Utility.ForEachLocation(delegate(GameLocation location)
-        {
-            // 获取所有耕地，根据模组逻辑保持水分
-            // Get all hoedirts, then maintain moisture by mod logic.
-            var hoeDirts = location.GetHoeDirt().Concat(location.GetGardenPot());
-            foreach (var hoeDirt in hoeDirts) hoeDirt.DayUpdate();
-            return true;
-        });
-    }
-
-    /// <summary>
-    /// 在游戏开始对存档进行保存之前触发。
-    /// Raised before the game begins writes data to the save file (except the initial save creation).
-    /// </summary>
-    private static void OnSaving(object sender, SavingEventArgs e)
-    {
-        SaveManager.Save();
-    }
     #endregion
 
     public override object GetApi() => Api;
