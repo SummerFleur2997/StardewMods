@@ -31,7 +31,11 @@
   "Config.ShowDistance.Title": "显示距离",
   "Config.ShowDistance.desc": "提示文字是否显示距离",
   "Config.ShaftGeneratableIndicator.Title": "显示可生成竖井提示",
-  "Config.ShaftGeneratableIndicator.Desc": "在文字提示上方显示当前是否可能生成竖井。",
+  "Config.ShaftGeneratableIndicator.desc": "在文字提示上方显示当前是否可能生成竖井。",
+
+  "Config.OtherSettings": "其它设置",
+  "Config.TemporaryHide.Title": "暂时隐藏所有提示",
+  "Config.TemporaryHide.desc": "暂时隐藏提示文字与箭头的快捷键。",
 
   "String.Top": "上方", 
   "String.Left": "左边", 

@@ -28,8 +28,9 @@ internal static class ShaftPrompterPatches
                 // 生成选项菜单
                 var options2 = new[]
                 {
-                    new Response("Do", I18n.Choice_No()).SetHotKey(Keys.Escape),
-                    new Response("Go", I18n.Choice_Yes()).SetHotKey(Keys.Y)
+                    new Response("Do", I18n.Choice_No()).SetHotKey(Keys.E),
+                    new Response("Go", I18n.Choice_Yes()).SetHotKey(Keys.Y),
+                    new Response("Cancel", Game1.content.LoadString("Strings\\UI:Cancel")).SetHotKey(Keys.Escape)
                 };
                 location.createQuestionDialogue(I18n.String_Prompt(), options2, "Dungeon");
 

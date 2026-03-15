@@ -170,5 +170,19 @@ internal static class GenericModConfigMenuIntegration
             getValue: () => ModEntry.Config.ShaftGeneratableIndicator,
             setValue: value => ModEntry.Config.ShaftGeneratableIndicator = value
         );
+
+        // 【标题】其它设置
+        // [Title] Other Setting
+        api.AddSectionTitle(manifest, I18n.Config_OtherSettings);
+
+        // 【按键列表】暂时隐藏
+        // [Keybind list] Temporary Hide
+        api.AddKeybindList(
+            manifest,
+            name: I18n.Config_TemporaryHide_Title,
+            tooltip: I18n.Config_TemporaryHide_Desc,
+            getValue: () => ModEntry.Config.TemporaryHide,
+            setValue: value => ModEntry.Config.TemporaryHide = value
+        );
     }
 }

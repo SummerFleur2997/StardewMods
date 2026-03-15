@@ -1,4 +1,6 @@
-﻿namespace WhyNotJumpInThatMineShaft.Framework;
+﻿using StardewModdingAPI.Utilities;
+
+namespace WhyNotJumpInThatMineShaft.Framework;
 
 internal class ModConfig
 {
@@ -15,4 +17,5 @@ internal class ModConfig
     public bool ShowDirection { get; set; } = true;
     public bool ShowDistance { get; set; } = true;
     public bool ShaftGeneratableIndicator { get; set; }
+    public KeybindList TemporaryHide { get; set; } = KeybindList.Parse("H");
 }

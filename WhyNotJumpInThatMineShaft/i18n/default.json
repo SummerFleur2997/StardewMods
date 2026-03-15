@@ -31,7 +31,11 @@
   "Config.ShowDistance.Title": "Show Distance",
   "Config.ShowDistance.desc": "Whether to show distance in the prompt.",
   "Config.ShaftGeneratableIndicator.Title": "Enable Shaft Generatable Prompter",
-  "Config.ShaftGeneratableIndicator.Desc": "Show whether a shaft can be generated (above the text prompt).",
+  "Config.ShaftGeneratableIndicator.desc": "Show whether a shaft can be generated (above the text prompt).",
+
+  "Config.OtherSettings": "Other Settings",
+  "Config.TemporaryHide.Title": "Temporary Hide All Prompts",
+  "Config.TemporaryHide.desc": "The shortcut to hide the text and indicators temporarily.",
 
   "String.Top": "Top",
   "String.Left": "Left",

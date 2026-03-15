@@ -44,6 +44,7 @@ internal class ModEntry : Mod
         helper.Events.GameLoop.GameLaunched += OnGameLaunched;
         helper.Events.GameLoop.SaveLoaded += OnGameLoaded;
         helper.Events.GameLoop.ReturnedToTitle += OnGameUnload;
+        helper.Events.Input.ButtonPressed += OnButtonChanged;
 #if DEBUG
         helper.Events.Input.ButtonPressed += Debug.OnButtonChanged;
 #endif
@@ -113,6 +114,12 @@ internal class ModEntry : Mod
         ShaftPrompter = null;
 
         ModHelper.Events.Player.Warped -= MapScanner.OnMineLevelChanged;
+    }
+
+    private static void OnButtonChanged(object sender, ButtonPressedEventArgs e)
+    {
+        if (Config.TemporaryHide.JustPressed())
+            ShaftPrompter?.ToggleVisibility();
     }
 
     #endregion

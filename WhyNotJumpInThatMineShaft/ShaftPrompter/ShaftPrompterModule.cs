@@ -13,6 +13,7 @@ internal class ShaftPrompterModule : IModule
     private const int TileSize = Game1.tileSize;
     private readonly Harmony _harmony = new (ModEntry.Manifest.UniqueID + ".ShaftPrompter");
     private int _sleepTime;
+    private bool _temporaryDisable;
     public bool IsActive { get; private set; }
 
     public void Activate()
@@ -30,6 +31,14 @@ internal class ShaftPrompterModule : IModule
     }
 
     public void RefreshSleepTime() => _sleepTime = 50;
+
+    public void ToggleVisibility()
+    {
+        if (Game1.currentLocation is not MineShaft)
+            return;
+
+        _temporaryDisable = !_temporaryDisable;
+    }
 
     private static void RegisterHarmonyPatches(Harmony harmony)
     {
@@ -52,6 +61,7 @@ internal class ShaftPrompterModule : IModule
     /// </summary>
     private void OnRenderedHud(object sender, RenderedHudEventArgs e)
     {
+        if (_temporaryDisable) return;
         var config = ModEntry.Config;
 
         // Confirm current location is the Mine or Skull Cavern
