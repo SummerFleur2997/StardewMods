@@ -14,6 +14,17 @@ show specific information. They can significantly improve your mining experience
 
 ## Update logs
 
+### 1.0.4
+
+**Optimization**
+
+- Add an option to the shaft prompt menu to avoid mishandling when pressing "E"
+
+**New Feature**
+
+- Add a keybind to hide all the indicators and texts, which is useful when you want 
+  to take a screenshot.
+
 ### 1.0.3
 
 **Bug Fixes**
