@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using UI.Component;
 using UI.Sprite;
 
-namespace ConvenientChests.Framework.UserInterfaceService;
+namespace ConvenientChests.CategorizeChests.Framework.UI;
 
 public static class UIHelper
 {

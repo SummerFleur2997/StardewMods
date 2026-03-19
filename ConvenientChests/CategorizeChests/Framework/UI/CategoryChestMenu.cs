@@ -1,13 +1,11 @@
-﻿using ConvenientChests.CategorizeChests.Framework.UI;
-using ConvenientChests.Framework.DataStructs;
+﻿using ConvenientChests.Framework.DataStructs;
 using ConvenientChests.Framework.Extensions;
-using ConvenientChests.Framework.UserInterfaceService;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using UI.Component;
 
-namespace ConvenientChests.CategorizeChests.Framework;
+namespace ConvenientChests.CategorizeChests.Framework.UI;
 
 internal class CategoryChestMenu : CategoryMenu<ChestData>, IHaveSubMenu
 {

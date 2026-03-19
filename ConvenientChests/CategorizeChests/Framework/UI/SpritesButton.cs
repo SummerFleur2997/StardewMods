@@ -1,5 +1,4 @@
-﻿using ConvenientChests.Framework.UserInterfaceService;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using UI.Component;
 using UI.Sprite;

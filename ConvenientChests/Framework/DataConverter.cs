@@ -1,9 +1,10 @@
 ﻿#nullable enable
+using ConvenientChests.Framework.DataStructs;
 using ConvenientChests.Framework.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace ConvenientChests.Framework.DataStructs;
+namespace ConvenientChests.Framework;
 
 /// <summary>
 /// JSON converter for <see cref="HashSet{T}"/> of <see cref="ItemKey"/>.
