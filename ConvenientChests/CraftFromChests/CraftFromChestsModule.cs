@@ -1,6 +1,6 @@
 ﻿using Common;
 using ConvenientChests.CraftFromChests.Framework;
-using ConvenientChests.Framework.ChestService;
+using ConvenientChests.Framework.Extensions;
 using StardewValley.Inventories;
 using StardewValley.Locations;
 using StardewValley.Objects;

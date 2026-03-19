@@ -1,24 +1,29 @@
 using System.Diagnostics.Contracts;
+using ConvenientChests.Framework.Extensions;
 using StardewValley.ItemTypeDefinitions;
 using StardewValley.Tools;
 using Object = StardewValley.Object;
 
-namespace ConvenientChests.Framework.ItemService;
+namespace ConvenientChests.Framework.DataStructs;
 
+/// <summary>
+/// A simplified class that describes an item's key data.
+/// Serializable in multiplayer server.
+/// </summary>
 [Serializable]
-internal class ItemKey
+internal class ItemKey : IComparable<ItemKey>, IEquatable<ItemKey>
 {
     /// <summary>
     /// 物品的 ID，例如 279。
     /// The ID of the item, e.g., 279.
     /// </summary>
-    public string ItemId { get; set; }
+    public string ItemId { get; init; } = "";
 
     /// <summary>
     /// 物品的分类标识符，例如 (O)。
     /// The classification identifier of the item, e.g., (O).
     /// </summary>
-    public string TypeDefinition { get; set; }
+    public string TypeDefinition { get; init; } = "";
 
     /// <summary>
     /// 获取完整的物品唯一标识符，例如 (O)279。
@@ -58,6 +63,12 @@ internal class ItemKey
     }
 
     /// <summary>
+    /// 比较是否与给定对象相等。
+    /// Compare whether the object is equal to the given object.
+    /// </summary>
+    public override bool Equals(object obj) => obj is ItemKey itemKey && Equals(itemKey);
+
+    /// <summary>
     /// 返回对象的字符串表示形式。
     /// Return the string representation of the object.
     /// </summary>
@@ -66,14 +77,18 @@ internal class ItemKey
         return QualifiedItemId;
     }
 
+    public int CompareTo(ItemKey other)
+    {
+        var thisItem = GetOne();
+        var otherItem = other.GetOne();
+        return thisItem.CompareTo(otherItem);
+    }
+
     /// <summary>
     /// 比较两个 ItemKey 是否相等。
     /// Compare two ItemKey objects for equality.
     /// </summary>
-    public override bool Equals(object obj)
-    {
-        return obj is ItemKey itemKey && itemKey.TypeDefinition == TypeDefinition && itemKey.ItemId == ItemId;
-    }
+    public bool Equals(ItemKey itemKey) => itemKey?.TypeDefinition == TypeDefinition && itemKey?.ItemId == ItemId;
 
     /// <summary>
     /// 获取一个新的物品实例。
@@ -89,6 +104,7 @@ internal class ItemKey
     /// 获取一个指定类型的新物品实例。
     /// Get a new instance of the item with the specified type.
     /// </summary>
+    [Pure]
     public T GetOne<T>() where T : Item
     {
         return ItemRegistry.Create<T>(QualifiedItemId);
@@ -139,16 +155,12 @@ internal class ItemKey
 
             case "(BC)":
                 var obj = GetOne<Object>();
-                return obj switch
-                {
-                    _ when obj.GetMachineData() != null =>
-                        new ItemCategoryName(I18n.Categorize_Machine(), "Machine"),
-                    _ when obj.IsCraftable() =>
-                        new ItemCategoryName(I18n.Categorize_Crafting(), "Crafting"),
-                    _ =>
-                        new ItemCategoryName(I18n.Categorize_BigCrafts(), "BigCrafts")
-                };
+                if (obj.GetMachineData() != null)
+                    return new ItemCategoryName(I18n.Categorize_Machine(), "Machine");
 
+                return obj.IsCraftable()
+                    ? new ItemCategoryName(I18n.Categorize_Crafting(), "Crafting")
+                    : new ItemCategoryName(I18n.Categorize_BigCrafts(), "BigCrafts");
             case "(M)":
                 return new ItemCategoryName(I18n.Categorize_Mannequin(), "Mannequin");
 

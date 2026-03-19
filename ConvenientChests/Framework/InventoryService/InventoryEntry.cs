@@ -1,6 +1,6 @@
-﻿using ConvenientChests.Framework.ItemService;
+﻿using Newtonsoft.Json;
 
-namespace ConvenientChests.Framework.InventoryService;
+namespace ConvenientChests.Framework.DataStructs;
 
 [Serializable]
 internal class InventoryEntry
@@ -22,7 +22,8 @@ internal class InventoryEntry
     /// The sequence of <see cref="ItemKey"/> that were configured to be locked
     /// in the backpack of the player with ID <see cref="PlayerID"/>.
     /// </summary>
-    public Dictionary<ItemType, string> LockedItems { get; set; }
+    [JsonConverter(typeof(DataConverter))]
+    public HashSet<ItemKey> LockedItems { get; set; }
 
     public InventoryEntry() { }
 
@@ -30,35 +31,13 @@ internal class InventoryEntry
     {
         PlayerName = playerName;
         PlayerID = playerID;
-        LockedItems = data.LockedItemKinds
-            .GroupBy(ItemHelper.GetItemType)
-            .ToDictionary(
-                g => g.Key,
-                g => string.Join(",", g.Select(i => i.ItemId))
-            );
+        LockedItems = data.LockedItemKinds;
     }
 
     public InventoryEntry(HashSet<ItemKey> itemKeys, Farmer player)
     {
         PlayerName = player.Name;
         PlayerID = player.UniqueMultiplayerID;
-        LockedItems = itemKeys
-            .GroupBy(ItemHelper.GetItemType)
-            .ToDictionary(
-                g => g.Key,
-                g => string.Join(",", g.Select(i => i.ItemId))
-            );
-    }
-
-    public HashSet<ItemKey> GetItemSet()
-    {
-        return LockedItems
-            .Select(e => new
-            {
-                Type = e.Key,
-                ItemIDs = e.Value.Split(',')
-            })
-            .SelectMany(e => e.ItemIDs.Select(itemId => new ItemKey(e.Type.GetTypeDefinition(), itemId)))
-            .ToHashSet();
+        LockedItems = itemKeys;
     }
 }

@@ -1,6 +1,6 @@
-﻿using ConvenientChests.Framework.ItemService;
+﻿using Newtonsoft.Json;
 
-namespace ConvenientChests.Framework.ChestService;
+namespace ConvenientChests.Framework.DataStructs;
 
 /// <summary>
 /// A piece of saved data describing the location of a chest and what items
@@ -16,34 +16,43 @@ internal class ChestEntry
     public ChestAddress Address { get; set; }
 
     /// <summary>
+    /// 箱子标签所显示的物品。
+    /// The item that displays on the chest's label.
+    /// </summary>
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+    public string ItemIconID { get; set; } = "";
+
+    /// <summary>
+    /// 箱子标签备注。
+    /// The user-defined note for this chest.
+    /// </summary>
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+    public string Note { get; set; } = "";
+
+    /// <summary>
+    /// 箱子所使用的快照 ID。
+    /// The ID of the snapshot that this chest is using.
+    /// </summary>
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+    public long? SnapshotID { get; set; }
+
+    /// <summary>
     /// 位于 <see cref="Address"/> 处的箱子能够接受的 <see cref="ItemKey"/> 序列。
     /// The sequence of <see cref="ItemKey"/> that were configured to be accepted
     /// by the chest at <see cref="Address"/> .
     /// </summary>
-    public Dictionary<ItemType, string> AcceptedItems { get; set; }
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+    [JsonConverter(typeof(DataConverter))]
+    public HashSet<ItemKey> AcceptedItems { get; set; }
 
     public ChestEntry() { }
 
     public ChestEntry(ChestData data, ChestAddress address)
     {
         Address = address;
-        AcceptedItems = data.AcceptedItemKinds
-            .GroupBy(ItemHelper.GetItemType)
-            .ToDictionary(
-                g => g.Key,
-                g => string.Join(",", g.Select(i => i.ItemId))
-            );
-    }
-
-    public HashSet<ItemKey> GetItemSet()
-    {
-        return AcceptedItems
-            .Select(e => new
-            {
-                Type = e.Key,
-                ItemIDs = e.Value.Split(',')
-            })
-            .SelectMany(e => e.ItemIDs.Select(itemId => new ItemKey(e.Type.GetTypeDefinition(), itemId)))
-            .ToHashSet();
+        ItemIconID = data.ItemIcon?.QualifiedItemId;
+        Note = data.Note;
+        SnapshotID = data.Snapshot?.UniqueID;
+        AcceptedItems = data.AcceptedItemKinds;
     }
 }

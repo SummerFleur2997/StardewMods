@@ -1,5 +1,5 @@
 using ConvenientChests.CategorizeChests.Framework;
-using ConvenientChests.Framework.UserInterfaceService;
+using ConvenientChests.Framework.DataService;
 using ConvenientChests.StashToChests.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -7,14 +7,14 @@ using StardewValley.Menus;
 using StardewValley.Objects;
 using UI.Component;
 
-namespace ConvenientChests.Framework.ChestService;
+namespace ConvenientChests.Framework.UserInterfaceService;
 
 internal class ChestSideTab : IOverlay<ItemGrabMenu>
 {
     private readonly Chest _chest;
     public ItemGrabMenu RootMenu { get; }
-    private TextButton CategorizeButton { get; set; }
-    private TextButton StashButton { get; set; }
+    private Button CategorizeButton { get; set; }
+    private Button StashButton { get; set; }
 
     /// <summary>
     /// 构造函数，初始化 ChestOverlay 类。
@@ -35,6 +35,9 @@ internal class ChestSideTab : IOverlay<ItemGrabMenu>
     /// </summary>
     public void Draw(SpriteBatch b)
     {
+        if (ModEntry.Config.HideSideTab)
+            return;
+
         if (ModEntry.CategorizeModule.IsActive)
             CategorizeButton?.Draw(b);
         StashButton?.Draw(b);
@@ -50,11 +53,11 @@ internal class ChestSideTab : IOverlay<ItemGrabMenu>
     {
         var padding = NineSlice.LeftProtrudingTab().TopBorderThickness;
 
-        CategorizeButton = new TextButton(NineSlice.LeftProtrudingTab(), I18n.Button_Categorize(),
+        CategorizeButton = new Button(NineSlice.LeftProtrudingTab(), I18n.Button_Categorize(),
             Color.Black, Game1.smallFont, padding: padding);
         CategorizeButton.OnPress += OpenCategoryMenu;
 
-        StashButton = new TextButton(NineSlice.LeftProtrudingTab(), I18n.Button_Stash(),
+        StashButton = new Button(NineSlice.LeftProtrudingTab(), I18n.Button_Stash(),
             Color.Black, Game1.smallFont, padding: padding);
         StashButton.OnPress += StashItems;
 
@@ -95,7 +98,7 @@ internal class ChestSideTab : IOverlay<ItemGrabMenu>
     {
         var data = _chest.GetChestData();
         var delta = ModEntry.IsAndroid ? 70 : 0;
-        var menu = new CategoryMenu(RootMenu.xPositionOnScreen, RootMenu.yPositionOnScreen + delta,
+        var menu = new CategoryChestMenu(RootMenu.xPositionOnScreen, RootMenu.yPositionOnScreen + delta,
             RootMenu.width, RootMenu.height - delta, data, IClickableMenu.borderWidth);
         menu.exitFunction = ExitFunction;
         Game1.activeClickableMenu = menu;

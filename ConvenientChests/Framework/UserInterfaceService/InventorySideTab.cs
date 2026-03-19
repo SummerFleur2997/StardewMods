@@ -1,16 +1,16 @@
-using ConvenientChests.Framework.UserInterfaceService;
+using ConvenientChests.Framework.DataService;
 using ConvenientChests.StashToChests.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Menus;
 using UI.Component;
 
-namespace ConvenientChests.Framework.InventoryService;
+namespace ConvenientChests.Framework.UserInterfaceService;
 
 internal class InventorySideTab : IOverlay<GameMenu>
 {
     public GameMenu RootMenu { get; }
-    private TextButton LockButton { get; set; }
+    private Button LockButton { get; set; }
 
     public InventorySideTab(GameMenu menu)
     {
@@ -20,6 +20,9 @@ internal class InventorySideTab : IOverlay<GameMenu>
 
     public void Draw(SpriteBatch b)
     {
+        if (ModEntry.Config.HideSideTab)
+            return;
+
         if (ModEntry.StashModule.IsActive || ModEntry.CategorizeModule.IsActive)
             LockButton?.Draw(b);
         RootMenu.drawMouse(b);
@@ -29,7 +32,7 @@ internal class InventorySideTab : IOverlay<GameMenu>
     {
         var padding = NineSlice.LeftProtrudingTab().TopBorderThickness;
 
-        LockButton = new TextButton(NineSlice.LeftProtrudingTab(), I18n.LockItems_Title(),
+        LockButton = new Button(NineSlice.LeftProtrudingTab(), I18n.LockItems_Title(),
             Color.Black, Game1.smallFont, padding: padding);
         LockButton.OnPress += OpenLockMenu;
 

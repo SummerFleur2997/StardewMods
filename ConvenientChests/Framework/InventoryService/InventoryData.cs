@@ -1,8 +1,7 @@
-﻿using ConvenientChests.Framework.ItemService;
-using ConvenientChests.Framework.MultiplayerService;
+﻿using ConvenientChests.Framework.MultiplayerService;
 using StardewValley.Locations;
 
-namespace ConvenientChests.Framework.InventoryService;
+namespace ConvenientChests.Framework.DataStructs;
 
 /// <summary>
 /// The extra data associated with a player, contains the list of items they locks.

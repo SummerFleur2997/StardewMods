@@ -2,7 +2,7 @@
 using StardewValley.Locations;
 using StardewValley.Objects;
 
-namespace ConvenientChests.Framework.ChestService;
+namespace ConvenientChests.Framework.DataStructs;
 
 /// <summary>
 /// A key that uniquely identifies a spot in the world where a chest exists.
@@ -68,46 +68,83 @@ internal class ChestAddress
         }
     }
 
-    public GameLocation GetLocationFromAddress()
+    private bool GetLocationFromAddress(out GameLocation location, out string error)
     {
-        var location = Game1.locations.FirstOrDefault(l => l.Name == LocationName)
-                       ?? throw new InvalidSaveDataException($"Can't find location named {LocationName}");
+        location = Game1.locations.FirstOrDefault(l => l.Name == LocationName);
+        error = null;
+        if (location == null)
+        {
+            error = $"Can't find location named {LocationName}";
+            return false;
+        }
 
         if (LocationType != ChestLocationType.Building)
-            return location;
+        {
+            return true;
+        }
 
-        if (location.buildings.ToList() == null)
-            throw new InvalidSaveDataException($"Can't find any buildings in location named {location.Name}");
+        if (location.buildings == null)
+        {
+            error = $"Can't find any buildings in location named {location.Name}";
+            return false;
+        }
 
-        var building = location.buildings.SingleOrDefault(b => b.GetIndoorsName() == BuildingName)
-                       ?? throw new InvalidSaveDataException(
-                           $"Save data contains building data in {BuildingName} but building does not exist");
+        var building = location.buildings.FirstOrDefault(b => b.GetIndoorsName() == BuildingName);
+        if (building == null)
+        {
+            error = $"Save data contains building data in {BuildingName} but building does not exist";
+            return false;
+        }
 
-        return building.indoors.Value;
+        location = building.indoors.Value;
+        return true;
     }
 
-    public Chest GetChestByAddress()
+    public bool GetChestByAddress(out Chest chest, out string error)
     {
+        error = null;
+        chest = null;
+
         if (LocationType == ChestLocationType.Refrigerator)
         {
-            var house = (FarmHouse)Game1.locations.SingleOrDefault(l =>
+            var house = (FarmHouse)Game1.locations.FirstOrDefault(l =>
                 l is FarmHouse f && LocationName == (f.uniqueName?.Value ?? f.Name));
 
             if (house == null)
-                throw new InvalidSaveDataException(
-                    $"Save data contains refrigerator data in {LocationName} but location does not exist");
+            {
+                error = $"Save data contains refrigerator data in {LocationName} but location does not exist";
+                return false;
+            }
 
             if (house.upgradeLevel < 1)
-                throw new InvalidSaveDataException(
-                    $"Save data contains refrigerator data in {LocationName} but refrigerator does not exist");
+            {
+                error = $"Save data contains refrigerator data in {LocationName} but refrigerator does not exist";
+                return false;
+            }
 
-            return house.fridge.Value;
+            chest = house.fridge.Value;
+            return true;
         }
 
-        var location = GetLocationFromAddress();
-        if (location.objects.ContainsKey(Tile) && location.objects[Tile] is Chest chest)
-            return chest;
+        if (!GetLocationFromAddress(out var location, out error))
+        {
+            return false;
+        }
 
-        throw new InvalidSaveDataException($"Can't find chest in {location.Name} at {Tile}");
+        if (location.objects.TryGetValue(Tile, out var obj) && obj is Chest c)
+        {
+            chest = c;
+            return true;
+        }
+
+        error = $"Can't find chest in {location.Name} at {Tile}";
+        return false;
     }
+}
+
+internal enum ChestLocationType
+{
+    Normal,
+    Building,
+    Refrigerator
 }

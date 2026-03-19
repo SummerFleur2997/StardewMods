@@ -1,20 +1,16 @@
-﻿using StardewValley.Extensions;
+﻿using ConvenientChests.Framework.DataStructs;
+using StardewValley.Extensions;
 using StardewValley.ItemTypeDefinitions;
 using StardewValley.Tools;
 using Object = StardewValley.Object;
 
-namespace ConvenientChests.Framework.ItemService;
+namespace ConvenientChests.Framework.Extensions;
 
-internal static class ItemHelper
+internal static class ItemExtensions
 {
     public static bool IsCraftable(this Item item)
     {
         return CraftingRecipe.craftingRecipes.ContainsKey(item.Name);
-    }
-
-    public static bool IsCraftable(this Item item, Farmer player)
-    {
-        return player.craftingRecipes.ContainsKey(item.Name);
     }
 
     public static Item Copy(this Item item)
@@ -100,4 +96,24 @@ internal static class ItemHelper
                 _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
             };
     }
+}
+
+internal enum ItemType
+{
+    BigCraftable,
+    Boots,
+    Fish,
+    Flooring,
+    Furniture,
+    Hat,
+    Object,
+    Ring,
+    Tool,
+    Wallpaper,
+    Weapon,
+    Gate,
+    Trinket,
+    Shirt,
+    Pants,
+    Mannequin
 }

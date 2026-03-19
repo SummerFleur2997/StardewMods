@@ -1,5 +1,4 @@
-﻿using ConvenientChests.Framework.ChestService;
-using ConvenientChests.Framework.InventoryService;
+﻿using ConvenientChests.Framework.DataStructs;
 
 namespace ConvenientChests.Framework.SaveService;
 
@@ -14,10 +13,10 @@ internal class SaveData
     /// <summary>
     /// A list of chest addresses and the chest data associated with them.
     /// </summary>
-    public IEnumerable<ChestEntry> ChestEntries { get; set; }
+    public IEnumerable<ChestEntry> ChestEntries { get; set; } = Array.Empty<ChestEntry>();
 
     /// <summary>
     /// A list of player names and backpack items that locked from stash to chests.
     /// </summary>
-    public IEnumerable<InventoryEntry> InventoryEntries { get; set; }
+    public IEnumerable<InventoryEntry> InventoryEntries { get; set; } = Array.Empty<InventoryEntry>();
 }

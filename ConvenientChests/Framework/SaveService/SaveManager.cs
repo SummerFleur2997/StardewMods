@@ -1,6 +1,7 @@
-﻿using System.IO;
-using ConvenientChests.Framework.ChestService;
-using ConvenientChests.Framework.InventoryService;
+﻿#nullable enable
+using System.IO;
+using ConvenientChests.Framework.DataService;
+using ConvenientChests.Framework.DataStructs;
 
 namespace ConvenientChests.Framework.SaveService;
 
@@ -25,7 +26,7 @@ internal static class SaveManager
     /// <summary>
     /// Generate save data and write it to the save path.
     /// </summary>
-    public static void Save(SaveData saveData = null)
+    public static void Save(SaveData? saveData = null)
     {
         if (!Context.IsMainPlayer) return;
         try
@@ -33,7 +34,7 @@ internal static class SaveManager
             saveData ??= Saver.GetSerializableData();
             ModEntry.ModHelper.Data.WriteJsonFile(SavePath, saveData);
         }
-        catch (InvalidSaveDataException ex)
+        catch (Exception ex)
         {
             ModEntry.Log($"Error saving chest data to {SavePath}", LogLevel.Error);
             ModEntry.Log(ex.ToString(), LogLevel.Error);
@@ -51,28 +52,41 @@ internal static class SaveManager
         {
             LoadSaveData();
         }
-        catch (InvalidSaveDataException ex)
+        catch (Exception ex)
         {
             ModEntry.Log($"Error loading chest data from {SavePath}", LogLevel.Error);
             ModEntry.Log(ex.ToString(), LogLevel.Error);
         }
     }
 
-    public static void LoadSaveData(SaveData saveData = null)
+    public static void LoadSaveData(SaveData? saveData = null)
     {
-        saveData ??= ModEntry.ModHelper.Data.ReadJsonFile<SaveData>(SavePath);
+        saveData ??= ModEntry.ModHelper.Data.ReadJsonFile<SaveData>(SavePath) ?? new SaveData();
 
-        foreach (var entry in saveData!.ChestEntries)
+        foreach (var entry in saveData.ChestEntries)
         {
-            var chestData = entry.Address.GetChestByAddress().GetChestData();
-            chestData.AcceptedItemKinds = entry.GetItemSet();
+            if (!entry.Address.GetChestByAddress(out var chest, out var error))
+            {
+                ModEntry.Log(error, LogLevel.Warn);
+                continue;
+            }
+
+            var chestData = chest.GetChestData();
+            var snapshot = SnapshotManager.GetValueOrDefault(entry.SnapshotID ?? 0);
+
+            chestData.AcceptedItemKinds = entry.AcceptedItems;
+            chestData.Snapshot = snapshot;
+
+            if (entry.ItemIconID != null)
+                chestData.SetIcon(entry.ItemIconID);
+            chestData.SetNote(entry.Note);
         }
 
-        foreach (var entry in saveData!.InventoryEntries)
+        foreach (var entry in saveData.InventoryEntries)
         {
             var invtyData = InventoryManager.GetPlayerByID(entry.PlayerID).GetInventoryData();
 
-            invtyData.LockedItemKinds = entry.GetItemSet();
+            invtyData.LockedItemKinds = entry.LockedItems;
         }
     }
 
@@ -88,6 +102,7 @@ internal static class SaveManager
         var saveDataVersion = new SemanticVersion(oldSaveData.Version);
         if (!saveDataVersion.IsOlderThan("1.8.1")) return;
 
+        ModEntry.Log($"Updating save data from {saveDataVersion} to {ModEntry.Manifest.Version}", LogLevel.Info);
         var newSaveData = new SaveData();
 
         try

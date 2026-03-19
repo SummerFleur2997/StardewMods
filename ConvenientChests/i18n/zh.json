@@ -41,6 +41,9 @@
   "Config.AutoStash.dungeon": "火山地牢",
   "Config.AutoStash.dungeon.desc": "位于火山地牢时启用自动存储。",
 
+  "Config.Other.Title": "其它设置",
+  "Config.HideSideTab": "隐藏侧边按钮",
+  "Config.HideSideTab.desc": "隐藏箱子界面左侧的“分类”、“存储”按钮和物品栏左侧的“锁定”按钮，但仍可通过点击对应位置来触发按钮。",
   "Config.Mobile.Title": "移动端适配",
   "Config.Mobile.Offset": "侧边按钮偏移量",
   "Config.Mobile.Offset.desc": "调整物品栏左侧按钮的位置，以适配移动端设备。",
@@ -61,5 +64,24 @@
   "Categorize.Wallpaper": "壁纸",
   "Categorize.Weapons": "武器",
 
-  "LockItems.Title": "锁定物品"
+  "LockItems.Title": "锁定物品",
+
+  "UI.Yes": "确定",
+  "UI.No": "取消",
+  "UI.ChestNote": "编辑备注",
+  "UI.ChestNote.desc": "为这个箱子添加备注。添加后，当把鼠标放到箱子上时，将会出现一个气泡显示你的备注。",
+  "UI.QuickSet": "快速设置分类",
+  "UI.QuickSet.desc": "将当前箱子里所包含的物品添加至分类列表中。",
+  "UI.Snapshot.New": "新建分类快照",
+  "UI.Snapshot.New.desc": "创建一个能够跨存档使用的物品分类快照。",
+  "UI.Snapshot.Manage": "管理快照",
+  "UI.Snapshot.Manage.desc": "管理你保存的所有快照。",
+  "UI.Snapshot.Save": "存储为快照",
+  "UI.Snapshot.Save.desc": "将当前箱子所分类的物品存储为新的快照。",
+  "UI.Snapshot.Unlink": "停止使用快照",
+  "UI.Snapshot.Unlink.desc": "停止使用这个快照。注意：这个快照不会被删除。",
+  "UI.Snapshot.Unlink.confirm": "确定要停止使用吗？",
+  "UI.Snapshot.Naming": "为你的新快照命名：",
+  "UI.Snapshot.Warning.mainplayer": "这个箱子正在使用快照 {{name}}，如果你想编辑这个箱子的物品分类，请编辑此快照。（点我跳转至快照编辑）",
+  "UI.Snapshot.Warning.farmhand": "这个箱子正在使用来自主机的快照，你无法编辑。"
 }

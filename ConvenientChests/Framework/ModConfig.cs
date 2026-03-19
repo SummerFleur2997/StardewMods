@@ -28,4 +28,5 @@ public class ModConfig
     public bool AutoStashInTheMine { get; set; }
     public bool AutoStashInSkullCavern { get; set; }
     public bool AutoStashInVolcanoDungeon { get; set; }
+    public bool HideSideTab { get; set; }
 }

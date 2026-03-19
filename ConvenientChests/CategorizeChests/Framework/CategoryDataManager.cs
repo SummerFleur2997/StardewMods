@@ -1,4 +1,5 @@
-using ConvenientChests.Framework.ItemService;
+using ConvenientChests.Framework.DataStructs;
+using ConvenientChests.Framework.Extensions;
 using StardewValley.Tools;
 
 namespace ConvenientChests.CategorizeChests.Framework;
@@ -27,8 +28,51 @@ internal static class CategoryDataManager
         foreach (var category in ItemCategories)
         {
             var items = string.Join(", ", Categories[category]);
-            ModEntry.Log($"Registered ItemCategory {category.CategoryBaseName}: [{items}]");
+            ModEntry.Log($"Registered ItemCategory {category.BaseName}: [{items}]");
         }
+    }
+
+    public static List<ItemCategoryName> GetCategories()
+    {
+        List<ItemCategoryName> categories;
+
+        // 根据配置文件决定列表排序方式
+        // Determine list sorting method based on configuration settings
+        if (ModEntry.Config.EnableSort)
+        {
+            // 按字母顺序排序
+            // Sort in alphabetical order
+            categories = ItemCategories
+                .OrderBy(c => c.DisplayName)
+                .ToList();
+        }
+        else
+        {
+            // 定义自定义排序顺序的基准名称列表
+            // Define custom sorting order using base names
+            var customOrder = new List<string>
+            {
+                "Vegetable", "Fruit", "Flower", "Animal Product", "Artisan Goods", "Seed", "Fertilizer", "Fish",
+                "Bait", "Fishing Tackle", "Forage", "Artifact", "Resource", "Mineral", "Monster Loot", "Crafting",
+                "Machine", "BigCrafts", "Cooking", "Consumable", "Book", "Skill Book", "Tool", "Weapons", "Ring",
+                "Trinket", "Hats", "Shirts", "Pants", "Footwear", "Mannequin", "Decor", "Wallpaper", "Flooring",
+                "Trash", "Miscellaneous"
+            };
+
+            // 创建基准名称到排序索引的字典
+            // Create lookup dictionary: base name -> predefined sorting index
+            var orderDictionary = customOrder
+                .Select((name, index) => new { name, index })
+                .ToDictionary(item => item.name, item => item.index);
+
+            // 根据自定义顺序排序
+            // Sort in custom rules
+            categories = ItemCategories
+                .OrderBy(c => orderDictionary.GetValueOrDefault(c.BaseName, int.MaxValue))
+                .ToList();
+        }
+
+        return categories;
     }
 
     /// <summary>
@@ -37,7 +81,7 @@ internal static class CategoryDataManager
     private static IEnumerable<Item> DiscoverItems()
     {
         return ItemRegistry.ItemTypes
-            .SelectMany(ItemHelper.GetAllItems)
+            .SelectMany(ItemExtensions.GetAllItems)
             .Where(FilterTools);
     }
 

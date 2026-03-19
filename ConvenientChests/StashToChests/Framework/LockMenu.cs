@@ -1,5 +1,5 @@
-﻿using ConvenientChests.Framework.InventoryService;
-using ConvenientChests.Framework.ItemService;
+﻿using ConvenientChests.Framework.DataService;
+using ConvenientChests.Framework.DataStructs;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -56,16 +56,15 @@ internal class LockMenu : BaseMenu
     /// </summary>
     private void CreateItemToggles()
     {
-        var entries = _backpackItems
-            .Select(itemKey => new ItemEntry(itemKey))
-            .OrderBy(itemEntry => itemEntry)
+        var itemKeys = _backpackItems
+            .OrderBy(k => k)
             .ToList();
 
         var toggles = new List<ItemToggle<Item>>();
-        foreach (var entry in entries)
+        foreach (var key in itemKeys)
         {
-            var toggle = new ItemToggle<Item>(entry.Item, _inventoryData.Locks(entry.ItemKey));
-            toggle.OnToggle += () => ToggleItem(entry.ItemKey);
+            var toggle = new ItemToggle<Item>(key.GetOne(), _inventoryData.Locks(key));
+            toggle.OnToggle += () => ToggleItem(key);
             toggle.OnHover += () =>
             {
                 _tooltip = toggle.Tooltip;

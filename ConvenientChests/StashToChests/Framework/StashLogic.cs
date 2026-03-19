@@ -1,4 +1,4 @@
-﻿using ConvenientChests.Framework.ChestService;
+﻿using ConvenientChests.Framework.Extensions;
 using StardewValley.Objects;
 
 namespace ConvenientChests.StashToChests.Framework;

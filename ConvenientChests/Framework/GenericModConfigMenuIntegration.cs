@@ -130,9 +130,11 @@ internal static class GenericModConfigMenuIntegration
             setValue: value => ModEntry.Config.NeverStashTools = value
         );
 
+        // 【标题】自动存储
+        // [Title] Auto stash
         api.AddSectionTitle(manifest, I18n.Config_AutoStash_Title, I18n.Config_AutoStash_Desc);
 
-        // 【选项】禁用工具存储 - 禁止将任何工具存储至箱子中，在多人游戏中较为实用
+        // 【选项】矿井 - 位于矿井时启用自动存储
         // [Checkbox] The Mine - Active auto stash while in the Mines
         api.AddBoolOption(
             manifest,
@@ -142,7 +144,7 @@ internal static class GenericModConfigMenuIntegration
             setValue: value => ModEntry.Config.AutoStashInTheMine = value
         );
 
-        // 【选项】禁用工具存储 - 禁止将任何工具存储至箱子中，在多人游戏中较为实用
+        // 【选项】骷髅洞穴 - 位于骷髅洞穴时启用自动存储
         // [Checkbox] Skull Cavern - Active auto stash while in the Skull Cavern
         api.AddBoolOption(
             manifest,
@@ -152,7 +154,7 @@ internal static class GenericModConfigMenuIntegration
             setValue: value => ModEntry.Config.AutoStashInSkullCavern = value
         );
 
-        // 【选项】禁用工具存储 - 禁止将任何工具存储至箱子中，在多人游戏中较为实用
+        // 【选项】火山地牢 - 位于火山地牢时启用自动存储
         // [Checkbox] Volcano Dungeon - Active auto stash while in the Volcano Dungeon
         api.AddBoolOption(
             manifest,
@@ -182,6 +184,20 @@ internal static class GenericModConfigMenuIntegration
             name: I18n.Config_StashAnywhere_Key,
             getValue: () => ModEntry.Config.StashAnywhereKey,
             setValue: value => ModEntry.Config.StashAnywhereKey = value
+        );
+
+        // 【标题】其他设置
+        // [Title] Other settings
+        api.AddSectionTitle(manifest, I18n.Config_Other_Title);
+
+        // 【选项】火山地牢 - 位于火山地牢时启用自动存储
+        // [Checkbox] Volcano Dungeon - Active auto stash while in the Volcano Dungeon
+        api.AddBoolOption(
+            manifest,
+            name: I18n.Config_HideSideTab,
+            tooltip: I18n.Config_HideSideTab_Desc,
+            getValue: () => ModEntry.Config.HideSideTab,
+            setValue: value => ModEntry.Config.HideSideTab = value
         );
 
         if (ModEntry.IsAndroid)

@@ -1,4 +1,4 @@
-﻿using ConvenientChests.Framework.ChestService;
+﻿using ConvenientChests.Framework.DataService;
 using StardewValley.Objects;
 
 namespace ConvenientChests.API;

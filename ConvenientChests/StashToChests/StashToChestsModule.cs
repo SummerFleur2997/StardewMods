@@ -1,7 +1,7 @@
 using Common;
-using ConvenientChests.Framework.ChestService;
-using ConvenientChests.Framework.InventoryService;
-using ConvenientChests.Framework.ItemService;
+using ConvenientChests.Framework.DataService;
+using ConvenientChests.Framework.DataStructs;
+using ConvenientChests.Framework.Extensions;
 using StardewModdingAPI.Events;
 using StardewValley.Locations;
 using StardewValley.Menus;

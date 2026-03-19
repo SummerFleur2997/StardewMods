@@ -1,5 +1,6 @@
-﻿using ConvenientChests.Framework.ChestService;
-using ConvenientChests.Framework.InventoryService;
+﻿using ConvenientChests.Framework.DataService;
+using ConvenientChests.Framework.DataStructs;
+using ConvenientChests.Framework.Extensions;
 using Microsoft.Xna.Framework;
 using StardewValley.Locations;
 using StardewValley.Objects;
@@ -12,12 +13,6 @@ namespace ConvenientChests.Framework.SaveService;
 internal static class Saver
 {
     /// <summary>
-    /// The version of the mod.
-    /// 模组版本信息。
-    /// </summary>
-    private static ISemanticVersion Version { get; } = ModEntry.Manifest.Version;
-
-    /// <summary>
     /// Build save data for the current game state.
     /// 构建当前游戏状态的存档数据。
     /// </summary>
@@ -25,7 +20,7 @@ internal static class Saver
     {
         return new SaveData
         {
-            Version = Version.ToString(),
+            Version = ModEntry.Manifest.Version.ToString(),
             ChestEntries = BuildChestEntries().Where(e => e.AcceptedItems.Any()).ToList(),
             InventoryEntries = BuildInventoryEntries() //.Where(e => e.LockedItems.Any()).ToList()
         };
@@ -36,25 +31,27 @@ internal static class Saver
         foreach (var location in Game1.locations)
         {
             // chests
-            foreach (var pair in GetLocationChests(location))
-                yield return new ChestEntry(
-                    pair.Value.GetChestData(),
-                    new ChestAddress(location.Name, pair.Key));
+            foreach (var kvp in location.GetChestsHere())
+                yield return kvp.Value.ToChestEntry(new ChestAddress(location.Name, kvp.Key));
 
             // fridges
             if (location is FarmHouse { upgradeLevel: >= 1 } farmHouse)
-                yield return new ChestEntry(
-                    farmHouse.fridge.Value.GetChestData(),
-                    new ChestAddress
-                        (farmHouse.uniqueName?.Value ?? farmHouse.Name, Vector2.Zero, ChestLocationType.Refrigerator)
-                );
+            {
+                var address = new ChestAddress(
+                    farmHouse.uniqueName?.Value ?? farmHouse.Name, Vector2.Zero, ChestLocationType.Refrigerator);
+                yield return farmHouse.fridge.Value.ToChestEntry(address);
+            }
             else
-                foreach (var building in location.buildings.Where(b => b.indoors.Value != null))
-                foreach (var pair in GetLocationChests(building.indoors.Value))
-                    yield return new ChestEntry(
-                        pair.Value.GetChestData(),
-                        new ChestAddress(location.Name, pair.Key, ChestLocationType.Building, building.GetIndoorsName())
-                    );
+            {
+                var buildings = location.buildings.Where(b => b.indoors.Value != null);
+                foreach (var building in buildings)
+                foreach (var kvp in building.indoors.Value.GetChestsHere())
+                {
+                    var address = new ChestAddress(
+                        location.Name, kvp.Key, ChestLocationType.Building, building.GetIndoorsName());
+                    yield return kvp.Value.ToChestEntry(address);
+                }
+            }
         }
     }
 
@@ -72,7 +69,7 @@ internal static class Saver
     /// Retrieve a collection of the chest objects present in the given
     /// location, keyed by their tile location.
     /// </summary>
-    private static IDictionary<Vector2, Chest> GetLocationChests(GameLocation location)
+    private static IDictionary<Vector2, Chest> GetChestsHere(this GameLocation location)
     {
         return location.Objects.Pairs
             .Where(pair => pair.Value is Chest c && c.playerChest.Value)

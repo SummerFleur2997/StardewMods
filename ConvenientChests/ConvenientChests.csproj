@@ -3,8 +3,12 @@
         <AssemblyTitle>ConvenientChests</AssemblyTitle>
         <ModFolderName>ConvenientChestsUnofficial</ModFolderName>
         <Product>ConvenientChests</Product>
-        <AssemblyVersion>1.8.4</AssemblyVersion>
-        <FileVersion>1.8.4</FileVersion>
+        <Version>2.0.0-alpha</Version>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>portable</DebugType>
+        <Optimize>false</Optimize>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DebugSymbols>true</DebugSymbols>
@@ -15,6 +19,9 @@
         <PackageReference Include="JetBrains.Annotations"/>
         <PackageReference Include="Pathoschild.Stardew.ModBuildConfig"/>
         <PackageReference Include="Pathoschild.Stardew.ModTranslationClassBuilder"/>
+    </ItemGroup>
+    <ItemGroup>
+        <Reference Include="Newtonsoft.Json" HintPath="$(GamePath)\smapi-internal\Newtonsoft.Json.dll" />
     </ItemGroup>
     <Import Project="..\Common\Common.projitems" Label="Shared"/>
     <Import Project="..\UI\UI.projitems" Label="Shared"/>

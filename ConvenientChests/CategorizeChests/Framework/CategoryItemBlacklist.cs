@@ -1,4 +1,4 @@
-﻿using ConvenientChests.Framework.ItemService;
+﻿using ConvenientChests.Framework.DataStructs;
 
 namespace ConvenientChests.CategorizeChests.Framework;
 

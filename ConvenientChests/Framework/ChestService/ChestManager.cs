@@ -1,8 +1,9 @@
+#nullable enable
 using System.Runtime.CompilerServices;
-using ConvenientChests.Framework.ItemService;
+using ConvenientChests.Framework.DataStructs;
 using StardewValley.Objects;
 
-namespace ConvenientChests.Framework.ChestService;
+namespace ConvenientChests.Framework.DataService;
 
 /// <summary>
 /// The chest manager responsible for handling chest data.
@@ -13,13 +14,20 @@ internal static class ChestManager
     private static readonly ConditionalWeakTable<Chest, ChestData> Table = new();
     private static readonly object Lock = new();
 
-    public static void ModifyChest(ChestAddress chestAddress, ItemKey itemKey)
+    public static void ModifyChest(ChestAddress chestAddress, ItemKey? itemKey, string? note, string? icon)
     {
         lock (Lock)
         {
-            var chest = chestAddress.GetChestByAddress();
-            var data = GetChestData(chest);
-            data.Toggle(itemKey, true);
+            if (!chestAddress.GetChestByAddress(out var chest, out var error))
+            {
+                ModEntry.Log(error, LogLevel.Error);
+                return;
+            }
+
+            var data = chest.GetChestData();
+            if (itemKey != null) data.ToggleItem(itemKey, true);
+            if (note != null) data.SetNote(note, true);
+            if (icon != null) data.SetIcon(icon, true);
         }
     }
 

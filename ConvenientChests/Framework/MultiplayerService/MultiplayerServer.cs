@@ -1,7 +1,6 @@
 ﻿using Common;
-using ConvenientChests.Framework.ChestService;
-using ConvenientChests.Framework.InventoryService;
-using ConvenientChests.Framework.ItemService;
+using ConvenientChests.Framework.DataService;
+using ConvenientChests.Framework.DataStructs;
 using ConvenientChests.Framework.SaveService;
 using StardewModdingAPI.Events;
 using StardewValley.Locations;
@@ -30,11 +29,11 @@ internal class MultiplayerServer : IModule
         ModEntry.ModHelper.Events.Multiplayer.ModMessageReceived -= OnMessageReceived;
     }
 
-    public static void SendChestData(Chest chest, ItemKey itemKey)
+    public static void SendChestData(Chest chest, ItemKey itemKey = null, string note = null, string icon = null)
     {
         var playerID = Game1.player.UniqueMultiplayerID;
         var chestAddress = new ChestAddress(chest);
-        var syncData = new MultiplayerChestSync(chestAddress, itemKey, playerID);
+        var syncData = new MultiplayerChestSync(chestAddress, itemKey, note, icon, playerID);
 
         MultiplayerHelper.SendMessage(syncData, "MultiplayerChestSync",
             new[] { ModEntry.Manifest.UniqueID });
@@ -49,13 +48,15 @@ internal class MultiplayerServer : IModule
             new[] { ModEntry.Manifest.UniqueID });
     }
 
-    private static void ReceiveChestData(MultiplayerChestSync multiplayerChestSyncData)
+    private static void ReceiveChestData(MultiplayerChestSync multiplayerChestSyncChest)
     {
-        if (multiplayerChestSyncData.SenderID == Game1.player.UniqueMultiplayerID) return;
-        var chestAddress = multiplayerChestSyncData.ChestAddress;
-        var itemKey = multiplayerChestSyncData.ItemKey;
+        if (multiplayerChestSyncChest.SenderID == Game1.player.UniqueMultiplayerID) return;
+        var chestAddress = multiplayerChestSyncChest.ChestAddress;
+        var itemKey = multiplayerChestSyncChest.ItemKey;
+        var note = multiplayerChestSyncChest.Note;
+        var icon = multiplayerChestSyncChest.Icon;
 
-        ChestManager.ModifyChest(chestAddress, itemKey);
+        ChestManager.ModifyChest(chestAddress, itemKey, note, icon);
     }
 
     private static void ReceiveInventoryData(MultiplayerInventorySync multiplayerInventorySyncData)

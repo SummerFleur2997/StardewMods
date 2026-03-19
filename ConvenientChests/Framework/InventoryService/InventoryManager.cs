@@ -1,8 +1,8 @@
 ﻿using System.Runtime.CompilerServices;
-using ConvenientChests.Framework.ItemService;
+using ConvenientChests.Framework.DataStructs;
 using StardewValley.Locations;
 
-namespace ConvenientChests.Framework.InventoryService;
+namespace ConvenientChests.Framework.DataService;
 
 /// <summary>
 /// The inventory manager responsible for handling inventory data.

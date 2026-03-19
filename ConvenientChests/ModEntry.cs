@@ -4,8 +4,7 @@ using ConvenientChests.CategorizeChests;
 using ConvenientChests.CategorizeChests.Framework;
 using ConvenientChests.CraftFromChests;
 using ConvenientChests.Framework;
-using ConvenientChests.Framework.ChestService;
-using ConvenientChests.Framework.InventoryService;
+using ConvenientChests.Framework.DataService;
 using ConvenientChests.Framework.MultiplayerService;
 using ConvenientChests.Framework.SaveService;
 using ConvenientChests.Framework.UserInterfaceService;
@@ -158,6 +157,10 @@ internal class ModEntry : Mod
         MultiplayerServer = new MultiplayerServer();
         if (Context.IsMultiplayer)
             MultiplayerServer.Activate();
+
+#if DEBUG
+        Debug.Init();
+#endif
     }
 
     /// <summary>
@@ -190,6 +193,7 @@ internal class ModEntry : Mod
     {
         GenericModConfigMenuIntegration.Register(Manifest, ModHelper.ModRegistry, ResetConfig, SaveConfig);
         QuickSaveIntegration.Register();
+        SnapshotManager.Load();
     }
 
     /// <summary>
