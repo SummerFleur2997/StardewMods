@@ -8,7 +8,7 @@ namespace UI.Component;
 /// Indicate a button with both sprite background and text.
 /// </summary>
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-public class TextButton : IClickableComponent, IDisposable
+public class Button : IClickableComponent, IDisposable
 {
     /// <inheritdoc/>
     public Rectangle Bounds => new(X, Y, Width, Height);
@@ -76,6 +76,7 @@ public class TextButton : IClickableComponent, IDisposable
 
     private int _height;
 
+    public string SoundCue = "drumkit6";
     public IComponent Background;
     public TextLabel Label;
 
@@ -96,7 +97,7 @@ public class TextButton : IClickableComponent, IDisposable
     /// <param name="width">The width of the background.</param>
     /// <param name="height">The height of the background.</param>
     /// <param name="padding">The padding between the text and the background.</param>
-    public TextButton(IComponent background, string text, Color color, SpriteFont font,
+    public Button(IComponent background, string text, Color color, SpriteFont font,
         int x = 0, int y = 0, int? width = null, int? height = null, int padding = Game1.pixelZoom * 2)
     {
         Background = background;
@@ -123,7 +124,7 @@ public class TextButton : IClickableComponent, IDisposable
             return false;
 
         OnPress?.Invoke();
-        Game1.playSound("drumkit6");
+        if (!string.IsNullOrEmpty(SoundCue)) Game1.playSound(SoundCue);
         return true;
     }
 

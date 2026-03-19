@@ -44,6 +44,15 @@ public class BaseMenu : StardewValley.Menus.IClickableMenu, IClickableMenu
     }
 
     /// <summary>
+    /// Add multiple components to the <see cref="Components"/>.
+    /// </summary>
+    public virtual void AddChildren(params IComponent[] children)
+    {
+        foreach (var child in children)
+            Components.Add(child);
+    }
+
+    /// <summary>
     /// Remove the given child from the <see cref="Components"/>.
     /// </summary>
     public virtual void RemoveChild(IComponent child)
@@ -67,6 +76,9 @@ public class BaseMenu : StardewValley.Menus.IClickableMenu, IClickableMenu
 
     public sealed override void draw(SpriteBatch b)
     {
+        if (!Game1.options.showClearBackgrounds)
+            b.Draw(Game1.fadeToBlackRect,
+                new Rectangle(0, 0, Game1.uiViewport.Width, Game1.uiViewport.Height), Color.Black * 0.5f);
         Background?.Draw(b);
         foreach (var child in Components)
             child.Draw(b);

@@ -6,6 +6,7 @@ namespace UI.Component;
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class ItemButton<T> : ItemLabel<T>, IClickableComponent, IDisposable where T : Item
 {
+    public string SoundCue = "drumkit6";
     public Tooltip Tooltip;
     public event Action OnPress;
     public event Action OnHover;
@@ -31,7 +32,7 @@ public class ItemButton<T> : ItemLabel<T>, IClickableComponent, IDisposable wher
             return false;
 
         OnPress?.Invoke();
-        Game1.playSound("drumkit6");
+        if (!string.IsNullOrEmpty(SoundCue)) Game1.playSound(SoundCue);
         return true;
     }
 

@@ -7,6 +7,7 @@ namespace UI.Component;
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class ItemToggle<T> : ItemLabel<T>, IClickableComponent, IDisposable where T : Item
 {
+    public string SoundCue = "dwoop";
     public Tooltip Tooltip;
     public bool Active;
     public event Action OnToggle;
@@ -46,7 +47,7 @@ public class ItemToggle<T> : ItemLabel<T>, IClickableComponent, IDisposable wher
 
         Active = !Active;
         OnToggle?.Invoke();
-        Game1.playSound("dwoop");
+        if (!string.IsNullOrEmpty(SoundCue)) Game1.playSound(SoundCue);
         return true;
     }
 

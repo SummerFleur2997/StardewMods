@@ -26,6 +26,7 @@ public class SpriteButton : IClickableComponent, IDisposable
     /// <inheritdoc/>
     public int Height { get; set; }
 
+    public string SoundCue = "drumkit6";
     public TextureRegion Texture;
     public event Action OnPress;
     public event Action OnHover;
@@ -50,7 +51,7 @@ public class SpriteButton : IClickableComponent, IDisposable
             return false;
 
         OnPress?.Invoke();
-        Game1.playSound("drumkit6");
+        if (!string.IsNullOrEmpty(SoundCue)) Game1.playSound(SoundCue);
         return true;
     }
 

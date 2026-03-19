@@ -18,7 +18,7 @@
         <Compile Include="$(MSBuildThisFileDirectory)Component\IComponent.cs" />
         <Compile Include="$(MSBuildThisFileDirectory)Component\SpriteLabel.cs" />
         <Compile Include="$(MSBuildThisFileDirectory)Component\ItemToggle.cs" />
-        <Compile Include="$(MSBuildThisFileDirectory)Component\TextButton.cs" />
+        <Compile Include="$(MSBuildThisFileDirectory)Component\Button.cs" />
         <Compile Include="$(MSBuildThisFileDirectory)Component\Tooltip.cs" />
         <Compile Include="$(MSBuildThisFileDirectory)Component\TextLabel.cs" />
         <Compile Include="$(MSBuildThisFileDirectory)Component\NineSlice.cs" />
