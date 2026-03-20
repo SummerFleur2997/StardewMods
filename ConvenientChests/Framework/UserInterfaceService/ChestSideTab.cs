@@ -1,4 +1,4 @@
-using ConvenientChests.CategorizeChests.Framework.UI;
+using ConvenientChests.CategorizeChests.UI;
 using ConvenientChests.Framework.DataService;
 using ConvenientChests.StashToChests.Framework;
 using Microsoft.Xna.Framework;

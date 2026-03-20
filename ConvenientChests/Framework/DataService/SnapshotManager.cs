@@ -44,7 +44,7 @@ internal static class SnapshotManager
         _order.Remove(id);
     }
 
-    public static ChestDataSnapshot CreateNewSnapshot(string note, IEnumerable<ItemKey> acceptedItemKinds)
+    public static ChestDataSnapshot CreateNewSnapshot(string alias, IEnumerable<ItemKey> acceptedItemKinds)
     {
         long id;
         do
@@ -52,7 +52,7 @@ internal static class SnapshotManager
             id = Utility.RandomLong();
         } while (_snapshots.ContainsKey(id) || id == 0);
 
-        return new ChestDataSnapshot(note, id, acceptedItemKinds);
+        return new ChestDataSnapshot(alias, id, acceptedItemKinds);
     }
 
     /// <summary>

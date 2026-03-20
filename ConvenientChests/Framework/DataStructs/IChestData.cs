@@ -2,7 +2,7 @@
 
 internal interface IChestData
 {
-    string Note { get; }
+    string Alias { get; }
     HashSet<ItemKey> AcceptedItemKinds { get; }
 
     void ToggleItem(ItemKey itemKey);

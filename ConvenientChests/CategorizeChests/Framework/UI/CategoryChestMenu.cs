@@ -1,16 +1,17 @@
-﻿using ConvenientChests.Framework.DataStructs;
+﻿using ConvenientChests.CategorizeChests.UI.SubMenus;
+using ConvenientChests.Framework.DataStructs;
 using ConvenientChests.Framework.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using UI.Component;
 
-namespace ConvenientChests.CategorizeChests.Framework.UI;
+namespace ConvenientChests.CategorizeChests.UI;
 
-internal class CategoryChestMenu : CategoryMenu<ChestData>, IHaveSubMenu
+internal class CategoryChestMenu : CategoryMenu<ChestData>
 {
     private Button _warning;
-    private SpritesButton _editNoteButton;
+    private SpritesButton _setAliasButton;
     private SpritesButton _quickSetButton;
     private SpritesButton _manageSnapshotButton;
     private SpritesButton _saveAsSnapshotButton;
@@ -59,6 +60,18 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>, IHaveSubMenu
     }
 
     /// <inheritdoc/>
+    public override bool ReceiveScrollWheelAction(int amount)
+    {
+        if (SubMenu is not null)
+        {
+            SubMenu.ReceiveScrollWheelAction(amount);
+            return true;
+        }
+
+        return base.ReceiveScrollWheelAction(amount);
+    }
+
+    /// <inheritdoc/>
     public override void receiveKeyPress(Keys key)
     {
         if (SubMenu is not null)
@@ -76,36 +89,37 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>, IHaveSubMenu
 
         if (ChestData.Snapshot is not null) AddSnapshotWarning();
 
-        // edit note button
+        // set alias button
         var x = xPositionOnScreen + width + 16;
         var y = yPositionOnScreen + 40;
-        _editNoteButton = SpritesButton.CreateButton(x, y, SideButtonVariant.Edit);
-        _editNoteButton.OnHover += () => ShowTooltipForSideButton(SideButtonVariant.Edit);
+        _setAliasButton = UIHelper.SideButton(x, y, SideButtonVariant.Alias);
+        _setAliasButton.OnHover += () => ShowTooltipForSideButton(SideButtonVariant.Alias);
+        _setAliasButton.OnPress += SetAlias;
 
         // quick set button
         y += 80;
-        _quickSetButton = SpritesButton.CreateButton(x, y, SideButtonVariant.Set);
+        _quickSetButton = UIHelper.SideButton(x, y, SideButtonVariant.Set);
         _quickSetButton.OnHover += () => ShowTooltipForSideButton(SideButtonVariant.Set);
         _quickSetButton.OnPress += QuickSet;
 
         // manage snapshot button
         y += 80;
-        _manageSnapshotButton = SpritesButton.CreateButton(x, y, SideButtonVariant.Manage);
+        _manageSnapshotButton = UIHelper.SideButton(x, y, SideButtonVariant.Manage);
         _manageSnapshotButton.OnHover += () => ShowTooltipForSideButton(SideButtonVariant.Manage);
 
         // save as snapshot button
         y += 80;
-        _saveAsSnapshotButton = SpritesButton.CreateButton(x, y, SideButtonVariant.Save);
+        _saveAsSnapshotButton = UIHelper.SideButton(x, y, SideButtonVariant.Save);
         _saveAsSnapshotButton.OnHover += () => ShowTooltipForSideButton(SideButtonVariant.Save);
 
         // unlink snapshot button
         y += 80;
-        _unlinkSnapshotButton = SpritesButton.CreateButton(x, y, SideButtonVariant.Unlink);
+        _unlinkSnapshotButton = UIHelper.SideButton(x, y, SideButtonVariant.Unlink);
         _unlinkSnapshotButton.OnHover += () => ShowTooltipForSideButton(SideButtonVariant.Unlink);
         _unlinkSnapshotButton.OnPress += UnlinkSnapshot;
 
         AddChildren(
-            _editNoteButton, _quickSetButton, _manageSnapshotButton, _saveAsSnapshotButton, _unlinkSnapshotButton);
+            _setAliasButton, _quickSetButton, _manageSnapshotButton, _saveAsSnapshotButton, _unlinkSnapshotButton);
     }
 
     /// <summary>
@@ -114,7 +128,7 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>, IHaveSubMenu
     /// </summary>
     private void AddSnapshotWarning()
     {
-        var snapshotName = ChestData.Snapshot.Note;
+        var snapshotName = ChestData.Snapshot.Alias;
         var text = Context.IsMainPlayer
             ? I18n.UI_Snapshot_Warning_Mainplayer(snapshotName)
             : I18n.UI_Snapshot_Warning_Farmhand();
@@ -124,6 +138,27 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>, IHaveSubMenu
         _warning = new Button(background, parsedText, Color.Black, Game1.smallFont, padding: 16);
         _warning.SetInCenterOfTheBounds(Bounds);
         AddChild(_warning);
+    }
+
+    /// <summary>
+    /// Set the alias of this chest in a <see cref="SubMenus.SetAliasSubMenu"/>.
+    /// </summary>
+    private void SetAlias()
+    {
+        SubMenu = new SetAliasSubMenu(this);
+        SubMenu.OnOk += SetAliasExecute;
+
+        return;
+
+        void SetAliasExecute(SubMenu sender)
+        {
+            if (sender is not SetAliasSubMenu s)
+                return;
+
+            ChestData.SetAlias(s.TextBox.Text);
+            ChestData.SetIcon(s.ItemIconButton.Item);
+            ModEntry.CategorizeModule.ForceUpdateOnce = true;
+        }
     }
 
     /// <summary>
@@ -150,7 +185,7 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>, IHaveSubMenu
     }
 
     /// <summary>
-    /// Unlink the snapshot of this chest, use <see cref="UI.SubMenu"/>
+    /// Unlink the snapshot of this chest, use <see cref="SubMenus.DoubleConfirmSubMenu"/>
     /// to double-confirm this operation.
     /// </summary>
     private void UnlinkSnapshot()
@@ -158,19 +193,12 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>, IHaveSubMenu
         if (ChestData.Snapshot is null || !Context.IsMainPlayer)
             return;
 
-        var confirm = Game1.parseText(I18n.UI_Snapshot_Unlink_Confirm(), Game1.smallFont, 300);
-        var confirmLabel = new TextLabel(confirm, Color.Black, Game1.smallFont);
-        SubMenu = new SubMenu(320, 128 + confirmLabel.Height, this);
-        SubMenu.OkButton.Background = UIHelper.RedButtonBackground(SubMenu.OkButton.Bounds);
-
-        confirmLabel.SetInCenterOfTheBounds(Bounds);
-        confirmLabel.OffsetPosition(y: SubMenu.Y - confirmLabel.Y + 32);
+        SubMenu = new DoubleConfirmSubMenu(this, I18n.UI_Snapshot_Unlink_Confirm());
         SubMenu.OnOk += UnlinkSnapshotExecute;
-        SubMenu.Components.Add(confirmLabel);
 
         return;
 
-        void UnlinkSnapshotExecute()
+        void UnlinkSnapshotExecute(SubMenu sender)
         {
             ChestData.AcceptedItemKinds = ChestData.Snapshot.AcceptedItemKinds;
             ChestData.Snapshot = null;
@@ -194,7 +222,7 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>, IHaveSubMenu
     private void ShowTooltipForSideButton(SideButtonVariant hint) =>
         Tooltip = hint switch
         {
-            SideButtonVariant.Edit => new Tooltip(I18n.UI_ChestNote(), I18n.UI_ChestNote_Desc()),
+            SideButtonVariant.Alias => new Tooltip(I18n.UI_ChestAlias(), I18n.UI_ChestAlias_Desc()),
             SideButtonVariant.Set => new Tooltip(I18n.UI_QuickSet(), I18n.UI_QuickSet_Desc()),
             SideButtonVariant.Manage => new Tooltip(I18n.UI_Snapshot_Manage(), I18n.UI_Snapshot_Manage_Desc()),
             SideButtonVariant.Save => new Tooltip(I18n.UI_Snapshot_Save(), I18n.UI_Snapshot_Save_Desc()),

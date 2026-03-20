@@ -1,11 +1,13 @@
-﻿using Microsoft.Xna.Framework;
+﻿using JetBrains.Annotations;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using UI.Component;
 using UI.Menu;
 
-namespace ConvenientChests.CategorizeChests.Framework.UI;
+namespace ConvenientChests.CategorizeChests.UI.SubMenus;
 
+[UsedImplicitly(ImplicitUseTargetFlags.Members)]
 internal class SubMenu : IClickableMenu, IComponent
 {
     /// <inheritdoc/>
@@ -23,23 +25,26 @@ internal class SubMenu : IClickableMenu, IComponent
     /// <inheritdoc/>
     public int Height { get; set; }
 
-    public event Action OnOk;
-    public event Action OnCancel;
+    public event Action<SubMenu> OnOk;
+    public event Action<SubMenu> OnCancel;
 
     public readonly List<IComponent> Components = new();
-    public readonly Button OkButton;
-    public readonly Button CancelButton;
 
-    private readonly NineSlice _background;
+    public Button OkButton;
+    public Button CancelButton;
 
     /// <summary>
     /// The parent menu of this sub-menu.
     /// </summary>
-    private IHaveSubMenu _parentMenu;
+    public CategoryChestMenu ParentMenu;
 
-    public SubMenu(int width, int height, IHaveSubMenu parent, bool showOk = true, bool showCancel = true)
+    private NineSlice _background;
+    private string _okButtonCue = "money";
+    private string _cancelButtonCue = "bigDeSelect";
+
+    public SubMenu(int width, int height, CategoryChestMenu parent, bool showOk = true, bool showCancel = true)
     {
-        _parentMenu = parent;
+        ParentMenu = parent;
 
         var screen = new Rectangle(0, 0, Game1.uiViewport.Width, Game1.uiViewport.Height);
         this.SetSize(width, height);
@@ -52,7 +57,7 @@ internal class SubMenu : IClickableMenu, IComponent
             var okTexture = UIHelper.YellowButtonBackground();
             OkButton = new Button(okTexture, I18n.UI_Yes(), Color.Black, Game1.smallFont);
             OkButton.SetDestination(X + Width / 2 + 8, Y + Height - 80, 108, 60);
-            OkButton.SoundCue = "trashcan";
+            OkButton.SoundCue = _okButtonCue;
             OkButton.OnPress += FireOkEvent;
             Components.Add(OkButton);
         }
@@ -62,14 +67,26 @@ internal class SubMenu : IClickableMenu, IComponent
             var cancelTexture = UIHelper.YellowButtonBackground();
             CancelButton = new Button(cancelTexture, I18n.UI_No(), Color.Black, Game1.smallFont);
             CancelButton.SetDestination(X + Width / 2 - 116, Y + Height - 80, 108, 60);
-            CancelButton.SoundCue = "bigDeSelect";
+            CancelButton.SoundCue = _cancelButtonCue;
             CancelButton.OnPress += FireCancelEvent;
             Components.Add(CancelButton);
         }
     }
 
+    public void SetOkButtonSound(string cue)
+    {
+        _okButtonCue = cue;
+        OkButton.SoundCue = cue;
+    }
+
+    public void SetCancelButtonSound(string cue)
+    {
+        _cancelButtonCue = cue;
+        CancelButton.SoundCue = cue;
+    }
+
     /// <inheritdoc/>
-    public void Draw(SpriteBatch b)
+    public virtual void Draw(SpriteBatch b)
     {
         if (!Game1.options.showClearBackgrounds)
             b.Draw(Game1.fadeToBlackRect,
@@ -102,19 +119,20 @@ internal class SubMenu : IClickableMenu, IComponent
     /// <inheritdoc/>
     public virtual bool ReceiveScrollWheelAction(int amount) => false;
 
-    public void ReceiveKeyPress(Keys key)
+    /// <inheritdoc cref="StardewValley.Menus.IClickableMenu.receiveKeyPress"/>
+    public virtual void ReceiveKeyPress(Keys key)
     {
         if (Game1.options.doesInputListContain(Game1.options.menuButton, key))
         {
             FireCancelEvent();
-            Game1.playSound("bigDeSelect");
+            Game1.playSound(_cancelButtonCue);
             return;
         }
 
         if (key is Keys.Enter)
         {
             FireOkEvent();
-            Game1.playSound("trashcan");
+            Game1.playSound(_okButtonCue);
         }
     }
 
@@ -123,7 +141,7 @@ internal class SubMenu : IClickableMenu, IComponent
     /// </summary>
     private void FireOkEvent()
     {
-        OnOk?.Invoke();
+        OnOk?.Invoke(this);
         Dispose();
     }
 
@@ -132,14 +150,14 @@ internal class SubMenu : IClickableMenu, IComponent
     /// </summary>
     private void FireCancelEvent()
     {
-        OnCancel?.Invoke();
+        OnCancel?.Invoke(this);
         Dispose();
     }
 
     public virtual void Dispose()
     {
-        var parentMenu = _parentMenu;
-        _parentMenu = null;
+        var parentMenu = ParentMenu;
+        ParentMenu = null;
         parentMenu.SubMenu = null;
 
         foreach (var component in Components)
@@ -151,9 +169,4 @@ internal class SubMenu : IClickableMenu, IComponent
         OnOk = null;
         OnCancel = null;
     }
-}
-
-internal interface IHaveSubMenu
-{
-    SubMenu SubMenu { get; set; }
 }

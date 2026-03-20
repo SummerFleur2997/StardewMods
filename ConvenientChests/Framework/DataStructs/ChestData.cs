@@ -12,7 +12,7 @@ internal class ChestData : IChestData
 {
     private readonly WeakReference<Chest> _chestRef;
 
-    public string Note { get; private set; }
+    public string Alias { get; private set; }
 
     public HashSet<ItemKey> AcceptedItemKinds
     {
@@ -58,35 +58,35 @@ internal class ChestData : IChestData
     }
 
     /// <summary>
-    /// Change the note of this chest.
+    /// Change the alias of this chest.
     /// 编辑这个箱子的备注。
     /// </summary>
-    /// <param name="note">The new note.</param>
+    /// <param name="alias">The new alias.</param>
     /// <param name="receiver">Whether this is a receiver of the edit event, this param
     /// is used in multiplayer sync.</param>
-    public void SetNote(string note, bool receiver = false)
+    public void SetAlias(string alias, bool receiver = false)
     {
-        Note = note;
+        Alias = alias;
 
         if (receiver) return;
         if (Context.IsMultiplayer && _chestRef.TryGetTarget(out var chest))
-            MultiplayerServer.SendChestData(chest, note: note);
+            MultiplayerServer.SendChestData(chest, alias: alias);
     }
 
     /// <summary>
     /// Change the icon of this chest.
     /// 编辑这个箱子的图标。
     /// </summary>
-    /// <param name="itemId">The QualifiedItemId of the new icon item.</param>
+    /// <param name="item">The new icon item.</param>
     /// <param name="receiver">Whether this is a receiver of the edit event, this param
     /// is used in multiplayer sync.</param>
-    public void SetIcon(string itemId, bool receiver = false)
+    public void SetIcon(Item item, bool receiver = false)
     {
-        ItemIcon = ItemRegistry.Create(itemId);
+        ItemIcon = item;
 
         if (receiver) return;
         if (Context.IsMultiplayer && _chestRef.TryGetTarget(out var chest))
-            MultiplayerServer.SendChestData(chest, icon: itemId);
+            MultiplayerServer.SendChestData(chest, itemId: item.QualifiedItemId);
     }
 
     public void MigrateDataFromOldChest(Chest oldChest)

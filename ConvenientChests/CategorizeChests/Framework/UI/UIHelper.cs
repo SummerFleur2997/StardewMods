@@ -1,17 +1,48 @@
 ﻿using System.IO;
+using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using UI.Component;
 using UI.Sprite;
 
-namespace ConvenientChests.CategorizeChests.Framework.UI;
+namespace ConvenientChests.CategorizeChests.UI;
 
-public static class UIHelper
+[UsedImplicitly(ImplicitUseTargetFlags.Members)]
+internal static class UIHelper
 {
-    private static Texture2D Cursors => Game1.mouseCursors;
+    public static Texture2D Cursors => Game1.mouseCursors;
+    public static Texture2D Cursors_1_6 => Game1.mouseCursors_1_6;
 
     public static readonly Texture2D Texture =
         ModEntry.ModHelper.ModContent.Load<Texture2D>(Path.Combine("assets", "texture.png"));
+
+    /// <summary>
+    /// Create a button with a sprite.
+    /// </summary>
+    /// <param name="x">The left position of the component in pixels.</param>
+    /// <param name="y">The top position of the component in pixels.</param>
+    /// <param name="variant">The variant sprite of this button.</param>
+    public static SpritesButton SideButton(int x, int y, SideButtonVariant variant)
+    {
+        var xOffset = (int)variant * 16;
+        var texture = new TextureRegion(Texture, xOffset, 0, 16, 16);
+        var body = new SpriteLabel(texture, width: 48, height: 48);
+        var background = OrangeButtonBackground();
+        return new SpritesButton(body, background, x, y, 64, 64);
+    }
+
+    public static NineSlice LightButtonBackground(Rectangle bounds = new()) => new(
+        new TextureRegion(Cursors, 405, 373, 1, 2, true),
+        new TextureRegion(Cursors, 403, 375, 2, 1, true),
+        new TextureRegion(Cursors, 410, 379, 2, 1, true),
+        new TextureRegion(Cursors, 409, 380, 1, 2, true),
+        new TextureRegion(Cursors, 403, 373, 2, 2, true),
+        new TextureRegion(Cursors, 410, 373, 2, 2, true),
+        new TextureRegion(Cursors, 403, 380, 2, 2, true),
+        new TextureRegion(Cursors, 410, 380, 2, 2, true),
+        new TextureRegion(Cursors, 405, 375, 1, 1, true),
+        bounds
+    );
 
     public static NineSlice YellowButtonBackground(Rectangle bounds = new()) => new(
         new TextureRegion(Cursors, 269, 256, 1, 2, true),
@@ -51,4 +82,39 @@ public static class UIHelper
         new TextureRegion(Cursors, 139, 340, 1, 1, true),
         bounds
     );
+
+    public static NineSlice TextBubble(Rectangle bounds = new()) => new(
+        new TextureRegion(Cursors_1_6, 244, 503, 3, 3, true),
+        new TextureRegion(Cursors_1_6, 241, 506, 3, 3, true),
+        new TextureRegion(Cursors_1_6, 247, 506, 3, 3, true),
+        new TextureRegion(Cursors_1_6, 244, 509, 3, 3, true),
+        new TextureRegion(Cursors_1_6, 241, 503, 3, 3, true),
+        new TextureRegion(Cursors_1_6, 247, 503, 3, 3, true),
+        new TextureRegion(Cursors_1_6, 241, 509, 3, 3, true),
+        new TextureRegion(Cursors_1_6, 247, 509, 3, 3, true),
+        new TextureRegion(Cursors_1_6, 244, 506, 3, 3, true),
+        bounds
+    );
+
+    // public static NineSlice ItemFrame(Rectangle bounds = new()) => new(
+    //     new TextureRegion(Cursors, 390, 373, 6, 6, true),
+    //     new TextureRegion(Cursors, 384, 379, 6, 6, true),
+    //     new TextureRegion(Cursors, 396, 379, 6, 6, true),
+    //     new TextureRegion(Cursors, 390, 385, 6, 6, true), 
+    //     new TextureRegion(Cursors, 384, 373, 6, 6, true),
+    //     new TextureRegion(Cursors, 396, 373, 6, 6, true),
+    //     new TextureRegion(Cursors, 384, 385, 6, 6, true),
+    //     new TextureRegion(Cursors, 396, 385, 6, 6, true),
+    //     new TextureRegion(Cursors, 390, 379, 6, 6, true),
+    //     bounds
+    // );
+}
+
+internal enum SideButtonVariant
+{
+    Alias = 0,
+    Set = 1,
+    Manage = 2,
+    Save = 3,
+    Unlink = 4
 }

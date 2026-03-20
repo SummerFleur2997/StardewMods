@@ -5,7 +5,7 @@ using UI.Component;
 using UI.Menu;
 using UI.Sprite;
 
-namespace ConvenientChests.CategorizeChests.Framework.UI;
+namespace ConvenientChests.CategorizeChests.UI;
 
 /// <summary>
 /// Customized menu for <see cref="CategoryMenu{T}"/>.

@@ -7,18 +7,18 @@ internal class MultiplayerChestSync
 {
     public ChestAddress ChestAddress { get; set; }
     public ItemKey ItemKey { get; set; }
-    public string Note { get; set; }
-    public string Icon { get; set; }
+    public string Alias { get; set; }
+    public string ItemId { get; set; }
     public long SenderID { get; set; }
 
     public MultiplayerChestSync() { }
 
-    public MultiplayerChestSync(ChestAddress chestAddress, ItemKey itemKey, string note, string icon, long senderID)
+    public MultiplayerChestSync(ChestAddress chestAddress, ItemKey itemKey, string alias, string itemId, long senderID)
     {
         ChestAddress = chestAddress;
         ItemKey = itemKey;
-        Note = note;
-        Icon = icon;
+        Alias = alias;
+        ItemId = itemId;
         SenderID = senderID;
     }
 }

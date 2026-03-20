@@ -78,8 +78,12 @@ internal static class SaveManager
             chestData.Snapshot = snapshot;
 
             if (entry.ItemIconID != null)
-                chestData.SetIcon(entry.ItemIconID);
-            chestData.SetNote(entry.Note);
+            {
+                var item = ItemRegistry.Create(entry.ItemIconID);
+                chestData.SetIcon(item);
+            }
+
+            chestData.SetAlias(entry.Alias);
         }
 
         foreach (var entry in saveData.InventoryEntries)

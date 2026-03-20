@@ -6,7 +6,7 @@ internal class ChestDataSnapshot : IChestData
     /// <summary>
     /// The name of the snapshot. Defined by the user.
     /// </summary>
-    public string Note { get; set; }
+    public string Alias { get; set; }
 
     /// <summary>
     /// A series of accepted items.
@@ -20,9 +20,9 @@ internal class ChestDataSnapshot : IChestData
 
     public ChestDataSnapshot() { }
 
-    public ChestDataSnapshot(string note, long uniqueID, IEnumerable<ItemKey> acceptedItemKinds)
+    public ChestDataSnapshot(string alias, long uniqueID, IEnumerable<ItemKey> acceptedItemKinds)
     {
-        Note = note;
+        Alias = alias;
         UniqueID = uniqueID;
         AcceptedItemKinds = acceptedItemKinds.ToHashSet();
     }

@@ -1,3 +1,4 @@
+using ConvenientChests.CategorizeChests.Framework;
 using ConvenientChests.Framework.DataStructs;
 using ConvenientChests.Framework.Extensions;
 using JetBrains.Annotations;
@@ -5,8 +6,9 @@ using Microsoft.Xna.Framework.Graphics;
 using UI.Component;
 using UI.Menu;
 
-namespace ConvenientChests.CategorizeChests.Framework.UI;
+namespace ConvenientChests.CategorizeChests.UI;
 
+[UsedImplicitly(ImplicitUseTargetFlags.Members)]
 internal class CategoryMenu<T> : BaseMenu where T : IChestData
 {
     private const int TopRowHeight = 60;
@@ -14,14 +16,15 @@ internal class CategoryMenu<T> : BaseMenu where T : IChestData
     /// <summary>
     /// Used to compatible with LookupAnything.
     /// </summary>
-    [UsedImplicitly] public Item HoveredItem;
+    public Item HoveredItem;
 
-    protected readonly T ChestData;
-    protected Tooltip Tooltip;
-    private CategoryTopRow _topRow;
-    private GridMenu _gridMenu;
+    public Tooltip Tooltip;
+    public CategoryTopRow TopRow;
+    public GridMenu GridMenu;
 
-    private ItemCategoryName ActiveCategory => _topRow.CategorySelector.SelectedValue;
+    public readonly T ChestData;
+
+    private ItemCategoryName ActiveCategory => TopRow.CategorySelector.SelectedValue;
     protected static bool IsAndroid => ModEntry.IsAndroid;
 
     protected CategoryMenu(int x, int y, int width, int height, T chestData)
@@ -32,26 +35,26 @@ internal class CategoryMenu<T> : BaseMenu where T : IChestData
     {
         var maxColumns = IsAndroid ? 99 : 12;
         var delta = IsAndroid ? 60 : 0;
-        _topRow = new CategoryTopRow(
+        TopRow = new CategoryTopRow(
             xPositionOnScreen,
             yPositionOnScreen - TopRowHeight,
             width, TopRowHeight, height);
-        _gridMenu = new GridMenu(
+        GridMenu = new GridMenu(
             xPositionOnScreen + padding,
             yPositionOnScreen + padding,
             width - padding * 2 - delta,
             height - padding * 2,
             66, maxColumns);
 
-        _topRow.NextButton.OnPress += SelectNext;
-        _topRow.PrevButton.OnPress += SelectPrev;
-        _topRow.SelectAllButton.OnToggle += OnToggleSelectAll;
-        _topRow.CategorySelector.OnSelectionChanged += OnSelectChanged;
+        TopRow.NextButton.OnPress += SelectNext;
+        TopRow.PrevButton.OnPress += SelectPrev;
+        TopRow.SelectAllButton.OnToggle += OnToggleSelectAll;
+        TopRow.CategorySelector.OnSelectionChanged += OnSelectChanged;
 
         // The click handler logic in BaseMenu will traverse the children in
         // reverse order, so we need to add the grid menu in front of the top
         // row to ensure that the drop-down in the top row is handled first.
-        AddChildren(_gridMenu, _topRow);
+        AddChildren(GridMenu, TopRow);
     }
 
     /// <summary>
@@ -62,7 +65,7 @@ internal class CategoryMenu<T> : BaseMenu where T : IChestData
         var categories = CategoryDataManager.GetCategories();
 
         foreach (var category in categories)
-            _topRow.CategorySelector.AddOption(category.DisplayName, category);
+            TopRow.CategorySelector.AddOption(category.DisplayName, category);
 
         RecreateItemToggles();
     }
@@ -72,17 +75,26 @@ internal class CategoryMenu<T> : BaseMenu where T : IChestData
     /// </summary>
     protected void RefreshToggleStatus()
     {
-        var toggles = _gridMenu.Components.OfType<ItemToggle<Item>>();
-        foreach (var toggle in toggles)
+        GridMenu.EditComponents(CheckActivate);
+
+        return;
+
+        void CheckActivate(IEnumerable<IComponent> toggles)
         {
-            var key = toggle.Item.ToItemKey();
-            toggle.Active = ChestData.Accepts(key);
+            foreach (var toggle in toggles)
+            {
+                if (toggle is not ItemToggle<Item> itemToggle)
+                    continue;
+
+                var key = itemToggle.Item.ToItemKey();
+                itemToggle.Active = ChestData.Accepts(key);
+            }
         }
     }
 
-    private void RecreateItemToggles()
+    protected void RecreateItemToggles()
     {
-        _gridMenu.RemoveAllComponents();
+        GridMenu.RemoveAllComponents();
 
         var itemKeys = CategoryDataManager.Categories[ActiveCategory]
             .OrderBy(k => k)
@@ -101,7 +113,7 @@ internal class CategoryMenu<T> : BaseMenu where T : IChestData
             toggles.Add(toggle);
         }
 
-        _gridMenu.AddComponents(toggles);
+        GridMenu.AddComponents(toggles);
     }
 
     /// <summary>
@@ -132,9 +144,9 @@ internal class CategoryMenu<T> : BaseMenu where T : IChestData
     /// </summary>
     private void SelectNext()
     {
-        _topRow.CategorySelector.SelectNext();
+        TopRow.CategorySelector.SelectNext();
         RecreateItemToggles();
-        _topRow.SelectAllButton.Checked = AreAllSelected();
+        TopRow.SelectAllButton.Checked = AreAllSelected();
     }
 
     /// <summary>
@@ -142,9 +154,9 @@ internal class CategoryMenu<T> : BaseMenu where T : IChestData
     /// </summary>
     private void SelectPrev()
     {
-        _topRow.CategorySelector.SelectPrev();
+        TopRow.CategorySelector.SelectPrev();
         RecreateItemToggles();
-        _topRow.SelectAllButton.Checked = AreAllSelected();
+        TopRow.SelectAllButton.Checked = AreAllSelected();
     }
 
     /// <summary>
@@ -156,10 +168,10 @@ internal class CategoryMenu<T> : BaseMenu where T : IChestData
     private void ToggleItem(ItemKey itemKey)
     {
         ChestData.ToggleItem(itemKey);
-        _topRow.SelectAllButton.Checked = AreAllSelected();
+        TopRow.SelectAllButton.Checked = AreAllSelected();
     }
 
-    private bool AreAllSelected() => _gridMenu.Components.OfType<ItemToggle<Item>>().All(t => t.Active);
+    private bool AreAllSelected() => GridMenu.QueryComponents(c => c.OfType<ItemToggle<Item>>().All(t => t.Active));
 
     public override void Draw(SpriteBatch b) => Tooltip?.Draw(b);
 

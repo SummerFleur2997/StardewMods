@@ -1,57 +1,73 @@
-﻿using Microsoft.Xna.Framework;
+﻿#nullable enable
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using UI.Component;
 using UI.Sprite;
 
-namespace ConvenientChests.CategorizeChests.Framework.UI;
+namespace ConvenientChests.CategorizeChests.UI;
 
 public class ChestInfoBubble
 {
     private const int TailSize = 20;
 
-    public Item Item;
+    public Item? Item { get; private set; }
+
+    public string? Text
+    {
+        get => string.IsNullOrEmpty(_text) ? null : _text;
+        private set => _text = value ?? "";
+    }
+
+    private string _text = "";
 
     private int _x;
     private int _y;
     private const int Height = 72;
 
-    private readonly TextLabel _label;
+    private readonly int _textYOffset;
     private readonly NineSlice _body;
     private readonly TextureRegion _tail;
+    private readonly SpriteFont _font;
 
-    public ChestInfoBubble()
+    public ChestInfoBubble(SpriteFont font)
     {
-        _label = new TextLabel("", Color.Black, Game1.smallFont);
-
-        var cursor = Game1.mouseCursors_1_6;
-        _body = new NineSlice(
-            new TextureRegion(cursor, 244, 503, 3, 3, true),
-            new TextureRegion(cursor, 241, 506, 3, 3, true),
-            new TextureRegion(cursor, 247, 506, 3, 3, true),
-            new TextureRegion(cursor, 244, 509, 3, 3, true),
-            new TextureRegion(cursor, 241, 503, 3, 3, true),
-            new TextureRegion(cursor, 247, 503, 3, 3, true),
-            new TextureRegion(cursor, 241, 509, 3, 3, true),
-            new TextureRegion(cursor, 247, 509, 3, 3, true),
-            new TextureRegion(cursor, 244, 506, 3, 3, true),
-            new Rectangle()
-        );
+        _font = font;
+        _body = UIHelper.TextBubble();
         _body.SetSize(Height, Height);
-        _tail = new TextureRegion(cursor, 251, 506, 5, 5, true);
+        _tail = new TextureRegion(UIHelper.Cursors_1_6, 251, 506, 5, 5, true);
+
+        var height = (int)_font.MeasureString("M").Y;
+        _textYOffset = (Height - height) / 2 + 1;
     }
 
     public void Draw(SpriteBatch b)
     {
         _body.Draw(b);
-        _label.Draw(b);
-        Item?.drawInMenu(b, new Vector2(_x + 4, _y + 4), 0.75f);
+        var x = _x + 4;
+        if (Item is not null)
+        {
+            Item.drawInMenu(b, new Vector2(x, _y + 4), 0.75f);
+            x += 48;
+        }
+
+        x += 16;
+        if (Text is not null) b.DrawString(_font, _text, new Vector2(x, _y + _textYOffset), Color.Black);
+
         b.Draw(_tail, new Rectangle(_x + 20, _y + 68, TailSize, TailSize));
     }
 
-    public void SetText(string text)
+    public void Set(Item? item, string? alias)
     {
-        _label.Text = text;
-        _body.Width = _label.Width + 80;
+        Item = item;
+        Text = alias;
+
+        var width = 32;
+
+        if (item is not null) width += 40;
+
+        if (!string.IsNullOrEmpty(alias)) width += (int)_font.MeasureString(alias).X + 8;
+
+        _body.SetSize(width, Height);
     }
 
     public void UpdatePosition(Vector2 position)
@@ -59,7 +75,5 @@ public class ChestInfoBubble
         _x = (int)position.X + 2;
         _y = (int)position.Y - Height - TailSize;
         _body.SetPosition(_x, _y);
-        _label.SetAtLeftCenterWithEqualMargins(_body.Bounds);
-        _label.OffsetPosition(48);
     }
 }

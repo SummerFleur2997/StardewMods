@@ -21,7 +21,7 @@ internal static class Saver
         return new SaveData
         {
             Version = ModEntry.Manifest.Version.ToString(),
-            ChestEntries = BuildChestEntries().Where(e => e.AcceptedItems.Any()).ToList(),
+            ChestEntries = BuildChestEntries().Where(e => e.ShouldBeSerialized()).ToList(),
             InventoryEntries = BuildInventoryEntries() //.Where(e => e.LockedItems.Any()).ToList()
         };
     }

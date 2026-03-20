@@ -20,14 +20,14 @@ internal class ChestEntry
     /// The item that displays on the chest's label.
     /// </summary>
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-    public string ItemIconID { get; set; } = "";
+    public string ItemIconID { get; set; }
 
     /// <summary>
     /// 箱子标签备注。
-    /// The user-defined note for this chest.
+    /// The user-defined alias for this chest.
     /// </summary>
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-    public string Note { get; set; } = "";
+    public string Alias { get; set; }
 
     /// <summary>
     /// 箱子所使用的快照 ID。
@@ -51,8 +51,11 @@ internal class ChestEntry
     {
         Address = address;
         ItemIconID = data.ItemIcon?.QualifiedItemId;
-        Note = data.Note;
+        Alias = data.Alias;
         SnapshotID = data.Snapshot?.UniqueID;
         AcceptedItems = data.AcceptedItemKinds;
     }
+
+    public bool ShouldBeSerialized()
+        => AcceptedItems.Any() || Alias != null || ItemIconID != null || SnapshotID is not (null or 0);
 }

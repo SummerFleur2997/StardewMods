@@ -1,5 +1,5 @@
 ﻿using Common;
-using ConvenientChests.CategorizeChests.Framework.UI;
+using ConvenientChests.CategorizeChests.UI;
 using ConvenientChests.Framework.DataService;
 using ConvenientChests.Framework.DataStructs;
 using StardewModdingAPI.Events;
@@ -10,7 +10,9 @@ namespace ConvenientChests.CategorizeChests;
 internal class CategorizeChestsModule : IModule
 {
     public bool IsActive { get; private set; }
-    private ChestInfoBubble ChestInfoBubble { get; } = new();
+    public bool ForceUpdateOnce;
+
+    private ChestInfoBubble ChestInfoBubble { get; } = new(Game1.smallFont);
     private Chest _cachedChest;
     private bool _shouldDraw;
 
@@ -28,6 +30,7 @@ internal class CategorizeChestsModule : IModule
         ModEntry.ModHelper.Events.Display.RenderedWorld -= RenderChestInfoBubble;
     }
 
+#nullable enable
     private void RenderChestInfoBubble(object sender, RenderedWorldEventArgs e)
     {
         var tileX = (Game1.getMouseX() + Game1.viewport.X) / 64;
@@ -35,19 +38,19 @@ internal class CategorizeChestsModule : IModule
         if (Game1.currentLocation.getObjectAtTile(tileX, tileY) is not Chest chest)
             return;
 
-        if (chest != _cachedChest)
+        if (chest != _cachedChest || ForceUpdateOnce)
         {
             _cachedChest = chest;
             var data = _cachedChest.GetChestData();
-            if (data.ItemIcon is null && string.IsNullOrEmpty(data.Note))
+            if (data.ItemIcon is null && string.IsNullOrEmpty(data.Alias))
             {
                 _shouldDraw = false;
                 return;
             }
 
-            ChestInfoBubble.Item = data.ItemIcon;
-            ChestInfoBubble.SetText(data.Note);
+            ChestInfoBubble.Set(data.ItemIcon, data.Alias);
             _shouldDraw = true;
+            ForceUpdateOnce = false;
         }
 
         if (!_shouldDraw)
@@ -62,7 +65,7 @@ internal class CategorizeChestsModule : IModule
     /// 当手持一个新的箱子替换现有的箱子时，传递 <see cref="ChestData"/>。
     /// Transfer <see cref="ChestData"/> when use a new chest to swap the old chest.
     /// </summary>
-    private static void OnChestSwapped(object sender, ObjectListChangedEventArgs e)
+    private static void OnChestSwapped(object? sender, ObjectListChangedEventArgs e)
     {
         if (!e.IsCurrentLocation || !e.Removed.Any() || !e.Added.Any()) return;
 

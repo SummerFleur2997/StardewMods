@@ -66,10 +66,10 @@
 
   "LockItems.Title": "Lock items",
 
-  "UI.Yes": "YES", // this should mean *confirm* in most contexts
-  "UI.No": "NO", // this should mean *cancel* in most contexts
-  "UI.ChestNote": "Edit note",
-  "UI.ChestNote.desc": "Edit the note of this chest, the note will show in a bubble when you hover your mouse above the chest.",
+  "UI.Yes": "Confirm",
+  "UI.No": "Cancel",
+  "UI.ChestAlias": "Edit alias",
+  "UI.ChestAlias.desc": "Edit the alias of this chest, the alias will show in a bubble when you hover your mouse above the chest.",
   "UI.QuickSet": "Quick set category",
   "UI.QuickSet.desc": "Add all the items in this chest to the category list.",
   "UI.Snapshot.New": "Create a new snapshot",

@@ -14,7 +14,7 @@ internal static class ChestManager
     private static readonly ConditionalWeakTable<Chest, ChestData> Table = new();
     private static readonly object Lock = new();
 
-    public static void ModifyChest(ChestAddress chestAddress, ItemKey? itemKey, string? note, string? icon)
+    public static void ModifyChest(ChestAddress chestAddress, ItemKey? itemKey, string? alias, Item? item)
     {
         lock (Lock)
         {
@@ -26,8 +26,8 @@ internal static class ChestManager
 
             var data = chest.GetChestData();
             if (itemKey != null) data.ToggleItem(itemKey, true);
-            if (note != null) data.SetNote(note, true);
-            if (icon != null) data.SetIcon(icon, true);
+            if (alias != null) data.SetAlias(alias, true);
+            if (item != null) data.SetIcon(item, true);
         }
     }
 

@@ -29,11 +29,11 @@ internal class MultiplayerServer : IModule
         ModEntry.ModHelper.Events.Multiplayer.ModMessageReceived -= OnMessageReceived;
     }
 
-    public static void SendChestData(Chest chest, ItemKey itemKey = null, string note = null, string icon = null)
+    public static void SendChestData(Chest chest, ItemKey itemKey = null, string alias = null, string itemId = null)
     {
         var playerID = Game1.player.UniqueMultiplayerID;
         var chestAddress = new ChestAddress(chest);
-        var syncData = new MultiplayerChestSync(chestAddress, itemKey, note, icon, playerID);
+        var syncData = new MultiplayerChestSync(chestAddress, itemKey, alias, itemId, playerID);
 
         MultiplayerHelper.SendMessage(syncData, "MultiplayerChestSync",
             new[] { ModEntry.Manifest.UniqueID });
@@ -53,10 +53,10 @@ internal class MultiplayerServer : IModule
         if (multiplayerChestSyncChest.SenderID == Game1.player.UniqueMultiplayerID) return;
         var chestAddress = multiplayerChestSyncChest.ChestAddress;
         var itemKey = multiplayerChestSyncChest.ItemKey;
-        var note = multiplayerChestSyncChest.Note;
-        var icon = multiplayerChestSyncChest.Icon;
+        var alias = multiplayerChestSyncChest.Alias;
+        var item = ItemRegistry.Create(multiplayerChestSyncChest.ItemId);
 
-        ChestManager.ModifyChest(chestAddress, itemKey, note, icon);
+        ChestManager.ModifyChest(chestAddress, itemKey, alias, item);
     }
 
     private static void ReceiveInventoryData(MultiplayerInventorySync multiplayerInventorySyncData)

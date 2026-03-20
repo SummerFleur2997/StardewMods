@@ -18,6 +18,8 @@ internal static class ItemExtensions
         return ItemRegistry.Create(item.QualifiedItemId, item.Stack, item.Quality);
     }
 
+    public static Item CloneOne(this Item item) => ItemRegistry.Create(item.QualifiedItemId);
+
     public static Item ToBase(this Item item)
     {
         return item switch
