@@ -12,12 +12,16 @@ public class ItemButton<T> : ItemLabel<T>, IClickableComponent, IDisposable wher
     public event Action OnHover;
 
     public ItemButton(T item, int x = 0, int y = 0, int width = 64, int height = 64)
-        : base(item, x, y, width, height) =>
+        : base(item, x, y, width, height)
+    {
         Tooltip = new Tooltip(item);
+    }
 
     public ItemButton(T item, Rectangle destination)
-        : base(item, destination) =>
+        : base(item, destination)
+    {
         Tooltip = new Tooltip(item);
+    }
 
     public ItemButton(string item, int x = 0, int y = 0, int width = 64, int height = 64)
         : this(ItemRegistry.Create<T>(item), x, y, width, height) { }

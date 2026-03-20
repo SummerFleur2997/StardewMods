@@ -111,10 +111,7 @@ internal abstract class BaseOverlay : IDisposable
     /// <param name="x">The X-position of the cursor.</param>
     /// <param name="y">The Y-position of the cursor.</param>
     /// <returns>Whether the event has been handled and shouldn't be propagated further.</returns>
-    protected virtual bool ReceiveLeftClick(int x, int y)
-    {
-        return false;
-    }
+    protected virtual bool ReceiveLeftClick(int x, int y) => false;
 
     /// <inheritdoc cref="IInputEvents.ButtonsChanged"/>
     /// <param name="sender">The event sender.</param>
@@ -124,19 +121,13 @@ internal abstract class BaseOverlay : IDisposable
     /// <summary>The method invoked when the player uses the mouse scroll wheel.</summary>
     /// <param name="amount">The scroll amount.</param>
     /// <returns>Whether the event has been handled and shouldn't be propagated further.</returns>
-    protected virtual bool ReceiveScrollWheelAction(int amount)
-    {
-        return false;
-    }
+    protected virtual bool ReceiveScrollWheelAction(int amount) => false;
 
     /// <summary>The method invoked when the cursor is hovered.</summary>
     /// <param name="x">The cursor's X position.</param>
     /// <param name="y">The cursor's Y position.</param>
     /// <returns>Whether the event has been handled and shouldn't be propagated further.</returns>
-    protected virtual bool ReceiveCursorHover(int x, int y)
-    {
-        return false;
-    }
+    protected virtual bool ReceiveCursorHover(int x, int y) => false;
 
     /// <summary>The method invoked when the player resizes the game window.</summary>
     protected virtual void ReceiveGameWindowResized() { }
@@ -153,8 +144,10 @@ internal abstract class BaseOverlay : IDisposable
 
         var cursorPos = new Vector2(Game1.getMouseX(), Game1.getMouseY());
         if (Constants.TargetPlatform == GamePlatform.Android)
+        {
             cursorPos *= Game1.options.zoomLevel /
                          _reflection.GetProperty<float>(typeof(Game1), "NativeZoomLevel").GetValue();
+        }
 
         Game1.spriteBatch.Draw(Game1.mouseCursors, cursorPos,
             Game1.getSourceRectForStandardTileSheet(Game1.mouseCursors, Game1.options.SnappyMenus ? 44 : 0, 16, 16),
@@ -210,10 +203,7 @@ internal abstract class BaseOverlay : IDisposable
                 _lastViewport = newViewport;
             }
         }
-        else if (!Context.HasScreenId(_screenId))
-        {
-            Dispose();
-        }
+        else if (!Context.HasScreenId(_screenId)) Dispose();
     }
 
     /// <inheritdoc cref="IInputEvents.ButtonsChanged"/>

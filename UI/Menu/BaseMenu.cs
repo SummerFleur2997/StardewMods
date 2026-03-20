@@ -25,9 +25,10 @@ public class BaseMenu : StardewValley.Menus.IClickableMenu, IClickableMenu
     /// </summary>
     public List<IComponent> Components = new();
 
-    public BaseMenu(int x, int y, int width, int height)
-        : base(x, y, width, height, true) =>
+    public BaseMenu(int x, int y, int width, int height) : base(x, y, width, height, true)
+    {
         Background = NineSlice.MenuBackground(new Rectangle(x, y, width, height));
+    }
 
     /// <summary>
     /// Add a component to the <see cref="Components"/>.

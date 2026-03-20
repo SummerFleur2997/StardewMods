@@ -43,6 +43,7 @@ public class Tooltip : IComponent
             name = Game1.parseText(name, Game1.dialogueFont, maxWidth);
             Name = new TextLabel(name, Color.Black, Game1.dialogueFont);
         }
+
         if (desc != null)
         {
             desc = Game1.parseText(desc, Game1.smallFont, maxWidth);
