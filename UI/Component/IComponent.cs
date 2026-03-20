@@ -71,6 +71,17 @@ public static class ComponentExtensions
     }
 
     /// <summary>
+    /// Set the position of the component.
+    /// </summary>
+    /// <param name="component">The target component.</param>
+    /// <param name="point">The top-left corner of the destination point.</param>
+    public static void SetPosition(this IComponent component, Point point)
+    {
+        component.X = point.X;
+        component.Y = point.Y;
+    }
+
+    /// <summary>
     /// Move the component by the given offset.
     /// </summary>
     /// <param name="component">The target component.</param>
@@ -83,14 +94,14 @@ public static class ComponentExtensions
     }
 
     /// <summary>
-    /// Set the position of the component.
+    /// Set the size of the component.
     /// </summary>
     /// <param name="component">The target component.</param>
-    /// <param name="point">The top-left corner of the destination point.</param>
-    public static void SetPosition(this IComponent component, Point point)
+    /// <param name="size">The new size of the <see cref="IComponent"/>.</param>
+    public static void SetSize(this IComponent component, Point size)
     {
-        component.X = point.X;
-        component.Y = point.Y;
+        component.Width = size.X;
+        component.Height = size.Y;
     }
 
     /// <summary>
@@ -115,8 +126,8 @@ public static class ComponentExtensions
     /// <param name="height">The new height of the <see cref="IComponent"/>.</param>
     public static void SetDestination(this IComponent component, int x, int y, int width, int height)
     {
-        component.SetPosition(x, y);
         component.SetSize(width, height);
+        component.SetPosition(x, y);
     }
 
     /// <summary>
@@ -126,8 +137,8 @@ public static class ComponentExtensions
     /// <param name="rectangle">The rectangle containing the position and size information.</param>
     public static void SetDestination(this IComponent component, Rectangle rectangle)
     {
-        component.SetPosition(rectangle.Location);
         component.SetSize(rectangle.Width, rectangle.Height);
+        component.SetPosition(rectangle.Location);
     }
 
     /// <summary>
@@ -150,5 +161,16 @@ public static class ComponentExtensions
     {
         component.Y = bounds.Y + (bounds.Height - component.Height) / 2;
         component.X = component.Y - bounds.Y + bounds.X;
+    }
+
+    /// <summary>
+    /// Align the component to the right center of the bounds with equal margins.
+    /// </summary>
+    /// <param name="component">The target component.</param>
+    /// <param name="bounds">The bounds within which to align the component.</param>
+    public static void SetAtRightCenterWithEqualMargins(this IComponent component, Rectangle bounds)
+    {
+        component.Y = bounds.Y + (bounds.Height - component.Height) / 2;
+        component.X = component.Y - bounds.Y + bounds.X + bounds.Width - component.Width;
     }
 }

@@ -25,7 +25,8 @@ public class GridMenu : IClickableMenu, IClickableComponent
     public int Height { get; set; }
 
     public IComponent Background;
-    public List<IComponent> Components = new();
+
+    private List<IComponent> _components = new();
 
     /// <summary>
     /// Maximum number of columns that can be displayed in the grid.
@@ -80,7 +81,7 @@ public class GridMenu : IClickableMenu, IClickableComponent
     private int _firstItemIndex;
 
     public int MaxVisibleItems => MaxItemColumns * MaxItemRows;
-    public bool IsScrollingEnabled => Components.Count > _maxItems;
+    public bool IsScrollingEnabled => _components.Count > _maxItems;
 
     private readonly int _maxItems;
 
@@ -157,20 +158,20 @@ public class GridMenu : IClickableMenu, IClickableComponent
     }
 
     /// <summary>
-    /// Add a component to the grid, then automatically calculates
+    /// Add components to the grid, then automatically calculates
     /// its initial position. The component will be placed in the
     /// center of its bounds by default.
     /// </summary>
     public void AddComponents(IEnumerable<IComponent> components)
     {
-        var index = 0;
+        var index = _components.Count;
 
-        Components.AddRange(components);
+        _components.AddRange(components);
         switch (ScrollingDirection)
         {
             case ScrollDirection.Horizontal:
                 var maxItemRows = MaxItemRows;
-                foreach (var component in Components)
+                foreach (var component in _components)
                 {
                     var row = index % maxItemRows;
                     var column = index / maxItemRows;
@@ -184,7 +185,7 @@ public class GridMenu : IClickableMenu, IClickableComponent
             case ScrollDirection.Vertical:
             default:
                 var maxItemColumns = MaxItemColumns;
-                foreach (var component in Components)
+                foreach (var component in _components)
                 {
                     var column = index % maxItemColumns;
                     var row = index / maxItemColumns;
@@ -197,9 +198,12 @@ public class GridMenu : IClickableMenu, IClickableComponent
         }
     }
 
+    /// <inheritdoc cref="AddComponents(IEnumerable{IComponent})"/>
+    public void AddComponents(params IComponent[] components) => AddComponents(components.AsEnumerable());
+
     public void RemoveAllComponents()
     {
-        Components.Clear();
+        _components.Clear();
         _firstItemIndex = 0;
     }
 
@@ -207,10 +211,10 @@ public class GridMenu : IClickableMenu, IClickableComponent
     public void Draw(SpriteBatch b)
     {
         Background?.Draw(b);
-        var lastItemIndex = Math.Min(_firstItemIndex + MaxVisibleItems, Components.Count);
+        var lastItemIndex = Math.Min(_firstItemIndex + MaxVisibleItems, _components.Count);
         for (var i = _firstItemIndex; i < lastItemIndex; i++)
         {
-            var component = Components[i];
+            var component = _components[i];
             if (Bounds.Contains(component.Bounds))
                 component.Draw(b);
         }
@@ -222,16 +226,30 @@ public class GridMenu : IClickableMenu, IClickableComponent
         }
     }
 
+    /// <summary>
+    /// Used to modify the components in the grid, we should never
+    /// use this method to edit the position or size of each
+    /// component, since it may ruin the layout.
+    /// </summary>
+    public void EditComponents(Action<IEnumerable<IComponent>> queryFunc) => queryFunc(_components);
+
+    /// <summary>
+    /// Used to query the components in the grid, we should never
+    /// use this method to edit the position or size of each
+    /// component, since it may ruin the layout.
+    /// </summary>
+    public TResult QueryComponents<TResult>(Func<IEnumerable<IComponent>, TResult> queryFunc) => queryFunc(_components);
+
     /// <inheritdoc cref="BaseMenu.ReceiveLeftClick"/>
     public virtual bool ReceiveLeftClick(int x, int y)
     {
         if (!Bounds.Contains(x, y))
             return false;
 
-        var lastItemIndex = Math.Min(_firstItemIndex + MaxVisibleItems, Components.Count);
+        var lastItemIndex = Math.Min(_firstItemIndex + MaxVisibleItems, _components.Count);
         for (var i = _firstItemIndex; i < lastItemIndex; i++)
         {
-            var component = Components[i];
+            var component = _components[i];
             if (component is not IClickableComponent c)
                 continue;
 
@@ -256,10 +274,10 @@ public class GridMenu : IClickableMenu, IClickableComponent
         if (!Bounds.Contains(x, y))
             return false;
 
-        var lastItemIndex = Math.Min(_firstItemIndex + MaxVisibleItems, Components.Count);
+        var lastItemIndex = Math.Min(_firstItemIndex + MaxVisibleItems, _components.Count);
         for (var i = _firstItemIndex; i < lastItemIndex; i++)
         {
-            var component = Components[i];
+            var component = _components[i];
             if (component is not IClickableComponent c)
                 continue;
 
@@ -284,7 +302,7 @@ public class GridMenu : IClickableMenu, IClickableComponent
         if (!Bounds.Contains(cursorPos))
             return false;
 
-        if (Components.Count <= MaxVisibleItems)
+        if (_components.Count <= MaxVisibleItems)
             return true;
 
         int newIndex;
@@ -293,7 +311,7 @@ public class GridMenu : IClickableMenu, IClickableComponent
         {
             case ScrollDirection.Horizontal:
                 newIndex = _firstItemIndex - amount * MaxItemRows;
-                maxIndex = ((Components.Count - 1) / MaxItemRows - MaxItemColumns + 1) * MaxItemRows;
+                maxIndex = ((_components.Count - 1) / MaxItemRows - MaxItemColumns + 1) * MaxItemRows;
 
                 if (newIndex > maxIndex)
                 {
@@ -308,7 +326,7 @@ public class GridMenu : IClickableMenu, IClickableComponent
                 }
 
                 _firstItemIndex = newIndex;
-                foreach (var component in Components)
+                foreach (var component in _components)
                 {
                     var oldX = component.X;
                     var oldY = component.Y;
@@ -319,7 +337,7 @@ public class GridMenu : IClickableMenu, IClickableComponent
             case ScrollDirection.Vertical:
             default:
                 newIndex = _firstItemIndex - amount * MaxItemColumns;
-                maxIndex = ((Components.Count - 1) / MaxItemColumns - MaxItemRows + 1) * MaxItemColumns;
+                maxIndex = ((_components.Count - 1) / MaxItemColumns - MaxItemRows + 1) * MaxItemColumns;
 
                 if (newIndex > maxIndex)
                 {
@@ -334,7 +352,7 @@ public class GridMenu : IClickableMenu, IClickableComponent
                 }
 
                 _firstItemIndex = newIndex;
-                foreach (var component in Components)
+                foreach (var component in _components)
                 {
                     var oldX = component.X;
                     var oldY = component.Y;
@@ -347,11 +365,11 @@ public class GridMenu : IClickableMenu, IClickableComponent
 
     public void Dispose()
     {
-        foreach (var component in Components)
+        foreach (var component in _components)
             if (component is IDisposable d)
                 d.Dispose();
 
-        Components.Clear();
+        _components.Clear();
 
         if (IsAndroid)
         {

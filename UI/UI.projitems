@@ -1,32 +1,35 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-    <PropertyGroup>
-        <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
-        <HasSharedItems>true</HasSharedItems>
-        <SharedGUID>6a4d86fa-821f-441f-a885-90f1d2c3e63c</SharedGUID>
-    </PropertyGroup>
-    <PropertyGroup Label="Configuration">
-        <Import_RootNamespace>Common</Import_RootNamespace>
-    </PropertyGroup>
-    <ItemGroup>
-        <Compile Include="$(MSBuildThisFileDirectory)BaseOverlay.cs" />
-        <Compile Include="$(MSBuildThisFileDirectory)Component\ItemButton.cs" />
-        <Compile Include="$(MSBuildThisFileDirectory)Component\ItemLabel.cs" />
-        <Compile Include="$(MSBuildThisFileDirectory)Component\LabeledCheckBox.cs" />
-        <Compile Include="$(MSBuildThisFileDirectory)Component\SpriteButton.cs" />
-        <Compile Include="$(MSBuildThisFileDirectory)Component\IClickableComponent.cs" />
-        <Compile Include="$(MSBuildThisFileDirectory)Component\IComponent.cs" />
-        <Compile Include="$(MSBuildThisFileDirectory)Component\SpriteLabel.cs" />
-        <Compile Include="$(MSBuildThisFileDirectory)Component\ItemToggle.cs" />
-        <Compile Include="$(MSBuildThisFileDirectory)Component\Button.cs" />
-        <Compile Include="$(MSBuildThisFileDirectory)Component\Tooltip.cs" />
-        <Compile Include="$(MSBuildThisFileDirectory)Component\TextLabel.cs" />
-        <Compile Include="$(MSBuildThisFileDirectory)Component\NineSlice.cs" />
-        <Compile Include="$(MSBuildThisFileDirectory)Menu\BaseMenu.cs" />
-        <Compile Include="$(MSBuildThisFileDirectory)Menu\DropDownMenu.cs" />
-        <Compile Include="$(MSBuildThisFileDirectory)Menu\GridMenu.cs" />
-        <Compile Include="$(MSBuildThisFileDirectory)Menu\IClickableMenu.cs" />
-        <Compile Include="$(MSBuildThisFileDirectory)Sprite\SpriteHelper.cs" />
-        <Compile Include="$(MSBuildThisFileDirectory)Sprite\TextureRegion.cs" />
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>6a4d86fa-821f-441f-a885-90f1d2c3e63c</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Common</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)BaseOverlay.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\ItemButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\ItemLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\LabeledCheckBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\SpriteButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\IClickableComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\IComponent.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\SpriteLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\ItemToggle.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\Button.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\SpritesButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\TextBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\Tooltip.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\TextLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\NineSlice.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Menu\BaseMenu.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Menu\DropDownMenu.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Menu\GridMenu.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Menu\IClickableMenu.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Menu\StackPanel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sprite\SpriteHelper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Sprite\TextureRegion.cs" />
   </ItemGroup>
 </Project>
