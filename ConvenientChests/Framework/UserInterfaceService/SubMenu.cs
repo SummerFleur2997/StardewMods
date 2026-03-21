@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using ConvenientChests.CategorizeChests.UI;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -6,7 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using UI.Component;
 using UI.Menu;
 
-namespace ConvenientChests.CategorizeChests.UI.SubMenus;
+namespace ConvenientChests.Framework.UserInterfaceService;
 
 [UsedImplicitly(ImplicitUseTargetFlags.Members)]
 internal class SubMenu : IClickableMenu, IComponent

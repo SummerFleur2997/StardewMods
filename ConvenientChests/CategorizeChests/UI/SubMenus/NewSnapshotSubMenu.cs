@@ -1,4 +1,5 @@
 ﻿#nullable enable
+using ConvenientChests.Framework.UserInterfaceService;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using UI.Component;

@@ -1,7 +1,7 @@
 ﻿#nullable enable
-using ConvenientChests.CategorizeChests.UI.SubMenus;
 using ConvenientChests.Framework.DataService;
 using ConvenientChests.Framework.DataStructs;
+using ConvenientChests.Framework.UserInterfaceService;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;

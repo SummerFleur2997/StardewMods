@@ -3,6 +3,7 @@ using ConvenientChests.CategorizeChests.Framework;
 using ConvenientChests.CategorizeChests.UI.SubMenus;
 using ConvenientChests.Framework.DataStructs;
 using ConvenientChests.Framework.Extensions;
+using ConvenientChests.Framework.UserInterfaceService;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
