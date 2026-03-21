@@ -1,23 +1,38 @@
-﻿using JetBrains.Annotations;
+﻿#nullable enable
+using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using UI.Component;
+using ClickableMenu = StardewValley.Menus.IClickableMenu;
 
 namespace UI.Menu;
 
 /// <summary>
 /// Provide a bridge between <see cref="IClickableMenu"/> and the
-/// game's <see cref="StardewValley.Menus.IClickableMenu"/>.
+/// game's <see cref="ClickableMenu"/>.
 /// </summary>
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-public class BaseMenu : StardewValley.Menus.IClickableMenu, IClickableMenu
+public class BaseMenu : ClickableMenu, IClickableMenu
 {
     public Rectangle Bounds => new(xPositionOnScreen, yPositionOnScreen, width, height);
 
     /// <summary>
+    /// The parent menu of this menu, if any.
+    /// </summary>
+    public ClickableMenu? ParentMenu;
+
+    /// <summary>
+    /// The child menu of this menu, if any.
+    /// </summary>
+    public BaseMenu? ChildMenu;
+
+    /// <summary>
     /// The background of the menu.
     /// </summary>
-    public IComponent Background;
+    public IComponent? Background;
+
+    public event Action<IComponent>? OnComponentAdd;
+    public event Action<IComponent>? OnComponentRemove;
 
     /// <summary>
     /// The children components of the menu. Avoid adding or removing components
@@ -28,37 +43,49 @@ public class BaseMenu : StardewValley.Menus.IClickableMenu, IClickableMenu
     public BaseMenu(int x, int y, int width, int height) : base(x, y, width, height, true)
     {
         Background = NineSlice.MenuBackground(new Rectangle(x, y, width, height));
+        exitFunction = OnExit;
     }
 
     /// <summary>
     /// Add a component to the <see cref="Components"/>.
     /// </summary>
-    public virtual void AddChild(IComponent child) => Components.Add(child);
-
-    /// <summary>
-    /// Add multiple components to the <see cref="Components"/>.
-    /// </summary>
-    public virtual void AddChildren(IEnumerable<IComponent> children)
+    public void AddChild(IComponent child)
     {
-        foreach (var child in children)
-            Components.Add(child);
+        Components.Add(child);
+        OnComponentAdd?.Invoke(child);
     }
 
     /// <summary>
     /// Add multiple components to the <see cref="Components"/>.
     /// </summary>
-    public virtual void AddChildren(params IComponent[] children)
+    public void AddChildren(IEnumerable<IComponent> children)
     {
         foreach (var child in children)
+        {
             Components.Add(child);
+            OnComponentAdd?.Invoke(child);
+        }
+    }
+
+    /// <summary>
+    /// Add multiple components to the <see cref="Components"/>.
+    /// </summary>
+    public void AddChildren(params IComponent[] children)
+    {
+        foreach (var child in children)
+        {
+            Components.Add(child);
+            OnComponentAdd?.Invoke(child);
+        }
     }
 
     /// <summary>
     /// Remove the given child from the <see cref="Components"/>.
     /// </summary>
-    public virtual void RemoveChild(IComponent child)
+    public void RemoveChild(IComponent child)
     {
         Components.Remove(child);
+        OnComponentRemove?.Invoke(child);
         if (child is IDisposable d)
             d.Dispose();
     }
@@ -66,29 +93,46 @@ public class BaseMenu : StardewValley.Menus.IClickableMenu, IClickableMenu
     /// <summary>
     /// Remove all components from the <see cref="Components"/>.
     /// </summary>
-    public virtual void RemoveChildren()
+    public void RemoveChildren()
     {
         foreach (var component in Components)
+        {
+            OnComponentRemove?.Invoke(component);
             if (component is IDisposable d)
                 d.Dispose();
+        }
 
         Components.Clear();
     }
 
+    /// <inheritdoc />
     public sealed override void draw(SpriteBatch b)
     {
         if (!Game1.options.showClearBackgrounds)
             b.Draw(Game1.fadeToBlackRect,
                 new Rectangle(0, 0, Game1.uiViewport.Width, Game1.uiViewport.Height), Color.Black * 0.5f);
         Background?.Draw(b);
+        OnDraw(b);
         foreach (var child in Components)
             child.Draw(b);
         upperRightCloseButton.draw(b);
-        Draw(b);
+        AfterDraw(b);
         drawMouse(b);
     }
 
-    public virtual void Draw(SpriteBatch b) { }
+    /// <summary>
+    /// Draw objects after the background was drawn.
+    /// (Above the backgrounds, but below all the components)
+    /// They may be covered by some components.
+    /// </summary>
+    public virtual void OnDraw(SpriteBatch b) { }
+
+    /// <summary>
+    /// Draw objects after the whole menu was drawn.
+    /// (Above all the components, include the close button)
+    /// This is a good time to draw tooltips, submenus, etc.
+    /// </summary>
+    public virtual void AfterDraw(SpriteBatch b) { }
 
     /// <inheritdoc/>
     public sealed override void receiveLeftClick(int x, int y, bool playSound = true)
@@ -185,6 +229,31 @@ public class BaseMenu : StardewValley.Menus.IClickableMenu, IClickableMenu
         return false;
     }
 
+    /// <summary>
+    /// The default exit process of this menu.
+    /// </summary>
+    public virtual void OnExit()
+    {
+        var parentMenu = ParentMenu;
+        ParentMenu = null;
+        if (parentMenu is null)
+            return;
+
+        Game1.activeClickableMenu = parentMenu;
+
+        if (parentMenu is BaseMenu bm && bm.ChildMenu == this)
+        {
+            bm.ChildMenu = null;
+            bm.RemoveDependency();
+        }
+    }
+
+    /// <summary>
+    /// The basic logic of dispose. This method will be called by the
+    /// game when setting a new <see cref="Game1.activeClickableMenu"/>.
+    /// To avoid itself being disposed when using child-menus, we should call
+    /// <see cref="StardewValley.Menus.IClickableMenu.AddDependency"/>.
+    /// </summary>
     public virtual void Dispose()
     {
         foreach (var component in Components)

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿#nullable enable
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -35,20 +36,22 @@ public class TextBox : IClickableComponent, IKeyboardSubscriber, IDisposable
     /// <summary>
     /// The inner text of the text box.
     /// </summary>
-    public string Text { get; private set; }
+    public string Text { get; set; }
 
-    public event Action<TextBox> OnEnterPressed;
+    public event Action<TextBox>? OnEnterPressed;
 
-    private readonly IComponent _background;
-    private readonly SpriteFont _font;
+    private readonly IComponent? _background;
+    private readonly SpriteFont _font = Game1.smallFont;
 
-    public TextBox(int x, int y, int width, int height, string text, SpriteFont font, IComponent background)
+    private readonly int _offset;
+
+    public TextBox(int x, int y, int width, int height, string? text = "", IComponent? background = null)
     {
-        Text = text;
-        this.SetDestination(x, y, width, height);
+        Text = text ?? "";
+        this.SetDestination(x, y, width, 64);
         _background = background;
-        _background.SetDestination(x, y, width, height);
-        _font = font;
+        _background?.SetDestination(x, y, width, 64);
+        _offset = (height - 32) / 2;
     }
 
     public bool ReceiveLeftClick(int x, int y)
@@ -61,10 +64,10 @@ public class TextBox : IClickableComponent, IKeyboardSubscriber, IDisposable
 
     public void Draw(SpriteBatch b)
     {
-        _background.Draw(b);
+        _background?.Draw(b);
         var caretVisible = Game1.currentGameTime.TotalGameTime.TotalMilliseconds % 1000.0 >= 500.0;
 
-        var toDraw = Text ?? "";
+        var toDraw = Text;
         var size = _font.MeasureString(toDraw);
         while (size.X > Width - 32)
         {
@@ -73,8 +76,8 @@ public class TextBox : IClickableComponent, IKeyboardSubscriber, IDisposable
         }
 
         if (caretVisible && Selected)
-            b.Draw(Game1.staminaRect, new Rectangle(X + 16 + (int)size.X + 2, Y + 16, 4, 32), Color.Black);
-        b.DrawString(_font, toDraw, new Vector2(X + 16, Y + 16), Color.Black);
+            b.Draw(Game1.staminaRect, new Rectangle(X + _offset + (int)size.X + 2, Y + _offset, 4, 32), Color.Black);
+        b.DrawString(_font, toDraw, new Vector2(X + _offset, Y + _offset), Color.Black);
     }
 
     public void RecieveTextInput(char inputChar)
