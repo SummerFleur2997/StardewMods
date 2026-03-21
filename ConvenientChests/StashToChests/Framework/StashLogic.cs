@@ -31,8 +31,10 @@ internal static class StashLogic
             .ToList();
 
         if (moved.Any())
-            ModEntry.Log($"Moved [{string.Join(", ", moved.Select(i => $"{i.Name} * {i.Stack}"))}] " +
-                         $"to chest in {chest.Location.Name} at {chest.TileLocation}.");
+        {
+            var which = string.Join(", ", moved.Select(i => $"{i.Name} * {i.Stack}"));
+            ModEntry.Log($"Moved [{which}] to chest in {chest.Location.Name} at {chest.TileLocation}.");
+        }
         return toBeMoved.Any() && moved.Any();
     }
 

@@ -1,5 +1,4 @@
-﻿using ConvenientChests.Framework.DataService;
-using ConvenientChests.Framework.DataStructs;
+﻿using ConvenientChests.Framework.DataStructs;
 using ConvenientChests.Framework.Extensions;
 using Microsoft.Xna.Framework;
 using StardewValley.Locations;
@@ -22,7 +21,6 @@ internal static class Saver
         {
             Version = ModEntry.Manifest.Version.ToString(),
             ChestEntries = BuildChestEntries().Where(e => e.ShouldBeSerialized()).ToList(),
-            InventoryEntries = BuildInventoryEntries() //.Where(e => e.LockedItems.Any()).ToList()
         };
     }
 
@@ -53,16 +51,6 @@ internal static class Saver
                 }
             }
         }
-    }
-
-    private static IEnumerable<InventoryEntry> BuildInventoryEntries()
-    {
-        return Game1.getAllFarmers()
-            .Select(player => new InventoryEntry(
-                player.GetInventoryData(),
-                player.Name,
-                player.UniqueMultiplayerID
-            ));
     }
 
     /// <summary>

@@ -3,7 +3,6 @@ using ConvenientChests.Framework.DataService;
 using ConvenientChests.Framework.DataStructs;
 using ConvenientChests.Framework.SaveService;
 using StardewModdingAPI.Events;
-using StardewValley.Locations;
 using StardewValley.Objects;
 
 namespace ConvenientChests.Framework.MultiplayerService;
@@ -39,15 +38,6 @@ internal class MultiplayerServer : IModule
             new[] { ModEntry.Manifest.UniqueID });
     }
 
-    public static void SendInventoryData(FarmHouse playerHouse, ItemKey itemKey)
-    {
-        var playerID = playerHouse.owner.UniqueMultiplayerID;
-        var syncData = new MultiplayerInventorySync(playerID, itemKey);
-
-        MultiplayerHelper.SendMessage(syncData, "MultiplayerInventorySync",
-            new[] { ModEntry.Manifest.UniqueID });
-    }
-
     private static void ReceiveChestData(MultiplayerChestSync multiplayerChestSyncChest)
     {
         if (multiplayerChestSyncChest.SenderID == Game1.player.UniqueMultiplayerID) return;
@@ -57,15 +47,6 @@ internal class MultiplayerServer : IModule
         var item = ItemRegistry.Create(multiplayerChestSyncChest.ItemId);
 
         ChestManager.ModifyChest(chestAddress, itemKey, alias, item);
-    }
-
-    private static void ReceiveInventoryData(MultiplayerInventorySync multiplayerInventorySyncData)
-    {
-        if (multiplayerInventorySyncData.SenderID == Game1.player.UniqueMultiplayerID) return;
-        var playerID = multiplayerInventorySyncData.PlayerID;
-        var itemKey = multiplayerInventorySyncData.ItemKey;
-
-        InventoryManager.ModifyInventory(playerID, itemKey);
     }
 
     private static void SendSaveData(long toPlayerID)
@@ -110,13 +91,6 @@ internal class MultiplayerServer : IModule
                 var syncChestData = e.ReadAs<MultiplayerChestSync>();
                 ModEntry.Log($"Received chest sync data from {e.FromPlayerID}.");
                 ReceiveChestData(syncChestData);
-                break;
-            // When receiving the "MultiplayerInventorySync" message from other players, sync InventoryData.
-            // 收到其他玩家的 MultiplayerInventorySync 消息后，同步 InventoryData
-            case "MultiplayerInventorySync":
-                var syncInventoryData = e.ReadAs<MultiplayerInventorySync>();
-                ModEntry.Log($"Received inventory sync data from {e.FromPlayerID}.");
-                ReceiveInventoryData(syncInventoryData);
                 break;
         }
     }

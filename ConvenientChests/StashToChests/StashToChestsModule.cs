@@ -97,11 +97,9 @@ internal class StashToChestsModule : IModule
     /// Whether the given item is locked in the current player's inventory.
     /// <seealso cref="CreateRejectingFunction"/>
     /// </summary>
-    private static bool InventoryLocksItem(Item item)
-    {
-        var itemKey = item.ToBase().ToItemKey();
-        return Game1.player.GetInventoryData().Locks(itemKey);
-    }
+    private static bool InventoryLocksItem(Item item) =>
+        // todo
+        false;
 
     /// <summary>
     /// 根据配置选项设置将物品存储至箱子时的接受物品判断函数。

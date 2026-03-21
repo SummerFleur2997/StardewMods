@@ -1,3 +1,4 @@
+#nullable enable
 using ConvenientChests.Framework.DataService;
 using ConvenientChests.Framework.MultiplayerService;
 using StardewValley.Objects;
@@ -12,7 +13,9 @@ internal class ChestData : IChestData
 {
     private readonly WeakReference<Chest> _chestRef;
 
-    public string Alias { get; private set; }
+    public string? Alias { get; private set; }
+
+    public Item? ItemIcon { get; private set; }
 
     public HashSet<ItemKey> AcceptedItemKinds
     {
@@ -22,8 +25,7 @@ internal class ChestData : IChestData
 
     private HashSet<ItemKey> _acceptedItemKinds = new();
 
-    public ChestDataSnapshot Snapshot { get; set; }
-    public Item ItemIcon { get; private set; }
+    public ChestDataSnapshot? Snapshot { get; set; }
 
     public ChestData(Chest chest)
     {
@@ -33,7 +35,7 @@ internal class ChestData : IChestData
     /// <inheritdoc cref="ToggleItem(ItemKey, bool)"/>
     public void ToggleItem(ItemKey itemKey) => ToggleItem(itemKey, false);
 
-    public Chest GetChest() => _chestRef.TryGetTarget(out var chest) ? chest : null;
+    public Chest? GetChest() => _chestRef.TryGetTarget(out var chest) ? chest : null;
 
     /// <summary>
     /// Toggle whether this chest accepts the specified kind of item.
@@ -66,11 +68,11 @@ internal class ChestData : IChestData
     /// is used in multiplayer sync.</param>
     public void SetAlias(string alias, bool receiver = false)
     {
-        Alias = alias;
+        Alias = string.IsNullOrWhiteSpace(alias) ? null : alias.Trim();
 
         if (receiver) return;
         if (Context.IsMultiplayer && _chestRef.TryGetTarget(out var chest))
-            MultiplayerServer.SendChestData(chest, alias: alias);
+            MultiplayerServer.SendChestData(chest, alias: Alias);
     }
 
     /// <summary>
@@ -80,13 +82,13 @@ internal class ChestData : IChestData
     /// <param name="item">The new icon item.</param>
     /// <param name="receiver">Whether this is a receiver of the edit event, this param
     /// is used in multiplayer sync.</param>
-    public void SetIcon(Item item, bool receiver = false)
+    public void SetIcon(Item? item, bool receiver = false)
     {
         ItemIcon = item;
 
         if (receiver) return;
         if (Context.IsMultiplayer && _chestRef.TryGetTarget(out var chest))
-            MultiplayerServer.SendChestData(chest, itemId: item.QualifiedItemId);
+            MultiplayerServer.SendChestData(chest, itemId: ItemIcon?.QualifiedItemId);
     }
 
     public void MigrateDataFromOldChest(Chest oldChest)

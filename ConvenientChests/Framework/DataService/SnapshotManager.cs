@@ -23,6 +23,18 @@ internal static class SnapshotManager
     private static Dictionary<long, ChestDataSnapshot> _snapshots = new();
 
     /// <summary>
+    /// Swap the position of two snapshots.
+    /// </summary>
+    /// <param name="s1">The index of first target.</param>
+    /// <param name="s2">The index of second target.</param>
+    public static void Swap(int s1, int s2)
+    {
+        _order[s1] ^= _order[s2];
+        _order[s2] ^= _order[s1];
+        _order[s1] ^= _order[s2];
+    }
+
+    /// <summary>
     /// Wrapped AddItem method to the snapshot data.
     /// </summary>
     /// <param name="chestDataSnapshot">The snapshot to add.</param>
@@ -44,7 +56,7 @@ internal static class SnapshotManager
         _order.Remove(id);
     }
 
-    public static ChestDataSnapshot CreateNewSnapshot(string alias, IEnumerable<ItemKey> acceptedItemKinds)
+    public static ChestDataSnapshot CreateNewSnapshot(string alias, IEnumerable<ItemKey>? acceptedItemKinds = null)
     {
         long id;
         do
@@ -52,8 +64,45 @@ internal static class SnapshotManager
             id = Utility.RandomLong();
         } while (_snapshots.ContainsKey(id) || id == 0);
 
-        return new ChestDataSnapshot(alias, id, acceptedItemKinds);
+        return new ChestDataSnapshot(alias, id, acceptedItemKinds ?? new HashSet<ItemKey>());
     }
+
+    public static string GetAValidAlias(string alias, long id)
+    {
+        if (!_snapshots.Values.Any(x => x.Alias == alias && x.UniqueID != id) &&
+            !string.IsNullOrWhiteSpace(alias))
+        {
+            return alias;
+        }
+
+        var i = 0;
+        if (string.IsNullOrWhiteSpace(alias))
+        {
+            do
+            {
+                i++;
+            } while (HaveADuplicatedAlias($"{I18n.UI_Unnamed(I18n.UI_Snapshot())} {i}"));
+
+            return $"{I18n.UI_Unnamed(I18n.UI_Snapshot())} {i}";
+        }
+
+        i++;
+        do
+        {
+            i++;
+        } while (HaveADuplicatedAlias($"{alias} ({i})"));
+
+        return $"{alias} ({i})";
+
+        bool HaveADuplicatedAlias(string s) => _snapshots.Values.Any(x => x.Alias == s);
+    }
+
+    public static List<ChestDataSnapshot> GetSnapshots() => _order.Select(x => _snapshots[x]).ToList();
+
+    /// <summary>
+    /// Wrapped accessor to the snapshot data.
+    /// </summary>
+    public static ChestDataSnapshot? GetValueOrDefault(long id) => _snapshots.GetValueOrDefault(id);
 
     /// <summary>
     /// Generate snapshot data and write it to the disk.
@@ -90,9 +139,4 @@ internal static class SnapshotManager
             ModEntry.Log(ex.ToString(), LogLevel.Error);
         }
     }
-
-    /// <summary>
-    /// Wrapped accessor to the snapshot data.
-    /// </summary>
-    public static ChestDataSnapshot? GetValueOrDefault(long id) => _snapshots.GetValueOrDefault(id);
 }

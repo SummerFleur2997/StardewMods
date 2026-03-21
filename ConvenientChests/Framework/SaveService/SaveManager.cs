@@ -1,7 +1,6 @@
 ﻿#nullable enable
 using System.IO;
 using ConvenientChests.Framework.DataService;
-using ConvenientChests.Framework.DataStructs;
 
 namespace ConvenientChests.Framework.SaveService;
 
@@ -85,13 +84,6 @@ internal static class SaveManager
 
             chestData.SetAlias(entry.Alias);
         }
-
-        foreach (var entry in saveData.InventoryEntries)
-        {
-            var invtyData = InventoryManager.GetPlayerByID(entry.PlayerID).GetInventoryData();
-
-            invtyData.LockedItemKinds = entry.LockedItems;
-        }
     }
 
     /// <summary>
@@ -113,7 +105,6 @@ internal static class SaveManager
         {
             newSaveData.Version = ModEntry.Manifest.Version.ToString();
             newSaveData.ChestEntries = oldSaveData.ChestEntries;
-            newSaveData.InventoryEntries = Array.Empty<InventoryEntry>();
             Save(newSaveData);
         }
         catch (Exception ex)

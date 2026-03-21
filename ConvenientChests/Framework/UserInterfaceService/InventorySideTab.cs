@@ -1,5 +1,4 @@
-using ConvenientChests.Framework.DataService;
-using ConvenientChests.StashToChests.Framework;
+#nullable enable
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Menus;
@@ -10,31 +9,16 @@ namespace ConvenientChests.Framework.UserInterfaceService;
 internal class InventorySideTab : IOverlay<GameMenu>
 {
     public GameMenu RootMenu { get; }
-    private Button LockButton { get; set; }
+    private Button LockButton { get; }
 
     public InventorySideTab(GameMenu menu)
     {
         RootMenu = menu;
-        AddAndPositionButtons();
-    }
 
-    public void Draw(SpriteBatch b)
-    {
-        if (ModEntry.Config.HideSideTab)
-            return;
-
-        if (ModEntry.StashModule.IsActive || ModEntry.CategorizeModule.IsActive)
-            LockButton?.Draw(b);
-        RootMenu.drawMouse(b);
-    }
-
-    private void AddAndPositionButtons()
-    {
         var padding = NineSlice.LeftProtrudingTab().TopBorderThickness;
 
         LockButton = new Button(NineSlice.LeftProtrudingTab(), I18n.LockItems_Title(),
             Color.Black, Game1.smallFont, padding: padding);
-        LockButton.OnPress += OpenLockMenu;
 
         var delta = ModEntry.IsAndroid ? 100 + ModEntry.Config.MobileOffset : 106;
 
@@ -45,16 +29,14 @@ internal class InventorySideTab : IOverlay<GameMenu>
         LockButton.Label.OffsetPosition(Game1.pixelZoom * 2);
     }
 
-    private void OpenLockMenu()
+    public void Draw(SpriteBatch b)
     {
-        var data = Game1.player.GetInventoryData();
-        var menu = new LockMenu(RootMenu.xPositionOnScreen, RootMenu.yPositionOnScreen,
-            RootMenu.width, RootMenu.height, data, IClickableMenu.borderWidth);
-        menu.exitFunction = ExitFunction;
-        Game1.activeClickableMenu = menu;
-        return;
+        if (ModEntry.Config.HideSideTab)
+            return;
 
-        void ExitFunction() => Game1.activeClickableMenu = RootMenu;
+        if (ModEntry.StashModule.IsActive || ModEntry.CategorizeModule.IsActive)
+            LockButton.Draw(b);
+        RootMenu.drawMouse(b);
     }
 
     public bool ReceiveLeftClick(int x, int y)
@@ -63,6 +45,4 @@ internal class InventorySideTab : IOverlay<GameMenu>
             return LockButton.ReceiveLeftClick(x, y);
         return false;
     }
-
-    public bool ReceiveCursorHover(int x, int y) => false;
 }

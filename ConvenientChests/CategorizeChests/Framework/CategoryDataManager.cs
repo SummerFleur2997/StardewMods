@@ -9,7 +9,7 @@ internal static class CategoryDataManager
     /// <summary>
     /// A mapping of category names to the item keys belonging to that category.
     /// </summary>
-    public static Dictionary<ItemCategoryName, IList<ItemKey>> Categories;
+    public static Dictionary<ItemCategoryName, List<ItemKey>> Categories;
 
     public static List<ItemCategoryName> ItemCategories;
 
@@ -21,7 +21,7 @@ internal static class CategoryDataManager
             .GroupBy(key => key.GetCategory())
             .ToDictionary(
                 g => g.Key,
-                g => (IList<ItemKey>)g.ToList()
+                g => g.ToList()
             );
         ItemCategories = Categories.Keys.ToList();
 

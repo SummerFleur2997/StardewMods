@@ -1,24 +1,28 @@
-﻿using Microsoft.Xna.Framework;
+﻿#nullable enable
+using ConvenientChests.CategorizeChests.UI;
+using ConvenientChests.CategorizeChests.UI.SubMenus;
+using ConvenientChests.Framework.DataStructs;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using UI.Component;
 using UI.Menu;
 using UI.Sprite;
 
-namespace ConvenientChests.CategorizeChests.UI.SubMenus;
+namespace ConvenientChests.AliasForChests;
 
-internal sealed class SetAliasSubMenu : SubMenu
+internal class AliasSetMenu : SubMenu
 {
-    public readonly TextBox TextBox;
-    public readonly ItemButton ItemIconButton;
-
+    private readonly TextBox _textBox;
+    private readonly ItemButton _itemIconButton;
     private readonly GridMenu _itemPicker;
+    private readonly ChestData _chestData;
     private bool _itemPickerOn;
 
-    public SetAliasSubMenu(CategoryChestMenu parent) : base(400, 240, parent)
+    public AliasSetMenu(ChestData data) : base(400, 240)
     {
+        _chestData = data;
         var y = Y + 24;
-        var chestData = parent.ChestData;
 
         // init title label
         var textLabel = new TextLabel(I18n.UI_ChestAlias(), Color.Black, Game1.smallFont);
@@ -32,16 +36,16 @@ internal sealed class SetAliasSubMenu : SubMenu
         itemButtonBackground.SetDestination(X + 24, y, 64, 64);
         Components.Add(itemButtonBackground);
 
-        var item = chestData.ItemIcon;
-        ItemIconButton = new ItemButton(item);
-        ItemIconButton.SetPosition(X + 32, y + 8);
-        ItemIconButton.OnPress += () => _itemPickerOn = true;
-        Components.Add(ItemIconButton);
+        var item = _chestData.ItemIcon;
+        _itemIconButton = new ItemButton(item);
+        _itemIconButton.SetPosition(X + 32, y + 8);
+        _itemIconButton.OnPress += () => _itemPickerOn = true;
+        Components.Add(_itemIconButton);
 
-        var text = chestData.Alias;
-        TextBox = new TextBox(X + 100, y, 272, 64, text, Game1.smallFont, UIHelper.TextBubble());
-        Game1.keyboardDispatcher.Subscriber = TextBox;
-        Components.Add(TextBox);
+        var text = _chestData.Alias ?? "";
+        _textBox = new TextBox(X + 100, y, 272, 64, text, UIHelper.TextBubble());
+        Game1.keyboardDispatcher.Subscriber = _textBox;
+        Components.Add(_textBox);
 
         // init item picker
         var itemPickerBackground = NineSlice.CommonMenu();
@@ -50,7 +54,7 @@ internal sealed class SetAliasSubMenu : SubMenu
         _itemPicker = new GridMenu(X - 408, y + 8, 384, 384, 64);
         _itemPicker.Background = itemPickerBackground;
 
-        var buttons = chestData.GetChest()?.Items
+        var buttons = _chestData.GetChest()?.Items
             .DistinctBy(i => i.QualifiedItemId)
             .Select(i => new ItemButton(i.QualifiedItemId))
             .Append(ItemButton.GetANullInstance())
@@ -59,11 +63,19 @@ internal sealed class SetAliasSubMenu : SubMenu
         foreach (var button in buttons)
             button.OnPress += () =>
             {
-                ItemIconButton.Item = button.Item;
+                _itemIconButton.Item = button.Item;
                 _itemPickerOn = false;
             };
 
         _itemPicker.AddComponents(buttons);
+        OnOk += SetAlias;
+    }
+
+    private void SetAlias(SubMenu s)
+    {
+        _chestData.SetAlias(_textBox.Text);
+        _chestData.SetIcon(_itemIconButton.Item);
+        ModEntry.AliasModule.ForceUpdateOnce = true;
     }
 
     /// <inheritdoc/>
@@ -94,17 +106,17 @@ internal sealed class SetAliasSubMenu : SubMenu
     /// <inheritdoc/>
     public override void ReceiveKeyPress(Keys key)
     {
-        if (_itemPickerOn || TextBox.Selected)
+        if (_itemPickerOn || _textBox.Selected)
             switch (key)
             {
                 case Keys.Escape:
                     _itemPickerOn = false;
-                    TextBox.Selected = false;
+                    _textBox.Selected = false;
                     Game1.playSound("bigDeSelect");
                     return;
                 case Keys.Enter:
                     _itemPickerOn = false;
-                    TextBox.Selected = false;
+                    _textBox.Selected = false;
                     break; // fall back to base method to handle enter key
                 default:
                     return;
@@ -125,20 +137,20 @@ internal sealed class SetAliasSubMenu : SubMenu
 
     public override void Dispose()
     {
-        TextBox.Dispose();
+        _textBox.Dispose();
         _itemPicker.Dispose();
         base.Dispose();
     }
 
     internal sealed class ItemButton : ItemLabel<Item>, IClickableComponent, IDisposable
     {
-        public event Action OnPress;
+        public event Action? OnPress;
         private readonly TextureRegion _redX = new(Game1.mouseCursors, 268, 470, 16, 16);
 
-        public ItemButton(Item item) : base(item, width: 48, height: 48) { }
+        public ItemButton(Item? item) : base(item, width: 48, height: 48) { }
         public ItemButton(string item) : base(item, width: 48, height: 48) { }
 
-        public static ItemButton GetANullInstance() => new((Item)null);
+        public static ItemButton GetANullInstance() => new((Item)null!);
 
         /// <inheritdoc/>
         public bool ReceiveLeftClick(int x, int y)

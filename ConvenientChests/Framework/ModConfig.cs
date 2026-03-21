@@ -5,6 +5,7 @@ namespace ConvenientChests.Framework;
 
 public class ModConfig
 {
+    public bool AliasForChests { get; set; } = true;
     public bool CategorizeChests { get; set; } = true;
     public bool EnableSort { get; set; }
 

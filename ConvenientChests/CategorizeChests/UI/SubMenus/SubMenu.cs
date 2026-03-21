@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿#nullable enable
+using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -25,52 +26,39 @@ internal class SubMenu : IClickableMenu, IComponent
     /// <inheritdoc/>
     public int Height { get; set; }
 
-    public event Action<SubMenu> OnOk;
-    public event Action<SubMenu> OnCancel;
+    public event Action<SubMenu>? OnOk;
+    public event Action<SubMenu>? OnCancel;
 
     public readonly List<IComponent> Components = new();
 
     public Button OkButton;
     public Button CancelButton;
 
-    /// <summary>
-    /// The parent menu of this sub-menu.
-    /// </summary>
-    public CategoryChestMenu ParentMenu;
-
     private NineSlice _background;
     private string _okButtonCue = "money";
     private string _cancelButtonCue = "bigDeSelect";
 
-    public SubMenu(int width, int height, CategoryChestMenu parent, bool showOk = true, bool showCancel = true)
+    public SubMenu(int width, int height)
     {
-        ParentMenu = parent;
-
         var screen = new Rectangle(0, 0, Game1.uiViewport.Width, Game1.uiViewport.Height);
         this.SetSize(width, height);
         this.SetInCenterOfTheBounds(screen);
 
         _background = NineSlice.CommonMenu(Bounds);
 
-        if (showOk)
-        {
-            var okTexture = UIHelper.YellowButtonBackground();
-            OkButton = new Button(okTexture, I18n.UI_Yes(), Color.Black, Game1.smallFont);
-            OkButton.SetDestination(X + Width / 2 + 8, Y + Height - 80, 108, 60);
-            OkButton.SoundCue = _okButtonCue;
-            OkButton.OnPress += FireOkEvent;
-            Components.Add(OkButton);
-        }
+        var okTexture = UIHelper.YellowButtonBackground();
+        OkButton = new Button(okTexture, I18n.UI_Yes(), Color.Black, Game1.smallFont);
+        OkButton.SetDestination(X + Width / 2 + 8, Y + Height - 80, 108, 60);
+        OkButton.SoundCue = _okButtonCue;
+        OkButton.OnPress += FireOkEvent;
+        Components.Add(OkButton);
 
-        if (showCancel)
-        {
-            var cancelTexture = UIHelper.YellowButtonBackground();
-            CancelButton = new Button(cancelTexture, I18n.UI_No(), Color.Black, Game1.smallFont);
-            CancelButton.SetDestination(X + Width / 2 - 116, Y + Height - 80, 108, 60);
-            CancelButton.SoundCue = _cancelButtonCue;
-            CancelButton.OnPress += FireCancelEvent;
-            Components.Add(CancelButton);
-        }
+        var cancelTexture = UIHelper.YellowButtonBackground();
+        CancelButton = new Button(cancelTexture, I18n.UI_No(), Color.Black, Game1.smallFont);
+        CancelButton.SetDestination(X + Width / 2 - 116, Y + Height - 80, 108, 60);
+        CancelButton.SoundCue = _cancelButtonCue;
+        CancelButton.OnPress += FireCancelEvent;
+        Components.Add(CancelButton);
     }
 
     public void SetOkButtonSound(string cue)
@@ -156,10 +144,6 @@ internal class SubMenu : IClickableMenu, IComponent
 
     public virtual void Dispose()
     {
-        var parentMenu = ParentMenu;
-        ParentMenu = null;
-        parentMenu.SubMenu = null;
-
         foreach (var component in Components)
             if (component is IDisposable d)
                 d.Dispose();
@@ -169,4 +153,14 @@ internal class SubMenu : IClickableMenu, IComponent
         OnOk = null;
         OnCancel = null;
     }
+}
+
+internal interface IHaveSubMenu
+{
+    public SubMenu? SubMenu { get; set; }
+}
+
+internal interface IHaveParentMenu
+{
+    public IHaveSubMenu Parent { get; set; }
 }

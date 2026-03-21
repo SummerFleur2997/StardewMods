@@ -1,4 +1,6 @@
-﻿using ConvenientChests.Framework.DataStructs;
+﻿#nullable enable
+using ConvenientChests.Framework.DataStructs;
+using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using UI.Component;
@@ -10,6 +12,7 @@ namespace ConvenientChests.CategorizeChests.UI;
 /// <summary>
 /// Customized menu for <see cref="CategoryMenu{T}"/>.
 /// </summary>
+[UsedImplicitly(ImplicitUseTargetFlags.Members)]
 internal sealed class CategoryTopRow : IClickableMenu, IClickableComponent
 {
     /// <inheritdoc/>
@@ -27,13 +30,13 @@ internal sealed class CategoryTopRow : IClickableMenu, IClickableComponent
     /// <inheritdoc/>
     public int Height { get; set; }
 
-    public readonly NineSlice SelectAllButtonBackground;
-    public readonly LabeledCheckBox SelectAllButton;
-    public readonly SpriteButton PrevButton;
-    public readonly SpriteButton NextButton;
-    public readonly DropDownMenu<ItemCategoryName> CategorySelector;
+    public NineSlice SelectAllButtonBackground;
+    public LabeledCheckBox SelectAllButton;
+    public SpriteButton PrevButton;
+    public SpriteButton NextButton;
+    public DropDownMenu<ItemCategoryName> CategorySelector;
 
-    private List<IClickableComponent> _components = new();
+    private readonly List<IClickableComponent> _components = new();
 
     public CategoryTopRow(int x, int y, int width, int height, int parentMenuHeight)
     {
@@ -95,6 +98,5 @@ internal sealed class CategoryTopRow : IClickableMenu, IClickableComponent
     {
         CategorySelector.Dispose();
         _components.Clear();
-        _components = null;
     }
 }

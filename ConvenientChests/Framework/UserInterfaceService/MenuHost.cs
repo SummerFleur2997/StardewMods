@@ -6,19 +6,19 @@ namespace ConvenientChests.Framework.UserInterfaceService;
 
 internal sealed class MenuHost<T> : BaseOverlay
 {
-    public readonly IOverlay<T> SideLabelButton;
+    private readonly IOverlay<T> _sideLabelButton;
 
     public MenuHost(IModEvents events, IInputHelper input, IReflectionHelper reflection, IOverlay<T> sideLabelButton)
-        : base(events, input, reflection, assumeUiMode: true) =>
-        SideLabelButton = sideLabelButton;
+        : base(events, input, reflection, assumeUiMode: true)
+    {
+        _sideLabelButton = sideLabelButton;
+    }
 
     protected override void DrawUi(SpriteBatch batch)
     {
         if (Game1.activeClickableMenu is not T) return;
-        SideLabelButton.Draw(batch);
+        _sideLabelButton.Draw(batch);
     }
 
-    protected override bool ReceiveLeftClick(int x, int y) => SideLabelButton.ReceiveLeftClick(x, y);
-
-    protected override bool ReceiveCursorHover(int x, int y) => SideLabelButton.ReceiveCursorHover(x, y);
+    protected override bool ReceiveLeftClick(int x, int y) => _sideLabelButton.ReceiveLeftClick(x, y);
 }

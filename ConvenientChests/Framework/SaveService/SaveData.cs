@@ -14,9 +14,4 @@ internal class SaveData
     /// A list of chest addresses and the chest data associated with them.
     /// </summary>
     public IEnumerable<ChestEntry> ChestEntries { get; set; } = Array.Empty<ChestEntry>();
-
-    /// <summary>
-    /// A list of player names and backpack items that locked from stash to chests.
-    /// </summary>
-    public IEnumerable<InventoryEntry> InventoryEntries { get; set; } = Array.Empty<InventoryEntry>();
 }

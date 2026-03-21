@@ -1,6 +1,6 @@
+using ConvenientChests.AliasForChests;
 using ConvenientChests.CategorizeChests.UI;
 using ConvenientChests.Framework.DataService;
-using ConvenientChests.StashToChests.Framework;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using StardewValley.Menus;
@@ -13,8 +13,9 @@ internal class ChestSideTab : IOverlay<ItemGrabMenu>
 {
     private readonly Chest _chest;
     public ItemGrabMenu RootMenu { get; }
+    public AliasSetMenu AliasMenu { get; set; }
+    private Button AliasButton { get; set; }
     private Button CategorizeButton { get; set; }
-    private Button StashButton { get; set; }
 
     /// <summary>
     /// 构造函数，初始化 ChestOverlay 类。
@@ -40,7 +41,7 @@ internal class ChestSideTab : IOverlay<ItemGrabMenu>
 
         if (ModEntry.CategorizeModule.IsActive)
             CategorizeButton?.Draw(b);
-        StashButton?.Draw(b);
+        AliasButton?.Draw(b);
         RootMenu.drawMouse(b);
     }
 
@@ -57,9 +58,9 @@ internal class ChestSideTab : IOverlay<ItemGrabMenu>
             Color.Black, Game1.smallFont, padding: padding);
         CategorizeButton.OnPress += OpenCategoryMenu;
 
-        StashButton = new Button(NineSlice.LeftProtrudingTab(), I18n.Button_Stash(),
+        AliasButton = new Button(NineSlice.LeftProtrudingTab(), I18n.Button_Stash(),
             Color.Black, Game1.smallFont, padding: padding);
-        StashButton.OnPress += StashItems;
+        AliasButton.OnPress += OpenAliasMenu;
 
         // Calculate the offset based on the chest size.
         var delta = ModEntry.IsAndroid
@@ -76,18 +77,22 @@ internal class ChestSideTab : IOverlay<ItemGrabMenu>
                 _ => 112
             };
 
-        StashButton.Width = CategorizeButton.Width = Math.Max(StashButton.Width, CategorizeButton.Width);
+        AliasButton.Width = CategorizeButton.Width = Math.Max(AliasButton.Width, CategorizeButton.Width);
 
-        CategorizeButton.SetPosition(
+        AliasButton.SetPosition(
             RootMenu.xPositionOnScreen + RootMenu.width / 2 - CategorizeButton.Width - delta * Game1.pixelZoom,
             RootMenu.yPositionOnScreen + 22 * Game1.pixelZoom);
 
-        StashButton.SetPosition(
+        CategorizeButton.SetPosition(
             CategorizeButton.X,
             CategorizeButton.Y + CategorizeButton.Height + 4 * Game1.pixelZoom);
 
+        AliasButton.Label.OffsetPosition(Game1.pixelZoom * 2);
         CategorizeButton.Label.OffsetPosition(Game1.pixelZoom * 2);
-        StashButton.Label.OffsetPosition(Game1.pixelZoom * 2);
+
+        // var setAliasButton = UIHelper.SideButton(x, y, SideButtonVariant.Alias);
+        // setAliasButton.OnHover += () => ShowTooltipForSideButton(SideButtonVariant.Alias);
+        // AddChild(setAliasButton);
     }
 
     /// <summary>
@@ -98,33 +103,27 @@ internal class ChestSideTab : IOverlay<ItemGrabMenu>
     {
         var data = _chest.GetChestData();
         var delta = ModEntry.IsAndroid ? 70 : 0;
-        var menu = new CategoryChestMenu(RootMenu.xPositionOnScreen, RootMenu.yPositionOnScreen + delta,
-            RootMenu.width, RootMenu.height - delta, data, IClickableMenu.borderWidth);
-        menu.exitFunction = ExitFunction;
+        var menu = new CategoryMenu(RootMenu.xPositionOnScreen, RootMenu.yPositionOnScreen + delta,
+            RootMenu.width, RootMenu.height - delta, data, RootMenu, IClickableMenu.borderWidth);
         Game1.activeClickableMenu = menu;
-        return;
-
-        void ExitFunction() => Game1.activeClickableMenu = RootMenu;
     }
 
     /// <summary>
-    /// 将物品存储到当前箱子中。
-    /// Stash items into the current chest.
+    /// 打开备注修改菜单，修改箱子备注。
+    /// Open the alias menu to edit the alias of this chest.
     /// </summary>
-    private void StashItems()
+    private void OpenAliasMenu()
     {
-        var stashModule = ModEntry.StashModule;
-        StashLogic.StashToCurrentChest(_chest, stashModule.AcceptingFunc, stashModule.RejectingFunc);
+        var data = _chest.GetChestData();
+        AliasMenu = new AliasSetMenu(data);
     }
 
     public bool ReceiveLeftClick(int x, int y)
     {
         if (ModEntry.CategorizeModule.IsActive && CategorizeButton.Contains(x, y))
             return CategorizeButton.ReceiveLeftClick(x, y);
-        if (StashButton.Contains(x, y))
-            return StashButton.ReceiveLeftClick(x, y);
+        if (ModEntry.AliasModule.IsActive && AliasButton.Contains(x, y))
+            return AliasButton.ReceiveLeftClick(x, y);
         return false;
     }
-
-    public bool ReceiveCursorHover(int x, int y) => false;
 }

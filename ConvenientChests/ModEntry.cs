@@ -1,4 +1,5 @@
 ﻿using Common;
+using ConvenientChests.AliasForChests;
 using ConvenientChests.API;
 using ConvenientChests.CategorizeChests;
 using ConvenientChests.CategorizeChests.Framework;
@@ -35,6 +36,11 @@ internal class ModEntry : Mod
     private static IMonitor ModMonitor { get; set; }
 
     public static void Log(string s, LogLevel l = LogLevel.Trace) => ModMonitor.Log(s, l);
+
+    /// <summary>
+    /// <see cref="AliasForChestsModule"/> mod.
+    /// </summary>
+    internal static AliasForChestsModule AliasModule { get; private set; }
 
     /// <summary>
     /// <see cref="CategorizeChestsModule"/> mod.
@@ -99,6 +105,7 @@ internal class ModEntry : Mod
         Config = ModHelper.ReadConfig<ModConfig>();
         if (!Game1.hasLoadedGame) return;
 
+        UpdateModule(Config.AliasForChests, AliasModule);
         UpdateModule(Config.CategorizeChests, CategorizeModule);
         UpdateModule(Config.CraftFromChests, CraftModule);
         UpdateModule(Config.StashToNearby || Config.StashAnywhere, StashModule);
@@ -139,6 +146,10 @@ internal class ModEntry : Mod
     /// </summary>
     private static void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
     {
+        AliasModule = new AliasForChestsModule();
+        if (Config.AliasForChests)
+            AliasModule.Activate();
+
         CategoryDataManager.Initialize();
         CategorizeModule = new CategorizeChestsModule();
         if (Config.CategorizeChests)
@@ -169,6 +180,9 @@ internal class ModEntry : Mod
     /// </summary>
     private static void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
     {
+        AliasModule.Deactivate();
+        AliasModule = null;
+
         CategorizeModule.Deactivate();
         CategorizeModule = null;
 
@@ -182,7 +196,6 @@ internal class ModEntry : Mod
             MultiplayerServer.Deactivate();
 
         ChestManager.ClearChestData();
-        InventoryManager.ClearInventoryData();
     }
 
     /// <summary>
