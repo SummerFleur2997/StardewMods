@@ -98,9 +98,7 @@ internal class StashToChestsModule : IModule
     /// Whether the given item is locked in the current player's inventory.
     /// <seealso cref="CreateRejectingFunction"/>
     /// </summary>
-    private static bool InventoryLocksItem(Item item) =>
-        // todo
-        false;
+    private static bool InventoryLocksItem(Item item) => item.modData.TryGetValue(ModEntry.Manifest.UniqueID, out _);
 
     /// <summary>
     /// 根据配置选项设置将物品存储至箱子时的接受物品判断函数。
@@ -214,7 +212,7 @@ internal class StashToChestsModule : IModule
     private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
     {
         if (MenuManager.ScreenWidgetHost.Value is
-            MenuHost<ItemGrabMenu> { SideLabelButton: ChestSideTab { AliasMenu: not null } })
+            MenuHost<ItemGrabMenu> { Overlay: ChestSideTab { AliasMenu: not null } })
             return;
 
         if (ModEntry.Config.StashAnywhereKey.JustPressed() && IsStashAnywhereActive)
@@ -224,6 +222,11 @@ internal class StashToChestsModule : IModule
             StashToNearby();
     }
 
+    /// <summary>
+    /// Auto stash in the mine or skull cave every 30 minutes
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     private void OnTimeChanged(object? sender, TimeChangedEventArgs e)
     {
         var config = ModEntry.Config;

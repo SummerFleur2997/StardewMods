@@ -13,15 +13,12 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
 {
     public override ChestData ChestData { get; }
 
-    private Button? _warning;
+    private TextLabel? _warning;
 
     public CategoryChestMenu(int x0, int y0, int width, int height, ChestData data, ClickableMenu root, int padding)
         : base(x0, y0, width, height, root, padding)
     {
         ChestData = data;
-
-        if (data.Snapshot is not null)
-            AddSnapshotWarning();
 
         // quick set button
         var x = xPositionOnScreen + width + 16;
@@ -53,7 +50,24 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
         foreach (var category in categories)
             TopRow.CategorySelector.AddOption(category.DisplayName, category);
 
-        RecreateItemToggles();
+        // add the grid menu in front of the top row to ensure
+        // that the drop-down in the top row is handled first.
+        AddChildren(GridMenu, TopRow);
+
+        if (data.Snapshot is not null)
+            AddSnapshotWarning();
+        else
+            RecreateItemToggles();
+    }
+
+    /// <summary>
+    /// Set a snapshot for this chest.
+    /// </summary>
+    public void SetSnapshot(ChestDataSnapshot snapshot)
+    {
+        ChestData.Snapshot = snapshot;
+        ChestData.AcceptedItemKinds = snapshot.AcceptedItemKinds;
+        AddSnapshotWarning();
     }
 
     /// <summary>
@@ -62,14 +76,16 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
     /// </summary>
     private void AddSnapshotWarning()
     {
+        RecreateItemToggles(true);
+        Components.Remove(TopRow);
         var snapshotName = ChestData.Snapshot?.Alias ?? "";
         var text = Context.IsMainPlayer
             ? I18n.UI_Snapshot_Warning_Mainplayer(snapshotName)
             : I18n.UI_Snapshot_Warning_Farmhand();
 
         var parsedText = Game1.parseText(text, Game1.smallFont, width / 2);
-        var background = NineSlice.SmallMenuBackground();
-        _warning = new Button(background, parsedText, Color.Black, Game1.smallFont, padding: 16);
+        if (_warning is not null) return;
+        _warning = new TextLabel(parsedText, Color.Black, Game1.smallFont, drawShadow: true);
         _warning.SetInCenterOfTheBounds(Bounds);
         AddChild(_warning);
     }
@@ -131,15 +147,9 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
                 return;
 
             RemoveChild(_warning);
-            _warning.Dispose();
             _warning = null;
+            RecreateItemToggles();
+            AddChild(TopRow);
         }
     }
-
-    // private void SetSnapshot(ChestDataSnapshot snapshot)
-    // {
-    //     ChestData.Snapshot = snapshot;
-    //     ChestData.AcceptedItemKinds = snapshot.AcceptedItemKinds;
-    //     AddSnapshotWarning();
-    // }
 }

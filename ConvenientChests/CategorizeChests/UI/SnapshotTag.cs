@@ -72,9 +72,12 @@ internal sealed class SnapshotTag : IClickableComponent, IDisposable
         Snapshot = snapshot;
     }
 
-    public void Select()
+    public void Select(bool alsoSelectTextbox = false)
     {
         Selected = true;
+        if (alsoSelectTextbox)
+            TextBox.Selected = true;
+
         OnSelected?.Invoke(this);
     }
 
@@ -85,6 +88,7 @@ internal sealed class SnapshotTag : IClickableComponent, IDisposable
 
         Selected = false;
         TextBox.Selected = false;
+        TextBox.Text = Snapshot.Alias;
         Game1.keyboardDispatcher.Subscriber = null;
         OnUnSelected?.Invoke(this);
     }
@@ -137,14 +141,18 @@ internal sealed class SnapshotTag : IClickableComponent, IDisposable
     /// Receives a key press. This method can only be called
     /// when the <see cref="Selected"/> is true.
     /// </summary>
-    public void ReceiveKeyPress(Keys key)
+    public bool ReceiveKeyPress(Keys key)
     {
         // if the textbox is not selected, deselect this tag
         if (!TextBox.Selected)
         {
-            UnSelect();
-            Game1.playSound("bigDeSelect");
-            return;
+            if (key == Keys.Escape)
+            {
+                UnSelect();
+                Game1.playSound("bigDeSelect");
+            }
+
+            return false;
         }
 
         // else, the textbox is selected, handle some special key press
@@ -153,12 +161,15 @@ internal sealed class SnapshotTag : IClickableComponent, IDisposable
             case Keys.Escape:
                 TextBox.Selected = false;
                 Game1.playSound("bigDeSelect");
-                return;
+                break;
             case Keys.Enter:
                 TextBox.Selected = false;
                 Game1.playSound("money");
-                return;
+                break;
         }
+
+        // always suppress the input cause we should handle the text input
+        return true;
     }
 
     /// <inheritdoc/>

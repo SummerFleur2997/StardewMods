@@ -80,9 +80,9 @@ internal static class SnapshotManager
             do
             {
                 i++;
-            } while (HaveADuplicatedAlias($"{I18n.UI_Unnamed(I18n.UI_Snapshot())} {i}"));
+            } while (HaveADuplicatedAlias($"{I18n.UI_Unnamed()} {i}"));
 
-            return $"{I18n.UI_Unnamed(I18n.UI_Snapshot())} {i}";
+            return $"{I18n.UI_Unnamed()} {i}";
         }
 
         i++;
@@ -110,6 +110,8 @@ internal static class SnapshotManager
     {
         try
         {
+            _order.Clear();
+            _snapshots.Clear();
             var snapshots = ModEntry.ModHelper.Data.ReadJsonFile<ChestDataSnapshot[]>(DataPath) ??
                             Array.Empty<ChestDataSnapshot>();
             _order = snapshots.Select(x => x.UniqueID).ToList();

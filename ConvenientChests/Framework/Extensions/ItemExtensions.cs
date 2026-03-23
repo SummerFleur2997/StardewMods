@@ -8,18 +8,34 @@ namespace ConvenientChests.Framework.Extensions;
 
 internal static class ItemExtensions
 {
+    /// <summary>
+    /// Whether the item is a craftable item
+    /// </summary>
     public static bool IsCraftable(this Item item)
     {
         return CraftingRecipe.craftingRecipes.ContainsKey(item.Name);
     }
 
+    /// <summary>
+    /// Get a copy of this item.
+    /// </summary>
     public static Item Copy(this Item item)
     {
         return ItemRegistry.Create(item.QualifiedItemId, item.Stack, item.Quality);
     }
 
-    public static Item CloneOne(this Item item) => ItemRegistry.Create(item.QualifiedItemId);
+    public static void ChangeLockStatus(this Item item)
+    {
+        var id = ModEntry.Manifest.UniqueID;
+        var locked = item.modData.ContainsKey(id);
 
+        if (locked) item.modData.Remove(id);
+        else item.modData[id] = "t";
+    }
+
+    /// <summary>
+    /// Used for tools and scythe, returns the base item.
+    /// </summary>
     public static Item ToBase(this Item item)
     {
         return item switch
@@ -34,11 +50,17 @@ internal static class ItemExtensions
         };
     }
 
+    /// <summary>
+    /// Convert the item to an item key.
+    /// </summary>
     public static ItemKey ToItemKey(this Item item)
     {
         return new ItemKey(item.TypeDefinitionId, item.ItemId);
     }
 
+    /// <summary>
+    /// Get all registered items in game.
+    /// </summary>
     public static IEnumerable<Item> GetAllItems(this IItemDataDefinition registry)
     {
         return registry.GetAllData().Select(registry.CreateItem);

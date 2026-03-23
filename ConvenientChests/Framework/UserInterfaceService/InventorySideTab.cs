@@ -22,7 +22,7 @@ internal class InventorySideTab : IOverlay<GameMenu>
             RootMenu.yPositionOnScreen + 30 * Game1.pixelZoom);
     }
 
-    public void DrawAboveUi(SpriteBatch b)
+    public void DrawUi(SpriteBatch b)
     {
         if (ModEntry.Config.HideSideTab)
             return;
@@ -30,6 +30,7 @@ internal class InventorySideTab : IOverlay<GameMenu>
         if (ModEntry.StashModule.IsActive || ModEntry.CategorizeModule.IsActive)
             LockButton.Draw(b);
 
+        Tooltip?.Draw(b);
         RootMenu.drawMouse(b);
     }
 

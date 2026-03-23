@@ -106,7 +106,7 @@ internal class AliasSetMenu : SubMenu
     }
 
     /// <inheritdoc/>
-    public override void ReceiveKeyPress(Keys key)
+    public override bool ReceiveKeyPress(Keys key)
     {
         if (_itemPickerOn || _textBox.Selected)
             switch (key)
@@ -115,16 +115,16 @@ internal class AliasSetMenu : SubMenu
                     _itemPickerOn = false;
                     _textBox.Selected = false;
                     Game1.playSound("bigDeSelect");
-                    return;
+                    return true;
                 case Keys.Enter:
                     _itemPickerOn = false;
                     _textBox.Selected = false;
                     break; // fall back to base method to handle enter key
                 default:
-                    return;
+                    return true;
             }
 
-        base.ReceiveKeyPress(key);
+        return base.ReceiveKeyPress(key);
     }
 
     /// <summary>

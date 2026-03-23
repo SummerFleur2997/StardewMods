@@ -16,7 +16,7 @@ internal readonly struct ItemCategoryName : IEquatable<ItemCategoryName>
     /// 分类的基础名称。
     /// The base name of the category.
     /// </summary>
-    public string BaseName { get; }
+    public string BaseName { get; } = "Vegetable";
 
     /// <summary>
     /// 构造函数，初始化 ItemCategoryName。

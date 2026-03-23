@@ -142,16 +142,16 @@ internal class ItemKey : IComparable<ItemKey>, IEquatable<ItemKey>
                 return new ItemCategoryName(I18n.Categorize_Hats(), "Hats");
 
             case "(P)":
-                return new ItemCategoryName(I18n.Categorize_Pants(), "Pants");
+                return new ItemCategoryName(LoadString("Pants_Name", "Pants"), "Pants");
 
             case "(S)":
-                return new ItemCategoryName(I18n.Categorize_Shirts(), "Shirts");
+                return new ItemCategoryName(LoadString("Shirt_Name", "Shirts"), "Shirts");
 
             case "(FL)":
-                return new ItemCategoryName(I18n.Categorize_Flooring(), "Flooring");
+                return new ItemCategoryName(LoadString("Wallpaper.cs.13203"), "Flooring");
 
             case "(WP)":
-                return new ItemCategoryName(I18n.Categorize_Wallpaper(), "Wallpaper");
+                return new ItemCategoryName(LoadString("Wallpaper.cs.13204"), "Wallpaper");
 
             case "(BC)":
                 var obj = GetOne<Object>();
@@ -165,10 +165,10 @@ internal class ItemKey : IComparable<ItemKey>, IEquatable<ItemKey>
                 return new ItemCategoryName(I18n.Categorize_Mannequin(), "Mannequin");
 
             case "(F)":
-                return new ItemCategoryName(I18n.Categorize_Furniture(), "Furniture");
+                return new ItemCategoryName(LoadString("Object.cs.12847"), "Furniture");
 
             case "(TR)":
-                return new ItemCategoryName(I18n.Categorize_Trinket(), "Trinket");
+                return new ItemCategoryName(LoadString("Trinket", "1_6_Strings"), "Trinket");
         }
 
         // 尝试使用游戏内的分类逻辑
@@ -185,6 +185,9 @@ internal class ItemKey : IComparable<ItemKey>, IEquatable<ItemKey>
             ? new ItemCategoryName(I18n.Categorize_Consumable(), "Consumable")
             : new ItemCategoryName(I18n.Categorize_Miscellaneous(), "Miscellaneous");
     }
+
+    private static string LoadString(string key, string file = "StringsFromCSFiles")
+        => Game1.content.LoadString($"Strings\\{file}:{key}");
 
     /// <summary>
     /// 获取解析后的物品数据。

@@ -107,20 +107,23 @@ internal class SubMenu : IClickableMenu, IComponent
     public virtual bool ReceiveScrollWheelAction(int amount) => false;
 
     /// <inheritdoc cref="StardewValley.Menus.IClickableMenu.receiveKeyPress"/>
-    public virtual void ReceiveKeyPress(Keys key)
+    public virtual bool ReceiveKeyPress(Keys key)
     {
         if (Game1.options.doesInputListContain(Game1.options.menuButton, key))
         {
             FireCancelEvent();
             Game1.playSound(_cancelButtonCue);
-            return;
+            return true;
         }
 
         if (key is Keys.Enter)
         {
             FireOkEvent();
             Game1.playSound(_okButtonCue);
+            return true;
         }
+
+        return false;
     }
 
     /// <summary>

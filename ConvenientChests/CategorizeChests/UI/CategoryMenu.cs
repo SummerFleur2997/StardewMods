@@ -51,11 +51,6 @@ internal abstract class CategoryMenu<T> : BaseMenu, IHaveSubMenu where T : IChes
         TopRow.SelectAllButton.OnToggle += OnToggleSelectAll;
         TopRow.CategorySelector.OnSelectionChanged += OnSelectChanged;
 
-        // The click handler logic in BaseMenu will traverse the children in
-        // reverse order, so we need to add the grid menu in front of the top
-        // row to ensure that the drop-down in the top row is handled first.
-        AddChildren(GridMenu, TopRow);
-
         // Get all the item categories, then link them with the drop-down.
         var categories = CategoryDataManager.GetCategories();
         foreach (var category in categories)
@@ -109,15 +104,15 @@ internal abstract class CategoryMenu<T> : BaseMenu, IHaveSubMenu where T : IChes
     }
 
     /// <inheritdoc/>
-    public override void receiveKeyPress(Keys key)
+    public override bool ReceiveKeyPress(Keys key)
     {
         if (SubMenu is not null)
         {
             SubMenu.ReceiveKeyPress(key);
-            return;
+            return true;
         }
 
-        base.receiveKeyPress(key);
+        return false;
     }
 
     /// <summary>
@@ -146,9 +141,10 @@ internal abstract class CategoryMenu<T> : BaseMenu, IHaveSubMenu where T : IChes
     /// <summary>
     /// Recreate the item toggles at this page when select a new category.
     /// </summary>
-    protected void RecreateItemToggles()
+    protected void RecreateItemToggles(bool showEmpty = false)
     {
         GridMenu.RemoveAllComponents();
+        if (showEmpty) return;
 
         var itemKeys = CategoryDataManager.Categories[ActiveCategory]
             .OrderBy(k => k);

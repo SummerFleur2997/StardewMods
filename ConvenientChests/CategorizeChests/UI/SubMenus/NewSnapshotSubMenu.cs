@@ -34,7 +34,7 @@ internal class NewSnapshotSubMenu : SubMenu, IHaveParentMenu
     }
 
     /// <inheritdoc/>
-    public override void ReceiveKeyPress(Keys key)
+    public override bool ReceiveKeyPress(Keys key)
     {
         if (!TextBox.Selected)
         {
@@ -43,16 +43,16 @@ internal class NewSnapshotSubMenu : SubMenu, IHaveParentMenu
                 case Keys.Escape:
                     TextBox.Selected = false;
                     Game1.playSound("bigDeSelect");
-                    return;
+                    return true;
                 case Keys.Enter:
                     TextBox.Selected = false;
                     break; // fall back to base method to handle enter key
                 default:
-                    return;
+                    return true;
             }
         }
 
-        base.ReceiveKeyPress(key);
+        return base.ReceiveKeyPress(key);
     }
 
     public override void Dispose()

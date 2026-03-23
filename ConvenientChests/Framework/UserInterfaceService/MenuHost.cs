@@ -7,23 +7,19 @@ namespace ConvenientChests.Framework.UserInterfaceService;
 
 internal sealed class MenuHost<T> : BaseOverlay
 {
-    public readonly IOverlay<T> SideLabelButton;
+    public readonly IOverlay<T> Overlay;
 
-    public MenuHost(IModEvents events, IInputHelper input, IReflectionHelper reflection, IOverlay<T> sideLabelButton)
+    public MenuHost(IModEvents events, IInputHelper input, IReflectionHelper reflection, IOverlay<T> overlay)
         : base(events, input, reflection, assumeUiMode: true)
     {
-        SideLabelButton = sideLabelButton;
+        Overlay = overlay;
     }
 
-    protected override void DrawUi(SpriteBatch b)
-    {
-        SideLabelButton.DrawAboveUi(b);
-        SideLabelButton.Tooltip?.Draw(b);
-    }
+    protected override void DrawUi(SpriteBatch b) => Overlay.DrawUi(b);
 
-    protected override bool ReceiveLeftClick(int x, int y) => SideLabelButton.ReceiveLeftClick(x, y);
+    protected override bool ReceiveLeftClick(int x, int y) => Overlay.ReceiveLeftClick(x, y);
 
-    protected override bool ReceiveCursorHover(int x, int y) => SideLabelButton.ReceiveCursorHover(x, y);
+    protected override bool ReceiveCursorHover(int x, int y) => Overlay.ReceiveCursorHover(x, y);
 
-    protected override bool ReceiveKeyPressed(Keys key) => SideLabelButton.ReceiveKeyPress(key);
+    protected override bool ReceiveKeyPressed(Keys key) => Overlay.ReceiveKeyPress(key);
 }

@@ -165,6 +165,7 @@ internal class ModEntry : Mod
             StashModule.Activate();
 
         SaveManager.Load();
+        SnapshotManager.Load();
 
         if (Context.IsMultiplayer)
         {
@@ -209,7 +210,6 @@ internal class ModEntry : Mod
     {
         GenericModConfigMenuIntegration.Register(Manifest, ModHelper.ModRegistry, ResetConfig, SaveConfig);
         QuickSaveIntegration.Register();
-        SnapshotManager.Load();
     }
 
     /// <summary>
@@ -248,7 +248,11 @@ internal class ModEntry : Mod
     /// 在游戏向存档文件写入数据前触发（除了新建存档时）。
     /// Raised before the game begins writes data to the save file (except the initial save creation).
     /// </summary>
-    private static void OnSaving(object sender, SavingEventArgs e) => SaveManager.Save();
+    private static void OnSaving(object sender, SavingEventArgs e)
+    {
+        SaveManager.Save();
+        SnapshotManager.Save();
+    }
 
     /// <summary>
     /// 在玩家按下/松开键盘、鼠标或手柄上的任意按钮时触发。

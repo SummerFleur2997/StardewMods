@@ -33,5 +33,5 @@ public interface IOverlay<out T> : IHaveTooltip
     /// <summary>
     /// Draw the overlay on the screen.
     /// </summary>
-    public void DrawAboveUi(SpriteBatch b);
+    public void DrawUi(SpriteBatch b);
 }

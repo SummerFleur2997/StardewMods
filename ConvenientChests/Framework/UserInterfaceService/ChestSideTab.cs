@@ -70,9 +70,10 @@ internal class ChestSideTab : IOverlay<ItemGrabMenu>
     }
 
     /// <inheritdoc />
-    public void DrawAboveUi(SpriteBatch b)
+    public void DrawUi(SpriteBatch b)
     {
-        if (ModEntry.Config.HideSideTab)
+        var drawTooltip = true;
+        if (!ModEntry.Config.HideSideTab)
         {
             if (ModEntry.AliasModule.IsActive)
                 AliasButton?.Draw(b);
@@ -80,14 +81,16 @@ internal class ChestSideTab : IOverlay<ItemGrabMenu>
             if (ModEntry.CategorizeModule.IsActive)
                 CategorizeButton?.Draw(b);
         }
+        else drawTooltip = false;
 
         if (AliasMenu is not null)
             AliasMenu.Draw(b);
 
         else if (!string.IsNullOrWhiteSpace(RootMenu.hoverText))
-        {
             IClickableMenu.drawHoverText(b, RootMenu.hoverText, Game1.smallFont);
-        }
+
+        if (drawTooltip)
+            Tooltip?.Draw(b);
 
         RootMenu.drawMouse(b);
     }

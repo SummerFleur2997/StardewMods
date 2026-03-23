@@ -23,6 +23,11 @@ internal class ChestDataSnapshot : IChestData
     public long UniqueID { get; init; }
 
     /// <summary>
+    /// The most relevant category for this snapshot.
+    /// </summary>
+    public ItemCategoryName PotentialMostRelevantCategory { get; set; }
+
+    /// <summary>
     /// A series of accepted items.
     /// </summary>
     [JsonConverter(typeof(DataConverter))]
