@@ -66,7 +66,7 @@ internal class ItemKey : IComparable<ItemKey>, IEquatable<ItemKey>
     /// 比较是否与给定对象相等。
     /// Compare whether the object is equal to the given object.
     /// </summary>
-    public override bool Equals(object obj) => obj is ItemKey itemKey && Equals(itemKey);
+    public override bool Equals(object? obj) => obj is ItemKey itemKey && Equals(itemKey);
 
     /// <summary>
     /// 返回对象的字符串表示形式。
@@ -77,10 +77,10 @@ internal class ItemKey : IComparable<ItemKey>, IEquatable<ItemKey>
         return QualifiedItemId;
     }
 
-    public int CompareTo(ItemKey other)
+    public int CompareTo(ItemKey? other)
     {
         var thisItem = GetOne();
-        var otherItem = other.GetOne();
+        var otherItem = other?.GetOne();
         return thisItem.CompareTo(otherItem);
     }
 
@@ -88,7 +88,7 @@ internal class ItemKey : IComparable<ItemKey>, IEquatable<ItemKey>
     /// 比较两个 ItemKey 是否相等。
     /// Compare two ItemKey objects for equality.
     /// </summary>
-    public bool Equals(ItemKey itemKey) => itemKey?.TypeDefinition == TypeDefinition && itemKey?.ItemId == ItemId;
+    public bool Equals(ItemKey? itemKey) => itemKey?.TypeDefinition == TypeDefinition && itemKey.ItemId == ItemId;
 
     /// <summary>
     /// 获取一个新的物品实例。

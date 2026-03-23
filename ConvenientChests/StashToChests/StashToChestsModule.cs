@@ -2,6 +2,7 @@ using Common;
 using ConvenientChests.Framework.DataService;
 using ConvenientChests.Framework.DataStructs;
 using ConvenientChests.Framework.Extensions;
+using ConvenientChests.Framework.UserInterfaceService;
 using StardewModdingAPI.Events;
 using StardewValley.Locations;
 using StardewValley.Menus;
@@ -18,13 +19,13 @@ internal class StashToChestsModule : IModule
     /// 判断箱子接受物品的函数。
     /// The function to determine whether the chest accepts the item.
     /// </summary>
-    public AcceptingFunc AcceptingFunc { get; private set; }
+    public AcceptingFunc AcceptingFunc { get; private set; } = (_, _) => false;
 
     /// <summary>
     /// 判断箱子拒绝物品的函数。
     /// The function to determine whether the chest rejects the item.
     /// </summary>
-    public RejectingFunc RejectingFunc { get; private set; }
+    public RejectingFunc RejectingFunc { get; private set; } = _ => false;
 
     /// <summary>
     /// 存储至附近的箱子功能是否启用。
@@ -210,8 +211,12 @@ internal class StashToChestsModule : IModule
     /// 按下存储按钮或按键时，将物品存储至子里。
     /// When stash button or stash key is pressed, try stash items to nearby chests.
     /// </summary>
-    private void OnButtonPressed(object sender, ButtonPressedEventArgs e)
+    private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
     {
+        if (MenuManager.ScreenWidgetHost.Value is
+            MenuHost<ItemGrabMenu> { SideLabelButton: ChestSideTab { AliasMenu: not null } })
+            return;
+
         if (ModEntry.Config.StashAnywhereKey.JustPressed() && IsStashAnywhereActive)
             StashAnywhere();
 
@@ -219,7 +224,7 @@ internal class StashToChestsModule : IModule
             StashToNearby();
     }
 
-    private void OnTimeChanged(object sender, TimeChangedEventArgs e)
+    private void OnTimeChanged(object? sender, TimeChangedEventArgs e)
     {
         var config = ModEntry.Config;
         if (e.NewTime % 100 % 30 != 0) return;

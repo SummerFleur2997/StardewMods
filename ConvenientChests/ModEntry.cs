@@ -1,4 +1,5 @@
-﻿using Common;
+﻿#nullable disable
+using Common;
 using ConvenientChests.AliasForChests;
 using ConvenientChests.API;
 using ConvenientChests.CategorizeChests;
@@ -29,7 +30,7 @@ internal class ModEntry : Mod
 
     #region Properties
 
-    public static bool IsAndroid => Constants.TargetPlatform == GamePlatform.Android;
+    // public static bool IsAndroid => Constants.TargetPlatform == GamePlatform.Android;
     public static ModConfig Config { get; private set; }
     public static IManifest Manifest { get; private set; }
     public static IModHelper ModHelper { get; private set; }
@@ -165,9 +166,11 @@ internal class ModEntry : Mod
 
         SaveManager.Load();
 
-        MultiplayerServer = new MultiplayerServer();
         if (Context.IsMultiplayer)
+        {
+            MultiplayerServer = new MultiplayerServer();
             MultiplayerServer.Activate();
+        }
 
 #if DEBUG
         Debug.Init();
@@ -180,20 +183,20 @@ internal class ModEntry : Mod
     /// </summary>
     private static void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
     {
-        AliasModule.Deactivate();
+        AliasModule?.Deactivate();
         AliasModule = null;
 
-        CategorizeModule.Deactivate();
+        CategorizeModule?.Deactivate();
         CategorizeModule = null;
 
-        CraftModule.Deactivate();
+        CraftModule?.Deactivate();
         CraftModule = null;
 
-        StashModule.Deactivate();
+        StashModule?.Deactivate();
         StashModule = null;
 
-        if (MultiplayerServer.IsActive)
-            MultiplayerServer.Deactivate();
+        MultiplayerServer?.Deactivate();
+        MultiplayerServer = null;
 
         ChestManager.ClearChestData();
     }

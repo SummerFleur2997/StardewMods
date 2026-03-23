@@ -12,13 +12,7 @@ internal class CraftFromChestsModule : IModule
 {
     public bool IsActive { get; private set; }
 
-    private readonly MenuListener _menuListener;
-
-    public CraftFromChestsModule()
-    {
-        var events = ModEntry.ModHelper.Events;
-        _menuListener = new MenuListener(events);
-    }
+    private readonly MenuListener _menuListener = new();
 
     public void Activate()
     {
@@ -38,10 +32,10 @@ internal class CraftFromChestsModule : IModule
         _menuListener.UnregisterEvents();
     }
 
-    private void CraftingMenuShown(object sender, CraftingMenuArgs e)
+    private void CraftingMenuShown(object? sender, CraftingMenuArgs e)
     {
         var page = e.Page;
-        if (page == null)
+        if (page == null!)
             return;
 
         // Find nearby chests

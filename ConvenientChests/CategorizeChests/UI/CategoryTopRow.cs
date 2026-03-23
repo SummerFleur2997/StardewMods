@@ -1,5 +1,4 @@
-﻿#nullable enable
-using ConvenientChests.Framework.DataStructs;
+﻿using ConvenientChests.Framework.DataStructs;
 using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -40,7 +39,7 @@ internal sealed class CategoryTopRow : IClickableMenu, IClickableComponent
 
     public CategoryTopRow(int x, int y, int width, int height, int parentMenuHeight)
     {
-        SelectAllButtonBackground = NineSlice.CommonMenu();
+        SelectAllButtonBackground = NineSlice.SmallMenuBackground();
         SelectAllButton = new LabeledCheckBox(I18n.Categorize_All(), Color.Black);
         PrevButton = new SpriteButton(TextureRegion.UpArrow());
         NextButton = new SpriteButton(TextureRegion.DownArrow());

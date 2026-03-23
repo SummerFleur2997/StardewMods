@@ -1,4 +1,5 @@
-﻿using ConvenientChests.Framework.DataStructs;
+﻿#nullable disable
+using ConvenientChests.Framework.DataStructs;
 
 namespace ConvenientChests.Framework.SaveService;
 

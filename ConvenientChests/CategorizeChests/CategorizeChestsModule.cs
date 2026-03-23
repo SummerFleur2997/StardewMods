@@ -1,5 +1,4 @@
-﻿#nullable enable
-using Common;
+﻿using Common;
 using ConvenientChests.Framework.DataService;
 using ConvenientChests.Framework.DataStructs;
 using StardewModdingAPI.Events;

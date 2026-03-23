@@ -1,4 +1,3 @@
-#nullable enable
 using ConvenientChests.Framework.DataService;
 using ConvenientChests.Framework.DataStructs;
 using Microsoft.Xna.Framework;

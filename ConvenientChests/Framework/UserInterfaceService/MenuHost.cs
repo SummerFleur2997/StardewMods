@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using StardewModdingAPI.Events;
 using UI;
 
@@ -6,19 +7,23 @@ namespace ConvenientChests.Framework.UserInterfaceService;
 
 internal sealed class MenuHost<T> : BaseOverlay
 {
-    private readonly IOverlay<T> _sideLabelButton;
+    public readonly IOverlay<T> SideLabelButton;
 
     public MenuHost(IModEvents events, IInputHelper input, IReflectionHelper reflection, IOverlay<T> sideLabelButton)
         : base(events, input, reflection, assumeUiMode: true)
     {
-        _sideLabelButton = sideLabelButton;
+        SideLabelButton = sideLabelButton;
     }
 
-    protected override void DrawUi(SpriteBatch batch)
+    protected override void DrawUi(SpriteBatch b)
     {
-        if (Game1.activeClickableMenu is not T) return;
-        _sideLabelButton.Draw(batch);
+        SideLabelButton.DrawAboveUi(b);
+        SideLabelButton.Tooltip?.Draw(b);
     }
 
-    protected override bool ReceiveLeftClick(int x, int y) => _sideLabelButton.ReceiveLeftClick(x, y);
+    protected override bool ReceiveLeftClick(int x, int y) => SideLabelButton.ReceiveLeftClick(x, y);
+
+    protected override bool ReceiveCursorHover(int x, int y) => SideLabelButton.ReceiveCursorHover(x, y);
+
+    protected override bool ReceiveKeyPressed(Keys key) => SideLabelButton.ReceiveKeyPress(key);
 }

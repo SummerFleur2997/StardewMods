@@ -1,4 +1,3 @@
-#nullable enable
 using StardewModdingAPI.Utilities;
 
 namespace ConvenientChests.Framework;

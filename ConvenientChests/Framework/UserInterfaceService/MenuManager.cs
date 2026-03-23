@@ -8,7 +8,7 @@ namespace ConvenientChests.Framework.UserInterfaceService;
 
 internal static class MenuManager
 {
-    public static PerScreen<BaseOverlay> ScreenWidgetHost { get; } = new();
+    public static PerScreen<BaseOverlay?> ScreenWidgetHost { get; } = new();
     private static IModEvents Events => ModEntry.ModHelper.Events;
     private static IInputHelper Input => ModEntry.ModHelper.Input;
     private static IReflectionHelper Reflection => ModEntry.ModHelper.Reflection;

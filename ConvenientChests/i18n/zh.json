@@ -1,7 +1,4 @@
 {
-  "Button.Stash": "存储",
-  "Button.Categorize": "分类",
-
   "Config.active": "启用",
 
   "Config.Categorize.Title": "存储归类",
@@ -64,12 +61,13 @@
   "Categorize.Wallpaper": "壁纸",
   "Categorize.Weapons": "武器",
 
-  "LockItems.Title": "锁定物品",
-
   "UI.Yes": "确定",
   "UI.No": "取消",
+  "UI.Categorize": "编辑分类",
+  "UI.Categorize.desc": "设定这个箱子的物品分类。",
   "UI.ChestAlias": "编辑备注",
   "UI.ChestAlias.desc": "为这个箱子添加备注。添加后，当把鼠标放到箱子上时，将会出现一个气泡显示你的备注。",
+  "UI.LockItems": "锁定物品",
   "UI.QuickSet": "快速设置分类",
   "UI.QuickSet.desc": "将当前箱子里所包含的物品添加至分类列表中。",
   "UI.Snapshot": "分类快照",

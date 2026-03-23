@@ -1,5 +1,4 @@
-﻿#nullable enable
-using ConvenientChests.Framework.DataStructs;
+﻿using ConvenientChests.Framework.DataStructs;
 
 namespace ConvenientChests.Framework.DataService;
 
@@ -67,7 +66,7 @@ internal static class SnapshotManager
         return new ChestDataSnapshot(alias, id, acceptedItemKinds ?? new HashSet<ItemKey>());
     }
 
-    public static string GetAValidAlias(string alias, long id)
+    public static string GetAValidAlias(string? alias, long id)
     {
         if (!_snapshots.Values.Any(x => x.Alias == alias && x.UniqueID != id) &&
             !string.IsNullOrWhiteSpace(alias))

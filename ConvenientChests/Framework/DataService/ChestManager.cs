@@ -1,4 +1,3 @@
-#nullable enable
 using System.Runtime.CompilerServices;
 using ConvenientChests.Framework.DataStructs;
 using StardewValley.Objects;

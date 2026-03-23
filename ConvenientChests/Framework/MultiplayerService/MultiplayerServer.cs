@@ -28,7 +28,7 @@ internal class MultiplayerServer : IModule
         ModEntry.ModHelper.Events.Multiplayer.ModMessageReceived -= OnMessageReceived;
     }
 
-    public static void SendChestData(Chest chest, ItemKey itemKey = null, string alias = null, string itemId = null)
+    public static void SendChestData(Chest chest, ItemKey? itemKey = null, string? alias = null, string? itemId = null)
     {
         var playerID = Game1.player.UniqueMultiplayerID;
         var chestAddress = new ChestAddress(chest);
@@ -62,13 +62,13 @@ internal class MultiplayerServer : IModule
         ModEntry.ModHelper.Events.Display.MenuChanged -= OnMenuChanged;
     }
 
-    private static void OnMenuChanged(object sender, MenuChangedEventArgs e)
+    private static void OnMenuChanged(object? sender, MenuChangedEventArgs e)
     {
         MultiplayerHelper.SendMessage("null", "MultiplayerInit",
             new[] { ModEntry.Manifest.UniqueID }, new[] { Game1.MasterPlayer.UniqueMultiplayerID });
     }
 
-    private static void OnMessageReceived(object sender, ModMessageReceivedEventArgs e)
+    private static void OnMessageReceived(object? sender, ModMessageReceivedEventArgs e)
     {
         switch (e.Type)
         {

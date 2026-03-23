@@ -1,6 +1,4 @@
-﻿#nullable enable
-using ConvenientChests.CategorizeChests.UI;
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -45,7 +43,7 @@ internal class SubMenu : IClickableMenu, IComponent
         this.SetSize(width, height);
         this.SetInCenterOfTheBounds(screen);
 
-        _background = NineSlice.CommonMenu(Bounds);
+        _background = NineSlice.SmallMenuBackground(Bounds);
 
         var okTexture = UIHelper.YellowButtonBackground();
         OkButton = new Button(okTexture, I18n.UI_Yes(), Color.Black, Game1.smallFont);

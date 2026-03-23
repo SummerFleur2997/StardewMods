@@ -1,6 +1,4 @@
-﻿#nullable enable
-using Common;
-using ConvenientChests.CategorizeChests.UI;
+﻿using Common;
 using ConvenientChests.Framework.DataService;
 using StardewModdingAPI.Events;
 using StardewValley.Objects;

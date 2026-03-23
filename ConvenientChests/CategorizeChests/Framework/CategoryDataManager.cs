@@ -1,3 +1,4 @@
+#nullable disable
 using ConvenientChests.Framework.DataStructs;
 using ConvenientChests.Framework.Extensions;
 using StardewValley.Tools;

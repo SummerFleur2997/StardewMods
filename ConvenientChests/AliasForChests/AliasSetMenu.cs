@@ -1,6 +1,4 @@
-﻿#nullable enable
-using ConvenientChests.CategorizeChests.UI;
-using ConvenientChests.Framework.DataStructs;
+﻿using ConvenientChests.Framework.DataStructs;
 using ConvenientChests.Framework.UserInterfaceService;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -17,11 +15,15 @@ internal class AliasSetMenu : SubMenu
     private readonly ItemButton _itemIconButton;
     private readonly GridMenu _itemPicker;
     private readonly ChestData _chestData;
-    private bool _itemPickerOn;
 
-    public AliasSetMenu(ChestData data) : base(400, 240)
+    private bool _itemPickerOn;
+    private ChestSideTab _parent;
+
+    public AliasSetMenu(ChestData data, ChestSideTab parent) : base(400, 240)
     {
         _chestData = data;
+        _parent = parent;
+
         var y = Y + 24;
 
         // init title label
@@ -48,7 +50,7 @@ internal class AliasSetMenu : SubMenu
         Components.Add(_textBox);
 
         // init item picker
-        var itemPickerBackground = NineSlice.CommonMenu();
+        var itemPickerBackground = NineSlice.SmallMenuBackground();
         itemPickerBackground.SetDestination(X - 416, y, 404, 404);
 
         _itemPicker = new GridMenu(X - 408, y + 8, 384, 384, 64);
@@ -125,6 +127,15 @@ internal class AliasSetMenu : SubMenu
         base.ReceiveKeyPress(key);
     }
 
+    /// <summary>
+    /// Customized logic for <see cref="ChestSideTab.ReceiveKeyPress"/>.
+    /// </summary>
+    public bool HandleOrSuppressThisKeyPress(Keys key)
+    {
+        ReceiveKeyPress(key);
+        return true;
+    }
+
     /// <inheritdoc/>
     public override void Draw(SpriteBatch b)
     {
@@ -139,44 +150,34 @@ internal class AliasSetMenu : SubMenu
     {
         _textBox.Dispose();
         _itemPicker.Dispose();
+        _parent.SetItemsClickable(true);
+
+        var parent = _parent;
+        _parent = null!;
+        parent.AliasMenu = null;
+        // parent.RootMenu
+
         base.Dispose();
     }
 
-    internal sealed class ItemButton : ItemLabel<Item>, IClickableComponent, IDisposable
+    internal sealed class ItemButton : ItemButton<Item>
     {
-        public event Action? OnPress;
         private readonly TextureRegion _redX = new(Game1.mouseCursors, 268, 470, 16, 16);
 
-        public ItemButton(Item? item) : base(item, width: 48, height: 48) { }
-        public ItemButton(string item) : base(item, width: 48, height: 48) { }
+        public ItemButton(Item? item) : base(item, width: 48, height: 48, setTooltip: false) { }
+        public ItemButton(string item) : base(item, width: 48, height: 48, setTooltip: false) { }
 
         public static ItemButton GetANullInstance() => new((Item)null!);
-
-        /// <inheritdoc/>
-        public bool ReceiveLeftClick(int x, int y)
-        {
-            if (!Bounds.Contains(x, y))
-                return false;
-
-            OnPress?.Invoke();
-            Game1.playSound("drumkit6");
-            return true;
-        }
-
-        /// <inheritdoc/>
-        public bool ReceiveCursorHover(int x, int y) => Bounds.Contains(x, y);
 
         public override void Draw(SpriteBatch b)
         {
             if (Item is null)
             {
-                b.Draw(_redX, new Rectangle(X, Y, 48, 48));
+                _redX.Draw(b, new Rectangle(X, Y, 48, 48));
                 return;
             }
 
             Item.drawInMenu(b, new Vector2(X - 8, Y - 8), 0.75f);
         }
-
-        public void Dispose() => OnPress = null;
     }
 }

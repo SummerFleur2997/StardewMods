@@ -1,10 +1,10 @@
-﻿#nullable enable
+﻿using ConvenientChests.Framework.UserInterfaceService;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using UI.Component;
 using UI.Sprite;
 
-namespace ConvenientChests.CategorizeChests.UI;
+namespace ConvenientChests.AliasForChests;
 
 public class ChestInfoBubble
 {
@@ -53,7 +53,7 @@ public class ChestInfoBubble
         x += 16;
         if (Text is not null) b.DrawString(_font, _text, new Vector2(x, _y + _textYOffset), Color.Black);
 
-        b.Draw(_tail, new Rectangle(_x + 20, _y + 68, TailSize, TailSize));
+        _tail.Draw(b, new Rectangle(_x + 20, _y + 68, TailSize, TailSize));
     }
 
     public void Set(Item? item, string? alias)

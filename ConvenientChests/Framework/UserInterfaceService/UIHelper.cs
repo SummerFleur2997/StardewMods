@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using UI.Component;
 using UI.Sprite;
 
-namespace ConvenientChests.CategorizeChests.UI;
+namespace ConvenientChests.Framework.UserInterfaceService;
 
 [UsedImplicitly(ImplicitUseTargetFlags.Members)]
 internal static class UIHelper
@@ -22,13 +22,13 @@ internal static class UIHelper
     /// <param name="x">The left position of the component in pixels.</param>
     /// <param name="y">The top position of the component in pixels.</param>
     /// <param name="variant">The variant sprite of this button.</param>
-    public static SpritesButton SideButton(int x, int y, SideButtonVariant variant)
+    public static SpriteButton SideButton(int x, int y, SideButtonVariant variant)
     {
         var xOffset = (int)variant * 16;
         var texture = new TextureRegion(Texture, xOffset, 0, 16, 16);
-        var body = new SpriteLabel(texture, width: 48, height: 48);
-        var background = OrangeButtonBackground();
-        return new SpritesButton(body, background, x, y, 64, 64);
+        var button = new SpriteButton(texture, x, y, 64, 64);
+        button.Tooltip = GetTooltipForSideButton(variant);
+        return button;
     }
 
     public static NineSlice LightButtonBackground(Rectangle bounds = new()) => new(
@@ -41,6 +41,19 @@ internal static class UIHelper
         new TextureRegion(Cursors, 403, 380, 2, 2, true),
         new TextureRegion(Cursors, 410, 380, 2, 2, true),
         new TextureRegion(Cursors, 405, 375, 1, 1, true),
+        bounds
+    );
+
+    public static NineSlice SideButtonBackground(Rectangle bounds = new()) => new(
+        new TextureRegion(Cursors, 164, 440, 1, 2, true),
+        new TextureRegion(Cursors, 162, 442, 2, 1, true),
+        new TextureRegion(Cursors, 176, 453, 2, 1, true),
+        new TextureRegion(Cursors, 175, 454, 1, 2, true),
+        new TextureRegion(Cursors, 162, 440, 2, 2, true),
+        new TextureRegion(Cursors, 176, 440, 2, 2, true),
+        new TextureRegion(Cursors, 162, 454, 2, 2, true),
+        new TextureRegion(Cursors, 176, 454, 2, 2, true),
+        new TextureRegion(Cursors, 175, 442, 1, 1, true),
         bounds
     );
 
@@ -96,6 +109,25 @@ internal static class UIHelper
         bounds
     );
 
+    /// <summary>
+    /// Hover event for side buttons
+    /// </summary>
+    private static Tooltip GetTooltipForSideButton(SideButtonVariant hint)
+    {
+        var (name, desc) = hint switch
+        {
+            SideButtonVariant.Alias => (I18n.UI_ChestAlias(), I18n.UI_ChestAlias_Desc()),
+            SideButtonVariant.Set => (I18n.UI_QuickSet(), I18n.UI_QuickSet_Desc()),
+            SideButtonVariant.Manage => (I18n.UI_Snapshot_Manage(), I18n.UI_Snapshot_Manage_Desc()),
+            SideButtonVariant.Save => (I18n.UI_Snapshot_Save(), I18n.UI_Snapshot_Save_Desc()),
+            SideButtonVariant.Unlink => (I18n.UI_Snapshot_Unlink(), I18n.UI_Snapshot_Unlink_Desc()),
+            SideButtonVariant.Categorize => (I18n.UI_Categorize(), I18n.UI_Categorize_Desc()),
+            SideButtonVariant.Lock => (I18n.UI_LockItems(), null),
+            _ => (null, null)
+        };
+        return new Tooltip(name, desc);
+    }
+
     // public static NineSlice ItemFrame(Rectangle bounds = new()) => new(
     //     new TextureRegion(Cursors, 390, 373, 6, 6, true),
     //     new TextureRegion(Cursors, 384, 379, 6, 6, true),
@@ -113,8 +145,10 @@ internal static class UIHelper
 internal enum SideButtonVariant
 {
     Alias = 0,
-    Set = 1,
-    Manage = 2,
-    Save = 3,
-    Unlink = 4
+    Categorize = 1,
+    Set = 2,
+    Manage = 3,
+    Save = 4,
+    Unlink = 5,
+    Lock = 6
 }

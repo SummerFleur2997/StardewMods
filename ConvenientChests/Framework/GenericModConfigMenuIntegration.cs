@@ -200,21 +200,21 @@ internal static class GenericModConfigMenuIntegration
             setValue: value => ModEntry.Config.HideSideTab = value
         );
 
-        if (ModEntry.IsAndroid)
-        {
-            // 【标题】移动端适配
-            // [Title] Mobile Adaptation
-            api.AddSectionTitle(manifest, I18n.Config_Mobile_Title);
-            api.AddNumberOption(
-                manifest,
-                name: I18n.Config_Mobile_Offset,
-                tooltip: I18n.Config_Mobile_Offset_Desc,
-                getValue: () => ModEntry.Config.MobileOffset,
-                setValue: value => ModEntry.Config.MobileOffset = value,
-                min: 0,
-                max: 200
-            );
-        }
+        // if (ModEntry.IsAndroid)
+        // {
+        //     // 【标题】移动端适配
+        //     // [Title] Mobile Adaptation
+        //     api.AddSectionTitle(manifest, I18n.Config_Mobile_Title);
+        //     api.AddNumberOption(
+        //         manifest,
+        //         name: I18n.Config_Mobile_Offset,
+        //         tooltip: I18n.Config_Mobile_Offset_Desc,
+        //         getValue: () => ModEntry.Config.MobileOffset,
+        //         setValue: value => ModEntry.Config.MobileOffset = value,
+        //         min: 0,
+        //         max: 200
+        //     );
+        // }
 
         ModEntry.Log("Successfully added configurations to GMCM.");
     }

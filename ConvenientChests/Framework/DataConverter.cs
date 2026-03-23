@@ -1,5 +1,4 @@
-﻿#nullable enable
-using ConvenientChests.Framework.DataStructs;
+﻿using ConvenientChests.Framework.DataStructs;
 using ConvenientChests.Framework.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;

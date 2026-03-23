@@ -17,51 +17,48 @@ internal class CraftingMenuArgs : EventArgs
 
 internal class MenuListener
 {
-    private readonly IModEvents _events;
-    public event EventHandler<CraftingMenuArgs> CraftingMenuShown;
+    private static IModEvents Events => ModEntry.ModHelper.Events;
+
+    public event EventHandler<CraftingMenuArgs>? CraftingMenuShown;
+    public event EventHandler? GameMenuTabChanged;
 
     private int _previousTab = -1;
-
-    public MenuListener(IModEvents events)
-    {
-        _events = events;
-    }
 
     public void RegisterEvents()
     {
         ModEntry.Log("Register");
-        _events.Display.MenuChanged += OnMenuChanged;
+        Events.Display.MenuChanged += OnMenuChanged;
     }
 
     public void UnregisterEvents()
     {
         ModEntry.Log("UnRegister");
-        _events.Display.MenuChanged -= OnMenuChanged;
+        Events.Display.MenuChanged -= OnMenuChanged;
     }
 
     /// <summary>Raised after a game menu is opened, closed, or replaced.</summary>
     /// <param name="sender">The event sender.</param>
     /// <param name="e">The event data.</param>
-    private void OnMenuChanged(object sender, MenuChangedEventArgs e)
+    private void OnMenuChanged(object? sender, MenuChangedEventArgs e)
     {
         if (e.NewMenu == e.OldMenu)
             return;
 
         switch (e.OldMenu)
         {
-            case GameMenu _:
+            case GameMenu:
                 UnregisterTabEvent();
                 break;
         }
 
         switch (e.NewMenu)
         {
-            case GameMenu _:
-                _events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
+            case GameMenu:
+                Events.Display.RenderedActiveMenu += OnRenderedActiveMenu;
                 break;
 
-            case object m when m.GetType().ToString() == "CookingSkill.NewCraftingPage":
-                CraftingMenuShown?.Invoke(sender, new CraftingMenuArgs(m as CraftingPage, true));
+            case CraftingPage m when m.GetType().ToString() == "CookingSkill.NewCraftingPage":
+                CraftingMenuShown?.Invoke(sender, new CraftingMenuArgs(m, true));
                 break;
 
             case CraftingPage p:
@@ -70,9 +67,6 @@ internal class MenuListener
         }
     }
 
-
-    public event EventHandler GameMenuTabChanged;
-
     /// <summary>
     /// When a menu is open (<see cref="Game1.activeClickableMenu"/> isn't null),
     /// raised after that menu is drawn to the sprite batch, but before it's
@@ -80,7 +74,7 @@ internal class MenuListener
     /// </summary>
     /// <param name="sender">The event sender.</param>
     /// <param name="e">The event data.</param>
-    private void OnRenderedActiveMenu(object sender, RenderedActiveMenuEventArgs e)
+    private void OnRenderedActiveMenu(object? sender, RenderedActiveMenuEventArgs e)
     {
         switch (Game1.activeClickableMenu)
         {
@@ -115,7 +109,7 @@ internal class MenuListener
 
     private void UnregisterTabEvent()
     {
-        _events.Display.RenderedActiveMenu -= OnRenderedActiveMenu;
+        Events.Display.RenderedActiveMenu -= OnRenderedActiveMenu;
         _previousTab = -1;
     }
 }

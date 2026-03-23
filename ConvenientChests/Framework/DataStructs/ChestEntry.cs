@@ -20,14 +20,14 @@ internal class ChestEntry
     /// The item that displays on the chest's label.
     /// </summary>
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-    public string ItemIconID { get; set; }
+    public string? ItemIconID { get; set; }
 
     /// <summary>
     /// 箱子标签备注。
     /// The user-defined alias for this chest.
     /// </summary>
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
-    public string Alias { get; set; }
+    public string? Alias { get; set; }
 
     /// <summary>
     /// 箱子所使用的快照 ID。
@@ -45,7 +45,11 @@ internal class ChestEntry
     [JsonConverter(typeof(DataConverter))]
     public HashSet<ItemKey> AcceptedItems { get; set; }
 
+#pragma warning disable CS8618 // 预留给反序列化器使用的 ctor
+
     public ChestEntry() { }
+
+#pragma warning restore CS8618
 
     public ChestEntry(ChestData data, ChestAddress address)
     {

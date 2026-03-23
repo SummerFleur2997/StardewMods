@@ -1,4 +1,6 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.Xna.Framework;
+using Newtonsoft.Json;
 using StardewValley.Locations;
 using StardewValley.Objects;
 
@@ -21,17 +23,22 @@ internal class ChestAddress
     /// The name of the building the chest is in, if the location is a
     /// buildable location.
     /// </summary>
-    public string BuildingName { get; set; }
+    [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
+    public string? BuildingName { get; set; }
 
     /// <summary>
     /// The tile the chest is found on.
     /// </summary>
     public Vector2 Tile { get; set; }
 
+#pragma warning disable CS8618 // 预留给反序列化器使用的 ctor
+
     public ChestAddress() { }
 
+#pragma warning restore CS8618
+
     public ChestAddress(string locationName, Vector2 tile,
-        ChestLocationType locationType = ChestLocationType.Normal, string buildingName = "")
+        ChestLocationType locationType = ChestLocationType.Normal, string? buildingName = null)
     {
         LocationName = locationName;
         Tile = tile;
@@ -68,7 +75,8 @@ internal class ChestAddress
         }
     }
 
-    private bool GetLocationFromAddress(out GameLocation location, out string error)
+    private bool GetLocationFromAddress(
+        [NotNullWhen(true)] out GameLocation? location, [NotNullWhen(false)] out string? error)
     {
         location = Game1.locations.FirstOrDefault(l => l.Name == LocationName);
         error = null;
@@ -100,15 +108,15 @@ internal class ChestAddress
         return true;
     }
 
-    public bool GetChestByAddress(out Chest chest, out string error)
+    public bool GetChestByAddress([NotNullWhen(true)] out Chest? chest, [NotNullWhen(false)] out string? error)
     {
         error = null;
         chest = null;
 
         if (LocationType == ChestLocationType.Refrigerator)
         {
-            var house = (FarmHouse)Game1.locations.FirstOrDefault(l =>
-                l is FarmHouse f && LocationName == (f.uniqueName?.Value ?? f.Name));
+            var house = Game1.locations.FirstOrDefault(l =>
+                l is FarmHouse f && LocationName == (f.uniqueName?.Value ?? f.Name)) as FarmHouse;
 
             if (house == null)
             {

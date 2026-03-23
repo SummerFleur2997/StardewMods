@@ -1,4 +1,3 @@
-#nullable enable
 using ConvenientChests.Framework.DataService;
 using ConvenientChests.Framework.MultiplayerService;
 using StardewValley.Objects;
@@ -66,7 +65,7 @@ internal class ChestData : IChestData
     /// <param name="alias">The new alias.</param>
     /// <param name="receiver">Whether this is a receiver of the edit event, this param
     /// is used in multiplayer sync.</param>
-    public void SetAlias(string alias, bool receiver = false)
+    public void SetAlias(string? alias, bool receiver = false)
     {
         Alias = string.IsNullOrWhiteSpace(alias) ? null : alias.Trim();
 

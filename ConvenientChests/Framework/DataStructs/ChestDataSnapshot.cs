@@ -15,7 +15,7 @@ internal class ChestDataSnapshot : IChestData
         set => _alias = SnapshotManager.GetAValidAlias(value, UniqueID);
     }
 
-    private string _alias;
+    private string _alias = "";
 
     /// <summary>
     /// The unique ID of the snapshot, used to identify it.
