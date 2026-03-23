@@ -1,5 +1,4 @@
-﻿#nullable enable
-using StardewValley.Extensions;
+﻿using StardewValley.Extensions;
 
 namespace BetterHatsAPI.Framework;
 

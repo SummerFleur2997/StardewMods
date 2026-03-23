@@ -16,24 +16,24 @@ public static class GuideBookHelper
     /// <summary>
     /// Enable the guide book shortcut when the player loads a save.
     /// </summary>
-    private static void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
+    private static void OnSaveLoaded(object? sender, SaveLoadedEventArgs e)
         => ModEntry.ModHelper.Events.Input.ButtonsChanged += OnButtonChanged;
 
     /// <summary>
     /// Disable the guide book shortcut when the player returns to the title screen.
     /// </summary>
-    private static void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
+    private static void OnReturnedToTitle(object? sender, ReturnedToTitleEventArgs e)
         => ModEntry.ModHelper.Events.Input.ButtonsChanged -= OnButtonChanged;
 
     /// <summary>
     /// Response the shortcut of opening the guide book.
     /// </summary>
-    private static void OnButtonChanged(object sender, ButtonsChangedEventArgs e)
+    private static void OnButtonChanged(object? sender, ButtonsChangedEventArgs e)
     {
         if (!ModEntry.Config.OpenGuideBookKey.JustPressed())
             return;
 
-        Hat hat;
+        Hat? hat;
         var m = Game1.activeClickableMenu;
         var menu = m is GameMenu gameMenu ? gameMenu.GetCurrentPage() : m;
         switch (menu)

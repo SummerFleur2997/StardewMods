@@ -37,8 +37,6 @@ internal static class Utilities
         return !itemData.IsErrorItem ? itemData.Description : "";
     }
 
-#nullable enable
-
     /// <summary>
     /// Try to get a translation from a content pack.
     /// </summary>
@@ -64,14 +62,12 @@ internal static class Utilities
         return pack.Translation.Get(key).ToString();
     }
 
-#nullable disable
-
     #region Log Warpper
 
-    public static void Log(string m) => ModEntry.Log(m);
-    public static void Info(string m) => ModEntry.Log(m, LogLevel.Info);
-    public static void Warn(string m) => ModEntry.Log(m, LogLevel.Warn);
-    public static void Error(string m) => ModEntry.Log(m, LogLevel.Error);
+    public static void Log(string? m) => ModEntry.Log(m);
+    public static void Info(string? m) => ModEntry.Log(m, LogLevel.Info);
+    public static void Warn(string? m) => ModEntry.Log(m, LogLevel.Warn);
+    public static void Error(string? m) => ModEntry.Log(m, LogLevel.Error);
 
     #endregion
 }

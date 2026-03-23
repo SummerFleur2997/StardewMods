@@ -1,7 +1,7 @@
 ﻿{
     "Name": "BetterHatsAPI",
     "Author": "SummerFleur",
-    "Version": "1.0.0",
+    "Version": "%ProjectVersion%",
     "Description": "Framework for adding custom buffs and events to hats.",
     "UniqueID": "SummerFleur.BetterHatsAPI",
     "MinimumApiVersion": "4.0.0",

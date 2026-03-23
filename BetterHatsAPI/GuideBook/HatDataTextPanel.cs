@@ -37,7 +37,7 @@ public class HatDataTextPanel : IComponent
         Height = height;
     }
 
-    public void UpdateData(HatData data)
+    public void UpdateData(HatData? data)
     {
         // if it is combined data, we shouldn't go further
         _isCombinedData = data?.ID == HatData.CombinedDataSign;

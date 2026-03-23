@@ -1,5 +1,4 @@
-﻿#nullable enable
-using BetterHatsAPI.Framework;
+﻿using BetterHatsAPI.Framework;
 using Netcode;
 using StardewModdingAPI.Events;
 using StardewValley.Objects;
@@ -49,7 +48,7 @@ public class HatsAPICore : ISummerFleurBetterHatsAPI
                 throw new ArgumentNullException(nameof(customConditionChecker));
 
             // check if any hat data exists
-            if (!HatDataHelper.AllHatData.TryGetValue(qualifiedHatID, out var data) || data is null)
+            if (!HatDataHelper.AllHatData.TryGetValue(qualifiedHatID, out var data))
                 throw new Exception($"Can't find any data of {qualifiedHatID}!");
 
             // check if any data belongs to the target pack
@@ -82,7 +81,7 @@ public class HatsAPICore : ISummerFleurBetterHatsAPI
                 throw new ArgumentNullException(nameof(customActionTrigger));
 
             // check if any hat data exists
-            if (!HatDataHelper.AllHatData.TryGetValue(qualifiedHatID, out var data) || data is null)
+            if (!HatDataHelper.AllHatData.TryGetValue(qualifiedHatID, out var data))
                 throw new Exception($"Can't find any data of {qualifiedHatID}!");
 
             // check if any data belongs to the target pack
@@ -115,7 +114,7 @@ public class HatsAPICore : ISummerFleurBetterHatsAPI
                 throw new ArgumentNullException(nameof(customModifier));
 
             // check if any hat data exists
-            if (!HatDataHelper.AllHatData.TryGetValue(qualifiedHatID, out var data) || data is null)
+            if (!HatDataHelper.AllHatData.TryGetValue(qualifiedHatID, out var data))
                 throw new Exception($"Can't find any data of {qualifiedHatID}!");
 
             // check if any data belongs to the target pack

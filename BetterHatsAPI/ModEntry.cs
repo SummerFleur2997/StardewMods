@@ -1,4 +1,5 @@
-﻿using BetterHatsAPI.API;
+﻿#nullable disable
+using BetterHatsAPI.API;
 using BetterHatsAPI.Framework;
 using BetterHatsAPI.GuideBook;
 using BetterHatsAPI.Integration;

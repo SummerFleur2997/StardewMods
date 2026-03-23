@@ -73,7 +73,7 @@ public class HatDataStatPanel : IClickableMenu, IClickableComponent
     /// <summary>
     /// Update the panel with cumulative stats from multiple HatData objects.
     /// </summary>
-    public void UpdateStats(HatData data)
+    public void UpdateStats(HatData? data)
     {
         // Update status
         _stats.Clear();
@@ -112,7 +112,7 @@ public class HatDataStatPanel : IClickableMenu, IClickableComponent
     {
         // draw background
         if (_isExpanded)
-            b.Draw(_backGround, Bounds, Color.LemonChiffon);
+            _backGround.Draw(b, Bounds, Color.LemonChiffon);
 
         // draw first 4 stats
         var visibleCount = Math.Min(CurrentVisibleCount, _stats.Count - _firstVisibleIndex);
@@ -256,7 +256,7 @@ internal class StatDisplay : IComponent
 
     public void Draw(SpriteBatch b)
     {
-        b.Draw(_icon, new Rectangle(X, Y + Padding / 2, IconSize, IconSize));
+        _icon.Draw(b, new Rectangle(X, Y + Padding / 2, IconSize, IconSize));
         _label.Draw(b);
     }
 }
@@ -264,5 +264,5 @@ internal class StatDisplay : IComponent
 internal static class SpriteButtonExtension
 {
     public static void DrawFlipVertical(this SpriteButton button, SpriteBatch b)
-        => b.Draw(button.Texture, button.Bounds, SpriteEffects.FlipVertically);
+        => button.Texture.Draw(b, button.Bounds, effects: SpriteEffects.FlipVertically);
 }

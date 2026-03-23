@@ -1,5 +1,4 @@
-﻿using JetBrains.Annotations;
-using StardewValley.Extensions;
+﻿using StardewValley.Extensions;
 using StardewValley.Objects;
 using StardewValley.Triggers;
 using static BetterHatsAPI.Framework.Utilities;
@@ -12,19 +11,18 @@ public static class HatDataHelper
     /// A dictionary of all hat data. The format is
     /// <see cref="StardewValley.Item.QualifiedItemId"/> -> List[<see cref="HatData"/>].
     /// </summary>
-    internal static Dictionary<string, List<HatData>> AllHatData { get; private set; }
+    internal static Dictionary<string, List<HatData>> AllHatData { get; private set; } = new();
 
     /// <summary>
     /// The default order of hats for each content pack.
     /// The format is ContentPackID -> List[HatID].
     /// </summary>
-    internal static Dictionary<string, List<string>> Order { get; private set; }
+    internal static Dictionary<string, List<string>> Order { get; private set; } = new();
 
     /// <summary>
     /// Gets the <see cref="HatData"/> of the specified hat.
     /// 获取指定帽子的 <see cref="HatData"/> 数据。
     /// </summary>
-    [NotNull]
     public static List<HatData> GetHatData(this Hat hat) =>
         AllHatData.TryGetValue(hat.QualifiedItemId, out var data) ? data : new List<HatData>();
 
@@ -49,7 +47,7 @@ public static class HatDataHelper
         foreach (var pack in ModEntry.ContentPacks)
         {
             Log($"Loading content pack - {pack.Manifest.UniqueID}.");
-            Dictionary<string, HatData> data;
+            Dictionary<string, HatData>? data;
             try
             {
                 // load the content pack's farm config (null if it doesn't exist)
@@ -115,7 +113,7 @@ public static class HatDataHelper
             foreach (var (_, oldData) in AllHatData)
                 oldData.RemoveAll(d => d.ID == id); // delete old data
 
-            Dictionary<string, HatData> data;
+            Dictionary<string, HatData>? data;
             try
             {
                 // load the content pack's farm config (null if it doesn't exist)

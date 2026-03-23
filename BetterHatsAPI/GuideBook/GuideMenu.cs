@@ -11,13 +11,9 @@ using UI.Sprite;
 
 namespace BetterHatsAPI.GuideBook;
 
+[UsedImplicitly(ImplicitUseTargetFlags.Members)]
 public class GuideMenu : BaseMenu
 {
-    /// <summary>
-    /// Used to compatible with LookupAnything.
-    /// </summary>
-    [UsedImplicitly] public Hat HoveredItem;
-
     public const int MenuWidth = 1352;
     public const int MenuHeight = 792;
 
@@ -40,18 +36,14 @@ public class GuideMenu : BaseMenu
     private TextLabel _hatName;
     private TextLabel _hatDesc;
 
-    private static string _currentActivePackId;
+    private static string? _currentActivePackId;
 
-    public GuideMenu(int x, int y, Hat targetHat)
+    public GuideMenu(int x, int y, Hat hat)
         : base(x, y, MenuWidth, MenuHeight)
     {
         var region = new TextureRegion(Texture.MenuBackground, 0, 0, MenuWidth / 4, MenuHeight / 4);
         Background = new SpriteLabel(region, x, y, MenuWidth, MenuHeight);
-        BuildWidgets(targetHat);
-    }
 
-    private void BuildWidgets(Hat hat)
-    {
         var gridX = 90 + xPositionOnScreen;
         var gridY = 138 + yPositionOnScreen;
 
@@ -71,7 +63,7 @@ public class GuideMenu : BaseMenu
         var dropDownY = Math.Max(12 + yPositionOnScreen, 0);
 
         _hatGridMenu = new GridMenu(gridX, gridY, GridMenuWidth, GridMenuHeight, 65);
-        _hatIcon = new ItemLabel<Hat>((Hat)null, iconX, iconY, HatIconSize, HatIconSize);
+        _hatIcon = new ItemLabel<Hat>((Hat)null!, iconX, iconY, HatIconSize, HatIconSize);
         _hatName = new TextLabel("", Color.Black, Game1.smallFont, textX, nameY);
         _hatDesc = new TextLabel("", Color.DimGray, Game1.smallFont, textX, descY);
         _textPanel = new HatDataTextPanel(textX, textY, TextPanelWidth, TextPanelHeight);
@@ -109,7 +101,7 @@ public class GuideMenu : BaseMenu
     {
         _hatGridMenu.RemoveAllComponents();
 
-        var buttons = HatDataHelper.Order[_currentActivePackId]
+        var buttons = HatDataHelper.Order[_currentActivePackId!]
             .Select(h => new ItemButton<Hat>(h))
             .ToList();
 
@@ -118,8 +110,6 @@ public class GuideMenu : BaseMenu
 
         _hatGridMenu.AddComponents(buttons);
     }
-
-#nullable enable
 
     /// <summary>
     /// Update the stat and text panel with the selected hat. Include
@@ -145,7 +135,7 @@ public class GuideMenu : BaseMenu
         var combinedData = HatData.Combine(dataList);
         _dropDownMenu.Options[i].Value.Data = combinedData;
 
-        var data = menuSelected.Data is null // null means the menu is first opened 
+        var data = menuSelected?.Data is null // null means the menu is first opened 
             ? dataList.FirstOrDefault() // so we use the first hat data temporarily, can be null
             : menuSelected.PackID != HatData.CombinedDataSign // check for combined data
                 ? dataList.FirstOrDefault(d => d.ID == menuSelected.PackID) ?? null // no data found, return null

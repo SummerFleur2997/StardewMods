@@ -1,4 +1,4 @@
-﻿#nullable enable
+﻿#pragma warning disable CS8632
 using StardewValley.Objects;
 
 namespace BetterHatsAPI.API;
