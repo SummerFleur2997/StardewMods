@@ -1,6 +1,7 @@
 ﻿using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using UI.Component;
 using ClickableMenu = StardewValley.Menus.IClickableMenu;
 
@@ -244,6 +245,21 @@ public class BaseMenu : ClickableMenu, IClickableMenu, IHaveTooltip
 
         return false;
     }
+
+    /// <inheritdoc/>
+    public sealed override void receiveKeyPress(Keys key)
+    {
+        if (ReceiveKeyPress(key))
+            return;
+
+        base.receiveKeyPress(key);
+    }
+
+    /// <inheritdoc/>
+    /// <returns>True if the event is handled, false otherwise.
+    /// If handled, it will suppress the vanilla event.</returns>
+    /// <seealso cref="receiveKeyPress"/>
+    public virtual bool ReceiveKeyPress(Keys key) => false;
 
     /// <summary>
     /// The default exit process of this menu.

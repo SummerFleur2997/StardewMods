@@ -4,11 +4,8 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace UI.Component;
 
-/// <summary>
-/// Indicate a button with both sprite background and text.
-/// </summary>
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-public class Button : IClickableComponent, IHaveTooltip, IDisposable
+public class ToggleButton : IClickableComponent, IDisposable
 {
     /// <inheritdoc/>
     public Rectangle Bounds => new(X, Y, Width, Height);
@@ -19,7 +16,8 @@ public class Button : IClickableComponent, IHaveTooltip, IDisposable
         get => _x;
         set
         {
-            Label.X += value - _x;
+            Label1.X += value - _x;
+            Label2.X += value - _x;
             Background.X = value;
             _x = value;
         }
@@ -34,7 +32,8 @@ public class Button : IClickableComponent, IHaveTooltip, IDisposable
         get => _y;
         set
         {
-            Label.Y += value - _y;
+            Label1.Y += value - _y;
+            Label2.Y += value - _y;
             Background.Y = value;
             _y = value;
         }
@@ -51,7 +50,8 @@ public class Button : IClickableComponent, IHaveTooltip, IDisposable
         get => _width;
         set
         {
-            Label.X = _x + (value - Label.Width) / 2;
+            Label1.X = _x + (value - Label1.Width) / 2;
+            Label2.X = _x + (value - Label2.Width) / 2;
             Background.Width = value;
             _width = value;
         }
@@ -68,7 +68,8 @@ public class Button : IClickableComponent, IHaveTooltip, IDisposable
         get => _height;
         set
         {
-            Label.Y = _y + (value - Label.Height) / 2;
+            Label1.Y = _y + (value - Label1.Height) / 2;
+            Label2.Y = _y + (value - Label2.Height) / 2;
             Background.Height = value;
             _height = value;
         }
@@ -76,22 +77,24 @@ public class Button : IClickableComponent, IHaveTooltip, IDisposable
 
     private int _height;
 
-    public Tooltip? Tooltip { get; set; }
-
     public string SoundCue = "drumkit6";
     public IComponent Background;
-    public TextLabel Label;
+
+    public TextLabel Label1;
+    public TextLabel Label2;
 
     private int _padding;
 
-    public event Action? OnPress;
-    public event Action? OnHover;
+    public bool Active;
+    public event Action<bool>? OnToggle;
+    public event Action<bool>? OnHover;
 
     /// <summary>
     /// Construct a button. 
     /// </summary>
     /// <param name="background">The background sprite of this button.</param>
-    /// <param name="text">The text of this button.</param>
+    /// <param name="text1">The first (also initial) text of this button.</param>
+    /// <param name="text2">The second text of this button.</param>
     /// <param name="color">The color of text.</param>
     /// <param name="font">The font of text.</param>
     /// <param name="x">The x-position of background.</param>
@@ -100,25 +103,29 @@ public class Button : IClickableComponent, IHaveTooltip, IDisposable
     /// <param name="height">The height of the background.</param>
     /// <param name="padding">The padding between the text and the background.</param>
     /// <param name="drawShadow">Whether to draw the text label with shadow.</param>
-    public Button(IComponent background, string text, Color color, SpriteFont font, int x = 0, int y = 0,
-        int? width = null, int? height = null, int padding = Game1.pixelZoom * 2, bool drawShadow = false)
+    public ToggleButton(IComponent background, string text1, string text2, Color color, SpriteFont font,
+        int x = 0, int y = 0, int? width = null, int? height = null, int padding = Game1.pixelZoom * 2,
+        bool drawShadow = false)
     {
         Background = background;
-        Label = new TextLabel(text, color, font, drawShadow: drawShadow);
+        Label1 = new TextLabel(text1, color, font, drawShadow: drawShadow);
+        Label2 = new TextLabel(text2, color, font, drawShadow: drawShadow);
         _padding = padding;
 
         // Use the width and height of the label as the width and height of the button.
-        _width = Background.Width = width ?? Label.Width + padding * 2;
-        _height = Background.Height = height ?? Label.Height + padding * 2;
+        _width = Background.Width = width ?? Math.Max(Label1.Width, Label2.Width) + padding * 2;
+        _height = Background.Height = height ?? Math.Max(Label1.Height, Label2.Height) + padding * 2;
         _x = Background.X = x;
         _y = Background.Y = y;
-        Label.SetInCenterOfTheBounds(Bounds);
+        Label1.SetInCenterOfTheBounds(Bounds);
+        Label2.SetInCenterOfTheBounds(Bounds);
     }
 
     public virtual void Draw(SpriteBatch b)
     {
         Background.Draw(b);
-        Label.Draw(b);
+        if (Active) Label2.Draw(b);
+        else Label1.Draw(b);
     }
 
     public virtual bool ReceiveLeftClick(int x, int y)
@@ -126,7 +133,8 @@ public class Button : IClickableComponent, IHaveTooltip, IDisposable
         if (!Bounds.Contains(x, y))
             return false;
 
-        OnPress?.Invoke();
+        Active = !Active;
+        OnToggle?.Invoke(Active);
         if (!string.IsNullOrEmpty(SoundCue)) Game1.playSound(SoundCue);
         return true;
     }
@@ -136,13 +144,13 @@ public class Button : IClickableComponent, IHaveTooltip, IDisposable
         if (!Bounds.Contains(x, y))
             return false;
 
-        OnHover?.Invoke();
+        OnHover?.Invoke(Active);
         return true;
     }
 
     public virtual void Dispose()
     {
-        OnPress = null;
+        OnToggle = null;
         OnHover = null;
         GC.SuppressFinalize(this);
     }

@@ -168,36 +168,34 @@ public class GridMenu : IClickableMenu, IClickableComponent, IHaveTooltip, IHeld
     public void AddComponents(IEnumerable<IComponent> components)
     {
         var index = _components.Count;
+        var x = index == 0 ? X : _components[0].X;
+        var y = index == 0 ? Y : _components[0].Y;
 
-        _components.AddRange(components);
-        switch (ScrollingDirection)
+        if (ScrollingDirection == ScrollDirection.Horizontal)
         {
-            case ScrollDirection.Horizontal:
-                var maxItemRows = MaxItemRows;
-                foreach (var component in _components)
-                {
-                    var row = index % maxItemRows;
-                    var column = index / maxItemRows;
-                    var bound = new Rectangle(X + column * ItemSize, Y + row * ItemSize, ItemSize, ItemSize);
-                    component.SetInCenterOfTheBounds(bound);
-                    index++;
-                }
-
-                return;
-
-            case ScrollDirection.Vertical:
-            default:
-                var maxItemColumns = MaxItemColumns;
-                foreach (var component in _components)
-                {
-                    var column = index % maxItemColumns;
-                    var row = index / maxItemColumns;
-                    var bound = new Rectangle(X + column * ItemSize, Y + row * ItemSize, ItemSize, ItemSize);
-                    component.SetInCenterOfTheBounds(bound);
-                    index++;
-                }
-
-                return;
+            var maxItemRows = MaxItemRows;
+            foreach (var component in components)
+            {
+                var row = index % maxItemRows;
+                var column = index / maxItemRows;
+                var bound = new Rectangle(x + column * ItemSize, y + row * ItemSize, ItemSize, ItemSize);
+                component.SetInCenterOfTheBounds(bound);
+                _components.Add(component);
+                index++;
+            }
+        }
+        else
+        {
+            var maxItemColumns = MaxItemColumns;
+            foreach (var component in components)
+            {
+                var column = index % maxItemColumns;
+                var row = index / maxItemColumns;
+                var bound = new Rectangle(x + column * ItemSize, y + row * ItemSize, ItemSize, ItemSize);
+                component.SetInCenterOfTheBounds(bound);
+                _components.Add(component);
+                index++;
+            }
         }
     }
 

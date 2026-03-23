@@ -83,15 +83,15 @@ public class StackPanel : IClickableMenu, IClickableComponent
     /// </summary>
     public void AddComponents(IEnumerable<IComponent> components)
     {
-        _components.AddRange(components);
-
         // Recalculate positions for all items to ensure consistency
-        var index = 0;
-        foreach (var component in _components)
+        var index = _components.Count;
+        var y = index == 0 ? Y : _components[0].Y;
+        foreach (var component in components)
         {
             // StackPanel has only 1 column. Items are arranged vertically.
-            var bound = new Rectangle(X, Y + index * ItemHeight, ItemWidth, ItemHeight);
+            var bound = new Rectangle(X, y + index * ItemHeight, ItemWidth, ItemHeight);
             component.SetInCenterOfTheBounds(bound);
+            _components.Add(component);
             index++;
         }
     }
@@ -109,9 +109,11 @@ public class StackPanel : IClickableMenu, IClickableComponent
     /// Moves the item at the specified index down by one position
     /// (swaps with the next item).
     /// </summary>
-    /// <param name="index">The index of the item to move.</param>
-    public void MoveNext(int index)
+    /// <param name="which">The component to move.</param>
+    public void MoveNext(IComponent which)
     {
+        var index = _components.IndexOf(which);
+
         // Check if the index is valid and not the last item
         if (index < 0 || index >= _components.Count - 1) return;
 
@@ -131,9 +133,11 @@ public class StackPanel : IClickableMenu, IClickableComponent
     /// Moves the item at the specified index up by one position
     /// (swaps with the previous item).
     /// </summary>
-    /// <param name="index">The index of the item to move.</param>
-    public void MovePrev(int index)
+    /// <param name="which">The component to move.</param>
+    public void MovePrev(IComponent which)
     {
+        var index = _components.IndexOf(which);
+
         // Check if the index is valid and not the first item
         if (index <= 0 || index >= _components.Count) return;
 
@@ -153,9 +157,10 @@ public class StackPanel : IClickableMenu, IClickableComponent
     /// Delete the element at the specified index. Then move the
     /// elements after it up by one position.
     /// </summary>
-    /// <param name="index">The index of the item to delete.</param>
-    public void RemoveAt(int index)
+    /// <param name="which">The component to delete.</param>
+    public void Remove(IComponent which)
     {
+        var index = _components.IndexOf(which);
         if (index < 0 || index >= _components.Count) return;
 
         _components.RemoveAt(index);
@@ -167,10 +172,26 @@ public class StackPanel : IClickableMenu, IClickableComponent
         }
 
         var maxStartIndex = Math.Max(0, _components.Count - MaxVisibleItems);
-        if (_firstItemIndex > maxStartIndex) _firstItemIndex = maxStartIndex;
+        if (_firstItemIndex > maxStartIndex)
+        {
+            foreach (var component in _components)
+                component.OffsetPosition(y: ItemHeight);
+            _firstItemIndex = maxStartIndex;
+        }
         OnDeleteItem?.Invoke(index);
     }
 
+    public void ScrollToBottom()
+    {
+        var maxIndex = Math.Max(0, _components.Count - MaxVisibleItems);
+        var diff = maxIndex - _firstItemIndex;
+
+        if (diff <= 0) return;
+        foreach (var component in _components)
+            component.OffsetPosition(y: -diff * ItemHeight);
+
+        _firstItemIndex = maxIndex;
+    }
 
     /// <inheritdoc/>
     public void Draw(SpriteBatch b)
@@ -259,11 +280,7 @@ public class StackPanel : IClickableMenu, IClickableComponent
 
         // Update component positions
         foreach (var component in _components)
-        {
-            var oldX = component.X;
-            var oldY = component.Y;
-            component.SetPosition(oldX, oldY + amount * ItemHeight);
-        }
+            component.OffsetPosition(y: amount * ItemHeight);
 
         return true;
     }

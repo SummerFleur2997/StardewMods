@@ -22,6 +22,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Component\SpriteLabel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Component\TextBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Component\TextLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\ToggleButton.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Component\Tooltip.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menu\BaseMenu.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menu\DropDownMenu.cs" />

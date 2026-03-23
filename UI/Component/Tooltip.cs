@@ -4,6 +4,11 @@ using StardewValley.Menus;
 
 namespace UI.Component;
 
+/// <summary>
+/// Actually not a drawable component, but have a <see cref="Draw"/>
+/// method that calls the method provided by <see cref="IClickableMenu"/>
+/// to realize the function of drawing.
+/// </summary>
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class Tooltip
 {
