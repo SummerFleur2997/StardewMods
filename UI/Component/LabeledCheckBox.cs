@@ -57,13 +57,16 @@ public sealed class LabeledCheckBox : IClickableComponent, IDisposable
     public SpriteLabel EmptyCheckbox;
     public TextLabel Label;
 
+    /// <summary>
+    /// Whether the checkbox is currently checked.
+    /// </summary>
     public bool Checked;
 
     /// <summary>
     /// The action to be performed when the checkbox is toggled.
     /// </summary>
     /// <seealso cref="OnToggleHandler"/>
-    public event OnToggleHandler OnToggle;
+    public event OnToggleHandler? OnToggle;
 
     /// <summary>
     /// The action to be performed when the checkbox is toggled.
@@ -75,11 +78,11 @@ public sealed class LabeledCheckBox : IClickableComponent, IDisposable
     private int _checkboxYPadding;
     private int _labelYPadding;
 
-    public LabeledCheckBox(string text, Color color, int x = 0, int y = 0)
+    public LabeledCheckBox(string text, Color color, int x = 0, int y = 0, bool drawShadow = false)
     {
         FilledCheckbox = new SpriteLabel(TextureRegion.FilledCheckbox(), x, y, CheckboxSize, CheckboxSize);
         EmptyCheckbox = new SpriteLabel(TextureRegion.EmptyCheckbox(), x, y, CheckboxSize, CheckboxSize);
-        Label = new TextLabel(text, color, Game1.smallFont, x, y);
+        Label = new TextLabel(text, color, Game1.smallFont, x, y, drawShadow);
 
         // Use the width and height of the label as the width and height of the button.
         Width = Label.Width + CheckboxSize;
@@ -90,6 +93,7 @@ public sealed class LabeledCheckBox : IClickableComponent, IDisposable
         this.SetPosition(x, y);
     }
 
+    /// <inheritdoc />
     public void Draw(SpriteBatch b)
     {
         var box = Checked ? FilledCheckbox : EmptyCheckbox;
@@ -97,6 +101,7 @@ public sealed class LabeledCheckBox : IClickableComponent, IDisposable
         Label.Draw(b);
     }
 
+    /// <inheritdoc />
     public bool ReceiveLeftClick(int x, int y)
     {
         if (!Bounds.Contains(x, y))
@@ -108,6 +113,7 @@ public sealed class LabeledCheckBox : IClickableComponent, IDisposable
         return true;
     }
 
+    /// <inheritdoc />
     public bool ReceiveCursorHover(int x, int y) => Bounds.Contains(x, y);
 
     public void Dispose() => OnToggle = null;

@@ -40,5 +40,5 @@ public sealed class SpriteLabel : IComponent
         this.SetDestination(destination);
     }
 
-    public void Draw(SpriteBatch b) => b.Draw(Texture, Bounds);
+    public void Draw(SpriteBatch b) => Texture.Draw(b, Bounds);
 }

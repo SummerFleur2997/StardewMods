@@ -1,5 +1,4 @@
-﻿#nullable enable
-using JetBrains.Annotations;
+﻿using JetBrains.Annotations;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using UI.Component;
@@ -12,9 +11,16 @@ namespace UI.Menu;
 /// game's <see cref="ClickableMenu"/>.
 /// </summary>
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-public class BaseMenu : ClickableMenu, IClickableMenu
+public class BaseMenu : ClickableMenu, IClickableMenu, IHaveTooltip
 {
+    /// <summary>
+    /// Used to compatible with LookupAnything.
+    /// </summary>
+    public Item? HoveredItem;
+
     public Rectangle Bounds => new(xPositionOnScreen, yPositionOnScreen, width, height);
+
+    public Tooltip? Tooltip { get; set; }
 
     /// <summary>
     /// The parent menu of this menu, if any.
@@ -109,8 +115,11 @@ public class BaseMenu : ClickableMenu, IClickableMenu
     public sealed override void draw(SpriteBatch b)
     {
         if (!Game1.options.showClearBackgrounds)
+        {
             b.Draw(Game1.fadeToBlackRect,
                 new Rectangle(0, 0, Game1.uiViewport.Width, Game1.uiViewport.Height), Color.Black * 0.5f);
+        }
+
         Background?.Draw(b);
         OnDraw(b);
         foreach (var child in Components)
@@ -178,6 +187,9 @@ public class BaseMenu : ClickableMenu, IClickableMenu
     /// <seealso cref="performHoverAction"/>
     public virtual bool ReceiveCursorHover(int x, int y)
     {
+        Tooltip = null;
+        HoveredItem = null;
+
         // Travel from back to front
         for (var i = Components.Count - 1; i >= 0; i--)
         {
@@ -185,8 +197,12 @@ public class BaseMenu : ClickableMenu, IClickableMenu
             if (component is not IClickableComponent c)
                 continue;
 
-            if (c.ReceiveCursorHover(x, y))
-                return true;
+            if (!c.ReceiveCursorHover(x, y))
+                continue;
+
+            Tooltip = (c as IHaveTooltip)?.Tooltip;
+            HoveredItem = (c as IHeldItem<Item>)?.Item;
+            return true;
         }
 
         return false;
@@ -257,8 +273,10 @@ public class BaseMenu : ClickableMenu, IClickableMenu
     public virtual void Dispose()
     {
         foreach (var component in Components)
+        {
             if (component is IDisposable d)
                 d.Dispose();
+        }
 
         Components.Clear();
         GC.SuppressFinalize(this);

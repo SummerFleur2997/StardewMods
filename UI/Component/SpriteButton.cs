@@ -9,7 +9,7 @@ namespace UI.Component;
 /// Indicate a button with only a sprite.
 /// </summary>
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-public class SpriteButton : IClickableComponent, IDisposable
+public class SpriteButton : IClickableComponent, IHaveTooltip, IDisposable
 {
     /// <inheritdoc/>
     public Rectangle Bounds => new(X, Y, Width, Height);
@@ -26,10 +26,13 @@ public class SpriteButton : IClickableComponent, IDisposable
     /// <inheritdoc/>
     public int Height { get; set; }
 
+    public Tooltip? Tooltip { get; set; }
+
+    public float Scale = 1;
     public string SoundCue = "drumkit6";
     public TextureRegion Texture;
-    public event Action OnPress;
-    public event Action OnHover;
+    public event Action? OnPress;
+    public event Action? OnHover;
 
     public SpriteButton(TextureRegion texture, int x = 0, int y = 0, int width = 16, int height = 16)
     {
@@ -43,7 +46,7 @@ public class SpriteButton : IClickableComponent, IDisposable
         this.SetDestination(destination);
     }
 
-    public virtual void Draw(SpriteBatch b) => b.Draw(Texture, Bounds);
+    public virtual void Draw(SpriteBatch b) => Texture.Draw(b, Bounds);
 
     public virtual bool ReceiveLeftClick(int x, int y)
     {
@@ -58,8 +61,12 @@ public class SpriteButton : IClickableComponent, IDisposable
     public virtual bool ReceiveCursorHover(int x, int y)
     {
         if (!Bounds.Contains(x, y))
+        {
+            Scale = Math.Max(Scale - 0.04f, 1f);
             return false;
+        }
 
+        Scale = Math.Min(Scale + 0.04f, 1.125f);
         OnHover?.Invoke();
         return true;
     }

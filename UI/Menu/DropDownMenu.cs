@@ -92,7 +92,7 @@ public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
     /// <summary>
     /// The action to perform when the selected option changes.
     /// </summary>
-    public event Action<T> OnSelectionChanged;
+    public event Action<T>? OnSelectionChanged;
 
     /// <summary>
     /// Whether the drop-down menu is expanded or not.
@@ -104,7 +104,7 @@ public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
     private int _firstVisibleIndex;
     private Vector2 _labelPosition;
 
-    public T SelectedValue => _selectedIndex >= 0 ? Options[_selectedIndex].Value : default;
+    public T? SelectedValue => _selectedIndex >= 0 ? Options[_selectedIndex].Value : default;
     public string SelectedLabel => _selectedIndex >= 0 ? Options[_selectedIndex].Label : "";
 
     /// <summary>
@@ -134,7 +134,7 @@ public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
 
         var defaultBackgroundBound = new Rectangle(X, Y, Width - 32, Height);
         var defaultArrowBound = new Rectangle(X + ArrowXOffset, Y + ArrowYOffset, 40, 44);
-        Background = NineSlice.CommonMenu(defaultBackgroundBound);
+        Background = NineSlice.SmallMenuBackground(defaultBackgroundBound);
         Arrow = new SpriteLabel(TextureRegion.DropDownSideArrow(), defaultArrowBound);
         InactiveBackground = TextureRegion.InactiveBackground();
         HoverBackground = TextureRegion.HoverBackground();
@@ -222,7 +222,7 @@ public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
         if (!Expanded) return;
 
         var optionsBounds = new Rectangle(X, Y + _height, Width, Height - _height);
-        b.Draw(InactiveBackground, optionsBounds);
+        InactiveBackground.Draw(b, optionsBounds);
 
         // 绘制可见选项
         var visibleCount = Math.Min(MaxVisibleOptions, Options.Count - _firstVisibleIndex);

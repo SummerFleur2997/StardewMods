@@ -7,7 +7,7 @@ using UI.Sprite;
 namespace UI.Menu;
 
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
-public class GridMenu : IClickableMenu, IClickableComponent
+public class GridMenu : IClickableMenu, IClickableComponent, IHaveTooltip, IHeldItem<Item>
 {
     /// <inheritdoc/>
     public Rectangle Bounds => new(X, Y, Width, Height);
@@ -24,7 +24,10 @@ public class GridMenu : IClickableMenu, IClickableComponent
     /// <inheritdoc/>
     public int Height { get; set; }
 
-    public IComponent Background;
+    public Tooltip? Tooltip { get; private set; }
+    public Item? Item { get; private set; }
+
+    public IComponent? Background;
 
     private List<IComponent> _components = new();
 
@@ -94,14 +97,14 @@ public class GridMenu : IClickableMenu, IClickableComponent
     /// Used to simulate scroll-wheel action when the elements in
     /// grid-menu are too many.
     /// </summary>
-    private SpriteButton _androidExclusiveNextButton;
+    private SpriteButton? _androidExclusiveNextButton;
 
     /// <summary>
     /// Only used on Android. Should be manually managed.
     /// Used to simulate scroll-wheel action when the elements in
     /// grid-menu are too many.
     /// </summary>
-    private SpriteButton _androidExclusivePrevButton;
+    private SpriteButton? _androidExclusivePrevButton;
 
     #endregion
 
@@ -221,8 +224,8 @@ public class GridMenu : IClickableMenu, IClickableComponent
 
         if (IsAndroid && IsScrollingEnabled)
         {
-            _androidExclusiveNextButton.Draw(b);
-            _androidExclusivePrevButton.Draw(b);
+            _androidExclusiveNextButton!.Draw(b);
+            _androidExclusivePrevButton!.Draw(b);
         }
     }
 
@@ -260,8 +263,8 @@ public class GridMenu : IClickableMenu, IClickableComponent
         if (IsAndroid && IsScrollingEnabled)
         {
             var handled =
-                _androidExclusiveNextButton.ReceiveLeftClick(x, y) ||
-                _androidExclusivePrevButton.ReceiveLeftClick(x, y);
+                _androidExclusiveNextButton!.ReceiveLeftClick(x, y) ||
+                _androidExclusivePrevButton!.ReceiveLeftClick(x, y);
             if (handled) return true;
         }
 
@@ -281,15 +284,19 @@ public class GridMenu : IClickableMenu, IClickableComponent
             if (component is not IClickableComponent c)
                 continue;
 
-            var handled = c.ReceiveCursorHover(x, y);
-            if (handled) return true;
+            if (!c.ReceiveCursorHover(x, y))
+                continue;
+
+            Tooltip = (c as IHaveTooltip)?.Tooltip;
+            Item = (c as IHeldItem<Item>)?.Item;
+            return true;
         }
 
         if (IsAndroid && IsScrollingEnabled)
         {
             var handled =
-                _androidExclusiveNextButton.ReceiveCursorHover(x, y) ||
-                _androidExclusivePrevButton.ReceiveCursorHover(x, y);
+                _androidExclusiveNextButton!.ReceiveCursorHover(x, y) ||
+                _androidExclusivePrevButton!.ReceiveCursorHover(x, y);
             if (handled) return true;
         }
 
@@ -366,15 +373,17 @@ public class GridMenu : IClickableMenu, IClickableComponent
     public void Dispose()
     {
         foreach (var component in _components)
+        {
             if (component is IDisposable d)
                 d.Dispose();
+        }
 
         _components.Clear();
 
         if (IsAndroid)
         {
-            _androidExclusiveNextButton.Dispose();
-            _androidExclusivePrevButton.Dispose();
+            _androidExclusiveNextButton!.Dispose();
+            _androidExclusivePrevButton!.Dispose();
         }
 
         GC.SuppressFinalize(this);

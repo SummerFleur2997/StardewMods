@@ -10,20 +10,19 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)BaseOverlay.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Component\ItemButton.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Component\ItemLabel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Component\LabeledCheckBox.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Component\SpriteButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\Button.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Component\IClickableComponent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Component\IComponent.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Component\SpriteLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\ItemButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\ItemLabel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Component\ItemToggle.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Component\Button.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Component\SpritesButton.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Component\TextBox.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Component\Tooltip.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Component\TextLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\LabeledCheckBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Component\NineSlice.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\SpriteButton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\SpriteLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\TextBox.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\TextLabel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Component\Tooltip.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menu\BaseMenu.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menu\DropDownMenu.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menu\GridMenu.cs" />

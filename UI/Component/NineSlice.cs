@@ -39,76 +39,76 @@ public sealed class NineSlice : IComponent
     /// 上边框区域
     /// The top border of the nine-slice.
     /// </summary>
-    public TextureRegion Top;
+    public TextureRegion? Top;
 
     /// <summary>
     /// 左边框区域
     /// The left border of the nine-slice.
     /// </summary>
-    public TextureRegion Left;
+    public TextureRegion? Left;
 
     /// <summary>
     /// 右边框区域
     /// The right border of the nine-slice.
     /// </summary>
-    public TextureRegion Right;
+    public TextureRegion? Right;
 
     /// <summary>
     /// 下边框区域
     /// The bottom border of the nine-slice.
     /// </summary>
-    public TextureRegion Bottom;
+    public TextureRegion? Bottom;
 
     /// <summary>
     /// 左上角区域
     /// The top-left corner of the nine-slice.
     /// </summary>
-    public TextureRegion TopLeft;
+    public TextureRegion? TopLeft;
 
     /// <summary>
     /// 右上角区域
     /// The top-right corner of the nine-slice.
     /// </summary>
-    public TextureRegion TopRight;
+    public TextureRegion? TopRight;
 
     /// <summary>
     /// 左下角区域
     /// The bottom-left corner of the nine-slice.
     /// </summary>
-    public TextureRegion BottomLeft;
+    public TextureRegion? BottomLeft;
 
     /// <summary>
     /// 右下角区域
     /// The bottom-right corner of the nine-slice.
     /// </summary>
-    public TextureRegion BottomRight;
+    public TextureRegion? BottomRight;
 
     /// <summary>
     /// 上边框的厚度
     /// The thickness of the top border. 
     /// </summary>
-    public int TopBorderThickness => Top.Height;
+    public int TopBorderThickness => Top?.Height ?? 0;
 
     /// <summary>
     /// 左边框的厚度
     /// The thickness of the left border.
     /// </summary>
-    public int LeftBorderThickness => Left.Width;
+    public int LeftBorderThickness => Left?.Width ?? 0;
 
     /// <summary>
     /// 右边框的厚度
     /// The thickness of the right border.
     /// </summary>
-    public int RightBorderThickness => Right.Width;
+    public int RightBorderThickness => Right?.Width ?? 0;
 
     /// <summary>
     /// 下边框的厚度
     /// The thickness of the bottom border. 
     /// </summary>
-    public int BottomBorderThickness => Bottom.Height;
+    public int BottomBorderThickness => Bottom?.Height ?? 0;
 
-    public NineSlice(TextureRegion top, TextureRegion left, TextureRegion right, TextureRegion bottom,
-        TextureRegion topLeft, TextureRegion topRight, TextureRegion bottomLeft, TextureRegion bottomRight,
+    public NineSlice(TextureRegion? top, TextureRegion? left, TextureRegion? right, TextureRegion? bottom,
+        TextureRegion? topLeft, TextureRegion? topRight, TextureRegion? bottomLeft, TextureRegion? bottomRight,
         TextureRegion center, Rectangle bounds)
     {
         Top = top;
@@ -130,51 +130,57 @@ public sealed class NineSlice : IComponent
     public void Draw(SpriteBatch b)
     {
         // draw background
-        b.Draw(Center, new Rectangle(
-            X + Left.Width,
-            Y + Top.Height,
-            Width - Left.Width - Right.Width,
-            Height - Top.Height - Bottom.Height));
+        Center.Draw(b, new Rectangle(
+            X + LeftBorderThickness,
+            Y + TopBorderThickness,
+            Width - LeftBorderThickness - RightBorderThickness,
+            Height - TopBorderThickness - BottomBorderThickness));
 
         // draw borders
-        b.Draw(Top, new Rectangle(
-            X + TopLeft.Width,
+        Top?.Draw(b, new Rectangle(
+            X + (TopLeft?.Width ?? 0),
             Y,
-            Width - TopLeft.Width - TopRight.Width,
-            Top.Height));
-        b.Draw(Left, new Rectangle(
+            Width - (TopLeft?.Width ?? 0) - (TopRight?.Width ?? 0),
+            TopBorderThickness));
+
+        Left?.Draw(b, new Rectangle(
             X,
-            Y + TopLeft.Height,
-            Left.Width,
-            Height - TopLeft.Height - BottomLeft.Height));
-        b.Draw(Right, new Rectangle(
-            X + Width - Right.Width,
-            Y + TopRight.Height,
-            Right.Width,
-            Height - TopRight.Height - BottomRight.Height));
-        b.Draw(Bottom, new Rectangle(
-            X + BottomLeft.Width,
-            Y + Height - Bottom.Height,
-            Width - BottomLeft.Width - BottomRight.Width,
-            Bottom.Height));
+            Y + (TopLeft?.Height ?? 0),
+            LeftBorderThickness,
+            Height - (TopLeft?.Height ?? 0) - (BottomLeft?.Height ?? 0)));
+
+        Right?.Draw(b, new Rectangle(
+            X + Width - RightBorderThickness,
+            Y + (TopRight?.Height ?? 0),
+            RightBorderThickness,
+            Height - (TopRight?.Height ?? 0) - (BottomRight?.Height ?? 0)));
+
+        Bottom?.Draw(b, new Rectangle(
+            X + (BottomLeft?.Width ?? 0),
+            Y + Height - BottomBorderThickness,
+            Width - (BottomLeft?.Width ?? 0) - (BottomRight?.Width ?? 0),
+            BottomBorderThickness));
 
         // draw border joints 
-        b.Draw(TopLeft, new Rectangle(
+        TopLeft?.Draw(b, new Rectangle(
             X,
             Y,
             TopLeft.Width,
             TopLeft.Height));
-        b.Draw(TopRight, new Rectangle(
+
+        TopRight?.Draw(b, new Rectangle(
             X + Width - TopRight.Width,
             Y,
             TopRight.Width,
             TopRight.Height));
-        b.Draw(BottomLeft, new Rectangle(
+
+        BottomLeft?.Draw(b, new Rectangle(
             X,
             Y + Height - BottomLeft.Height,
             BottomLeft.Width,
             BottomLeft.Height));
-        b.Draw(BottomRight, new Rectangle(
+
+        BottomRight?.Draw(b, new Rectangle(
             X + Width - BottomRight.Width,
             Y + Height - BottomRight.Height,
             BottomRight.Width,
@@ -199,52 +205,18 @@ public sealed class NineSlice : IComponent
     );
 
     /// <summary>
-    /// Tooltip 的九宫格精灵图
-    /// Nine-slice sprite of a tooltip
-    /// </summary>
-    public static NineSlice TooltipBackground(Rectangle bounds = new()) => new(
-        new TextureRegion(CursorSheet, 297, 360, 16, 4, true),
-        new TextureRegion(CursorSheet, 293, 364, 4, 16, true),
-        new TextureRegion(CursorSheet, 313, 364, 4, 16, true),
-        new TextureRegion(CursorSheet, 297, 380, 16, 4, true),
-        new TextureRegion(CursorSheet, 293, 360, 4, 4, true),
-        new TextureRegion(CursorSheet, 313, 360, 4, 4, true),
-        new TextureRegion(CursorSheet, 293, 380, 4, 4, true),
-        new TextureRegion(CursorSheet, 313, 380, 4, 4, true),
-        new TextureRegion(CursorSheet, 297, 364, 16, 16, true),
-        bounds
-    );
-
-    /// <summary>
-    /// 左悬浮标签的九宫格精灵图
-    /// Nine-slice sprite of a left-protruding tab.
-    /// </summary>
-    public static NineSlice LeftProtrudingTab(Rectangle bounds = new()) => new(
-        new TextureRegion(CursorSheet, 661, 64, 1, 4, true),
-        new TextureRegion(CursorSheet, 656, 69, 5, 1, true),
-        new TextureRegion(CursorSheet, 670, 68, 2, 1, true),
-        new TextureRegion(CursorSheet, 661, 76, 1, 4, true),
-        new TextureRegion(CursorSheet, 656, 64, 5, 5, true),
-        new TextureRegion(CursorSheet, 670, 64, 2, 5, true),
-        new TextureRegion(CursorSheet, 656, 75, 5, 5, true),
-        new TextureRegion(CursorSheet, 670, 75, 2, 5, true),
-        new TextureRegion(CursorSheet, 661, 68, 1, 1, true),
-        bounds
-    );
-
-    /// <summary>
     /// 普通菜单的九宫格精灵图。
     /// Nine-slice sprite of a common menu.
     /// </summary>
-    public static NineSlice CommonMenu(Rectangle bounds = new()) => new(
+    public static NineSlice SmallMenuBackground(Rectangle bounds = new()) => new(
         new TextureRegion(MenuSheet, 16, 256, 28, 16),
         new TextureRegion(MenuSheet, 0, 272, 16, 28),
-        new TextureRegion(MenuSheet, 48, 272, 16, 28),
+        new TextureRegion(MenuSheet, 44, 272, 16, 28),
         new TextureRegion(MenuSheet, 16, 300, 28, 16),
         new TextureRegion(MenuSheet, 0, 256, 16, 16),
-        new TextureRegion(MenuSheet, 48, 256, 16, 16),
+        new TextureRegion(MenuSheet, 44, 256, 16, 16),
         new TextureRegion(MenuSheet, 0, 300, 16, 16),
-        new TextureRegion(MenuSheet, 48, 300, 16, 16),
+        new TextureRegion(MenuSheet, 44, 300, 16, 16),
         new TextureRegion(MenuSheet, 16, 272, 28, 28),
         bounds
     );

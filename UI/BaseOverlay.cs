@@ -1,5 +1,4 @@
-﻿#nullable enable
-using System.Reflection;
+﻿using System.Reflection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -47,9 +46,11 @@ internal abstract class BaseOverlay : IDisposable
     public virtual void Dispose()
     {
         _events.Display.RenderedActiveMenu -= OnRendered;
+        // _events.Display.RenderingActiveMenu -= OnRendering;
         _events.Display.RenderedWorld -= OnRenderedWorld;
         _events.GameLoop.UpdateTicked -= OnUpdateTicked;
-        _events.Input.ButtonPressed -= OnButtonPressed;
+        _events.Input.ButtonPressed -= OnLeftClick;
+        _events.Input.ButtonPressed -= OnKeyPress;
         _events.Input.ButtonsChanged -= OnButtonsChanged;
         _events.Input.CursorMoved -= OnCursorMoved;
         _events.Input.MouseWheelScrolled -= OnMouseWheelScrolled;
@@ -84,10 +85,14 @@ internal abstract class BaseOverlay : IDisposable
 
         if (IsMethodOverridden(nameof(DrawUi)))
             events.Display.RenderedActiveMenu += OnRendered;
+        // if (IsMethodOverridden(nameof(DrawAboveMenu)))
+        //     events.Display.RenderingActiveMenu += OnRendering;
         if (IsMethodOverridden(nameof(DrawWorld)))
             events.Display.RenderedWorld += OnRenderedWorld;
         if (IsMethodOverridden(nameof(ReceiveLeftClick)))
-            events.Input.ButtonPressed += OnButtonPressed;
+            events.Input.ButtonPressed += OnLeftClick;
+        if (IsMethodOverridden(nameof(ReceiveKeyPressed)))
+            events.Input.ButtonPressed += OnKeyPress;
         if (IsMethodOverridden(nameof(ReceiveButtonsChanged)))
             events.Input.ButtonsChanged += OnButtonsChanged;
         if (IsMethodOverridden(nameof(ReceiveCursorHover)))
@@ -103,6 +108,10 @@ internal abstract class BaseOverlay : IDisposable
     /// <param name="batch">The sprite batch being drawn.</param>
     protected virtual void DrawUi(SpriteBatch batch) { }
 
+    // /// <summary>Draw the overlay to the screen under the UI, over the world</summary>
+    // /// <param name="batch">The sprite batch being drawn.</param>
+    // protected virtual void DrawUnderMenu(SpriteBatch batch) { }
+
     /// <summary>Draw the overlay to the screen under the UI.</summary>
     /// <param name="batch">The sprite batch being drawn.</param>
     protected virtual void DrawWorld(SpriteBatch batch) { }
@@ -112,6 +121,11 @@ internal abstract class BaseOverlay : IDisposable
     /// <param name="y">The Y-position of the cursor.</param>
     /// <returns>Whether the event has been handled and shouldn't be propagated further.</returns>
     protected virtual bool ReceiveLeftClick(int x, int y) => false;
+
+    /// <summary>Raised after the player presses a button on the keyboard</summary>
+    /// <param name="key">The pressed key.</param>
+    /// <returns>Whether the event has been handled and shouldn't be propagated further.</returns>
+    protected virtual bool ReceiveKeyPressed(Keys key) => false;
 
     /// <inheritdoc cref="IInputEvents.ButtonsChanged"/>
     /// <param name="sender">The event sender.</param>
@@ -169,6 +183,17 @@ internal abstract class BaseOverlay : IDisposable
         DrawUi(Game1.spriteBatch);
     }
 
+    // /// <inheritdoc cref="IDisplayEvents.Rendering"/>
+    // /// <param name="sender">The event sender.</param>
+    // /// <param name="e">The event data.</param>
+    // private void OnRendering(object? sender, RenderingActiveMenuEventArgs e)
+    // {
+    //     if (Context.ScreenId != _screenId)
+    //         return;
+    //
+    //     DrawUnderMenu(Game1.spriteBatch);
+    // }
+
     /// <inheritdoc cref="IDisplayEvents.RenderedWorld"/>
     /// <param name="sender">The event sender.</param>
     /// <param name="e">The event data.</param>
@@ -220,7 +245,22 @@ internal abstract class BaseOverlay : IDisposable
     /// <inheritdoc cref="IInputEvents.ButtonPressed"/>
     /// <param name="sender">The event sender.</param>
     /// <param name="e">The event data.</param>
-    private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
+    private void OnKeyPress(object? sender, ButtonPressedEventArgs e)
+    {
+        if (Context.ScreenId != _screenId)
+            return;
+
+        if (!e.Button.TryGetKeyboard(out var key))
+            return;
+
+        if (ReceiveKeyPressed(key))
+            _inputHelper.Suppress(e.Button);
+    }
+
+    /// <inheritdoc cref="IInputEvents.ButtonPressed"/>
+    /// <param name="sender">The event sender.</param>
+    /// <param name="e">The event data.</param>
+    private void OnLeftClick(object? sender, ButtonPressedEventArgs e)
     {
         if (Context.ScreenId != _screenId)
             return;

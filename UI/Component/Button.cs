@@ -82,11 +82,11 @@ public class Button : IClickableComponent, IDisposable
 
     private int _padding;
 
-    public event Action OnPress;
-    public event Action OnHover;
+    public event Action? OnPress;
+    public event Action? OnHover;
 
     /// <summary>
-    /// Construct a text button. 
+    /// Construct a button. 
     /// </summary>
     /// <param name="background">The background sprite of this button.</param>
     /// <param name="text">The text of this button.</param>
@@ -97,11 +97,12 @@ public class Button : IClickableComponent, IDisposable
     /// <param name="width">The width of the background.</param>
     /// <param name="height">The height of the background.</param>
     /// <param name="padding">The padding between the text and the background.</param>
-    public Button(IComponent background, string text, Color color, SpriteFont font,
-        int x = 0, int y = 0, int? width = null, int? height = null, int padding = Game1.pixelZoom * 2)
+    /// <param name="drawShadow">Whether to draw the text label with shadow.</param>
+    public Button(IComponent background, string text, Color color, SpriteFont font, int x = 0, int y = 0,
+        int? width = null, int? height = null, int padding = Game1.pixelZoom * 2, bool drawShadow = false)
     {
         Background = background;
-        Label = new TextLabel(text, color, font);
+        Label = new TextLabel(text, color, font, drawShadow: drawShadow);
         _padding = padding;
 
         // Use the width and height of the label as the width and height of the button.

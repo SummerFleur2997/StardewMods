@@ -33,9 +33,24 @@ public sealed class TextLabel : IComponent
     /// </summary>
     public int Height { get; set; }
 
+    /// <summary>
+    /// The color of text.
+    /// </summary>
     public Color Color;
+
+    /// <summary>
+    /// The font of text.
+    /// </summary>
     public SpriteFont Font;
 
+    /// <summary>
+    /// Whether to draw the text label with shadow.
+    /// </summary>
+    public bool DrawWithShadow;
+
+    /// <summary>
+    /// The inner text of this label.
+    /// </summary>
     public string Text
     {
         get => _text;
@@ -48,16 +63,37 @@ public sealed class TextLabel : IComponent
 
     private string _text;
 
-    public TextLabel(string text, Color color, SpriteFont font, int x = 0, int y = 0)
+    /// <summary>
+    /// Construct a text label. 
+    /// </summary>
+    /// <param name="text">The inner text of this label.</param>
+    /// <param name="color">The color of text.</param>
+    /// <param name="font">The font of text.</param>
+    /// <param name="x">The x-position of label.</param>
+    /// <param name="y">The y-position of label.</param>
+    /// <param name="drawShadow">Whether to draw the text label with shadow.</param>
+    public TextLabel(string text, Color color, SpriteFont font, int x = 0, int y = 0, bool drawShadow = false)
     {
         _text = text;
         Color = color;
         Font = font;
+        DrawWithShadow = drawShadow;
         CalculateDimensions();
         this.SetPosition(x, y);
     }
 
-    public void Draw(SpriteBatch b) => b.DrawString(Font, _text, new Vector2(X, Y), Color);
+    /// <inheritdoc />
+    public void Draw(SpriteBatch b)
+    {
+        if (DrawWithShadow)
+        {
+            Utility.drawTextWithShadow(b, _text, Font, new Vector2(X, Y), Color.Black);
+        }
+        else
+        {
+            b.DrawString(Font, _text, new Vector2(X, Y), Color);
+        }
+    }
 
     private void CalculateDimensions()
     {

@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using UI.Component;
-using UI.Sprite;
 
 namespace UI.Menu;
 
@@ -24,7 +23,7 @@ public class StackPanel : IClickableMenu, IClickableComponent
     /// <inheritdoc/>
     public int Height { get; set; }
 
-    public IComponent Background;
+    public IComponent? Background;
     private List<IComponent> _components = new();
 
     /// <summary>
@@ -41,17 +40,17 @@ public class StackPanel : IClickableMenu, IClickableComponent
     /// <summary>
     /// An event triggered when an element moves to the next position.
     /// </summary>
-    public event Action<int> OnMoveNext;
+    public event Action<int>? OnMoveNext;
 
     /// <summary>
     /// An event triggered when an element moves to the previous position.
     /// </summary>
-    public event Action<int> OnMovePrev;
+    public event Action<int>? OnMovePrev;
 
     /// <summary>
     /// An event triggered when an element was deleted.
     /// </summary>
-    public event Action<int> OnDeleteItem;
+    public event Action<int>? OnDeleteItem;
 
     /// <summary>
     /// The index of the first item to display. Used when drawing or scrolling.
@@ -60,24 +59,6 @@ public class StackPanel : IClickableMenu, IClickableComponent
 
     public int MaxVisibleItems => Height / ItemHeight;
     public bool IsScrollingEnabled => _components.Count > MaxVisibleItems;
-
-    #region Android Exclusive
-
-    private static bool IsAndroid => Constants.TargetPlatform == GamePlatform.Android;
-
-    /// <summary>
-    /// Only used on Android. Should be manually managed.
-    /// Used to simulate scroll-wheel action when the elements in stack are too many.
-    /// </summary>
-    private SpriteButton _androidExclusiveNextButton;
-
-    /// <summary>
-    /// Only used on Android. Should be manually managed.
-    /// Used to simulate scroll-wheel action when the elements in stack are too many.
-    /// </summary>
-    private SpriteButton _androidExclusivePrevButton;
-
-    #endregion
 
     /// <summary>
     /// Construct a stack panel.
@@ -93,19 +74,6 @@ public class StackPanel : IClickableMenu, IClickableComponent
         this.SetDestination(x, y, width, height);
         ItemHeight = itemHeight;
         ItemWidth = itemWidth ?? width;
-
-        if (!IsAndroid) return;
-
-        var anchor = this.RightBottomPosition();
-
-        // StackPanel only supports vertical scrolling
-        _androidExclusiveNextButton = new SpriteButton(TextureRegion.DownArrow());
-        _androidExclusivePrevButton = new SpriteButton(TextureRegion.UpArrow());
-        _androidExclusiveNextButton.SetDestination(anchor.X - 50, anchor.Y - 50, 48, 48);
-        _androidExclusivePrevButton.SetDestination(anchor.X - 50, anchor.Y - 100, 48, 48);
-
-        _androidExclusiveNextButton.OnPress += () => ReceiveScrollWheelAction(-1);
-        _androidExclusivePrevButton.OnPress += () => ReceiveScrollWheelAction(1);
     }
 
     /// <summary>
@@ -215,12 +183,6 @@ public class StackPanel : IClickableMenu, IClickableComponent
             if (Bounds.Contains(component.Bounds))
                 component.Draw(b);
         }
-
-        if (IsAndroid && IsScrollingEnabled)
-        {
-            _androidExclusiveNextButton.Draw(b);
-            _androidExclusivePrevButton.Draw(b);
-        }
     }
 
     /// <summary>
@@ -251,13 +213,6 @@ public class StackPanel : IClickableMenu, IClickableComponent
             if (handled) return true;
         }
 
-        if (IsAndroid && IsScrollingEnabled)
-        {
-            var handled = _androidExclusiveNextButton.ReceiveLeftClick(x, y) ||
-                          _androidExclusivePrevButton.ReceiveLeftClick(x, y);
-            if (handled) return true;
-        }
-
         return false;
     }
 
@@ -272,13 +227,6 @@ public class StackPanel : IClickableMenu, IClickableComponent
             var component = _components[i];
             if (component is not IClickableComponent c) continue;
             var handled = c.ReceiveCursorHover(x, y);
-            if (handled) return true;
-        }
-
-        if (IsAndroid && IsScrollingEnabled)
-        {
-            var handled = _androidExclusiveNextButton.ReceiveCursorHover(x, y) ||
-                          _androidExclusivePrevButton.ReceiveCursorHover(x, y);
             if (handled) return true;
         }
 
@@ -323,14 +271,12 @@ public class StackPanel : IClickableMenu, IClickableComponent
     public void Dispose()
     {
         foreach (var component in _components)
+        {
             if (component is IDisposable d)
                 d.Dispose();
-        _components.Clear();
-        if (IsAndroid)
-        {
-            _androidExclusiveNextButton.Dispose();
-            _androidExclusivePrevButton.Dispose();
         }
+
+        _components.Clear();
 
         GC.SuppressFinalize(this);
     }
