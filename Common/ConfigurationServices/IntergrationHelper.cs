@@ -1,4 +1,4 @@
-﻿#nullable enable
+﻿#pragma warning disable CS8632
 namespace Common.ConfigurationServices;
 
 /// <summary>Simplifies validated access to mod APIs.</summary>
