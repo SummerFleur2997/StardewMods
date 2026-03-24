@@ -122,27 +122,27 @@ public class BaseMenu : ClickableMenu, IClickableMenu, IHaveTooltip
         }
 
         Background?.Draw(b);
-        OnDraw(b);
-        foreach (var child in Components)
-            child.Draw(b);
+        DrawComponents(b);
         upperRightCloseButton.draw(b);
-        AfterDraw(b);
+        DrawOverLays(b);
         drawMouse(b);
     }
 
     /// <summary>
-    /// Draw objects after the background was drawn.
-    /// (Above the backgrounds, but below all the components)
-    /// They may be covered by some components.
+    /// Traverse all components and draw them.
     /// </summary>
-    public virtual void OnDraw(SpriteBatch b) { }
+    public virtual void DrawComponents(SpriteBatch b)
+    {
+        foreach (var child in Components)
+            child.Draw(b);
+    }
 
     /// <summary>
     /// Draw objects after the whole menu was drawn.
     /// (Above all the components, include the close button)
     /// This is a good time to draw tooltips, submenus, etc.
     /// </summary>
-    public virtual void AfterDraw(SpriteBatch b) { }
+    public virtual void DrawOverLays(SpriteBatch b) { }
 
     /// <inheritdoc/>
     public sealed override void receiveLeftClick(int x, int y, bool playSound = true)
