@@ -6,6 +6,10 @@ namespace ConvenientChests.API;
 public class ChestAPI : IConvenientChestAPI
 {
     /// <inheritdoc/>
+    public bool ChestAcceptThisItem(Chest chest, Item item) =>
+        chest.GetChestData().AcceptedItemKinds.Any(k => k.QualifiedItemId == item.QualifiedItemId);
+
+    /// <inheritdoc/>
     public List<string> GetSelectedChestData(Chest chest) =>
         chest.GetChestData().AcceptedItemKinds.Select(k => k.QualifiedItemId).ToList();
 

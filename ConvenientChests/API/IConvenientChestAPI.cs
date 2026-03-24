@@ -2,8 +2,19 @@
 
 namespace ConvenientChests.API;
 
+/// <summary>
+/// SummerFleur.ConvenientChests API, for Version 2.0.0 or later.
+/// </summary>
 public interface IConvenientChestAPI
 {
+    /// <summary>
+    /// Get whether the given chest accepts the given item.
+    /// </summary>
+    /// <returns>
+    /// true if the chest accepts the item, false otherwise.
+    /// </returns>
+    public bool ChestAcceptThisItem(Chest chest, Item item);
+
     /// <summary>
     /// Get the accepted item lists of the given chest.
     /// </summary>
