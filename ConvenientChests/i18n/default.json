@@ -1,6 +1,9 @@
 {
   "Config.active": "active",
 
+  "Config.Alias": "Chest alias",
+  "Config.Alias.desc": "Set alias for chests, the alias will show in a bubble when hover your mouse above the chest.",
+
   "Config.Categorize.Title": "Categorize chests",
   "Config.Categorize.desc": "Categorize your chests by items.",
   "Config.Categorize.sort": "Sort categories",
@@ -82,7 +85,7 @@
   "UI.Snapshot.Unlink": "Unlink snapshot",
   "UI.Snapshot.Unlink.desc": "Unlink the snapshot. The snapshot itself will be preserved.",
   "UI.Snapshot.Unlink.confirm": "Sure to unlink it?",
-  "UI.Snapshot.Warning.mainplayer": "This chest is using the snapshot {{name}}, if you want to edit its category items, you should edit that snapshot instead. (Click me to edit it)",
+  "UI.Snapshot.Warning.mainplayer": "This chest is using the snapshot {{name}}, if you want to edit its category items, you should edit that snapshot instead. ",
   "UI.Snapshot.Warning.farmhand": "This chest is using a snapshot from the host, you can't edit it.",
   "UI.Unnamed": "Unnamed snapshot"
 }

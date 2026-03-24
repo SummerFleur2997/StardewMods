@@ -1,4 +1,5 @@
-﻿using ConvenientChests.Framework.DataService;
+﻿using ConvenientChests.CategorizeChests.Framework;
+using ConvenientChests.Framework.DataService;
 using Newtonsoft.Json;
 
 namespace ConvenientChests.Framework.DataStructs;
@@ -23,15 +24,16 @@ internal class ChestDataSnapshot : IChestData
     public long UniqueID { get; init; }
 
     /// <summary>
-    /// The most relevant category for this snapshot.
-    /// </summary>
-    public ItemCategoryName PotentialMostRelevantCategory { get; set; }
-
-    /// <summary>
     /// A series of accepted items.
     /// </summary>
     [JsonConverter(typeof(DataConverter))]
     public HashSet<ItemKey> AcceptedItemKinds { get; set; } = new();
+
+    /// <summary>
+    /// The most relevant category for this snapshot.
+    /// </summary>
+    [JsonIgnore]
+    internal ItemCategoryName PotentialMostRelevantCategory => AcceptedItemKinds.CalculateMostRelevantCategory();
 
     public ChestDataSnapshot() { }
 

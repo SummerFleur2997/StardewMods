@@ -5,6 +5,7 @@
         <Product>ConvenientChests</Product>
         <Version>2.0.0-alpha</Version>
         <Nullable>enable</Nullable>
+        <EnableHarmony>true</EnableHarmony>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <DebugSymbols>true</DebugSymbols>

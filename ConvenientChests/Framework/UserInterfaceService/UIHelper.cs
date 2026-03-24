@@ -16,6 +16,26 @@ internal static class UIHelper
     public static readonly Texture2D Texture =
         ModEntry.ModHelper.ModContent.Load<Texture2D>(Path.Combine("assets", "texture.png"));
 
+    private static int _yOffset;
+
+    public static void Initialize()
+    {
+        var themes = ModEntry.ModHelper.ModContent.Load<ThemeInfo[]>(Path.Combine("assets", "themes.json"));
+
+        foreach (var theme in themes)
+        {
+            foreach (var contentPack in theme.For)
+            {
+                if (!ModEntry.ModHelper.ModRegistry.IsLoaded(contentPack))
+                    continue;
+
+                _yOffset = theme.YOffset;
+                ModEntry.Log($"{contentPack} detected, use the theme {theme.Name} for the mod UI.", LogLevel.Info);
+                return;
+            }
+        }
+    }
+
     /// <summary>
     /// Create a button with a sprite.
     /// </summary>
@@ -25,7 +45,7 @@ internal static class UIHelper
     public static SpriteButton SideButton(int x, int y, SideButtonVariant variant)
     {
         var xOffset = (int)variant * 16;
-        var texture = new TextureRegion(Texture, xOffset, 0, 16, 16);
+        var texture = new TextureRegion(Texture, xOffset, _yOffset, 16, 16);
         var button = new SpriteButton(texture, x, y, 64, 64);
         button.Tooltip = GetTooltipForSideButton(variant);
         return button;
@@ -122,24 +142,21 @@ internal static class UIHelper
             SideButtonVariant.Save => (I18n.UI_Snapshot_Save(), I18n.UI_Snapshot_Save_Desc()),
             SideButtonVariant.Unlink => (I18n.UI_Snapshot_Unlink(), I18n.UI_Snapshot_Unlink_Desc()),
             SideButtonVariant.Categorize => (I18n.UI_Categorize(), I18n.UI_Categorize_Desc()),
-            SideButtonVariant.Lock => (I18n.UI_LockItems(), null),
+            SideButtonVariant.Lock => (null, I18n.UI_LockItems()),
             _ => (null, null)
         };
         return new Tooltip(name, desc);
     }
+}
 
-    // public static NineSlice ItemFrame(Rectangle bounds = new()) => new(
-    //     new TextureRegion(Cursors, 390, 373, 6, 6, true),
-    //     new TextureRegion(Cursors, 384, 379, 6, 6, true),
-    //     new TextureRegion(Cursors, 396, 379, 6, 6, true),
-    //     new TextureRegion(Cursors, 390, 385, 6, 6, true), 
-    //     new TextureRegion(Cursors, 384, 373, 6, 6, true),
-    //     new TextureRegion(Cursors, 396, 373, 6, 6, true),
-    //     new TextureRegion(Cursors, 384, 385, 6, 6, true),
-    //     new TextureRegion(Cursors, 396, 385, 6, 6, true),
-    //     new TextureRegion(Cursors, 390, 379, 6, 6, true),
-    //     bounds
-    // );
+[Serializable]
+public class ThemeInfo
+{
+    public string Name { get; set; } = "Default";
+
+    public string[] For { get; set; } = Array.Empty<string>();
+
+    public int YOffset { get; set; }
 }
 
 internal enum SideButtonVariant

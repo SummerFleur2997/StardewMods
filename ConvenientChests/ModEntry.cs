@@ -210,6 +210,8 @@ internal class ModEntry : Mod
     {
         GenericModConfigMenuIntegration.Register(Manifest, ModHelper.ModRegistry, ResetConfig, SaveConfig);
         QuickSaveIntegration.Register();
+        UIHelper.Initialize();
+        StashToChestsModule.RegisterHarmonyPatch();
     }
 
     /// <summary>

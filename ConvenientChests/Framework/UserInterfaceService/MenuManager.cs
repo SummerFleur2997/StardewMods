@@ -20,14 +20,14 @@ internal static class MenuManager
             return;
 
         ScreenWidgetHost.Value?.Dispose();
-        var overlay = new ChestSideTab(itemGrabMenu, chest);
+        var overlay = new ChestOverlay(itemGrabMenu, chest);
         ScreenWidgetHost.Value = new MenuHost<ItemGrabMenu>(Events, Input, Reflection, overlay);
     }
 
     public static void CreateMenu(GameMenu gameMenu)
     {
         ScreenWidgetHost.Value?.Dispose();
-        var overlay = new InventorySideTab(gameMenu);
+        var overlay = new InventoryOverlay(gameMenu);
         ScreenWidgetHost.Value = new MenuHost<GameMenu>(Events, Input, Reflection, overlay);
     }
 

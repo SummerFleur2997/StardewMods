@@ -98,6 +98,7 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
         var menu = new SnapshotHubMenu(xPositionOnScreen, yPositionOnScreen, width, height, this, borderWidth);
         AddDependency();
         Game1.activeClickableMenu = menu;
+        ChildMenu = menu;
     }
 
     /// <summary>

@@ -9,7 +9,7 @@ using UI.Component;
 
 namespace ConvenientChests.Framework.UserInterfaceService;
 
-internal class ChestSideTab : IOverlay<ItemGrabMenu>
+internal class ChestOverlay : IOverlay<ItemGrabMenu>
 {
     private readonly Chest _chest;
     public ItemGrabMenu RootMenu { get; }
@@ -26,7 +26,7 @@ internal class ChestSideTab : IOverlay<ItemGrabMenu>
     /// 构造函数，初始化 ChestOverlay 类。
     /// Constructor to initialize the ChestOverlay class.
     /// </summary>
-    public ChestSideTab(ItemGrabMenu menu, Chest chest)
+    public ChestOverlay(ItemGrabMenu menu, Chest chest)
     {
         _chest = chest;
         RootMenu = menu;

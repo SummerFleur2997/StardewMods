@@ -1,8 +1,10 @@
+using System.Reflection.Emit;
 using Common;
 using ConvenientChests.Framework.DataService;
 using ConvenientChests.Framework.DataStructs;
 using ConvenientChests.Framework.Extensions;
 using ConvenientChests.Framework.UserInterfaceService;
+using HarmonyLib;
 using StardewModdingAPI.Events;
 using StardewValley.Locations;
 using StardewValley.Menus;
@@ -70,6 +72,73 @@ internal class StashToChestsModule : IModule
     {
         AcceptingFunc = CreateAcceptingFunction();
         RejectingFunc = CreateRejectingFunction();
+    }
+
+    /// <summary>
+    /// Harmony register for <see cref="Patch_ItemGrabMenu_FillOutStacks"/>
+    /// </summary>
+    public static void RegisterHarmonyPatch()
+    {
+        try
+        {
+            var harmony = new Harmony(ModEntry.Manifest.UniqueID);
+            var original = AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.FillOutStacks));
+            var transpiler = AccessTools.Method(
+                typeof(StashToChestsModule), nameof(Patch_ItemGrabMenu_FillOutStacks));
+            harmony.Patch(original, transpiler: new HarmonyMethod(transpiler));
+            ModEntry.Log("Patched ItemGrabMenu.FillOutStacks successfully.");
+        }
+        catch (Exception ex)
+        {
+            ModEntry.Log($"Failed to patch for lock items: {ex.Message}", LogLevel.Error);
+        }
+    }
+
+    /// <summary>
+    /// Patch to <see cref="ItemGrabMenu.FillOutStacks"/> to make it
+    /// possible to lock items when using vanilla stash button.
+    /// </summary>
+    public static IEnumerable<CodeInstruction> Patch_ItemGrabMenu_FillOutStacks(IEnumerable<CodeInstruction> ci)
+    {
+        var matcher = new CodeMatcher(ci);
+
+        // Find anchor instructions for the injection
+        var target = new CodeMatch[]
+        {
+            new(OpCodes.Callvirt),
+            new(i => i.opcode == OpCodes.Stloc_S && i.operand is LocalBuilder { LocalIndex: 5 }),
+            new(OpCodes.Ldloc_S),
+            new(OpCodes.Brfalse) // if false: continue, else: process
+        };
+        matcher.MatchStartForward(target).Advance(3);
+
+        // If the anchor instruction is not found, throw an exception.
+        if (matcher.IsInvalid)
+            throw new Exception("This method seems to have changed.");
+
+        // Add the injection to the codes
+        var injection = new CodeInstruction(OpCodes.Call,
+            AccessTools.Method(typeof(StashToChestsModule), nameof(ShouldDealThisItem)));
+        matcher.InsertAndAdvance(injection);
+
+        return matcher.InstructionEnumeration();
+    }
+
+    /// <summary>
+    /// Whether the given item should be dealt in advance.
+    /// </summary>
+    /// <returns>True if the item should be stashed, false otherwise.</returns>
+    /// <remarks>The original il code below this method is BrFalse.</remarks>
+    private static bool ShouldDealThisItem(Item? item)
+    {
+        // return false means to deal next item
+        if (item is null)
+            return false;
+
+        if (!ModEntry.StashModule.IsActive)
+            return true;
+
+        return !InventoryLocksItem(item);
     }
 
     /// <summary>
@@ -212,7 +281,7 @@ internal class StashToChestsModule : IModule
     private void OnButtonPressed(object? sender, ButtonPressedEventArgs e)
     {
         if (MenuManager.ScreenWidgetHost.Value is
-            MenuHost<ItemGrabMenu> { Overlay: ChestSideTab { AliasMenu: not null } })
+            MenuHost<ItemGrabMenu> { Overlay: ChestOverlay { AliasMenu: not null } })
             return;
 
         if (ModEntry.Config.StashAnywhereKey.JustPressed() && IsStashAnywhereActive)

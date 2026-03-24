@@ -76,7 +76,10 @@ internal sealed class SnapshotTag : IClickableComponent, IDisposable
     {
         Selected = true;
         if (alsoSelectTextbox)
+        {
             TextBox.Selected = true;
+            Game1.keyboardDispatcher.Subscriber = TextBox;
+        }
 
         OnSelected?.Invoke(this);
     }

@@ -1,6 +1,10 @@
 ﻿{
   "Config.active": "ativo",
 
+  // TODO
+  "Config.Alias": "Chest alias",
+  "Config.Alias.desc": "Set alias for chests, the alias will show in a bubble when hover your mouse above the chest.",
+
   "Config.Categorize.Title": "Classificar baús",
   "Config.Categorize.desc": "Classifica seus baús por itens.",
   "Config.Categorize.sort": "Ordenar categorias",
@@ -54,6 +58,7 @@
   "Categorize.Miscellaneous": "Diversos",
   "Categorize.Weapons": "Armas",
 
+  // TODO
   "UI.Yes": "Confirm",
   "UI.No": "Cancel",
   "UI.Categorize": "Classificar",
@@ -70,6 +75,8 @@
   "UI.Snapshot.Create.desc": "Create a new category snapshot that can be used across saves.",
   "UI.Snapshot.Delete": "Delete",
   "UI.Snapshot.Delete.desc": "Permanently delete this category snapshot.",
+  "UI.Snapshot.Delete.confirm": "Sure to delete it?",
+  "UI.Snapshot.Edit": "Edit",
   "UI.Snapshot.Manage": "Manage snapshots",
   "UI.Snapshot.Manage.desc": "Manage all your created and saved category snapshots.",
   "UI.Snapshot.Naming": "Naming your new snapshot:",
@@ -79,7 +86,7 @@
   "UI.Snapshot.Unlink": "Unlink snapshot",
   "UI.Snapshot.Unlink.desc": "Unlink the snapshot. The snapshot itself will be preserved.",
   "UI.Snapshot.Unlink.confirm": "Sure to unlink it?",
-  "UI.Snapshot.Warning.mainplayer": "This chest is using the snapshot {{name}}, if you want to edit its category items, you should edit that snapshot instead. (Click me to edit it)",
+  "UI.Snapshot.Warning.mainplayer": "This chest is using the snapshot {{name}}, if you want to edit its category items, you should edit that snapshot instead. ",
   "UI.Snapshot.Warning.farmhand": "This chest is using a snapshot from the host, you can't edit it.",
   "UI.Unnamed": "Unnamed snapshot"
 }

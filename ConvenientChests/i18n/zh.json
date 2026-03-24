@@ -1,6 +1,9 @@
 {
   "Config.active": "启用",
 
+  "Config.Alias.Title": "箱子备注",
+  "Config.Alias.desc": "为箱子添加备注。添加后，当把鼠标放到箱子上时，将会出现一个气泡显示备注。",
+
   "Config.Categorize.Title": "存储归类",
   "Config.Categorize.desc": "对箱子的内容物进行归类。",
   "Config.Categorize.sort": "物品种类排序",
@@ -71,6 +74,7 @@
   "UI.Snapshot.Create.desc": "创建一个能够跨存档使用的物品分类快照。",
   "UI.Snapshot.Delete": "删除",
   "UI.Snapshot.Delete.desc": "永久删除这个分类快照。",
+  "UI.Snapshot.Delete.confirm": "确定要删除吗？",
   "UI.Snapshot.Edit": "编辑",
   "UI.Snapshot.Manage": "管理快照",
   "UI.Snapshot.Manage.desc": "管理你创建和保存的所有快照。",
@@ -81,7 +85,7 @@
   "UI.Snapshot.Unlink": "停止使用快照",
   "UI.Snapshot.Unlink.desc": "停止使用这个快照。注意：这个快照不会被删除。",
   "UI.Snapshot.Unlink.confirm": "确定要停止使用吗？",
-  "UI.Snapshot.Warning.mainplayer": "这个箱子正在使用快照 {{name}}，如果你想编辑这个箱子的物品分类，请编辑此快照。（点我跳转至快照编辑）",
+  "UI.Snapshot.Warning.mainplayer": "这个箱子正在使用快照 {{name}}，如果你想编辑这个箱子的物品分类，请编辑对应的快照。",
   "UI.Snapshot.Warning.farmhand": "这个箱子正在使用来自主机的快照，你无法编辑。",
   "UI.Unnamed": "未命名快照"
 }

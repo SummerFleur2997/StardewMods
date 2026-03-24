@@ -1,0 +1,19 @@
+﻿[
+  /* For content pack authors: How to add an alternative theme for your content pack
+
+    This mod have an original support for Overgrown Flowery Interface mod, if you want
+    to add theme for your content pack (or your loved content pack), you can add a new 
+    entry here. Then expand the canvas size of texture.png, draw your alternative 
+    texture on the expanded area.
+
+    You can see the example format of entry below.
+  */
+  {
+    "Name": "Overgrown Flowery Interface", // name of theme
+    "For": [ // used for which mod, must be an array, do not use a bare string !!!!
+      "Amaryn.OvergrownFloweryInterface",
+      "Maraluna.OvergrownFloweryInterface"
+    ],
+    "YOffset": 16 // the vertical offset of your theme in pixel
+  }
+]

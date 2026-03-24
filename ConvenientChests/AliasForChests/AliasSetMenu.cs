@@ -17,9 +17,9 @@ internal class AliasSetMenu : SubMenu
     private readonly ChestData _chestData;
 
     private bool _itemPickerOn;
-    private ChestSideTab _parent;
+    private ChestOverlay _parent;
 
-    public AliasSetMenu(ChestData data, ChestSideTab parent) : base(400, 240)
+    public AliasSetMenu(ChestData data, ChestOverlay parent) : base(400, 240)
     {
         _chestData = data;
         _parent = parent;
@@ -128,7 +128,7 @@ internal class AliasSetMenu : SubMenu
     }
 
     /// <summary>
-    /// Customized logic for <see cref="ChestSideTab.ReceiveKeyPress"/>.
+    /// Customized logic for <see cref="ChestOverlay.ReceiveKeyPress"/>.
     /// </summary>
     public bool HandleOrSuppressThisKeyPress(Keys key)
     {

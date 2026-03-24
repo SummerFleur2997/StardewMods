@@ -58,7 +58,7 @@ internal abstract class CategoryMenu<T> : BaseMenu, IHaveSubMenu where T : IChes
     }
 
     /// <inheritdoc />
-    public override void AfterDraw(SpriteBatch b)
+    public override void DrawOverLays(SpriteBatch b)
     {
         SubMenu?.Draw(b);
         Tooltip?.Draw(b);
@@ -83,10 +83,7 @@ internal abstract class CategoryMenu<T> : BaseMenu, IHaveSubMenu where T : IChes
         HoveredItem = null;
 
         if (SubMenu is not null)
-        {
-            SubMenu.ReceiveCursorHover(x, y);
             return true;
-        }
 
         return base.ReceiveCursorHover(x, y);
     }

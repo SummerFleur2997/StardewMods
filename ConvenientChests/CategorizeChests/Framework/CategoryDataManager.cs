@@ -76,6 +76,34 @@ internal static class CategoryDataManager
         return categories;
     }
 
+    public static ItemCategoryName CalculateMostRelevantCategory(this IEnumerable<ItemKey> acceptedItemKinds)
+    {
+        var category = ModEntry.Config.EnableSort
+            ? ItemCategories.OrderBy(c => c.DisplayName).First()
+            : ItemCategories.FirstOrDefault(c => c.BaseName == "Vegetable");
+
+        var factor = 0.0;
+
+        foreach (var group in acceptedItemKinds.GroupBy(key => key.GetCategory()))
+        {
+            var name = group.Key;
+            var accepts = group.Count();
+
+            if (!Categories.TryGetValue(name, out var itemsInCategory))
+                continue;
+
+            var total = (double)itemsInCategory.Count;
+            var newFactor = accepts * accepts / total;
+            if (newFactor < factor)
+                continue;
+
+            category = name;
+            factor = newFactor;
+        }
+
+        return category;
+    }
+
     /// <summary>
     /// Generate every item in the games ItemRegistry
     /// </summary>

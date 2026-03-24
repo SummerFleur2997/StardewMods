@@ -3,6 +3,7 @@ using ConvenientChests.Framework.DataService;
 using ConvenientChests.Framework.DataStructs;
 using ConvenientChests.Framework.UserInterfaceService;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using UI.Component;
 using UI.Menu;
@@ -21,16 +22,11 @@ internal class SnapshotHubMenu : CategoryMenu<ChestDataSnapshot>
 
             if (value)
             {
-                _gridMenuTitle = _edit;
-                Components.Add(TopRow);
+                TopRow.CategorySelector.SelectByValue(ChestData.PotentialMostRelevantCategory);
                 RecreateItemToggles();
             }
             else
-            {
-                _gridMenuTitle = _preview;
-                Components.Remove(TopRow);
                 RecreateItemPreviewToggles(_selectedTag);
-            }
 
             _editMode = value;
         }
@@ -40,14 +36,13 @@ internal class SnapshotHubMenu : CategoryMenu<ChestDataSnapshot>
 
     public override ChestDataSnapshot ChestData => _selectedTag!.Snapshot;
 
-    private TextLabel _gridMenuTitle;
-    private readonly StackPanel _stackPanel;
-    private readonly ToggleButton _epButton;
-    private readonly Button _applyButton;
-    private readonly Button _deleteButton;
+    public StackPanel StackPanel;
 
-    private readonly TextLabel _edit;
-    private readonly TextLabel _preview;
+    private readonly TextLabel _editLabel;
+    private readonly TextLabel _previewLabel;
+
+    private readonly ToggleButton _editOrPreviewButton;
+    private readonly IComponent[] _availableWhenTagSelected;
 
     private SnapshotTag? _selectedTag;
 
@@ -61,7 +56,7 @@ internal class SnapshotHubMenu : CategoryMenu<ChestDataSnapshot>
         var textHeight = (int)Game1.smallFont.MeasureString("M").Y;
         var y = yPositionOnScreen + textHeight + 40;
 
-        // left side
+        // stack panel
         var containerBound = new Rectangle(x, yPositionOnScreen, 304, height);
         var containerBg = NineSlice.MenuBackground(containerBound);
 
@@ -69,62 +64,69 @@ internal class SnapshotHubMenu : CategoryMenu<ChestDataSnapshot>
         stackPanelTitle.SetInCenterOfTheBounds(containerBound);
         stackPanelTitle.OffsetPosition(y: yPositionOnScreen - stackPanelTitle.Y + 32);
 
-        _stackPanel = new StackPanel(x + 24, y, 256, height - 160, 64);
-        _stackPanel.Background = containerBg;
+        StackPanel = new StackPanel(x + 24, y, 256, height - 160, 64);
+        StackPanel.Background = containerBg;
 
-        // right side
+        AddChildren(StackPanel, stackPanelTitle);
+
+        // grid menu
         x += 308;
         var previewerBound = new Rectangle(x, yPositionOnScreen, width - 308, height);
         var previewBg = NineSlice.MenuBackground(previewerBound);
 
-        _edit = new TextLabel(I18n.UI_Snapshot_Edit(), Color.Black, Game1.smallFont);
-        _edit.SetInCenterOfTheBounds(previewerBound);
-        _edit.OffsetPosition(y: yPositionOnScreen - _edit.Y + 32);
+        _editLabel = new TextLabel(I18n.UI_Snapshot_Edit(), Color.Black, Game1.smallFont);
+        _editLabel.SetInCenterOfTheBounds(previewerBound);
+        _editLabel.OffsetPosition(y: yPositionOnScreen - _editLabel.Y + 32);
 
-        _preview = new TextLabel(I18n.UI_Snapshot_Preview(), Color.Black, Game1.smallFont);
-        _preview.SetInCenterOfTheBounds(previewerBound);
-        _preview.OffsetPosition(y: yPositionOnScreen - _preview.Y + 32);
-
-        _gridMenuTitle = _preview;
+        _previewLabel = new TextLabel(I18n.UI_Snapshot_Preview(), Color.Black, Game1.smallFont);
+        _previewLabel.SetInCenterOfTheBounds(previewerBound);
+        _previewLabel.OffsetPosition(y: yPositionOnScreen - _previewLabel.Y + 32);
 
         GridMenu = new GridMenu(x + 24, y, width - 356, height - 160, 64);
         GridMenu.Background = previewBg;
 
-        AddChildren(_stackPanel, GridMenu, stackPanelTitle, _gridMenuTitle);
+        AddChildren(GridMenu, _editLabel, _previewLabel);
 
-        x = _stackPanel.X + _stackPanel.Width / 2 - 64;
-        y = _stackPanel.Y + _stackPanel.Height;
+        // create new snapshot button
+        x = StackPanel.X + StackPanel.Width / 2 - 64;
+        y = StackPanel.Y + StackPanel.Height;
         var createTexture = UIHelper.LightButtonBackground();
         var createButton = new Button(createTexture, I18n.UI_Snapshot_Create(), Color.Black, Game1.smallFont);
         createButton.SetDestination(x, y, 128, 60);
         createButton.OnPress += NewSnapshot;
         AddChild(createButton);
 
+        // edit/preview button
         x = GridMenu.X + GridMenu.Width / 2 - 170;
         var epTexture = UIHelper.YellowButtonBackground();
-        _epButton = new ToggleButton(epTexture, I18n.UI_Snapshot_Preview(), I18n.UI_Snapshot_Edit(),
+        _editOrPreviewButton = new ToggleButton(epTexture, I18n.UI_Snapshot_Preview(), I18n.UI_Snapshot_Edit(),
             Color.Black, Game1.smallFont);
-        _epButton.SetDestination(x, y, 108, 60);
-        _epButton.OnToggle += ChangeStatus;
+        _editOrPreviewButton.SetDestination(x, y, 108, 60);
+        _editOrPreviewButton.OnToggle += s => EditMode = s;
 
+        // apply button
         x += 116;
         var applyTexture = UIHelper.YellowButtonBackground();
-        _applyButton = new Button(applyTexture, I18n.UI_Snapshot_Apply(), Color.Black, Game1.smallFont);
-        _applyButton.SetDestination(x, y, 108, 60);
-        _applyButton.Tooltip = new Tooltip(desc: I18n.UI_Snapshot_Apply_Desc());
-        _applyButton.SoundCue = "money";
-        _applyButton.OnPress += ApplySnapshot;
+        var applyButton = new Button(applyTexture, I18n.UI_Snapshot_Apply(), Color.Black, Game1.smallFont);
+        applyButton.SetDestination(x, y, 108, 60);
+        applyButton.Tooltip = new Tooltip(desc: I18n.UI_Snapshot_Apply_Desc());
+        applyButton.SoundCue = "money";
+        applyButton.OnPress += ApplySnapshot;
 
+        // delete button
         x += 116;
         var deleteTexture = UIHelper.RedButtonBackground();
-        _deleteButton = new Button(deleteTexture, I18n.UI_Snapshot_Delete(), Color.Black, Game1.smallFont);
-        _deleteButton.SetDestination(x, y, 108, 60);
-        _deleteButton.Tooltip = new Tooltip(desc: I18n.UI_Snapshot_Delete_Desc());
-        _deleteButton.OnPress += DeleteSnapshot;
+        var deleteButton = new Button(deleteTexture, I18n.UI_Snapshot_Delete(), Color.Black, Game1.smallFont);
+        deleteButton.SetDestination(x, y, 108, 60);
+        deleteButton.Tooltip = new Tooltip(desc: I18n.UI_Snapshot_Delete_Desc());
+        deleteButton.OnPress += DeleteSnapshot;
+
+        AddChildren(_editOrPreviewButton, applyButton, deleteButton);
+        _availableWhenTagSelected = new IComponent[] { _editOrPreviewButton, applyButton, deleteButton };
 
         // Add snapshots to stack panel
         var snapshotTags = SnapshotManager.GetSnapshots()
-            .Select(s => new SnapshotTag(_stackPanel.Width - 16, s))
+            .Select(s => new SnapshotTag(StackPanel.Width - 16, s))
             .ToList();
 
         foreach (var tag in snapshotTags)
@@ -133,7 +135,93 @@ internal class SnapshotHubMenu : CategoryMenu<ChestDataSnapshot>
             tag.OnUnSelected += ClearActiveTag;
         }
 
-        _stackPanel.AddComponents(snapshotTags);
+        StackPanel.AddComponents(snapshotTags);
+        AddChildren(TopRow);
+    }
+
+    /// <summary>
+    /// High customized draw method.
+    /// </summary>
+    public override void DrawComponents(SpriteBatch b)
+    {
+        foreach (var component in Components)
+        {
+            if (EditMode && component == _previewLabel)
+                continue;
+
+            if (!EditMode && (component == _editLabel || component == TopRow))
+                continue;
+
+            if (_selectedTag is null && _availableWhenTagSelected.Contains(component))
+                continue;
+
+            component.Draw(b);
+        }
+    }
+
+    /// <summary>
+    /// High customized ReceiveLeftClick method.
+    /// </summary>
+    public override bool ReceiveLeftClick(int x, int y)
+    {
+        // let the submenu handle the click first
+        if (SubMenu is not null)
+        {
+            SubMenu.ReceiveLeftClick(x, y);
+            return true;
+        }
+
+        // then check if the top row is clicked
+        if (EditMode && TopRow.ReceiveLeftClick(x, y))
+            return true;
+
+        // travel from back to front
+        for (var i = Components.Count - 1; i >= 0; i--)
+        {
+            var component = Components[i];
+            if (component is not IClickableComponent c)
+                continue;
+
+            if (_selectedTag is null && _availableWhenTagSelected.Contains(component))
+                continue;
+
+            if (c.ReceiveLeftClick(x, y))
+                return true;
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// High customized ReceiveCursorHover method.
+    /// </summary>
+    public override bool ReceiveCursorHover(int x, int y)
+    {
+        Tooltip = null;
+        HoveredItem = null;
+
+        if (SubMenu is not null)
+            return true;
+
+        // check if the top row is available
+        if (EditMode && TopRow.ReceiveCursorHover(x, y))
+            return true;
+
+        // travel from back to front
+        for (var i = Components.Count - 1; i >= 0; i--)
+        {
+            var component = Components[i];
+            if (component is not IClickableComponent c)
+                continue;
+
+            if (_selectedTag is null && _availableWhenTagSelected.Contains(component))
+                continue;
+
+            if (c.ReceiveCursorHover(x, y))
+                return true;
+        }
+
+        return false;
     }
 
     /// <inheritdoc/>
@@ -160,22 +248,6 @@ internal class SnapshotHubMenu : CategoryMenu<ChestDataSnapshot>
         return false;
     }
 
-    private void ChangeStatus(bool editMode)
-    {
-        if (editMode)
-        {
-            _gridMenuTitle = _edit;
-            Components.Add(TopRow);
-            RecreateItemToggles();
-        }
-        else
-        {
-            _gridMenuTitle = _preview;
-            Components.Remove(TopRow);
-            RecreateItemPreviewToggles(_selectedTag);
-        }
-    }
-
     private void RecreateItemPreviewToggles(SnapshotTag? t)
     {
         GridMenu.RemoveAllComponents();
@@ -197,23 +269,15 @@ internal class SnapshotHubMenu : CategoryMenu<ChestDataSnapshot>
         _selectedTag = t;
 
         RecreateItemPreviewToggles(t);
-
-        Components.Add(_epButton);
-        Components.Add(_applyButton);
-        Components.Add(_deleteButton);
     }
 
     private void ClearActiveTag(SnapshotTag t)
     {
         GridMenu.RemoveAllComponents();
-        _epButton.Active = false;
+        _editOrPreviewButton.Active = false;
         _selectedTag = null;
 
         EditMode = false;
-
-        Components.Remove(_epButton);
-        Components.Remove(_applyButton);
-        Components.Remove(_deleteButton);
     }
 
     /// <summary>
@@ -222,12 +286,12 @@ internal class SnapshotHubMenu : CategoryMenu<ChestDataSnapshot>
     private void NewSnapshot()
     {
         var snapshot = SnapshotManager.CreateNewSnapshot(I18n.UI_Unnamed());
-        var tag = new SnapshotTag(_stackPanel.Width - 16, snapshot);
+        var tag = new SnapshotTag(StackPanel.Width - 16, snapshot);
 
         SnapshotManager.Add(snapshot);
 
-        _stackPanel.AddComponents(tag);
-        _stackPanel.ScrollToBottom();
+        StackPanel.AddComponents(tag);
+        StackPanel.ScrollToBottom();
 
         tag.OnSelected += SetActiveTag;
         tag.OnUnSelected += ClearActiveTag;
@@ -246,7 +310,7 @@ internal class SnapshotHubMenu : CategoryMenu<ChestDataSnapshot>
 
         menu.SetSnapshot(ChestData);
         _selectedTag?.UnSelect();
-        receiveKeyPress(Keys.Escape);
+        exitThisMenuNoSound();
     }
 
     /// <summary>
@@ -266,7 +330,8 @@ internal class SnapshotHubMenu : CategoryMenu<ChestDataSnapshot>
                 throw new InvalidOperationException("No snapshot selected");
 
             SnapshotManager.Remove(_selectedTag.Snapshot.UniqueID);
-            _stackPanel.Remove(_selectedTag);
+            StackPanel.Remove(_selectedTag);
+            GridMenu.RemoveAllComponents();
             _selectedTag = null;
         }
     }
