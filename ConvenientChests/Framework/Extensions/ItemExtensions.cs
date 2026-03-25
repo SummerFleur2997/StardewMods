@@ -24,11 +24,12 @@ internal static class ItemExtensions
         return ItemRegistry.Create(item.QualifiedItemId, item.Stack, item.Quality);
     }
 
-    public static bool LockedInInventory(this Item item) => item.modData.TryGetValue(ModEntry.Manifest.UniqueID, out _);
+    public static bool LockedInInventory(this Item item) =>
+        item.modData.TryGetValue(ModEntry.Manifest.UniqueID + ".lock", out _);
 
     public static void ChangeLockStatus(this Item item)
     {
-        var id = ModEntry.Manifest.UniqueID;
+        var id = ModEntry.Manifest.UniqueID + ".lock";
         var locked = item.modData.ContainsKey(id);
 
         if (locked) item.modData.Remove(id);

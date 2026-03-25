@@ -20,9 +20,6 @@ internal class InventoryOverlay : IOverlay<GameMenu>
     /// <inheritdoc />
     public void DrawUi(SpriteBatch b)
     {
-        if (ModEntry.Config.HideSideTab)
-            return;
-
         if (RootMenu.GetCurrentPage() is not InventoryPage inventoryPage)
             return;
 

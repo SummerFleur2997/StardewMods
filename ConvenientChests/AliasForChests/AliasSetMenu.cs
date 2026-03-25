@@ -71,6 +71,10 @@ internal class AliasSetMenu : SubMenu
 
         var text = _chestData.Alias ?? "";
         _textBox = new TextBox(X + 100, y, 272, 64, text, UIHelper.TextBubble());
+        var chest = parent.Chest;
+        if (chest.modData.TryGetValue("Pathoschild.ChestsAnywhere/Name", out var name))
+            _textBox.Text = name;
+
         Game1.keyboardDispatcher.Subscriber = _textBox;
         Components.Add(_textBox);
 

@@ -12,14 +12,13 @@ namespace ConvenientChests.Framework.UserInterfaceService;
 
 internal class ChestOverlay : IOverlay<ItemGrabMenu>
 {
-    private readonly Chest _chest;
     public ItemGrabMenu RootMenu { get; }
     public Tooltip? Tooltip { get; private set; }
-
     public AliasSetMenu? AliasMenu { get; set; }
     private SpriteButton AliasButton { get; }
     private SpriteButton CategorizeButton { get; }
 
+    public readonly Chest Chest;
     private readonly LockItemMenu _lockItemMenu;
     private readonly InventoryMenu.highlightThisItem _defaultChestHighlighter;
     private readonly InventoryMenu.highlightThisItem _defaultInventoryHighlighter;
@@ -30,7 +29,7 @@ internal class ChestOverlay : IOverlay<ItemGrabMenu>
     /// </summary>
     public ChestOverlay(ItemGrabMenu menu, Chest chest)
     {
-        _chest = chest;
+        Chest = chest;
         RootMenu = menu;
 
         _defaultChestHighlighter = menu.inventory.highlightMethod;
@@ -52,7 +51,7 @@ internal class ChestOverlay : IOverlay<ItemGrabMenu>
             ? 100 + ModEntry.Config.MobileOffset
 
         // Calculate the offset based on the chest size, use a dynamic offset based on the chest size.
-        var delta = _chest.GetActualCapacity() switch
+        var delta = Chest.GetActualCapacity() switch
         {
             // Big chests, >=70 to compatible with unlimited storage
             >= 70 => 128,
@@ -76,7 +75,7 @@ internal class ChestOverlay : IOverlay<ItemGrabMenu>
     /// <inheritdoc />
     public void DrawUi(SpriteBatch b)
     {
-        if (_chest.SpecialChestType == Chest.SpecialChestTypes.Enricher)
+        if (Chest.SpecialChestType == Chest.SpecialChestTypes.Enricher)
             return;
 
         var drawTooltip = true;
@@ -115,7 +114,7 @@ internal class ChestOverlay : IOverlay<ItemGrabMenu>
     /// </summary>
     private void OpenCategoryMenu()
     {
-        var data = _chest.GetChestData();
+        var data = Chest.GetChestData();
         // var delta = ModEntry.IsAndroid ? 70 : 0; // y + delta, height - delta
         var menu = new CategoryChestMenu(RootMenu.xPositionOnScreen, RootMenu.yPositionOnScreen,
             RootMenu.width, RootMenu.height, data, RootMenu, IClickableMenu.borderWidth);
@@ -128,7 +127,7 @@ internal class ChestOverlay : IOverlay<ItemGrabMenu>
     /// </summary>
     private void OpenAliasMenu()
     {
-        var data = _chest.GetChestData();
+        var data = Chest.GetChestData();
         AliasMenu = new AliasSetMenu(data, this);
         SetItemsClickable(false);
     }
@@ -136,7 +135,7 @@ internal class ChestOverlay : IOverlay<ItemGrabMenu>
     /// <inheritdoc />
     public bool ReceiveLeftClick(int x, int y)
     {
-        if (_chest.SpecialChestType == Chest.SpecialChestTypes.Enricher)
+        if (Chest.SpecialChestType == Chest.SpecialChestTypes.Enricher)
             return false;
 
         if (_lockItemMenu.ReceiveLeftClick(x, y, RootMenu.inventory, RootMenu.ItemsToGrabMenu))
@@ -161,7 +160,7 @@ internal class ChestOverlay : IOverlay<ItemGrabMenu>
     public bool ReceiveCursorHover(int x, int y)
     {
         Tooltip = null;
-        if (_chest.SpecialChestType == Chest.SpecialChestTypes.Enricher)
+        if (Chest.SpecialChestType == Chest.SpecialChestTypes.Enricher)
             return false;
 
         if (_lockItemMenu.ReceiveCursorHover(x, y))
@@ -181,6 +180,9 @@ internal class ChestOverlay : IOverlay<ItemGrabMenu>
 
         return false;
     }
+
+    /// <inheritdoc />
+    public bool ReceiveScrollWheelAction(int amount) => AliasMenu?.ReceiveScrollWheelAction(amount) ?? false;
 
     /// <inheritdoc />
     public bool ReceiveKeyPress(Keys key)

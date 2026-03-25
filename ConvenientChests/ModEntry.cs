@@ -135,7 +135,6 @@ internal class ModEntry : Mod
             StashToChestsModule.Instance.Activate();
 
         SaveManager.Load();
-        SnapshotManager.Load();
 
         if (Context.IsMultiplayer)
         {
@@ -172,6 +171,7 @@ internal class ModEntry : Mod
         ConvenientInventoryIntegration.Register();
         QuickSaveIntegration.Register();
         UIHelper.Initialize();
+        SnapshotManager.Load();
         StashToChestsModule.RegisterHarmonyPatch();
     }
 

@@ -63,6 +63,8 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
             AddSnapshotWarning();
         else
             RecreateItemToggles();
+
+        TopRow.CategorySelector.SelectByValue(data.PotentialMostRelevantCategory());
     }
 
     /// <summary>

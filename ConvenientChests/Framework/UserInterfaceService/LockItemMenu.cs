@@ -54,8 +54,13 @@ public class LockItemMenu : IHaveTooltip
 
     public void Draw(SpriteBatch b, InventoryMenu playerInventory, InventoryMenu? chestInventory = null)
     {
-        if (StashToChestsModule.Instance.IsActive || CategorizeChestsModule.Instance.IsActive)
+        var drawTooltip = true;
+        if ((StashToChestsModule.Instance.IsActive || CategorizeChestsModule.Instance.IsActive) &&
+            !ModEntry.Config.HideSideTab)
+        {
             LockButton.Draw(b);
+        }
+        else drawTooltip = false;
 
         if (!EditMode && _count == 0)
             return;
@@ -74,7 +79,7 @@ public class LockItemMenu : IHaveTooltip
 
         // draw item frames in player inventory
         var playerSlots = playerInventory.GetSlotDrawPositions();
-        for (var i = 0; i < playerSlots.Count; i++)
+        for (var i = 0; i < Game1.player.Items.Count; i++)
         {
             var item = Game1.player.Items[i];
             if (item is null || !item.LockedInInventory())
@@ -96,7 +101,8 @@ public class LockItemMenu : IHaveTooltip
             }
         }
 
-        Tooltip?.Draw(b);
+        if (drawTooltip)
+            Tooltip?.Draw(b);
     }
 
     public bool ReceiveLeftClick(int x, int y, InventoryMenu playerInventory, InventoryMenu? chestInventory = null)
@@ -111,7 +117,7 @@ public class LockItemMenu : IHaveTooltip
             return false;
 
         var clickPos1 = playerInventory.getInventoryPositionOfClick(x, y);
-        if (clickPos1 >= 0)
+        if (clickPos1 >= 0 && clickPos1 < Game1.player.Items.Count)
         {
             var item1 = Game1.player.Items[clickPos1];
             item1?.ChangeLockStatus();

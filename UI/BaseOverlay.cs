@@ -293,7 +293,14 @@ internal abstract class BaseOverlay : IDisposable
         if (Context.ScreenId != _screenId)
             return;
 
-        var scrollHandled = ReceiveScrollWheelAction(e.Delta);
+        var delta = e.Delta switch
+        {
+            > 0 => 1,
+            < 0 => -1,
+            _ => 0
+        };
+
+        var scrollHandled = ReceiveScrollWheelAction(delta);
         if (scrollHandled)
         {
             var cur = Game1.oldMouseState;

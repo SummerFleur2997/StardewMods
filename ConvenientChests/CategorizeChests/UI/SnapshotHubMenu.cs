@@ -25,7 +25,7 @@ internal class SnapshotHubMenu : CategoryMenu<ChestDataSnapshot>
 
             if (value)
             {
-                TopRow.CategorySelector.SelectByValue(ChestData.PotentialMostRelevantCategory);
+                TopRow.CategorySelector.SelectByValue(ChestData.PotentialMostRelevantCategory());
                 RecreateItemToggles();
             }
             else
@@ -253,6 +253,12 @@ internal class SnapshotHubMenu : CategoryMenu<ChestDataSnapshot>
         }
 
         return false;
+    }
+
+    public override void OnExit()
+    {
+        SnapshotManager.Save();
+        base.OnExit();
     }
 
     /// <summary>

@@ -83,41 +83,6 @@ internal static class CategoryDataManager
     }
 
     /// <summary>
-    /// An algorithm that calculate the relative factor of a category based on the accepted items.
-    /// </summary>
-    /// <param name="acceptedItemKinds">The accepted items from a <see cref="ChestData"/>.</param>
-    /// <returns>The most relative category.</returns>
-    public static ItemCategoryName CalculateMostRelevantCategory(this IEnumerable<ItemKey> acceptedItemKinds)
-    {
-        // default to the first category
-        var category = ModEntry.Config.EnableSort
-            ? ItemCategories.OrderBy(c => c.DisplayName).First()
-            : ItemCategories.FirstOrDefault(c => c.BaseName == "Vegetable");
-
-        var factor = 0.0;
-
-        // traver all categories and leave the most relative one
-        foreach (var group in acceptedItemKinds.GroupBy(key => key.GetCategory()))
-        {
-            var name = group.Key;
-            var accepts = group.Count();
-
-            if (!Categories.TryGetValue(name, out var itemsInCategory))
-                continue;
-
-            var total = (double)itemsInCategory.Count;
-            var newFactor = accepts * accepts / total;
-            if (newFactor < factor)
-                continue;
-
-            category = name;
-            factor = newFactor;
-        }
-
-        return category;
-    }
-
-    /// <summary>
     /// Generate every item in the games ItemRegistry
     /// </summary>
     private static IEnumerable<Item> DiscoverItems()

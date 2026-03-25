@@ -2,7 +2,7 @@
   "Config.active": "ativo",
 
   // TODO
-  "Config.Alias": "Chest alias",
+  "Config.Alias.Title": "Chest alias",
   "Config.Alias.desc": "Set alias for chests, the alias will show in a bubble when hover your mouse above the chest.",
 
   "Config.Categorize.Title": "Classificar baús",

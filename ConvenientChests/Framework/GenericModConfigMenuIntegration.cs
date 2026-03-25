@@ -24,6 +24,19 @@ internal static class GenericModConfigMenuIntegration
         // register config UI
         api.Register(manifest, reset, save);
 
+        // 【标题】箱子备注 - 为箱子添加备注
+        // [Title] Chest alias - Set alias for chests
+        api.AddSectionTitle(manifest, I18n.Config_Alias_Title, I18n.Config_Alias_Desc);
+
+        // 【选项】启用
+        // [Checkbox] active
+        api.AddBoolOption(
+            manifest,
+            name: I18n.Config_Active,
+            getValue: () => ModEntry.Config.AliasForChests,
+            setValue: value => ModEntry.Config.AliasForChests = value
+        );
+
         // 【标题】存储归类 - 对箱子的内容物进行归类
         // [Title] Categorize chests - Categorize your chests by items
         api.AddSectionTitle(manifest, I18n.Config_Categorize_Title, I18n.Config_Categorize_Desc);

@@ -86,7 +86,7 @@ internal class StashToChestsModule : IModule
     }
 
     /// <summary>
-    /// Harmony register for <see cref="Patch_ItemGrabMenu_FillOutStacks"/>
+    /// Harmony register for <see cref="Transpiler_ItemGrabMenu_FillOutStacks"/>
     /// </summary>
     public static void RegisterHarmonyPatch()
     {
@@ -95,8 +95,10 @@ internal class StashToChestsModule : IModule
             var harmony = new Harmony(ModEntry.Manifest.UniqueID);
             var original = AccessTools.Method(typeof(ItemGrabMenu), nameof(ItemGrabMenu.FillOutStacks));
             var transpiler = AccessTools.Method(
-                typeof(StashToChestsModule), nameof(Patch_ItemGrabMenu_FillOutStacks));
-            harmony.Patch(original, transpiler: new HarmonyMethod(transpiler));
+                typeof(StashToChestsModule), nameof(Transpiler_ItemGrabMenu_FillOutStacks));
+            var postfix = AccessTools.Method(
+                typeof(StashToChestsModule), nameof(Postfix_ItemGrabMenu_FillOutStacks));
+            harmony.Patch(original, transpiler: new HarmonyMethod(transpiler), postfix: new HarmonyMethod(postfix));
             ModEntry.Log("Patched ItemGrabMenu.FillOutStacks successfully.");
         }
         catch (Exception ex)
@@ -109,7 +111,7 @@ internal class StashToChestsModule : IModule
     /// Patch to <see cref="ItemGrabMenu.FillOutStacks"/> to make it
     /// possible to lock items when using vanilla stash button.
     /// </summary>
-    public static IEnumerable<CodeInstruction> Patch_ItemGrabMenu_FillOutStacks(IEnumerable<CodeInstruction> ci)
+    public static IEnumerable<CodeInstruction> Transpiler_ItemGrabMenu_FillOutStacks(IEnumerable<CodeInstruction> ci)
     {
         var matcher = new CodeMatcher(ci);
 
@@ -133,6 +135,14 @@ internal class StashToChestsModule : IModule
         matcher.InsertAndAdvance(injection);
 
         return matcher.InstructionEnumeration();
+    }
+
+    public static void Postfix_ItemGrabMenu_FillOutStacks(ItemGrabMenu __instance)
+    {
+        if (__instance.sourceItem is not Chest chest)
+            return;
+
+        StashToCurrentChest(chest, Instance.AcceptingFunc, Instance.RejectingFunc);
     }
 
     /// <summary>
@@ -332,7 +342,7 @@ internal class StashToChestsModule : IModule
 
     private void OnInventoryChanged(object? sender, InventoryChangedEventArgs e)
     {
-        var id = ModEntry.Manifest.UniqueID;
+        var id = ModEntry.Manifest.UniqueID + ".lock";
         foreach (var item in e.Removed)
         {
             item.modData.Remove(id);

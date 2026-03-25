@@ -128,32 +128,31 @@ internal class ItemKey : IComparable<ItemKey>, IEquatable<ItemKey>
     {
         switch (TypeDefinition)
         {
-            case "(T)":
-            // 将镰刀和马笛归类为工具
+            case ItemRegistry.type_tool:
             // Move scythes and horse flute to the tools category
-            case "(O)" when QualifiedItemId == "(O)911":
-            case "(W)" when MeleeWeapon.IsScythe(QualifiedItemId):
+            case ItemRegistry.type_object when QualifiedItemId == "(O)911":
+            case ItemRegistry.type_weapon when MeleeWeapon.IsScythe(QualifiedItemId):
                 return new ItemCategoryName(Object.GetCategoryDisplayName(Object.toolCategory), "Tool");
 
-            case "(W)":
+            case ItemRegistry.type_weapon:
                 return new ItemCategoryName(I18n.Categorize_Weapons(), "Weapons");
 
-            case "(H)":
+            case ItemRegistry.type_hat:
                 return new ItemCategoryName(I18n.Categorize_Hats(), "Hats");
 
-            case "(P)":
+            case ItemRegistry.type_pants:
                 return new ItemCategoryName(LoadString("Pants_Name", "Pants"), "Pants");
 
-            case "(S)":
+            case ItemRegistry.type_shirt:
                 return new ItemCategoryName(LoadString("Shirt_Name", "Shirts"), "Shirts");
 
-            case "(FL)":
+            case ItemRegistry.type_floorpaper:
                 return new ItemCategoryName(LoadString("Wallpaper.cs.13203"), "Flooring");
 
-            case "(WP)":
+            case ItemRegistry.type_wallpaper:
                 return new ItemCategoryName(LoadString("Wallpaper.cs.13204"), "Wallpaper");
 
-            case "(BC)":
+            case ItemRegistry.type_bigCraftable:
                 var obj = GetOne<Object>();
                 if (obj.GetMachineData() != null)
                     return new ItemCategoryName(I18n.Categorize_Machine(), "Machine");
@@ -161,13 +160,13 @@ internal class ItemKey : IComparable<ItemKey>, IEquatable<ItemKey>
                 return obj.IsCraftable()
                     ? new ItemCategoryName(I18n.Categorize_Crafting(), "Crafting")
                     : new ItemCategoryName(I18n.Categorize_BigCrafts(), "BigCrafts");
-            case "(M)":
+            case ItemRegistry.type_mannequin:
                 return new ItemCategoryName(I18n.Categorize_Mannequin(), "Mannequin");
 
-            case "(F)":
+            case ItemRegistry.type_furniture:
                 return new ItemCategoryName(LoadString("Object.cs.12847"), "Furniture");
 
-            case "(TR)":
+            case ItemRegistry.type_trinket:
                 return new ItemCategoryName(LoadString("Trinket", "1_6_Strings"), "Trinket");
         }
 
@@ -181,8 +180,8 @@ internal class ItemKey : IComparable<ItemKey>, IEquatable<ItemKey>
 
         // 如果物品是可食用的，将其归类为消耗品，否则归类为杂项
         // If the item is edible, categorize it as consumable; otherwise, categorize it as miscellaneous
-        return TypeDefinition == "(O)" && ((Object)item).Edibility > 0
-            ? new ItemCategoryName(I18n.Categorize_Consumable(), "Consumable")
+        return TypeDefinition == ItemRegistry.type_object && ((Object)item).Edibility > 0
+            ? new ItemCategoryName(I18n.Categorize_Consumable(), "Consumable")    
             : new ItemCategoryName(I18n.Categorize_Miscellaneous(), "Miscellaneous");
     }
 
