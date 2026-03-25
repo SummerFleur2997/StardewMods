@@ -65,6 +65,7 @@
   "UI.ChestAlias": "编辑备注",
   "UI.ChestAlias.desc": "为这个箱子添加备注。添加后，当把鼠标放到箱子上时，将会出现一个气泡显示你的备注。",
   "UI.LockItems": "锁定物品",
+  "UI.LockItems.desc": "点击物品切换锁定状态，\n按 Esc 或 OK 按钮退出锁定编辑模式。",
   "UI.QuickSet": "快速设置分类",
   "UI.QuickSet.desc": "将当前箱子里所包含的物品添加至分类列表中。",
   "UI.Snapshot": "分类快照",

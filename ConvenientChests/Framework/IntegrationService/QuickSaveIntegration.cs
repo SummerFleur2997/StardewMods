@@ -1,6 +1,7 @@
 ﻿using Common.ConfigurationServices;
+using ConvenientChests.Framework.SaveService;
 
-namespace ConvenientChests.Framework.SaveService;
+namespace ConvenientChests.Framework.IntegrationService;
 
 public static class QuickSaveIntegration
 {

@@ -10,11 +10,11 @@ internal static class CategoryDataManager
     /// <summary>
     /// A mapping of category names to the item keys belonging to that category.
     /// </summary>
-    public static Dictionary<ItemCategoryName, List<ItemKey>> Categories;
+    public static readonly Dictionary<ItemCategoryName, List<ItemKey>> Categories;
 
-    public static List<ItemCategoryName> ItemCategories;
+    public static readonly List<ItemCategoryName> ItemCategories;
 
-    public static void Initialize()
+    static CategoryDataManager()
     {
         Categories = DiscoverItems()
             .Select(item => item.ToItemKey())

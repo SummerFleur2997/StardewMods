@@ -3,6 +3,7 @@ using Common;
 using ConvenientChests.Framework.DataService;
 using ConvenientChests.Framework.DataStructs;
 using ConvenientChests.Framework.Extensions;
+using ConvenientChests.Framework.IntegrationService;
 using ConvenientChests.Framework.UserInterfaceService;
 using HarmonyLib;
 using StardewModdingAPI.Events;
@@ -15,6 +16,12 @@ namespace ConvenientChests.StashToChests;
 
 internal class StashToChestsModule : IModule
 {
+    /// <summary>
+    /// Static singleton.
+    /// </summary>
+    public static readonly StashToChestsModule Instance = new();
+
+    /// <inheritdoc />
     public bool IsActive { get; private set; }
 
     /// <summary>
@@ -41,12 +48,9 @@ internal class StashToChestsModule : IModule
     /// </summary>
     private bool IsStashAnywhereActive { get; set; }
 
-    public StashToChestsModule()
-    {
-        ModEntry.ModHelper.Events.Input.ButtonPressed += OnButtonPressed;
-        ModEntry.ModHelper.Events.GameLoop.TimeChanged += OnTimeChanged;
-    }
+    private StashToChestsModule() { }
 
+    /// <inheritdoc />
     public void Activate()
     {
         IsActive = true;
@@ -54,14 +58,21 @@ internal class StashToChestsModule : IModule
         // 初始化存储逻辑函数
         // Init the stack logic function.
         CreateJudgementFunction();
+        ModEntry.ModHelper.Events.Input.ButtonPressed += OnButtonPressed;
+        ModEntry.ModHelper.Events.GameLoop.TimeChanged += OnTimeChanged;
+        ModEntry.ModHelper.Events.Player.InventoryChanged += OnInventoryChanged;
     }
 
+    /// <inheritdoc />
     public void Deactivate()
     {
         IsActive = false;
         RefreshConfig();
         AcceptingFunc = (_, _) => false;
         RejectingFunc = _ => true;
+        ModEntry.ModHelper.Events.Input.ButtonPressed -= OnButtonPressed;
+        ModEntry.ModHelper.Events.GameLoop.TimeChanged -= OnTimeChanged;
+        ModEntry.ModHelper.Events.Player.InventoryChanged -= OnInventoryChanged;
     }
 
     /// <summary>
@@ -135,7 +146,7 @@ internal class StashToChestsModule : IModule
         if (item is null)
             return false;
 
-        if (!ModEntry.StashModule.IsActive)
+        if (!Instance.IsActive)
             return true;
 
         return !InventoryLocksItem(item);
@@ -167,7 +178,16 @@ internal class StashToChestsModule : IModule
     /// Whether the given item is locked in the current player's inventory.
     /// <seealso cref="CreateRejectingFunction"/>
     /// </summary>
-    private static bool InventoryLocksItem(Item item) => item.modData.TryGetValue(ModEntry.Manifest.UniqueID, out _);
+    private static bool InventoryLocksItem(Item item)
+    {
+        var locked = item.LockedInInventory();
+
+        if (ConvenientInventoryIntegration.CIApi is null)
+            return locked;
+
+        var itemIndex = Game1.player.Items.IndexOf(item);
+        return locked || ConvenientInventoryIntegration.CIApi.IsFavouriteItem(itemIndex);
+    }
 
     /// <summary>
     /// 根据配置选项设置将物品存储至箱子时的接受物品判断函数。
@@ -307,6 +327,15 @@ internal class StashToChestsModule : IModule
             case VolcanoDungeon when config.AutoStashInVolcanoDungeon:
                 StashAnywhere();
                 break;
+        }
+    }
+
+    private void OnInventoryChanged(object? sender, InventoryChangedEventArgs e)
+    {
+        var id = ModEntry.Manifest.UniqueID;
+        foreach (var item in e.Removed)
+        {
+            item.modData.Remove(id);
         }
     }
 }

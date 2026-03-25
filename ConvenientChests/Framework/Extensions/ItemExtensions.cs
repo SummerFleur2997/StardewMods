@@ -24,6 +24,8 @@ internal static class ItemExtensions
         return ItemRegistry.Create(item.QualifiedItemId, item.Stack, item.Quality);
     }
 
+    public static bool LockedInInventory(this Item item) => item.modData.TryGetValue(ModEntry.Manifest.UniqueID, out _);
+
     public static void ChangeLockStatus(this Item item)
     {
         var id = ModEntry.Manifest.UniqueID;

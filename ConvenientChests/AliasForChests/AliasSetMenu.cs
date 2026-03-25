@@ -77,7 +77,7 @@ internal class AliasSetMenu : SubMenu
     {
         _chestData.SetAlias(_textBox.Text);
         _chestData.SetIcon(_itemIconButton.Item);
-        ModEntry.AliasModule.ForceUpdateOnce = true;
+        AliasForChestsModule.Instance.ForceUpdateOnce = true;
     }
 
     /// <inheritdoc/>

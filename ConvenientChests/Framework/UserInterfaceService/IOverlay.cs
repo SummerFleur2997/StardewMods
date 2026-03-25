@@ -1,10 +1,9 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using UI.Component;
 
 namespace ConvenientChests.Framework.UserInterfaceService;
 
-public interface IOverlay<out T> : IHaveTooltip
+public interface IOverlay<out T>
 {
     public T RootMenu { get; }
 

@@ -8,14 +8,24 @@ namespace ConvenientChests.CategorizeChests;
 
 internal class CategorizeChestsModule : IModule
 {
+    /// <summary>
+    /// Static singleton.
+    /// </summary>
+    public static readonly CategorizeChestsModule Instance = new();
+
+    /// <inheritdoc />
     public bool IsActive { get; private set; }
 
+    private CategorizeChestsModule() { }
+
+    /// <inheritdoc />
     public void Activate()
     {
         IsActive = true;
         ModEntry.ModHelper.Events.World.ObjectListChanged += OnChestSwapped;
     }
 
+    /// <inheritdoc />
     public void Deactivate()
     {
         IsActive = false;

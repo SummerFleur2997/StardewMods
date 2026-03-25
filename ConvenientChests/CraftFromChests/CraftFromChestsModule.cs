@@ -10,10 +10,19 @@ namespace ConvenientChests.CraftFromChests;
 
 internal class CraftFromChestsModule : IModule
 {
+    /// <summary>
+    /// Static singleton.
+    /// </summary>
+    public static readonly CraftFromChestsModule Instance = new();
+
+    /// <inheritdoc />
     public bool IsActive { get; private set; }
 
     private readonly MenuListener _menuListener = new();
 
+    private CraftFromChestsModule() { }
+
+    /// <inheritdoc />
     public void Activate()
     {
         IsActive = true;
@@ -23,6 +32,7 @@ internal class CraftFromChestsModule : IModule
         _menuListener.CraftingMenuShown += CraftingMenuShown;
     }
 
+    /// <inheritdoc />
     public void Deactivate()
     {
         IsActive = false;
@@ -50,11 +60,18 @@ internal class CraftFromChestsModule : IModule
             page._materialContainers = inventories.ToList();
 
         else
+        {
             foreach (var inv in inventories.ToList())
                 if (!page._materialContainers.Contains(inv))
                     page._materialContainers.Add(inv);
+        }
     }
 
+    /// <summary>
+    /// Find nearby chests.
+    /// </summary>
+    /// <param name="isCookingScreen">Whether the context is cooking menu.</param>
+    /// <returns>All nearby chests.</returns>
     private IEnumerable<Chest> GetChests(bool isCookingScreen)
     {
         // nearby chests

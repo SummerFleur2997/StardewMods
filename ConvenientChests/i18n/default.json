@@ -76,6 +76,7 @@
   "UI.Snapshot.Delete.desc": "Permanently delete this category snapshot.",
   "UI.Snapshot.Delete.comfirm": "Sure to delete it?",
   "UI.Snapshot.Edit": "Edit",
+  "UI.LockItems.desc": "Click items to toggle lock status, \nPress Esc or OK button to exit edit mode.",
   "UI.Snapshot.Manage": "Manage snapshots",
   "UI.Snapshot.Manage.desc": "Manage all your created and saved category snapshots.",
   "UI.Snapshot.Naming": "Naming your new snapshot:",

@@ -66,6 +66,7 @@
   "UI.ChestAlias": "Edit alias",
   "UI.ChestAlias.desc": "Edit the alias of this chest, the alias will show in a bubble when you hover your mouse above the chest.",
   "UI.LockItems": "Bloquear itens",
+  "UI.LockItems.desc": "Click items to toggle lock status, \nPress Esc or OK button to exit edit mode.",
   "UI.QuickSet": "Quick set category",
   "UI.QuickSet.desc": "Add all the items in this chest to the category list.",
   "UI.Snapshot": "Category Snapshots",

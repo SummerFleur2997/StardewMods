@@ -16,7 +16,7 @@ internal static class UIHelper
     public static readonly Texture2D Texture =
         ModEntry.ModHelper.ModContent.Load<Texture2D>(Path.Combine("assets", "texture.png"));
 
-    private static int _yOffset;
+    public static int YOffset;
 
     public static void Initialize()
     {
@@ -29,7 +29,7 @@ internal static class UIHelper
                 if (!ModEntry.ModHelper.ModRegistry.IsLoaded(contentPack))
                     continue;
 
-                _yOffset = theme.YOffset;
+                YOffset = theme.YOffset;
                 ModEntry.Log($"{contentPack} detected, use the theme {theme.Name} for the mod UI.", LogLevel.Info);
                 return;
             }
@@ -45,8 +45,8 @@ internal static class UIHelper
     public static SpriteButton SideButton(int x, int y, SideButtonVariant variant)
     {
         var xOffset = (int)variant * 16;
-        var texture = new TextureRegion(Texture, xOffset, _yOffset, 16, 16);
-        var button = new SpriteButton(texture, x, y, 64, 64);
+        var texture = new TextureRegion(Texture, xOffset, YOffset, 16, 16);
+        var button = new SpriteButton(texture, x, y);
         button.Tooltip = GetTooltipForSideButton(variant);
         return button;
     }

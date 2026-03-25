@@ -3,10 +3,10 @@ using Common;
 using ConvenientChests.AliasForChests;
 using ConvenientChests.API;
 using ConvenientChests.CategorizeChests;
-using ConvenientChests.CategorizeChests.Framework;
 using ConvenientChests.CraftFromChests;
 using ConvenientChests.Framework;
 using ConvenientChests.Framework.DataService;
+using ConvenientChests.Framework.IntegrationService;
 using ConvenientChests.Framework.MultiplayerService;
 using ConvenientChests.Framework.SaveService;
 using ConvenientChests.Framework.UserInterfaceService;
@@ -37,31 +37,6 @@ internal class ModEntry : Mod
     private static IMonitor ModMonitor { get; set; }
 
     public static void Log(string s, LogLevel l = LogLevel.Trace) => ModMonitor.Log(s, l);
-
-    /// <summary>
-    /// <see cref="AliasForChestsModule"/> mod.
-    /// </summary>
-    internal static AliasForChestsModule AliasModule { get; private set; }
-
-    /// <summary>
-    /// <see cref="CategorizeChestsModule"/> mod.
-    /// </summary>
-    internal static CategorizeChestsModule CategorizeModule { get; private set; }
-
-    /// <summary>
-    /// <see cref="CraftFromChestsModule"/> mod.
-    /// </summary>
-    internal static CraftFromChestsModule CraftModule { get; private set; }
-
-    /// <summary>
-    /// <see cref="StashToChestsModule"/> mod.
-    /// </summary>
-    internal static StashToChestsModule StashModule { get; private set; }
-
-    /// <summary>
-    /// <see cref="MultiplayerServer"/> module.
-    /// </summary>
-    private static MultiplayerServer MultiplayerServer { get; set; }
 
     public static readonly ChestAPI ChestApi = new();
 
@@ -106,11 +81,11 @@ internal class ModEntry : Mod
         Config = ModHelper.ReadConfig<ModConfig>();
         if (!Game1.hasLoadedGame) return;
 
-        UpdateModule(Config.AliasForChests, AliasModule);
-        UpdateModule(Config.CategorizeChests, CategorizeModule);
-        UpdateModule(Config.CraftFromChests, CraftModule);
-        UpdateModule(Config.StashToNearby || Config.StashAnywhere, StashModule);
-        StashModule.CreateJudgementFunction();
+        UpdateModule(Config.AliasForChests, AliasForChestsModule.Instance);
+        UpdateModule(Config.CategorizeChests, CategorizeChestsModule.Instance);
+        UpdateModule(Config.CraftFromChests, CraftFromChestsModule.Instance);
+        UpdateModule(Config.StashToNearby || Config.StashAnywhere, StashToChestsModule.Instance);
+        StashToChestsModule.Instance.CreateJudgementFunction();
 
         return;
 
@@ -147,30 +122,24 @@ internal class ModEntry : Mod
     /// </summary>
     private static void OnSaveLoaded(object sender, SaveLoadedEventArgs e)
     {
-        AliasModule = new AliasForChestsModule();
         if (Config.AliasForChests)
-            AliasModule.Activate();
+            AliasForChestsModule.Instance.Activate();
 
-        CategoryDataManager.Initialize();
-        CategorizeModule = new CategorizeChestsModule();
         if (Config.CategorizeChests)
-            CategorizeModule.Activate();
+            CategorizeChestsModule.Instance.Activate();
 
-        CraftModule = new CraftFromChestsModule();
         if (Config.CraftFromChests)
-            CraftModule.Activate();
+            CraftFromChestsModule.Instance.Activate();
 
-        StashModule = new StashToChestsModule();
         if (Config.StashAnywhere || Config.StashToNearby)
-            StashModule.Activate();
+            StashToChestsModule.Instance.Activate();
 
         SaveManager.Load();
         SnapshotManager.Load();
 
         if (Context.IsMultiplayer)
         {
-            MultiplayerServer = new MultiplayerServer();
-            MultiplayerServer.Activate();
+            MultiplayerServer.Instance.Activate();
         }
 
 #if DEBUG
@@ -184,20 +153,11 @@ internal class ModEntry : Mod
     /// </summary>
     private static void OnReturnedToTitle(object sender, ReturnedToTitleEventArgs e)
     {
-        AliasModule?.Deactivate();
-        AliasModule = null;
-
-        CategorizeModule?.Deactivate();
-        CategorizeModule = null;
-
-        CraftModule?.Deactivate();
-        CraftModule = null;
-
-        StashModule?.Deactivate();
-        StashModule = null;
-
-        MultiplayerServer?.Deactivate();
-        MultiplayerServer = null;
+        AliasForChestsModule.Instance.Deactivate();
+        CategorizeChestsModule.Instance.Deactivate();
+        CraftFromChestsModule.Instance.Deactivate();
+        StashToChestsModule.Instance.Deactivate();
+        MultiplayerServer.Instance.Deactivate();
 
         ChestManager.ClearChestData();
     }
@@ -209,6 +169,7 @@ internal class ModEntry : Mod
     private static void OnGameLaunched(object sender, GameLaunchedEventArgs e)
     {
         GenericModConfigMenuIntegration.Register(Manifest, ModHelper.ModRegistry, ResetConfig, SaveConfig);
+        ConvenientInventoryIntegration.Register();
         QuickSaveIntegration.Register();
         UIHelper.Initialize();
         StashToChestsModule.RegisterHarmonyPatch();

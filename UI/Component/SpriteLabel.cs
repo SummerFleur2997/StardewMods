@@ -28,7 +28,7 @@ public sealed class SpriteLabel : IComponent
 
     public TextureRegion Texture;
 
-    public SpriteLabel(TextureRegion texture, int x = 0, int y = 0, int width = 16, int height = 16)
+    public SpriteLabel(TextureRegion texture, int x = 0, int y = 0, int width = 64, int height = 64)
     {
         Texture = texture;
         this.SetDestination(x, y, width, height);
