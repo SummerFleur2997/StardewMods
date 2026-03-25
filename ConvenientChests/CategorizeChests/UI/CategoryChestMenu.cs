@@ -1,5 +1,6 @@
 ﻿using ConvenientChests.CategorizeChests.Framework;
 using ConvenientChests.CategorizeChests.UI.SubMenus;
+using ConvenientChests.Framework.DataService;
 using ConvenientChests.Framework.DataStructs;
 using ConvenientChests.Framework.Extensions;
 using ConvenientChests.Framework.UserInterfaceService;
@@ -11,8 +12,12 @@ namespace ConvenientChests.CategorizeChests.UI;
 
 internal class CategoryChestMenu : CategoryMenu<ChestData>
 {
+    /// <inheritdoc />
     public override ChestData ChestData { get; }
 
+    /// <summary>
+    /// A warning label that appears when the chest is using a snapshot.
+    /// </summary>
     private TextLabel? _warning;
 
     public CategoryChestMenu(int x0, int y0, int width, int height, ChestData data, ClickableMenu root, int padding)
@@ -36,7 +41,7 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
         // save as snapshot button
         y += 80;
         var saveAsSnapshotButton = UIHelper.SideButton(x, y, SideButtonVariant.Save);
-        // _saveAsSnapshotButton.OnPress += SaveAsSnapshot;
+        saveAsSnapshotButton.OnPress += SaveAsSnapshot;
         AddChild(saveAsSnapshotButton);
 
         // unlink snapshot button
@@ -124,6 +129,26 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
         }
 
         RefreshToggleStatus();
+    }
+
+    /// <summary>
+    /// Save the accepted item of this chest as a new snapshot.
+    /// </summary>
+    private void SaveAsSnapshot()
+    {
+        SubMenu = new NewSnapshotSubMenu(this);
+        SubMenu.OnOk += SaveAsSnapshotExecute;
+
+        return;
+
+        void SaveAsSnapshotExecute(SubMenu sender)
+        {
+            if (sender is not NewSnapshotSubMenu menu)
+                return;
+
+            var snapshot = SnapshotManager.CreateNewSnapshot(menu.TextBox.Text, ChestData.AcceptedItemKinds);
+            SnapshotManager.Add(snapshot);
+        }
     }
 
     /// <summary>

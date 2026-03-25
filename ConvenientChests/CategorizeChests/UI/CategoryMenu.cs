@@ -11,11 +11,18 @@ using ClickableMenu = StardewValley.Menus.IClickableMenu;
 
 namespace ConvenientChests.CategorizeChests.UI;
 
+/// <summary>
+/// Basic class designed to handle the menu for a ChestData or SnapshotData.
+/// </summary>
+/// <typeparam name="T">The type of <see cref="ChestData"/></typeparam>
 [UsedImplicitly(ImplicitUseTargetFlags.Members)]
 internal abstract class CategoryMenu<T> : BaseMenu, IHaveSubMenu where T : IChestData
 {
     private const int TopRowHeight = 60;
 
+    /// <summary>
+    /// The ChestData or SnapshotData related on the context.
+    /// </summary>
     public abstract T ChestData { get; }
 
     /// <summary>
@@ -23,7 +30,14 @@ internal abstract class CategoryMenu<T> : BaseMenu, IHaveSubMenu where T : IChes
     /// </summary>
     public SubMenu? SubMenu { get; set; }
 
+    /// <summary>
+    /// The top row of the menu.
+    /// </summary>
     public CategoryTopRow TopRow;
+
+    /// <summary>
+    /// The grid menu holding item toggles
+    /// </summary>
     public GridMenu GridMenu;
 
     private ItemCategoryName ActiveCategory => TopRow.CategorySelector.SelectedValue;
@@ -203,7 +217,11 @@ internal abstract class CategoryMenu<T> : BaseMenu, IHaveSubMenu where T : IChes
     /// A default event used in <see cref="CategoryTopRow"/> to update the item toggles.
     /// </summary>
     /// <param name="category">The new selected category.</param>
-    private void OnSelectChanged(ItemCategoryName category) => RecreateItemToggles();
+    private void OnSelectChanged(ItemCategoryName category)
+    {
+        RecreateItemToggles();
+        TopRow.SelectAllButton.Checked = AreAllSelected();
+    }
 
     private void ToggleItem(ItemKey itemKey)
     {
