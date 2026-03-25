@@ -25,12 +25,28 @@ internal class SubMenu : IClickableMenu, IComponent
     /// <inheritdoc/>
     public int Height { get; set; }
 
+    /// <summary>
+    /// Events to fire when the confirmation action is invoked.
+    /// (by click the button or related key press)
+    /// </summary>
     public event Action<SubMenu>? OnOk;
+
+    /// <summary>
+    /// Events to fire when the cancellation action is invoked.
+    /// (by click the button or related key press)
+    /// </summary>
     public event Action<SubMenu>? OnCancel;
 
     public readonly List<IComponent> Components = new();
 
+    /// <summary>
+    /// The button to press as a confirmation action.
+    /// </summary>
     public Button OkButton;
+
+    /// <summary>
+    /// The button to press as a cancellation action.
+    /// </summary>
     public Button CancelButton;
 
     private NineSlice _background;
@@ -60,12 +76,20 @@ internal class SubMenu : IClickableMenu, IComponent
         Components.Add(CancelButton);
     }
 
+    /// <summary>
+    /// Edit the sound cue for the <see cref="OkButton"/>
+    /// </summary>
+    /// <param name="cue">The new sound cue.</param>
     public void SetOkButtonSound(string cue)
     {
         _okButtonCue = cue;
         OkButton.SoundCue = cue;
     }
 
+    /// <summary>
+    /// Edit the sound cue for the <see cref="CancelButton"/>
+    /// </summary>
+    /// <param name="cue">The new sound cue.</param>
     public void SetCancelButtonSound(string cue)
     {
         _cancelButtonCue = cue;
@@ -127,7 +151,7 @@ internal class SubMenu : IClickableMenu, IComponent
     }
 
     /// <summary>
-    /// Things to do when press ok button to exit this sub-menu.
+    /// Things to do when press ok button or enter to exit this sub-menu.
     /// </summary>
     private void FireOkEvent()
     {
@@ -136,7 +160,7 @@ internal class SubMenu : IClickableMenu, IComponent
     }
 
     /// <summary>
-    /// Things to do when press cancel button to exit this sub-menu.
+    /// Things to do when press cancel button or esc to exit this sub-menu.
     /// </summary>
     private void FireCancelEvent()
     {
@@ -144,6 +168,7 @@ internal class SubMenu : IClickableMenu, IComponent
         Dispose();
     }
 
+    /// <inheritdoc />
     public virtual void Dispose()
     {
         foreach (var component in Components)
@@ -159,10 +184,16 @@ internal class SubMenu : IClickableMenu, IComponent
 
 internal interface IHaveSubMenu
 {
+    /// <summary>
+    /// The submenu of this.
+    /// </summary>
     public SubMenu? SubMenu { get; set; }
 }
 
 internal interface IHaveParentMenu
 {
+    /// <summary>
+    /// The parent menu of this.
+    /// </summary>
     public IHaveSubMenu Parent { get; set; }
 }

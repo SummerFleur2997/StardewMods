@@ -11,14 +11,39 @@ namespace ConvenientChests.AliasForChests;
 
 internal class AliasSetMenu : SubMenu
 {
+    /// <summary>
+    /// The text box used for inputting the alias.
+    /// </summary>
     private readonly TextBox _textBox;
+
+    /// <summary>
+    /// An item button for open the item picker and select an item icon.
+    /// </summary>
     private readonly ItemButton _itemIconButton;
+
+    /// <summary>
+    /// A grid menu held item from the chest, served as a picker.
+    /// </summary>
     private readonly GridMenu _itemPicker;
+
+    /// <summary>
+    /// The relative <see cref="ChestData"/> of this chest.
+    /// </summary>
     private readonly ChestData _chestData;
 
+    /// <summary>
+    /// Flag for whether the <see cref="_itemPicker"/> is on.
+    /// </summary>
     private bool _itemPickerOn;
+
+    /// <summary>
+    /// The parent <see cref="ChestOverlay"/>
+    /// </summary>
     private ChestOverlay _parent;
 
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     public AliasSetMenu(ChestData data, ChestOverlay parent) : base(400, 240)
     {
         _chestData = data;
@@ -59,7 +84,7 @@ internal class AliasSetMenu : SubMenu
         var buttons = _chestData.GetChest()?.Items
             .DistinctBy(i => i.QualifiedItemId)
             .Select(i => new ItemButton(i.QualifiedItemId))
-            .Append(ItemButton.GetANullInstance())
+            .Append(ItemButton.GetANullInstance()) // add a null button for no item icon, which texture is a red X
             .ToList() ?? new List<ItemButton>();
 
         foreach (var button in buttons)
@@ -73,6 +98,10 @@ internal class AliasSetMenu : SubMenu
         OnOk += SetAlias;
     }
 
+    /// <summary>
+    /// Event called when the player press the confirm button or enter.
+    /// </summary>
+    /// <param name="s">The event sender.</param>
     private void SetAlias(SubMenu s)
     {
         _chestData.SetAlias(_textBox.Text);
@@ -160,6 +189,9 @@ internal class AliasSetMenu : SubMenu
         base.Dispose();
     }
 
+    /// <summary>
+    /// Customized item button.
+    /// </summary>
     internal sealed class ItemButton : ItemButton<Item>
     {
         private readonly TextureRegion _redX = new(Game1.mouseCursors, 268, 470, 16, 16);

@@ -12,6 +12,9 @@ namespace ConvenientChests.CategorizeChests.UI;
 
 internal class SnapshotHubMenu : CategoryMenu<ChestDataSnapshot>
 {
+    /// <summary>
+    /// Whether the menu is in edit mode.
+    /// </summary>
     public bool EditMode
     {
         get => _editMode;
@@ -34,8 +37,12 @@ internal class SnapshotHubMenu : CategoryMenu<ChestDataSnapshot>
 
     private bool _editMode;
 
+    /// <inheritdoc />
     public override ChestDataSnapshot ChestData => _selectedTag!.Snapshot;
 
+    /// <summary>
+    /// The stack panel that contains the snapshot tags.
+    /// </summary>
     public StackPanel StackPanel;
 
     private readonly TextLabel _editLabel;
@@ -248,6 +255,9 @@ internal class SnapshotHubMenu : CategoryMenu<ChestDataSnapshot>
         return false;
     }
 
+    /// <summary>
+    /// Recreate item toggles for preview mode.
+    /// </summary>
     private void RecreateItemPreviewToggles(SnapshotTag? t)
     {
         GridMenu.RemoveAllComponents();
@@ -260,6 +270,10 @@ internal class SnapshotHubMenu : CategoryMenu<ChestDataSnapshot>
         GridMenu.AddComponents(labels);
     }
 
+    /// <summary>
+    /// Action to execute when select a new snapshot tag.
+    /// </summary>
+    /// <param name="t">The new selected tag.</param>
     private void SetActiveTag(SnapshotTag t)
     {
         if (_selectedTag == t)
@@ -271,6 +285,10 @@ internal class SnapshotHubMenu : CategoryMenu<ChestDataSnapshot>
         RecreateItemPreviewToggles(t);
     }
 
+    /// <summary>
+    /// Action to execute when deselect a new snapshot tag.
+    /// </summary>
+    /// <param name="t">The just deselected tag.</param>
     private void ClearActiveTag(SnapshotTag t)
     {
         GridMenu.RemoveAllComponents();
@@ -319,7 +337,7 @@ internal class SnapshotHubMenu : CategoryMenu<ChestDataSnapshot>
     /// </summary>
     private void DeleteSnapshot()
     {
-        SubMenu = new DoubleConfirmSubMenu(this, I18n.UI_Snapshot_Delete_Comfirm());
+        SubMenu = new DoubleConfirmSubMenu(this, I18n.UI_Snapshot_Delete_Confirm());
         SubMenu.OnOk += DeleteSnapshotExecute;
 
         return;

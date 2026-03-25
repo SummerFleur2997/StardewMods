@@ -8,10 +8,19 @@ namespace ConvenientChests.AliasForChests;
 
 public class ChestInfoBubble
 {
+    /// <summary>
+    /// The size of the tail of the bubble.
+    /// </summary>
     private const int TailSize = 20;
 
+    /// <summary>
+    /// The item icon of alias.
+    /// </summary>
     public Item? Item { get; private set; }
 
+    /// <summary>
+    /// The text of alias.
+    /// </summary>
     public string? Text
     {
         get => string.IsNullOrEmpty(_text) ? null : _text;
@@ -40,6 +49,11 @@ public class ChestInfoBubble
         _textYOffset = (Height - height) / 2 + 1;
     }
 
+    /// <summary>
+    /// Draw the bubble, this method should be called after a null check
+    /// for both <see cref="Item"/> and <see cref="Text"/>, and would
+    /// only be available if one of them is not null.
+    /// </summary>
     public void Draw(SpriteBatch b)
     {
         _body.Draw(b);
@@ -51,11 +65,19 @@ public class ChestInfoBubble
         }
 
         x += 16;
-        if (Text is not null) b.DrawString(_font, _text, new Vector2(x, _y + _textYOffset), Color.Black);
+        if (Text is not null)
+        {
+            b.DrawString(_font, _text, new Vector2(x, _y + _textYOffset), Color.Black);
+        }
 
         _tail.Draw(b, new Rectangle(_x + 20, _y + 68, TailSize, TailSize));
     }
 
+    /// <summary>
+    /// Set the item icon and alias for this bubble.
+    /// </summary>
+    /// <param name="item">The new item.</param>
+    /// <param name="alias">The new alias text.</param>
     public void Set(Item? item, string? alias)
     {
         Item = item;
@@ -70,6 +92,9 @@ public class ChestInfoBubble
         _body.SetSize(width, Height);
     }
 
+    /// <summary>
+    /// Set the position of the bubble.
+    /// </summary>
     public void UpdatePosition(Vector2 position)
     {
         _x = (int)position.X + 2;

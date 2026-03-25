@@ -6,6 +6,10 @@ using UI.Sprite;
 
 namespace UI.Menu;
 
+/// <summary>
+/// A drop-down menu that can be expanded to show a list of options.
+/// </summary>
+/// <typeparam name="T">The type of options to hold.</typeparam>
 [UsedImplicitly(ImplicitUseTargetFlags.Members)]
 public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
 {
@@ -204,7 +208,6 @@ public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
     /// <seealso cref="SelectByIndex"/>
     public void SelectNext() => SelectByIndex(_selectedIndex + 1);
 
-
     /// <summary>
     /// Select the previous option in the drop-down menu.
     /// </summary>
@@ -252,6 +255,7 @@ public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
         }
     }
 
+    /// <inheritdoc cref="IClickableComponent.ReceiveLeftClick"/>
     public bool ReceiveLeftClick(int x, int y)
     {
         // Check if clicked on this dropdown
@@ -286,6 +290,7 @@ public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
         return false;
     }
 
+    /// <inheritdoc cref="IClickableComponent.ReceiveCursorHover"/>
     public bool ReceiveCursorHover(int x, int y)
     {
         var optionsBounds = new Rectangle(X, Y + _height, Width, Height - _height);
@@ -300,6 +305,7 @@ public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
         return false;
     }
 
+    /// <inheritdoc/>
     public bool ReceiveScrollWheelAction(int amount)
     {
         if (!Expanded)

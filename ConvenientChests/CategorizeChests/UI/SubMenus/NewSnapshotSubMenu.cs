@@ -7,11 +7,12 @@ namespace ConvenientChests.CategorizeChests.UI.SubMenus;
 
 internal class NewSnapshotSubMenu : SubMenu, IHaveParentMenu
 {
-    /// <summary>
-    /// The parent menu of this sub-menu.
-    /// </summary>
+    /// <inheritdoc />
     public IHaveSubMenu Parent { get; set; }
 
+    /// <summary>
+    /// The text box used for input the name of new snapshot.
+    /// </summary>
     public readonly TextBox TextBox;
 
     public NewSnapshotSubMenu(IHaveSubMenu parent) : base(320, 240)

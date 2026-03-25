@@ -4,6 +4,9 @@ using UI.Component;
 
 namespace ConvenientChests.CategorizeChests.UI.SubMenus;
 
+/// <summary>
+/// A sub-menu for confirm a sensitive action to avoid accidental clicks.
+/// </summary>
 internal sealed class DoubleConfirmSubMenu : SubMenu, IHaveParentMenu
 {
     /// <summary>
@@ -25,6 +28,7 @@ internal sealed class DoubleConfirmSubMenu : SubMenu, IHaveParentMenu
         Components.Add(confirmLabel);
     }
 
+    /// <inheritdoc />
     public override void Dispose()
     {
         var parentMenu = Parent;

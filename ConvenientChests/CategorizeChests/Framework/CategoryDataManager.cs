@@ -1,10 +1,13 @@
-#nullable disable
 using ConvenientChests.Framework.DataStructs;
 using ConvenientChests.Framework.Extensions;
 using StardewValley.Tools;
 
 namespace ConvenientChests.CategorizeChests.Framework;
 
+/// <summary>
+/// A static class that manages item categories defined by this mod
+/// and their data.
+/// </summary>
 internal static class CategoryDataManager
 {
     /// <summary>
@@ -12,6 +15,9 @@ internal static class CategoryDataManager
     /// </summary>
     public static readonly Dictionary<ItemCategoryName, List<ItemKey>> Categories;
 
+    /// <summary>
+    /// The list of all registered item categories, mainly used for re-ordering.
+    /// </summary>
     public static readonly List<ItemCategoryName> ItemCategories;
 
     static CategoryDataManager()
@@ -76,14 +82,21 @@ internal static class CategoryDataManager
         return categories;
     }
 
+    /// <summary>
+    /// An algorithm that calculate the relative factor of a category based on the accepted items.
+    /// </summary>
+    /// <param name="acceptedItemKinds">The accepted items from a <see cref="ChestData"/>.</param>
+    /// <returns>The most relative category.</returns>
     public static ItemCategoryName CalculateMostRelevantCategory(this IEnumerable<ItemKey> acceptedItemKinds)
     {
+        // default to the first category
         var category = ModEntry.Config.EnableSort
             ? ItemCategories.OrderBy(c => c.DisplayName).First()
             : ItemCategories.FirstOrDefault(c => c.BaseName == "Vegetable");
 
         var factor = 0.0;
 
+        // traver all categories and leave the most relative one
         foreach (var group in acceptedItemKinds.GroupBy(key => key.GetCategory()))
         {
             var name = group.Key;
@@ -114,6 +127,11 @@ internal static class CategoryDataManager
             .Where(FilterTools);
     }
 
+    /// <summary>
+    /// Filter out tools that are not allowed to be categorized.
+    /// </summary>
+    /// <param name="item">The item to filter/</param>
+    /// <returns>Whether this item should be recognized as a tool.</returns>
     private static bool FilterTools(Item item)
     {
         switch (item)

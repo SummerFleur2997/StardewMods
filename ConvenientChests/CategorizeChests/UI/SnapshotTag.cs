@@ -72,6 +72,13 @@ internal sealed class SnapshotTag : IClickableComponent, IDisposable
         Snapshot = snapshot;
     }
 
+    /// <summary>
+    /// Manually select this tag.
+    /// </summary>
+    /// <param name="alsoSelectTextbox">
+    /// Also select the textbox component and redirect the
+    /// <see cref="Game1.keyboardDispatcher"/> to that text box.
+    /// </param>
     public void Select(bool alsoSelectTextbox = false)
     {
         Selected = true;
@@ -84,6 +91,9 @@ internal sealed class SnapshotTag : IClickableComponent, IDisposable
         OnSelected?.Invoke(this);
     }
 
+    /// <summary>
+    /// Manually deselect this tag and the textbox component.
+    /// </summary>
     public void UnSelect()
     {
         if (!Selected && !TextBox.Selected)
@@ -94,17 +104,6 @@ internal sealed class SnapshotTag : IClickableComponent, IDisposable
         TextBox.Text = Snapshot.Alias;
         Game1.keyboardDispatcher.Subscriber = null;
         OnUnSelected?.Invoke(this);
-    }
-
-    /// <summary>
-    /// Rename the snapshot held by this tag.
-    /// </summary>
-    /// <param name="textBox"></param>
-    private void OnRename(TextBox textBox)
-    {
-        // snapshot alias has a customized setter to check duplicated name
-        Snapshot.Alias = textBox.Text;
-        textBox.Text = Snapshot.Alias;
     }
 
     /// <inheritdoc/>
@@ -177,6 +176,17 @@ internal sealed class SnapshotTag : IClickableComponent, IDisposable
 
     /// <inheritdoc/>
     public bool ReceiveCursorHover(int x, int y) => !Bounds.Contains(x, y);
+
+    /// <summary>
+    /// Default rename process for the snapshot held by this tag.
+    /// </summary>
+    /// <param name="textBox">The sender textbox.</param>
+    private void OnRename(TextBox textBox)
+    {
+        // snapshot alias has a customized setter to check duplicated name
+        Snapshot.Alias = textBox.Text;
+        textBox.Text = Snapshot.Alias;
+    }
 
     public void Dispose() => OnSelected = null;
 }
