@@ -1,50 +1,64 @@
-﻿using ConvenientChests.Framework.DataStructs;
-using ConvenientChests.Framework.Extensions;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace ConvenientChests.Framework;
 
 /// <summary>
-/// JSON converter for <see cref="HashSet{T}"/> of <see cref="ItemKey"/>.
+/// JSON converter for <see cref="HashSet{T}"/> of <see cref="Item.QualifiedItemId"/>.
 /// </summary>
-internal class DataConverter : JsonConverter<HashSet<ItemKey>>
+internal class DataConverter : JsonConverter<HashSet<string>>
 {
-    public override HashSet<ItemKey> ReadJson(JsonReader r, Type t, HashSet<ItemKey>? ev, bool h, JsonSerializer s)
+    public override HashSet<string> ReadJson(JsonReader r, Type t, HashSet<string>? ev, bool h, JsonSerializer s)
     {
         try
         {
             var token = JToken.Load(r);
-            if (token.Type != JTokenType.Object)
-                return new HashSet<ItemKey>();
+            if (token.Type == JTokenType.Array)
+                return token.ToObject<HashSet<string>>() ?? new HashSet<string>();
 
-            var acceptedItemDict = token.ToObject<Dictionary<ItemType, string>>(s);
-            return acceptedItemDict.ToItemKeys();
+            if (token.Type != JTokenType.Object)
+                return new HashSet<string>();
+
+            var acceptedItemDict = token.ToObject<Dictionary<string, string>>(s);
+            return acceptedItemDict.ToItemIds();
         }
         catch (Exception ex)
         {
             ModEntry.Log($"An error occured while deserializing accepted items: {ex}", LogLevel.Error);
-            return new HashSet<ItemKey>();
+            return new HashSet<string>();
         }
     }
 
-    public override void WriteJson(JsonWriter writer, HashSet<ItemKey>? value, JsonSerializer serializer)
-    {
-        var dict = value?
-            .GroupBy(ItemExtensions.GetItemType)
-            .ToDictionary(
-                g => g.Key,
-                g => string.Join(",", g.Select(i => i.ItemId))
-            ) ?? new Dictionary<ItemType, string>();
-        serializer.Serialize(writer, dict);
-    }
+    public override void WriteJson(JsonWriter writer, HashSet<string>? value, JsonSerializer serializer) => serializer.Serialize(writer, value);
 }
 
 internal static class DcUtilities
 {
-    public static HashSet<ItemKey> ToItemKeys(this Dictionary<ItemType, string>? acceptedItems) =>
+    public static HashSet<string> ToItemIds(this Dictionary<string, string>? acceptedItems) =>
         acceptedItems?
-            .Select(kvp => new KeyValuePair<ItemType, IEnumerable<string>>(kvp.Key, kvp.Value.Split(',')))
-            .SelectMany(kvp => kvp.Value.Select(itemId => new ItemKey(kvp.Key.GetTypeDefinition(), itemId)))
-            .ToHashSet() ?? new HashSet<ItemKey>();
+            .Select(kvp => new KeyValuePair<string, IEnumerable<string>>(kvp.Key, kvp.Value.Split(',')))
+            .SelectMany(kvp => kvp.Value.Select(itemId => kvp.Key.GetTypeDefinition() + itemId))
+            .ToHashSet() ?? new HashSet<string>();
+
+    private static string GetTypeDefinition(this string type) =>
+        type switch
+        {
+            "Boots" => "(B)",
+            "BigCraftable" => "(BC)",
+            "Furniture" => "(F)",
+            "Flooring" => "(FL)",
+            "Hat" => "(H)",
+            "Shirt" => "(S)",
+            "Pants" => "(P)",
+            "Mannequin" => "(M)",
+            "Tool" => "(T)",
+            "Wallpaper" => "(WP)",
+            "Weapon" => "(W)",
+            "Trinket" => "(TR)",
+            "Fish" => "(O)",
+            "Ring" => "(O)",
+            "Object" => "(O)",
+            "Gate" => "(O)",
+            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+        };
 }

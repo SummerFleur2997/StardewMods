@@ -1,6 +1,4 @@
 ﻿using ConvenientChests.Framework.DataStructs;
-using StardewValley.Extensions;
-using StardewValley.ItemTypeDefinitions;
 using StardewValley.Tools;
 using Object = StardewValley.Object;
 
@@ -8,13 +6,7 @@ namespace ConvenientChests.Framework.Extensions;
 
 internal static class ItemExtensions
 {
-    /// <summary>
-    /// Whether the item is a craftable item
-    /// </summary>
-    public static bool IsCraftable(this Item item)
-    {
-        return CraftingRecipe.craftingRecipes.ContainsKey(item.Name);
-    }
+    public static Item ConvertToItem(this string qualifiedItemId) => ItemRegistry.Create(qualifiedItemId);
 
     /// <summary>
     /// Get a copy of this item.
@@ -54,93 +46,144 @@ internal static class ItemExtensions
     }
 
     /// <summary>
-    /// Convert the item to an item key.
+    /// 获取物品的分类信息。
+    /// Get the category information for the item.
     /// </summary>
-    public static ItemKey ToItemKey(this Item item)
+    /// <returns>物品的 <see cref="ItemCategoryName"/> 结构。</returns>
+    public static ItemCategoryName GetCategory(this Item item)
     {
-        return new ItemKey(item.TypeDefinitionId, item.ItemId);
-    }
-
-    /// <summary>
-    /// Get all registered items in game.
-    /// </summary>
-    public static IEnumerable<Item> GetAllItems(this IItemDataDefinition registry)
-    {
-        return registry.GetAllData().Select(registry.CreateItem);
-    }
-
-    public static ItemType GetItemType(this ItemKey key)
-    {
-        return key.TypeDefinition switch
+        var typeDefinition = item.TypeDefinitionId;
+        switch (typeDefinition)
         {
-            "(B)" => ItemType.Boots,
-            "(BC)" => ItemType.BigCraftable,
-            "(F)" => ItemType.Furniture,
-            "(FL)" => ItemType.Flooring,
-            "(H)" => ItemType.Hat,
-            "(S)" => ItemType.Shirt,
-            "(P)" => ItemType.Pants,
-            "(M)" => ItemType.Mannequin,
-            "(T)" => ItemType.Tool,
-            "(WP)" => ItemType.Wallpaper,
-            "(W)" => ItemType.Weapon,
-            "(TR)" => ItemType.Trinket,
-            "(O)" when key.ItemId == "325" => ItemType.Gate,
-            "(O)" => key.GetOne().Category
-                switch
-                {
-                    Object.FishCategory => ItemType.Fish,
-                    Object.ringCategory => ItemType.Ring,
-                    _ => ItemType.Object
-                },
+            case ItemRegistry.type_tool:
+            // Move scythes and horse flute to the tools category
+            case ItemRegistry.type_object when item.QualifiedItemId == "(O)911":
+            case ItemRegistry.type_weapon when MeleeWeapon.IsScythe(item.QualifiedItemId):
+                return new ItemCategoryName(Object.GetCategoryDisplayName(Object.toolCategory), "Tool");
 
-            _ => throw new ArgumentOutOfRangeException(nameof(key), key.TypeDefinition)
-        };
+            case ItemRegistry.type_weapon:
+                return new ItemCategoryName(I18n.Categorize_Weapons(), "Weapons");
+
+            case ItemRegistry.type_hat:
+                return new ItemCategoryName(I18n.Categorize_Hats(), "Hats");
+
+            case ItemRegistry.type_pants:
+                return new ItemCategoryName(LoadString("Pants_Name", "Pants"), "Pants");
+
+            case ItemRegistry.type_shirt:
+                return new ItemCategoryName(LoadString("Shirt_Name", "Shirts"), "Shirts");
+
+            case ItemRegistry.type_floorpaper:
+                return new ItemCategoryName(LoadString("Wallpaper.cs.13203"), "Flooring");
+
+            case ItemRegistry.type_wallpaper:
+                return new ItemCategoryName(LoadString("Wallpaper.cs.13204"), "Wallpaper");
+
+            case ItemRegistry.type_bigCraftable:
+                var obj = ItemRegistry.Create<Object>(item.QualifiedItemId);
+                if (obj.GetMachineData() != null)
+                    return new ItemCategoryName(I18n.Categorize_Machine(), "Machine");
+
+                return CraftingRecipe.craftingRecipes.ContainsKey(item.Name)
+                    ? new ItemCategoryName(I18n.Categorize_Crafting(), "Crafting")
+                    : new ItemCategoryName(I18n.Categorize_BigCrafts(), "BigCrafts");
+            case ItemRegistry.type_mannequin:
+                return new ItemCategoryName(I18n.Categorize_Mannequin(), "Mannequin");
+
+            case ItemRegistry.type_furniture:
+                return new ItemCategoryName(LoadString("Object.cs.12847"), "Furniture");
+
+            case ItemRegistry.type_trinket:
+                return new ItemCategoryName(LoadString("Trinket", "1_6_Strings"), "Trinket");
+        }
+
+        // 尝试使用游戏内的分类逻辑
+        // Try to use the in-game category logic
+        var categoryDisplayName = item.getCategoryName();
+        var categoryBaseName = GetCategoryBaseName(item.Category);
+        if (!string.IsNullOrEmpty(categoryDisplayName))
+            return new ItemCategoryName(categoryDisplayName, categoryBaseName);
+
+        // 如果物品是可食用的，将其归类为消耗品，否则归类为杂项
+        // If the item is edible, categorize it as consumable; otherwise, categorize it as miscellaneous
+        return typeDefinition == ItemRegistry.type_object && ((Object)item).Edibility > 0
+            ? new ItemCategoryName(I18n.Categorize_Consumable(), "Consumable")
+            : new ItemCategoryName(I18n.Categorize_Miscellaneous(), "Miscellaneous");
+
+        string LoadString(string key, string file = "StringsFromCSFiles")
+            => Game1.content.LoadString($"Strings\\{file}:{key}");
     }
 
-
-    public static string GetTypeDefinition(this ItemType type)
+    private static string GetCategoryBaseName(int category)
     {
-        return type
-            switch
-            {
-                ItemType.Boots => "(B)",
-                ItemType.BigCraftable => "(BC)",
-                ItemType.Furniture => "(F)",
-                ItemType.Flooring => "(FL)",
-                ItemType.Hat => "(H)",
-                ItemType.Shirt => "(S)",
-                ItemType.Pants => "(P)",
-                ItemType.Mannequin => "(M)",
-                ItemType.Tool => "(T)",
-                ItemType.Wallpaper => "(WP)",
-                ItemType.Weapon => "(W)",
-                ItemType.Trinket => "(TR)",
-                ItemType.Fish => "(O)",
-                ItemType.Ring => "(O)",
-                ItemType.Object => "(O)",
-                ItemType.Gate => "(O)",
-                _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
-            };
-    }
-}
+        switch (category)
+        {
+            case -103:
+                return "Skill Book";
+            case -102:
+                return "Book";
+            case -101:
+            case -98:
+                break;
+            case -100:
+                return "Clothes";
+            case -99:
+                return "Tool";
+            case -97:
+                return "Footwear";
+            case -96:
+                return "Ring";
+            case -81:
+                return "Forage";
+            case -80:
+                return "Flower";
+            case -79:
+                return "Fruit";
+            case -78:
+            case -77:
+            case -76:
+                break;
+            case -75:
+                return "Vegetable";
+            case -74:
+                return "Seed";
+            case -28:
+                return "Monster Loot";
+            case -27:
+            case -26:
+                return "Artisan Goods";
+            case -25:
+            case -7:
+                return "Cooking";
+            case -24:
+                return "Decor";
+            case -22:
+                return "Fishing Tackle";
+            case -21:
+                return "Bait";
+            case -20:
+                return "Trash";
+            case -19:
+                return "Fertilizer";
+            case -18:
+            case -14:
+            case -6:
+            case -5:
+                return "Animal Product";
+            case -16:
+            case -15:
+                return "Resource";
+            case -12:
+            case -2:
+                return "Mineral";
+            case -8:
+                return "Crafting";
+            case -4:
+                return "Fish";
+            case 0:
+                return "Artifact";
+        }
 
-internal enum ItemType
-{
-    BigCraftable,
-    Boots,
-    Fish,
-    Flooring,
-    Furniture,
-    Hat,
-    Object,
-    Ring,
-    Tool,
-    Wallpaper,
-    Weapon,
-    Gate,
-    Trinket,
-    Shirt,
-    Pants,
-    Mannequin
+        return "";
+    }
 }

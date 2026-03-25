@@ -1,5 +1,6 @@
 using ConvenientChests.Framework.DataStructs;
 using ConvenientChests.Framework.Extensions;
+using StardewValley.Extensions;
 using StardewValley.Tools;
 
 namespace ConvenientChests.CategorizeChests.Framework;
@@ -13,7 +14,7 @@ internal static class CategoryDataManager
     /// <summary>
     /// A mapping of category names to the item keys belonging to that category.
     /// </summary>
-    public static readonly Dictionary<ItemCategoryName, List<ItemKey>> Categories;
+    public static readonly Dictionary<ItemCategoryName, List<string>> Categories;
 
     /// <summary>
     /// The list of all registered item categories, mainly used for re-ordering.
@@ -23,12 +24,11 @@ internal static class CategoryDataManager
     static CategoryDataManager()
     {
         Categories = DiscoverItems()
-            .Select(item => item.ToItemKey())
-            .Where(key => !CategoryItemBlacklist.Includes(key))
+            .Where(item => !CategoryItemBlacklist.Includes(item))
             .GroupBy(key => key.GetCategory())
             .ToDictionary(
                 g => g.Key,
-                g => g.ToList()
+                g => g.Select(i => i.QualifiedItemId).ToList()
             );
         ItemCategories = Categories.Keys.ToList();
 
@@ -88,7 +88,7 @@ internal static class CategoryDataManager
     private static IEnumerable<Item> DiscoverItems()
     {
         return ItemRegistry.ItemTypes
-            .SelectMany(ItemExtensions.GetAllItems)
+            .SelectMany(i => i.GetAllData().Select(i.CreateItem))
             .Where(FilterTools);
     }
 

@@ -37,13 +37,13 @@ internal class ChestEntry
     public long? SnapshotID { get; set; }
 
     /// <summary>
-    /// 位于 <see cref="Address"/> 处的箱子能够接受的 <see cref="ItemKey"/> 序列。
-    /// The sequence of <see cref="ItemKey"/> that were configured to be accepted
+    /// 位于 <see cref="Address"/> 处的箱子能够接受的 <see cref="Item.QualifiedItemId"/> 序列。
+    /// The sequence of <see cref="Item.QualifiedItemId"/> that were configured to be accepted
     /// by the chest at <see cref="Address"/> .
     /// </summary>
     [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
     [JsonConverter(typeof(DataConverter))]
-    public HashSet<ItemKey> AcceptedItems { get; set; }
+    public HashSet<string> AcceptedItems { get; set; }
 
 #pragma warning disable CS8618 // 预留给反序列化器使用的 ctor
 

@@ -1,6 +1,7 @@
 ﻿using ConvenientChests.CategorizeChests.UI.SubMenus;
 using ConvenientChests.Framework.DataService;
 using ConvenientChests.Framework.DataStructs;
+using ConvenientChests.Framework.Extensions;
 using ConvenientChests.Framework.UserInterfaceService;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -269,7 +270,7 @@ internal class SnapshotHubMenu : CategoryMenu<ChestDataSnapshot>
         GridMenu.RemoveAllComponents();
         if (t is null) return;
         var labels = t.Snapshot.AcceptedItemKinds
-            .Select(k => k.GetOne())
+            .Select(k => k.ConvertToItem())
             .Where(i => i.Name != Item.ErrorItemName)
             .OrderBy(i => i)
             .Select(i => new ItemLabel<Item>(i));

@@ -2,7 +2,6 @@
 using ConvenientChests.CategorizeChests.UI.SubMenus;
 using ConvenientChests.Framework.DataService;
 using ConvenientChests.Framework.DataStructs;
-using ConvenientChests.Framework.Extensions;
 using ConvenientChests.Framework.UserInterfaceService;
 using Microsoft.Xna.Framework;
 using UI.Component;
@@ -121,8 +120,8 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
             return;
 
         var items = chest.Items
-            .DistinctBy(i => i.QualifiedItemId)
-            .Select(i => i.ToItemKey());
+            .Select(i => i.QualifiedItemId)
+            .Distinct();
 
         foreach (var key in items)
         {

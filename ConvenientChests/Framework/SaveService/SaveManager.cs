@@ -45,10 +45,10 @@ internal static class SaveManager
     public static void Load()
     {
         if (!Context.IsMainPlayer || !File.Exists(AbsoluteSavePath)) return;
-        UpdateSaveData();
+        UpdateSaveData(out var data);
         try
         {
-            LoadSaveData();
+            LoadSaveData(data);
         }
         catch (Exception ex)
         {
@@ -57,7 +57,7 @@ internal static class SaveManager
         }
     }
 
-    public static void LoadSaveData(SaveData? saveData = null)
+    public static void LoadSaveData(SaveData? saveData)
     {
         saveData ??= ModEntry.ModHelper.Data.ReadJsonFile<SaveData>(SavePath) ?? new SaveData();
 
@@ -86,16 +86,17 @@ internal static class SaveManager
     }
 
     /// <summary>
-    /// 更新 1.8.0 之前的存档文件结构。
-    /// Updates legacy save files (pre-1.8.0) to the current format.
+    /// 更新 2.0.0 之前的存档文件结构。
+    /// Updates legacy save files (pre-2.0.0) to the current format.
     /// </summary>
-    private static void UpdateSaveData()
+    private static void UpdateSaveData(out SaveData? saveData)
     {
+        saveData = null;
         var oldSaveData = ModEntry.ModHelper.Data.ReadJsonFile<SaveData>(SavePath);
         if (oldSaveData is null) return;
 
         var saveDataVersion = new SemanticVersion(oldSaveData.Version);
-        if (!saveDataVersion.IsOlderThan("1.8.1")) return;
+        if (!saveDataVersion.IsOlderThan("2.0.0-alpha")) return;
 
         ModEntry.Log($"Updating save data from {saveDataVersion} to {ModEntry.Manifest.Version}", LogLevel.Info);
         var newSaveData = new SaveData();
@@ -105,6 +106,7 @@ internal static class SaveManager
             newSaveData.Version = ModEntry.Manifest.Version.ToString();
             newSaveData.ChestEntries = oldSaveData.ChestEntries;
             Save(newSaveData);
+            saveData = newSaveData;
         }
         catch (Exception ex)
         {

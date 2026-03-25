@@ -26,18 +26,18 @@ internal class ChestDataSnapshot : IChestData
     /// A series of accepted items.
     /// </summary>
     [JsonConverter(typeof(DataConverter))]
-    public HashSet<ItemKey> AcceptedItemKinds { get; set; } = new();
+    public HashSet<string> AcceptedItemKinds { get; set; } = new();
 
     public ChestDataSnapshot() { }
 
-    public ChestDataSnapshot(string alias, long uniqueID, IEnumerable<ItemKey> acceptedItemKinds)
+    public ChestDataSnapshot(string alias, long uniqueID, IEnumerable<string> acceptedItemKinds)
     {
         Alias = alias;
         UniqueID = uniqueID;
         AcceptedItemKinds = acceptedItemKinds.ToHashSet();
     }
 
-    public void ToggleItem(ItemKey itemKey)
+    public void ToggleItem(string itemKey)
     {
         if (this.Accepts(itemKey))
             this.RemoveAccepted(itemKey);

@@ -7,23 +7,21 @@ public class ChestAPI : IConvenientChestAPI
 {
     /// <inheritdoc/>
     public bool ChestAcceptThisItem(Chest chest, Item item) =>
-        chest.GetChestData().AcceptedItemKinds.Any(k => k.QualifiedItemId == item.QualifiedItemId);
+        chest.GetChestData().AcceptedItemKinds.Any(k => k == item.QualifiedItemId);
 
     /// <inheritdoc/>
     public List<string> GetSelectedChestData(Chest chest) =>
-        chest.GetChestData().AcceptedItemKinds.Select(k => k.QualifiedItemId).ToList();
+        chest.GetChestData().AcceptedItemKinds.ToList();
 
     /// <inheritdoc/>
     public Dictionary<Chest, List<string>> GetAllChestData() => AllChests()
         .ToDictionary(
             c => c,
-            c => c.GetChestData().AcceptedItemKinds.Select(k => k.QualifiedItemId).ToList());
+            c => c.GetChestData().AcceptedItemKinds.ToList());
 
     /// <inheritdoc/>
     public Dictionary<string, List<string>> GetAllChestDataWithStringFormat() => AllChests()
-        .ToDictionary(
-            FormatChestLocation,
-            c => c.GetChestData().AcceptedItemKinds.Select(k => k.QualifiedItemId).ToList());
+        .ToDictionary(FormatChestLocation, c => c.GetChestData().AcceptedItemKinds.ToList());
 
     /// <summary>
     /// Get all chests in all locations.

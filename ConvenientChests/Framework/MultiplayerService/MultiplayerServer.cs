@@ -49,7 +49,7 @@ internal class MultiplayerServer : IModule
     /// <param name="itemKey">The itemkey of changed accept info.</param>
     /// <param name="alias">The new alias.</param>
     /// <param name="itemId">The qualified item id of new item icon.</param>
-    public static void SendChestData(Chest chest, ItemKey? itemKey = null, string? alias = null, string? itemId = null)
+    public static void SendChestData(Chest chest, string? itemKey = null, string? alias = null, string? itemId = null)
     {
         var playerID = Game1.player.UniqueMultiplayerID;
         var chestAddress = new ChestAddress(chest);

@@ -169,7 +169,7 @@ internal class StashToChestsModule : IModule
     /// </summary>
     private static bool ChestAcceptsItem(Chest chest, Item item)
     {
-        var itemKey = item.ToBase().ToItemKey();
+        var itemKey = item.ToBase().QualifiedItemId;
         return chest.GetChestData().Accepts(itemKey);
     }
 

@@ -16,13 +16,13 @@ internal class ChestData : IChestData
 
     public Item? ItemIcon { get; private set; }
 
-    public HashSet<ItemKey> AcceptedItemKinds
+    public HashSet<string> AcceptedItemKinds
     {
         get => Snapshot?.AcceptedItemKinds ?? _acceptedItemKinds;
         set => _acceptedItemKinds = value;
     }
 
-    private HashSet<ItemKey> _acceptedItemKinds = new();
+    private HashSet<string> _acceptedItemKinds = new();
 
     public ChestDataSnapshot? Snapshot { get; set; }
 
@@ -31,8 +31,8 @@ internal class ChestData : IChestData
         _chestRef = new WeakReference<Chest>(chest);
     }
 
-    /// <inheritdoc cref="ToggleItem(ItemKey, bool)"/>
-    public void ToggleItem(ItemKey itemKey) => ToggleItem(itemKey, false);
+    /// <inheritdoc cref="ToggleItem(string, bool)"/>
+    public void ToggleItem(string itemKey) => ToggleItem(itemKey, false);
 
     public Chest? GetChest() => _chestRef.TryGetTarget(out var chest) ? chest : null;
 
@@ -43,7 +43,7 @@ internal class ChestData : IChestData
     /// <param name="itemKey">The item to toggle.</param>
     /// <param name="receiver">Whether this is a receiver of the toggle event, this param
     /// is used in multiplayer sync.</param>
-    public void ToggleItem(ItemKey itemKey, bool receiver)
+    public void ToggleItem(string itemKey, bool receiver)
     {
         if (Snapshot != null)
             return;

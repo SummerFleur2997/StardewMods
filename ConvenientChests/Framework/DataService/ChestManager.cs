@@ -13,7 +13,7 @@ internal static class ChestManager
     private static readonly ConditionalWeakTable<Chest, ChestData> Table = new();
     private static readonly object Lock = new();
 
-    public static void ModifyChest(ChestAddress chestAddress, ItemKey? itemKey, string? alias, Item? item)
+    public static void ModifyChest(ChestAddress chestAddress, string? itemKey, string? alias, Item? item)
     {
         lock (Lock)
         {

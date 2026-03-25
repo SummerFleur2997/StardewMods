@@ -1,6 +1,4 @@
-﻿using ConvenientChests.Framework.DataStructs;
-
-namespace ConvenientChests.CategorizeChests.Framework;
+﻿namespace ConvenientChests.CategorizeChests.Framework;
 
 /// <summary>
 /// Maintains the list of items that should be excluded from the available
@@ -9,13 +7,13 @@ namespace ConvenientChests.CategorizeChests.Framework;
 internal static class CategoryItemBlacklist
 {
     /// <summary>
-    /// Check whether a given item key is blacklisted.
+    /// Check whether a given item is blacklisted.
     /// </summary>
-    /// <returns>Whether the key is blacklisted.</returns>
-    /// <param name="itemKey">Item key to check.</param>
-    public static bool Includes(ItemKey itemKey)
+    /// <returns>Whether the item is blacklisted.</returns>
+    /// <param name="item">Item to check.</param>
+    public static bool Includes(Item item)
     {
-        var includes = itemKey.TypeDefinition == "(F)" || BlacklistedItemIDs.Contains(itemKey.QualifiedItemId);
+        var includes = item.TypeDefinitionId == "(F)" || BlacklistedItemIDs.Contains(item.QualifiedItemId);
         return includes;
     }
 
