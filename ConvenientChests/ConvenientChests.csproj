@@ -1,9 +1,9 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <AssemblyTitle>ConvenientChests</AssemblyTitle>
-        <ModFolderName>ConvenientChestsUnofficial</ModFolderName>
+        <ModFolderName>ConvenientChests2</ModFolderName>
         <Product>ConvenientChests</Product>
-        <Version>2.0.0-alpha</Version>
+        <Version>2.0.0</Version>
         <Nullable>enable</Nullable>
         <EnableHarmony>true</EnableHarmony>
     </PropertyGroup>

@@ -2,6 +2,54 @@
 
 English | [简体中文](VersionHistory_zh.md)
 
+### 1.8.4
+
+**New Features**
+
+- Introduce a drop-down menu for the category menu.
+
+**Optimizations**
+
+- Provide an api for other mods.
+- Now, when using a new chest to swap the old chest, the category data will keep.
+- More clever ui design to fit with other mods or Android device.
+
+**Bug Fixes**
+
+- Fix a bug causing double ingredient use when crafting.
+  - Merged from [Pull #8](https://github.com/SummerFleur2997/StardewMods/pull/8)
+    (thanks to [DrakeCaesar](https://github.com/DrakeCaesar)!)
+
+### 1.8.3
+
+**New Features**
+
+- Introduce a new feature to auto stash every 30 minutes.
+
+**Optimizations**
+
+- Add more categorizable items.
+- Compatible with QuickSave.
+- Polish Chinese wording.
+
+**Bug Fixes**
+
+- Fixed the issue that the Category menu does not fit the screen in Android.
+
+### 1.8.2
+
+**New Features**
+
+- Added Portuguese translation. (Thanks to [Kiyara99](https://next.nexusmods.com/profile/Kiyara99))
+
+**Optimizations**
+
+- Add a config to set the offset of side buttons for Android players.
+
+**Bug Fixes**
+
+- Fixed the issue with incorrect alphabetical sorting.
+
 ### 1.8.1
 
 **New Features**
