@@ -29,36 +29,40 @@ internal class DataConverter : JsonConverter<HashSet<string>>
         }
     }
 
-    public override void WriteJson(JsonWriter writer, HashSet<string>? value, JsonSerializer serializer) => serializer.Serialize(writer, value);
+    public override void WriteJson(JsonWriter writer, HashSet<string>? value, JsonSerializer serializer)
+    {
+        serializer.Serialize(writer, value);
+    }
 }
 
 internal static class DcUtilities
 {
-    public static HashSet<string> ToItemIds(this Dictionary<string, string>? acceptedItems) =>
-        acceptedItems?
+    public static HashSet<string> ToItemIds(this Dictionary<string, string>? acceptedItems)
+    {
+        return acceptedItems?
             .Select(kvp => new KeyValuePair<string, IEnumerable<string>>(kvp.Key, kvp.Value.Split(',')))
             .SelectMany(kvp => kvp.Value.Select(itemId => kvp.Key.GetTypeDefinition() + itemId))
             .ToHashSet() ?? new HashSet<string>();
+    }
 
-    private static string GetTypeDefinition(this string type) =>
-        type switch
-        {
-            "Boots" => "(B)",
-            "BigCraftable" => "(BC)",
-            "Furniture" => "(F)",
-            "Flooring" => "(FL)",
-            "Hat" => "(H)",
-            "Shirt" => "(S)",
-            "Pants" => "(P)",
-            "Mannequin" => "(M)",
-            "Tool" => "(T)",
-            "Wallpaper" => "(WP)",
-            "Weapon" => "(W)",
-            "Trinket" => "(TR)",
-            "Fish" => "(O)",
-            "Ring" => "(O)",
-            "Object" => "(O)",
-            "Gate" => "(O)",
-            _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
-        };
+    private static string GetTypeDefinition(this string type) => type switch
+    {
+        "Boots" => "(B)",
+        "BigCraftable" => "(BC)",
+        "Furniture" => "(F)",
+        "Flooring" => "(FL)",
+        "Hat" => "(H)",
+        "Shirt" => "(S)",
+        "Pants" => "(P)",
+        "Mannequin" => "(M)",
+        "Tool" => "(T)",
+        "Wallpaper" => "(WP)",
+        "Weapon" => "(W)",
+        "Trinket" => "(TR)",
+        "Fish" => "(O)",
+        "Ring" => "(O)",
+        "Object" => "(O)",
+        "Gate" => "(O)",
+        _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
+    };
 }

@@ -28,6 +28,8 @@
 
   "Config.StashLogic.exist": "存储至已存在的组",
   "Config.StashLogic.fridge": "优先存储至冰箱中",
+  "Config.StashLogic.vanilla": "修改原版“放入已有的一堆”按钮功能",
+  "Config.StashLogic.vanilla.desc": "修改原版箱子旁“放入已有的一堆”按钮的功能，使其可将分类列表内的物品存储至箱子里。",
 
   "Config.StashRule.LockItems": "禁用工具存储",
   "Config.StashRule.LockItems.desc": "禁止将任何工具存储至箱子中，在多人游戏中较为实用。",

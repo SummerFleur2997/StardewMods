@@ -28,6 +28,8 @@
 
   "Config.StashLogic.exist": "Stash to existing stacks?",
   "Config.StashLogic.fridge": "Stash to fridge first?",
+  "Config.StashLogic.vanilla": "Patch vanilla 'Add to existing stacks' button?",
+  "Config.StashLogic.vanilla.desc": "Patch the logic of vanilla 'Add to existing stacks', makes it possible to stash categorized items.",
 
   "Config.StashRule.LockItems": "Never stash tools",
   "Config.StashRule.LockItems.desc": "Prevent tools from stash into chests, may useful in multiplayer.",

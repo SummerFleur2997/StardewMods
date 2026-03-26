@@ -133,6 +133,16 @@ internal static class GenericModConfigMenuIntegration
             setValue: value => ModEntry.Config.StashAnywhereToFridge = value
         );
 
+        // 【选项】修改原版“放入已有的一堆”按钮功能
+        // [Checkbox] Patch vanilla 'Add to existing stacks' button?
+        api.AddBoolOption(
+            manifest,
+            name: I18n.Config_StashLogic_Vanilla,
+            tooltip: I18n.Config_StashLogic_Vanilla_Desc,
+            getValue: () => ModEntry.Config.PatchVanillaStack,
+            setValue: value => ModEntry.Config.PatchVanillaStack = value
+        );
+
         // 【选项】禁用工具存储 - 禁止将任何工具存储至箱子中，在多人游戏中较为实用
         // [Checkbox] Never stash tools - Prevent tools from stash into chests. May useful in multiplayer
         api.AddBoolOption(

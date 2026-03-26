@@ -139,7 +139,7 @@ internal class StashToChestsModule : IModule
 
     public static void Postfix_ItemGrabMenu_FillOutStacks(ItemGrabMenu __instance)
     {
-        if (__instance.sourceItem is not Chest chest)
+        if (__instance.sourceItem is not Chest chest || !ModEntry.Config.PatchVanillaStack)
             return;
 
         StashToCurrentChest(chest, Instance.AcceptingFunc, Instance.RejectingFunc);
