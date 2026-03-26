@@ -169,8 +169,8 @@ internal class StashToChestsModule : IModule
     /// </summary>
     private static bool ChestAcceptsItem(Chest chest, Item item)
     {
-        var itemKey = item.ToBase().QualifiedItemId;
-        return chest.GetChestData().Accepts(itemKey);
+        var itemId = item.ToBase().QualifiedItemId;
+        return chest.GetChestData().Accepts(itemId);
     }
 
     /// <summary>
@@ -340,12 +340,11 @@ internal class StashToChestsModule : IModule
         }
     }
 
-    private void OnInventoryChanged(object? sender, InventoryChangedEventArgs e)
+    private static void OnInventoryChanged(object? sender, InventoryChangedEventArgs e)
     {
-        var id = ModEntry.Manifest.UniqueID + ".lock";
         foreach (var item in e.Removed)
         {
-            item.modData.Remove(id);
+            item.WriteModData(ModDataManager.LockedFlag, null);
         }
     }
 }

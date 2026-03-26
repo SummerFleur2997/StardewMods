@@ -1,6 +1,7 @@
+using ConvenientChests.AliasForChests;
 using ConvenientChests.Framework.DataStructs;
-using ConvenientChests.Framework.MigrateService;
 using StardewValley.Objects;
+using static ConvenientChests.Framework.DataService.ModDataManager;
 
 namespace ConvenientChests.Framework.DataService;
 
@@ -11,20 +12,23 @@ namespace ConvenientChests.Framework.DataService;
 internal static class ChestManager
 {
     private static readonly Dictionary<Chest, ChestData> Table = new();
-    private static readonly object Lock = new();
 
-    public static void ModifyChest(ChestAddress chestAddress, string? itemKey)
+    public static void UpdateChest(ChestAddress chestAddress, int which)
     {
-        lock (Lock)
+        if (!chestAddress.GetChestByAddress(out var chest, out var error))
         {
-            if (!chestAddress.GetChestByAddress(out var chest, out var error))
-            {
-                ModEntry.Log(error, LogLevel.Error);
-                return;
-            }
+            ModEntry.Log(error, LogLevel.Error);
+            return;
+        }
 
-            var data = chest.GetChestData();
-            if (itemKey != null) data.Toggle(itemKey);
+        switch (which)
+        {
+            case 0:
+                chest.GetChestData().UpdateAcceptedItems();
+                break;
+            case 1:
+                AliasForChestsModule.Instance.ForceUpdateOnce = true;
+                break;
         }
     }
 
@@ -38,13 +42,9 @@ internal static class ChestManager
         if (Table.TryGetValue(chest, out var data))
             return data;
 
-        var id = ModEntry.Manifest.UniqueID;
-        var acceptedItems = chest.modData.TryGetValue($"{id}.acceptedItems", out var k)
-            ? k.Split(',')
-            : Array.Empty<string>();
-        var snapshot = chest.modData.TryGetValue($"{id}.snapshot", out var s) && long.TryParse(s, out var snapshotId)
-            ? SnapshotManager.GetValueOrDefault(snapshotId)
-            : null;
+        var acceptedItems = chest.ReadModDataAsEnumerable(AcceptedItemsKey).ToHashSet();
+        var snapshotId = chest.ReadModDataAsInt64(SnapshotKey) ?? 0;
+        var snapshot = SnapshotManager.GetValueOrDefault(snapshotId);
 
         var chestData = new ChestData(chest, acceptedItems, snapshot);
         Table.Add(chest, chestData);
@@ -52,8 +52,18 @@ internal static class ChestManager
     }
 
     /// <summary>
-    /// Clear ConditionalWeakTable
-    /// 清理 ConditionalWeakTable
+    /// Save ChestData
+    /// </summary>
+    public static void SaveChestData()
+    {
+        foreach (var data in Table.Values)
+        {
+            data.SetAcceptedItemAndWriteToModData();
+        }
+    }
+
+    /// <summary>
+    /// Clear ChestData.
     /// </summary>
     public static void ClearChestData()
     {

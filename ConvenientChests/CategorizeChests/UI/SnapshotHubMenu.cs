@@ -333,8 +333,16 @@ internal class SnapshotHubMenu : CategoryMenu<ChestDataSnapshot>
         if (ParentMenu is not CategoryChestMenu menu)
             return;
 
-        menu.SetSnapshot(ChestData);
-        _selectedTag?.UnSelect();
+        if (Context.IsMainPlayer)
+        {
+            menu.SetSnapshot(ChestData);
+            _selectedTag?.UnSelect();
+        }
+        else
+        {
+            Game1.showRedMessage(I18n.UI_Snapshot_Warning_Farmhand_Apply());
+        }
+
         exitThisMenuNoSound();
     }
 

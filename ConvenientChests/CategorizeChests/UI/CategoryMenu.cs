@@ -157,11 +157,11 @@ internal abstract class CategoryMenu<T> : BaseMenu, IHaveSubMenu where T : IChes
         GridMenu.RemoveAllComponents();
         if (showEmpty) return;
 
-        var itemKeys = CategoryDataManager.Categories[ActiveCategory]
+        var items = CategoryDataManager.Categories[ActiveCategory]
             .OrderBy(k => k.ConvertToItem());
 
         var toggles = new List<ItemToggle<Item>>();
-        foreach (var key in itemKeys)
+        foreach (var key in items)
         {
             var toggle = new ItemToggle<Item>(key.ConvertToItem(), ChestData.Accepts(key));
             toggle.OnToggle += () => ToggleItem(key);
@@ -179,16 +179,20 @@ internal abstract class CategoryMenu<T> : BaseMenu, IHaveSubMenu where T : IChes
         if (on)
         {
             var allItems = CategoryDataManager.Categories[ActiveCategory];
-            foreach (var itemKey in allItems)
-                if (!ChestData.Accepts(itemKey))
-                    ChestData.Toggle(itemKey);
+            foreach (var item in allItems)
+            {
+                if (!ChestData.Accepts(item))
+                    ChestData.Toggle(item);
+            }
         }
         else
         {
             var allItems = CategoryDataManager.Categories[ActiveCategory];
-            foreach (var itemKey in allItems)
-                if (ChestData.Accepts(itemKey))
-                    ChestData.Toggle(itemKey);
+            foreach (var item in allItems)
+            {
+                if (ChestData.Accepts(item))
+                    ChestData.Toggle(item);
+            }
         }
         RecreateItemToggles();
     }
@@ -223,9 +227,9 @@ internal abstract class CategoryMenu<T> : BaseMenu, IHaveSubMenu where T : IChes
         TopRow.SelectAllButton.Checked = AreAllSelected();
     }
 
-    private void ToggleItem(string itemKey)
+    private void ToggleItem(string item)
     {
-        ChestData.Toggle(itemKey);
+        ChestData.Toggle(item);
         TopRow.SelectAllButton.Checked = AreAllSelected();
     }
 

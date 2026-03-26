@@ -22,6 +22,20 @@ internal static class SaveManager
     private static string AbsoluteSavePath => Path.Combine(ModEntry.ModHelper.DirectoryPath, SavePath);
 
     /// <summary>
+    /// Save chest data to its mod data.
+    /// </summary>
+    public static void Save()
+    {
+        if (!Context.IsMainPlayer)
+            return;
+
+        ChestManager.SaveChestData();
+
+        if (File.Exists(AbsoluteSavePath))
+            File.Delete(AbsoluteSavePath);
+    }
+
+    /// <summary>
     /// Load save data from the save path.
     /// </summary>
     public static void Load()
@@ -43,8 +57,7 @@ internal static class SaveManager
                 }
 
                 var chestData = chest.GetChestData();
-
-                chestData.AcceptedItems = entry.AcceptedItems;
+                chestData.SetAcceptedItemAndWriteToModData(entry.AcceptedItems);
             }
         }
         catch (Exception ex)
@@ -60,11 +73,10 @@ internal static class SaveManager
     /// </summary>
     private static void UpdateSaveData(out SaveData? saveData)
     {
-        saveData = null;
-        var oldSaveData = ModEntry.ModHelper.Data.ReadJsonFile<SaveData>(SavePath);
-        if (oldSaveData is null) return;
+        saveData = ModEntry.ModHelper.Data.ReadJsonFile<SaveData>(SavePath);
+        if (saveData is null) return;
 
-        var saveDataVersion = new SemanticVersion(oldSaveData.Version);
+        var saveDataVersion = new SemanticVersion(saveData.Version);
         if (!saveDataVersion.IsOlderThan("2.0.0-alpha")) return;
 
         ModEntry.Log($"Updating save data from {saveDataVersion} to {ModEntry.Manifest.Version}", LogLevel.Info);
@@ -73,7 +85,7 @@ internal static class SaveManager
         try
         {
             newSaveData.Version = ModEntry.Manifest.Version.ToString();
-            newSaveData.ChestEntries = oldSaveData.ChestEntries;
+            newSaveData.ChestEntries = saveData.ChestEntries;
             saveData = newSaveData;
         }
         catch (Exception ex)

@@ -6,7 +6,7 @@ public static class ModDataManager
     public const string ItemIconKey = "SummerFleur.ConvenientChests.ItemIcon";
     public const string AcceptedItemsKey = "SummerFleur.ConvenientChests.AcceptedItems";
     public const string SnapshotKey = "SummerFleur.ConvenientChests.Snapshot";
-    public const string UpdatedFlag = "SummerFleur.ConvenientChests.NeedUpdate";
+    public const string LockedFlag = "SummerFleur.ConvenientChests.Locked";
 
     public static string? ReadModData(this IHaveModData which, string key) =>
         which.modData.TryGetValue(key, out var value) ? value : null;

@@ -5,6 +5,13 @@ namespace ConvenientChests.API;
 /// <summary>
 /// SummerFleur.ConvenientChests API, for Version 2.0.0 or later.
 /// </summary>
+/// <remarks>
+/// Note: In the version 2.0.0 or higher, this mod use the <see cref="Chest.modData"/> dictionary
+/// instead of separate mod data manager to manage mod data. But although you can directly access
+/// them by that dictionary, it's not recommended to do so because in singleplayer mode, the data
+/// will only be updated when the day is ended. And it will not work at all in case of the player
+/// is using a snapshot.Use this API to get the data will ensure the data you get is accurate.
+/// </remarks>
 public interface IConvenientChestAPI
 {
     /// <summary>

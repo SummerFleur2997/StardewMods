@@ -85,9 +85,11 @@
   "UI.Snapshot.Save": "Save as a snapshot",
   "UI.Snapshot.Save.desc": "Save the category items of this chest as a new snapshot.",
   "UI.Snapshot.Unlink": "Unlink snapshot",
-  "UI.Snapshot.Unlink.desc": "Unlink the snapshot. The snapshot itself will be preserved.",
+  "UI.Snapshot.Unlink.desc": "Unlink the snapshot. The snapshot itself will be preserved, and the item list from the snapshot will be copied and saved as an independent category for this chest.",
   "UI.Snapshot.Unlink.confirm": "Sure to unlink it?",
-  "UI.Snapshot.Warning.mainplayer": "This chest is using the snapshot {{name}}, if you want to edit its category items, you should edit that snapshot instead. ",
-  "UI.Snapshot.Warning.farmhand": "This chest is using a snapshot from the host, you can't edit it.",
+  "UI.Snapshot.Warning.edit": "This chest is using the snapshot {{name}}, if you want to edit its category items, you should edit that snapshot instead.",
+  "UI.Snapshot.Warning.mainplayer": "Snapshots are unavailable in multiplayer. Please click the button on the right to Unlink it to make the categorize feature available",
+  "UI.Snapshot.Warning.farmhand": "This chest is using a snapshot from the host, and snapshots are unavailable in multiplayer, please ask the host to unlink the snapshot to make the categorize feature available.",
+  "UI.Snapshot.Warning.farmhand.apply": "You can't apply your snapshot to this chest.",
   "UI.Unnamed": "Unnamed snapshot"
 }

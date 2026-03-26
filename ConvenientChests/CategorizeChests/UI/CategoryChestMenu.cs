@@ -2,6 +2,7 @@
 using ConvenientChests.CategorizeChests.UI.SubMenus;
 using ConvenientChests.Framework.DataService;
 using ConvenientChests.Framework.DataStructs;
+using ConvenientChests.Framework.MultiplayerService;
 using ConvenientChests.Framework.UserInterfaceService;
 using Microsoft.Xna.Framework;
 using UI.Component;
@@ -58,7 +59,7 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
         // that the drop-down in the top row is handled first.
         AddChildren(GridMenu, TopRow);
 
-        if (data.Snapshot is not null)
+        if (data.IsUsingSnapshot)
         {
             AddSnapshotWarning();
         }
@@ -74,9 +75,20 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
     /// </summary>
     public void SetSnapshot(ChestDataSnapshot snapshot)
     {
+        ChestData.AcceptedItems.Clear();
         ChestData.Snapshot = snapshot;
-        ChestData.AcceptedItems = snapshot.AcceptedItems;
         AddSnapshotWarning();
+    }
+
+    public override void OnExit()
+    {
+        if (Context.IsMultiplayer && ChestData.Dirty)
+        {
+            ChestData.SetAcceptedItemAndWriteToModData();
+            MultiplayerServer.SendChestUpdateReq(ChestData.ChestRef, 0);
+        }
+
+        base.OnExit();
     }
 
     /// <summary>
@@ -88,9 +100,11 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
         RecreateItemToggles(true);
         Components.Remove(TopRow);
         var snapshotName = ChestData.Snapshot?.Alias ?? "";
-        var text = Context.IsMainPlayer
-            ? I18n.UI_Snapshot_Warning_Mainplayer(snapshotName)
-            : I18n.UI_Snapshot_Warning_Farmhand();
+        var text = Context.IsMultiplayer
+            ? Context.IsMainPlayer
+                ? I18n.UI_Snapshot_Warning_Mainplayer()
+                : I18n.UI_Snapshot_Warning_Farmhand()
+            : I18n.UI_Snapshot_Warning_Edit(snapshotName);
 
         var parsedText = Game1.parseText(text, Game1.smallFont, width / 2);
         if (_warning is not null) return;
@@ -115,7 +129,7 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
     /// </summary>
     private void QuickSet()
     {
-        if (ChestData.Snapshot != null)
+        if (ChestData.IsUsingSnapshot)
             return;
 
         var items = ChestData.ChestRef.Items
@@ -157,7 +171,7 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
     /// </summary>
     private void UnlinkSnapshot()
     {
-        if (ChestData.Snapshot is null || !Context.IsMainPlayer)
+        if (!ChestData.IsUsingSnapshot || !Context.IsMainPlayer)
             return;
 
         SubMenu = new DoubleConfirmSubMenu(this, I18n.UI_Snapshot_Unlink_Confirm());
@@ -167,7 +181,7 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
 
         void UnlinkSnapshotExecute(SubMenu sender)
         {
-            ChestData.AcceptedItems = ChestData.Snapshot.AcceptedItems;
+            ChestData.SetAcceptedItemAndWriteToModData(ChestData.Snapshot?.AcceptedItems ?? new HashSet<string>());
             ChestData.Snapshot = null;
             if (_warning is null)
                 return;

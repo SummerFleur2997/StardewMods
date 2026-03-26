@@ -1,5 +1,5 @@
+using System.Diagnostics.CodeAnalysis;
 using ConvenientChests.Framework.DataService;
-using ConvenientChests.Framework.MultiplayerService;
 using StardewValley.Objects;
 using static ConvenientChests.Framework.DataService.ModDataManager;
 
@@ -39,13 +39,15 @@ internal class ChestData : IChestData
     /// </summary>
     public ChestDataSnapshot? Snapshot
     {
-        get
+        get => _snapshot;
+        set
         {
-            var id = ChestRef.ReadModDataAsInt64(SnapshotKey) ?? 0;
-            return SnapshotManager.GetValueOrDefault(id);
+            ChestRef.WriteModData(SnapshotKey, value?.UniqueID);
+            _snapshot = value;
         }
-        set => ChestRef.WriteModData(SnapshotKey, value?.UniqueID);
     }
+
+    private ChestDataSnapshot? _snapshot;
 
     /// <inheritdoc />
     public HashSet<string> AcceptedItems
@@ -56,30 +58,67 @@ internal class ChestData : IChestData
 
     private HashSet<string> _acceptedItems;
 
-    public ChestData(Chest chest, string[] accepted, ChestDataSnapshot? snapshot)
+    /// <summary>
+    /// Whether the <see cref="AcceptedItems"/> was modified
+    /// in the multiplayer and needs to be synced.
+    /// </summary>
+    public bool Dirty { get; private set; }
+
+    /// <summary>
+    /// Whether the chest is using a snapshot. This property
+    /// is used in multipayer to prevent farmhands from modifying
+    /// the snapshot.
+    /// </summary>
+    [MemberNotNullWhen(true, nameof(Snapshot))]
+    public bool IsUsingSnapshot => ChestRef.ReadModData(SnapshotKey) != null;
+
+    public ChestData(Chest chest, HashSet<string> accepted, ChestDataSnapshot? snapshot)
     {
         ChestRef = chest;
-        _acceptedItems = accepted.ToHashSet();
         Snapshot = snapshot;
+        _acceptedItems = accepted;
     }
 
     /// <summary>
     /// Toggle whether this chest accepts the specified kind of item.
     /// 切换这个箱子是否接受指定类型的物品。
     /// </summary>
-    /// <param name="itemKey">The item to toggle.</param>
-    public void Toggle(string itemKey)
+    /// <param name="item">The item to toggle.</param>
+    public void Toggle(string item)
     {
         if (Snapshot != null)
             return;
 
-        if (this.Accepts(itemKey))
-            this.RemoveAccepted(itemKey);
+        if (this.Accepts(item))
+            this.RemoveAccepted(item);
         else
-            this.AddAccepted(itemKey);
+            this.AddAccepted(item);
 
         if (Context.IsMultiplayer)
-            MultiplayerServer.SendChestData(ChestRef, itemKey);
+            Dirty = true;
+    }
+
+    /// <summary>
+    /// Set the <see cref="AcceptedItems"/> and then write them
+    /// to the modData dictionary instantly.
+    /// </summary>
+    public void SetAcceptedItemAndWriteToModData(HashSet<string>? accepted = null)
+    {
+        if (accepted is not null)
+            AcceptedItems = accepted;
+        ChestRef.WriteModDataAsEnumerable(AcceptedItemsKey, _acceptedItems);
+    }
+
+    /// <summary>
+    /// Called after a multiplayer sync request was received.
+    /// Updates the <see cref="AcceptedItems"/> from mod data.
+    /// </summary>
+    public void UpdateAcceptedItems()
+    {
+        if (Snapshot != null)
+            return;
+
+        _acceptedItems = ChestRef.ReadModDataAsEnumerable(AcceptedItemsKey).ToHashSet();
     }
 
     public void MigrateDataFromOldChest(Chest oldChest)

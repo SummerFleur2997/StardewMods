@@ -1,4 +1,5 @@
-﻿using ConvenientChests.Framework.DataStructs;
+﻿using ConvenientChests.Framework.DataService;
+using ConvenientChests.Framework.DataStructs;
 using StardewValley.Tools;
 using Object = StardewValley.Object;
 
@@ -16,16 +17,12 @@ internal static class ItemExtensions
         return ItemRegistry.Create(item.QualifiedItemId, item.Stack, item.Quality);
     }
 
-    public static bool LockedInInventory(this Item item) =>
-        item.modData.TryGetValue(ModEntry.Manifest.UniqueID + ".lock", out _);
+    public static bool LockedInInventory(this Item item) => item.ReadModDataAsBoolean(ModDataManager.LockedFlag);
 
     public static void ChangeLockStatus(this Item item)
     {
-        var id = ModEntry.Manifest.UniqueID + ".lock";
-        var locked = item.modData.ContainsKey(id);
-
-        if (locked) item.modData.Remove(id);
-        else item.modData[id] = "t";
+        var locked = item.ReadModDataAsBoolean(ModDataManager.LockedFlag);
+        item.WriteModDataAsBoolean(ModDataManager.LockedFlag, !locked);
     }
 
     /// <summary>

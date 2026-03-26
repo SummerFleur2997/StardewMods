@@ -7,7 +7,7 @@ internal interface IChestData
 {
     HashSet<string> AcceptedItems { get; set; }
 
-    void Toggle(string itemKey);
+    void Toggle(string item);
 }
 
 internal static class ChestDataExtensions
@@ -16,19 +16,25 @@ internal static class ChestDataExtensions
     /// Set this chest to accept the specified kind of item.
     /// 设置这个箱子接受指定类型的物品。
     /// </summary>
-    public static void AddAccepted(this IChestData data, string itemKey) => data.AcceptedItems.Add(itemKey);
+    /// <param name="data">The <see cref="IChestData"/> instance.</param>
+    /// <param name="item">The qualified item id of item.</param>
+    public static void AddAccepted(this IChestData data, string item) => data.AcceptedItems.Add(item);
 
     /// <summary>
     /// Set this chest to not accept the specified kind of item.
     /// 移除这个箱子接受的指定类型的物品。
     /// </summary>
-    public static void RemoveAccepted(this IChestData data, string itemKey) => data.AcceptedItems.Remove(itemKey);
+    /// <param name="data">The <see cref="IChestData"/> instance.</param>
+    /// <param name="item">The qualified item id of item.</param>
+    public static void RemoveAccepted(this IChestData data, string item) => data.AcceptedItems.Remove(item);
 
     /// <summary>
     /// Return whether this chest accepts the given kind of item.
     /// 返回这个箱子是否接受指定类型的物品。
     /// </summary>
-    public static bool Accepts(this IChestData data, string itemKey) => data.AcceptedItems.Contains(itemKey);
+    /// <param name="data">The <see cref="IChestData"/> instance.</param>
+    /// <param name="item">The qualified item id of item.</param>
+    public static bool Accepts(this IChestData data, string item) => data.AcceptedItems.Contains(item);
 
     /// <summary>
     /// An algorithm that calculate the relative factor of a category based on the accepted items.

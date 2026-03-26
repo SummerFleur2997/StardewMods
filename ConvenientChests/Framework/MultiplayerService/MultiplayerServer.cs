@@ -28,9 +28,6 @@ internal class MultiplayerServer : IModule
     {
         IsActive = true;
         ModEntry.ModHelper.Events.Multiplayer.ModMessageReceived += OnMessageReceived;
-
-        if (!Context.IsMainPlayer)
-            ModEntry.ModHelper.Events.Display.MenuChanged += OnMenuChanged;
     }
 
     /// <inheritdoc />
@@ -38,44 +35,29 @@ internal class MultiplayerServer : IModule
     {
         IsActive = false;
         ModEntry.ModHelper.Events.Multiplayer.ModMessageReceived -= OnMessageReceived;
-        ModEntry.ModHelper.Events.Display.MenuChanged -= OnMenuChanged;
     }
 
     /// <summary>
     /// When someone edit the chest data, send it to every one.
     /// </summary>
     /// <param name="chest">Which chest was modified.</param>
-    /// <param name="itemKey">The changed accepted item.</param>
-    public static void SendChestData(Chest chest, string? itemKey = null)
+    /// <param name="attr">Which attribute need to update, 0 = AcceptItems, 1 = Alias.</param>
+    public static void SendChestUpdateReq(Chest chest, int attr)
     {
-        var playerID = Game1.player.UniqueMultiplayerID;
         var chestAddress = new ChestAddress(chest);
-        var syncData = new MultiplayerChestSync(chestAddress, itemKey, playerID);
 
-        MultiplayerHelper.SendMessage(syncData, "MultiplayerChestSync",
+        MultiplayerHelper.SendMessage(chestAddress, $"MultiplayerChestSync_{attr}", 
             new[] { ModEntry.Manifest.UniqueID });
     }
 
     /// <summary>
     /// Receive the chest data from other players when a chest is modified.
     /// </summary>
-    /// <param name="multiplayerChestSyncChest">Wrapped data.</param>
-    private static void ReceiveChestData(MultiplayerChestSync multiplayerChestSyncChest)
+    /// <param name="chestAddress">The address of which chest was modified.</param>
+    /// <param name="attr">Which attribute need to update, 0 = AcceptItems, 1 = Alias.</param>
+    private static void ReceiveChestData(ChestAddress chestAddress, int attr)
     {
-        if (multiplayerChestSyncChest.SenderID == Game1.player.UniqueMultiplayerID) return;
-        var chestAddress = multiplayerChestSyncChest.ChestAddress;
-        var itemKey = multiplayerChestSyncChest.ItemKey;
-
-        ChestManager.ModifyChest(chestAddress, itemKey);
-    }
-
-    /// <summary>
-    /// Request the save data from the host when open a menu.
-    /// </summary>
-    private static void OnMenuChanged(object? sender, MenuChangedEventArgs e)
-    {
-        MultiplayerHelper.SendMessage("null", "MultiplayerInit",
-            new[] { ModEntry.Manifest.UniqueID }, new[] { Game1.MasterPlayer.UniqueMultiplayerID });
+        ChestManager.UpdateChest(chestAddress, attr);
     }
 
     /// <summary>
@@ -83,14 +65,20 @@ internal class MultiplayerServer : IModule
     /// </summary>
     private static void OnMessageReceived(object? sender, ModMessageReceivedEventArgs e)
     {
+        var syncChestData = e.ReadAs<ChestAddress>();
         switch (e.Type)
         {
-            // When receiving the "MultiplayerChestSync" message from other players, sync ChestData.
-            // 收到其他玩家的 MultiplayerChestSync 消息后，同步 ChestData
-            case "MultiplayerChestSync":
-                var syncChestData = e.ReadAs<MultiplayerChestSync>();
-                ModEntry.Log($"Received chest sync data from {e.FromPlayerID}.");
-                ReceiveChestData(syncChestData);
+            // When receiving the "MultiplayerChestSync_0" message from other players, sync ChestData.AcceptItems
+            // 收到其他玩家的 MultiplayerChestSync_0 消息后，同步 ChestData.AcceptItems
+            case "MultiplayerChestSync_0":
+                ModEntry.Log($"Received chest sync request from {e.FromPlayerID}.");
+                ReceiveChestData(syncChestData, 0);
+                break;
+            // When receiving the "MultiplayerChestSync_1" message from other players, sync ChestData.Alias
+            // 收到其他玩家的 MultiplayerChestSync_1 消息后，同步 ChestData.Alias
+            case "MultiplayerChestSync_1":
+                ModEntry.Log($"Received chest sync request from {e.FromPlayerID}.");
+                ReceiveChestData(syncChestData, 1);
                 break;
         }
     }

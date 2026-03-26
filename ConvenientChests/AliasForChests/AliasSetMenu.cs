@@ -1,4 +1,5 @@
 ﻿using ConvenientChests.Framework.DataStructs;
+using ConvenientChests.Framework.MultiplayerService;
 using ConvenientChests.Framework.UserInterfaceService;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -108,9 +109,15 @@ internal class AliasSetMenu : SubMenu
     /// <param name="s">The event sender.</param>
     private void SetAlias(SubMenu s)
     {
-        _chestData.Alias = _textBox.Text;
+        var text = _textBox.Text;
+        _chestData.Alias = string.IsNullOrWhiteSpace(text) ? null : text;
         _chestData.ItemIcon = _itemIconButton.Item;
         AliasForChestsModule.Instance.ForceUpdateOnce = true;
+
+        if (Context.IsMultiplayer)
+        {
+            MultiplayerServer.SendChestUpdateReq(_chestData.ChestRef, 1);
+        }
     }
 
     /// <inheritdoc/>

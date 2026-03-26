@@ -54,6 +54,7 @@ internal class ModEntry : Mod
 
         helper.Events.GameLoop.GameLaunched += OnGameLaunched;
         helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
+        helper.Events.GameLoop.Saving += OnSaving;
         helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
         helper.Events.Display.MenuChanged += OnMenuChanged;
 
@@ -143,6 +144,11 @@ internal class ModEntry : Mod
 #if DEBUG
         Debug.Init();
 #endif
+    }
+
+    private static void OnSaving(object sender, SavingEventArgs e)
+    {
+        SaveManager.Save();
     }
 
     /// <summary>

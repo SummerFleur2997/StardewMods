@@ -37,11 +37,11 @@ internal class ChestDataSnapshot : IChestData
         AcceptedItems = acceptedItemKinds.ToHashSet();
     }
 
-    public void Toggle(string itemKey)
+    public void Toggle(string item)
     {
-        if (this.Accepts(itemKey))
-            this.RemoveAccepted(itemKey);
+        if (this.Accepts(item))
+            this.RemoveAccepted(item);
         else
-            this.AddAccepted(itemKey);
+            this.AddAccepted(item);
     }
 }
