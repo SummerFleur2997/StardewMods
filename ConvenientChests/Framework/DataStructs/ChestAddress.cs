@@ -100,7 +100,7 @@ internal class ChestAddress
         var building = location.buildings.FirstOrDefault(b => b.GetIndoorsName() == BuildingName);
         if (building == null)
         {
-            error = $"Save data contains building data in {BuildingName} but building does not exist";
+            error = $"Address data contains building data in {BuildingName} but building does not exist";
             return false;
         }
 
@@ -120,13 +120,13 @@ internal class ChestAddress
 
             if (house == null)
             {
-                error = $"Save data contains refrigerator data in {LocationName} but location does not exist";
+                error = $"Address data contains refrigerator data in {LocationName} but location does not exist";
                 return false;
             }
 
             if (house.upgradeLevel < 1)
             {
-                error = $"Save data contains refrigerator data in {LocationName} but refrigerator does not exist";
+                error = $"Address data contains refrigerator data in {LocationName} but refrigerator does not exist";
                 return false;
             }
 

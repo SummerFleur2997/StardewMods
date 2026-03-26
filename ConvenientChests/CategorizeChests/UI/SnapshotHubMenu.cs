@@ -269,7 +269,7 @@ internal class SnapshotHubMenu : CategoryMenu<ChestDataSnapshot>
     {
         GridMenu.RemoveAllComponents();
         if (t is null) return;
-        var labels = t.Snapshot.AcceptedItemKinds
+        var labels = t.Snapshot.AcceptedItems
             .Select(k => k.ConvertToItem())
             .Where(i => i.Name != Item.ErrorItemName)
             .OrderBy(i => i)

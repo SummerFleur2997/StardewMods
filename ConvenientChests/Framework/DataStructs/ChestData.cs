@@ -1,6 +1,7 @@
 using ConvenientChests.Framework.DataService;
 using ConvenientChests.Framework.MultiplayerService;
 using StardewValley.Objects;
+using static ConvenientChests.Framework.DataService.ModDataManager;
 
 namespace ConvenientChests.Framework.DataStructs;
 
@@ -10,40 +11,64 @@ namespace ConvenientChests.Framework.DataStructs;
 /// </summary>
 internal class ChestData : IChestData
 {
-    private readonly WeakReference<Chest> _chestRef;
+    public readonly Chest ChestRef;
 
-    public string? Alias { get; private set; }
-
-    public Item? ItemIcon { get; private set; }
-
-    public HashSet<string> AcceptedItemKinds
+    /// <summary>
+    /// 箱子标签备注。
+    /// The user-defined alias for this chest.
+    /// </summary>
+    public string? Alias
     {
-        get => Snapshot?.AcceptedItemKinds ?? _acceptedItemKinds;
-        set => _acceptedItemKinds = value;
+        get => ChestRef.ReadModData(AliasKey);
+        set => ChestRef.WriteModData(AliasKey, value);
     }
 
-    private HashSet<string> _acceptedItemKinds = new();
-
-    public ChestDataSnapshot? Snapshot { get; set; }
-
-    public ChestData(Chest chest)
+    /// <summary>
+    /// 箱子标签所显示的物品。
+    /// The item that displays on the chest's label.
+    /// </summary>
+    public Item? ItemIcon
     {
-        _chestRef = new WeakReference<Chest>(chest);
+        get => ChestRef.ReadModDataAsItem(ItemIconKey);
+        set => ChestRef.WriteModData(ItemIconKey, value?.QualifiedItemId);
     }
 
-    /// <inheritdoc cref="ToggleItem(string, bool)"/>
-    public void ToggleItem(string itemKey) => ToggleItem(itemKey, false);
+    /// <summary>
+    /// 箱子所使用的快照。
+    /// The snapshot that this chest is using.
+    /// </summary>
+    public ChestDataSnapshot? Snapshot
+    {
+        get
+        {
+            var id = ChestRef.ReadModDataAsInt64(SnapshotKey) ?? 0;
+            return SnapshotManager.GetValueOrDefault(id);
+        }
+        set => ChestRef.WriteModData(SnapshotKey, value?.UniqueID);
+    }
 
-    public Chest? GetChest() => _chestRef.TryGetTarget(out var chest) ? chest : null;
+    /// <inheritdoc />
+    public HashSet<string> AcceptedItems
+    {
+        get => Snapshot?.AcceptedItems ?? _acceptedItems;
+        set => _acceptedItems = value;
+    }
+
+    private HashSet<string> _acceptedItems;
+
+    public ChestData(Chest chest, string[] accepted, ChestDataSnapshot? snapshot)
+    {
+        ChestRef = chest;
+        _acceptedItems = accepted.ToHashSet();
+        Snapshot = snapshot;
+    }
 
     /// <summary>
     /// Toggle whether this chest accepts the specified kind of item.
     /// 切换这个箱子是否接受指定类型的物品。
     /// </summary>
     /// <param name="itemKey">The item to toggle.</param>
-    /// <param name="receiver">Whether this is a receiver of the toggle event, this param
-    /// is used in multiplayer sync.</param>
-    public void ToggleItem(string itemKey, bool receiver)
+    public void Toggle(string itemKey)
     {
         if (Snapshot != null)
             return;
@@ -53,41 +78,8 @@ internal class ChestData : IChestData
         else
             this.AddAccepted(itemKey);
 
-        if (receiver) return;
-        if (Context.IsMultiplayer && _chestRef.TryGetTarget(out var chest))
-            MultiplayerServer.SendChestData(chest, itemKey);
-    }
-
-    /// <summary>
-    /// Change the alias of this chest.
-    /// 编辑这个箱子的备注。
-    /// </summary>
-    /// <param name="alias">The new alias.</param>
-    /// <param name="receiver">Whether this is a receiver of the edit event, this param
-    /// is used in multiplayer sync.</param>
-    public void SetAlias(string? alias, bool receiver = false)
-    {
-        Alias = string.IsNullOrWhiteSpace(alias) ? null : alias.Trim();
-
-        if (receiver) return;
-        if (Context.IsMultiplayer && _chestRef.TryGetTarget(out var chest))
-            MultiplayerServer.SendChestData(chest, alias: Alias);
-    }
-
-    /// <summary>
-    /// Change the icon of this chest.
-    /// 编辑这个箱子的图标。
-    /// </summary>
-    /// <param name="item">The new icon item.</param>
-    /// <param name="receiver">Whether this is a receiver of the edit event, this param
-    /// is used in multiplayer sync.</param>
-    public void SetIcon(Item? item, bool receiver = false)
-    {
-        ItemIcon = item;
-
-        if (receiver) return;
-        if (Context.IsMultiplayer && _chestRef.TryGetTarget(out var chest))
-            MultiplayerServer.SendChestData(chest, itemId: ItemIcon?.QualifiedItemId);
+        if (Context.IsMultiplayer)
+            MultiplayerServer.SendChestData(ChestRef, itemKey);
     }
 
     public void MigrateDataFromOldChest(Chest oldChest)
@@ -95,6 +87,6 @@ internal class ChestData : IChestData
         var oldData = oldChest.GetChestData();
 
         Snapshot = oldData.Snapshot;
-        _acceptedItemKinds = oldData._acceptedItemKinds;
+        _acceptedItems = oldData._acceptedItems;
     }
 }

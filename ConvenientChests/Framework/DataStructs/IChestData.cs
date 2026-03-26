@@ -5,11 +5,9 @@ namespace ConvenientChests.Framework.DataStructs;
 
 internal interface IChestData
 {
-    string? Alias { get; }
+    HashSet<string> AcceptedItems { get; set; }
 
-    HashSet<string> AcceptedItemKinds { get; }
-
-    void ToggleItem(string itemKey);
+    void Toggle(string itemKey);
 }
 
 internal static class ChestDataExtensions
@@ -18,19 +16,19 @@ internal static class ChestDataExtensions
     /// Set this chest to accept the specified kind of item.
     /// 设置这个箱子接受指定类型的物品。
     /// </summary>
-    public static void AddAccepted(this IChestData data, string itemKey) => data.AcceptedItemKinds.Add(itemKey);
+    public static void AddAccepted(this IChestData data, string itemKey) => data.AcceptedItems.Add(itemKey);
 
     /// <summary>
     /// Set this chest to not accept the specified kind of item.
     /// 移除这个箱子接受的指定类型的物品。
     /// </summary>
-    public static void RemoveAccepted(this IChestData data, string itemKey) => data.AcceptedItemKinds.Remove(itemKey);
+    public static void RemoveAccepted(this IChestData data, string itemKey) => data.AcceptedItems.Remove(itemKey);
 
     /// <summary>
     /// Return whether this chest accepts the given kind of item.
     /// 返回这个箱子是否接受指定类型的物品。
     /// </summary>
-    public static bool Accepts(this IChestData data, string itemKey) => data.AcceptedItemKinds.Contains(itemKey);
+    public static bool Accepts(this IChestData data, string itemKey) => data.AcceptedItems.Contains(itemKey);
 
     /// <summary>
     /// An algorithm that calculate the relative factor of a category based on the accepted items.
@@ -39,7 +37,7 @@ internal static class ChestDataExtensions
     /// <returns>The most relative category.</returns>
     public static ItemCategoryName PotentialMostRelevantCategory(this IChestData data)
     {
-        var acceptedItems = data.AcceptedItemKinds.Select(id => id.ConvertToItem());
+        var acceptedItems = data.AcceptedItems.Select(id => id.ConvertToItem());
 
         // default to the first category
         var category = ModEntry.Config.EnableSort

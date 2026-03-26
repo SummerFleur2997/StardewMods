@@ -181,14 +181,14 @@ internal abstract class CategoryMenu<T> : BaseMenu, IHaveSubMenu where T : IChes
             var allItems = CategoryDataManager.Categories[ActiveCategory];
             foreach (var itemKey in allItems)
                 if (!ChestData.Accepts(itemKey))
-                    ChestData.ToggleItem(itemKey);
+                    ChestData.Toggle(itemKey);
         }
         else
         {
             var allItems = CategoryDataManager.Categories[ActiveCategory];
             foreach (var itemKey in allItems)
                 if (ChestData.Accepts(itemKey))
-                    ChestData.ToggleItem(itemKey);
+                    ChestData.Toggle(itemKey);
         }
         RecreateItemToggles();
     }
@@ -225,7 +225,7 @@ internal abstract class CategoryMenu<T> : BaseMenu, IHaveSubMenu where T : IChes
 
     private void ToggleItem(string itemKey)
     {
-        ChestData.ToggleItem(itemKey);
+        ChestData.Toggle(itemKey);
         TopRow.SelectAllButton.Checked = AreAllSelected();
     }
 

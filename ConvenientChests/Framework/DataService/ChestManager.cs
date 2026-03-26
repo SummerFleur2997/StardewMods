@@ -1,5 +1,5 @@
-using System.Runtime.CompilerServices;
 using ConvenientChests.Framework.DataStructs;
+using ConvenientChests.Framework.MigrateService;
 using StardewValley.Objects;
 
 namespace ConvenientChests.Framework.DataService;
@@ -10,10 +10,10 @@ namespace ConvenientChests.Framework.DataService;
 /// </summary>
 internal static class ChestManager
 {
-    private static readonly ConditionalWeakTable<Chest, ChestData> Table = new();
+    private static readonly Dictionary<Chest, ChestData> Table = new();
     private static readonly object Lock = new();
 
-    public static void ModifyChest(ChestAddress chestAddress, string? itemKey, string? alias, Item? item)
+    public static void ModifyChest(ChestAddress chestAddress, string? itemKey)
     {
         lock (Lock)
         {
@@ -24,9 +24,7 @@ internal static class ChestManager
             }
 
             var data = chest.GetChestData();
-            if (itemKey != null) data.ToggleItem(itemKey, true);
-            if (alias != null) data.SetAlias(alias, true);
-            if (item != null) data.SetIcon(item, true);
+            if (itemKey != null) data.Toggle(itemKey);
         }
     }
 
@@ -36,7 +34,21 @@ internal static class ChestManager
     /// </summary>
     internal static ChestData GetChestData(this Chest chest)
     {
-        return Table.GetValue(chest, c => new ChestData(c));
+        // Lazy load the chest data
+        if (Table.TryGetValue(chest, out var data))
+            return data;
+
+        var id = ModEntry.Manifest.UniqueID;
+        var acceptedItems = chest.modData.TryGetValue($"{id}.acceptedItems", out var k)
+            ? k.Split(',')
+            : Array.Empty<string>();
+        var snapshot = chest.modData.TryGetValue($"{id}.snapshot", out var s) && long.TryParse(s, out var snapshotId)
+            ? SnapshotManager.GetValueOrDefault(snapshotId)
+            : null;
+
+        var chestData = new ChestData(chest, acceptedItems, snapshot);
+        Table.Add(chest, chestData);
+        return chestData;
     }
 
     /// <summary>

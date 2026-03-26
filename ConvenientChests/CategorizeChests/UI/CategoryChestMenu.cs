@@ -59,11 +59,14 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
         AddChildren(GridMenu, TopRow);
 
         if (data.Snapshot is not null)
+        {
             AddSnapshotWarning();
+        }
         else
+        {
             RecreateItemToggles();
-
-        TopRow.CategorySelector.SelectByValue(data.PotentialMostRelevantCategory());
+            TopRow.CategorySelector.SelectByValue(data.PotentialMostRelevantCategory());
+        }
     }
 
     /// <summary>
@@ -72,7 +75,7 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
     public void SetSnapshot(ChestDataSnapshot snapshot)
     {
         ChestData.Snapshot = snapshot;
-        ChestData.AcceptedItemKinds = snapshot.AcceptedItemKinds;
+        ChestData.AcceptedItems = snapshot.AcceptedItems;
         AddSnapshotWarning();
     }
 
@@ -115,18 +118,14 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
         if (ChestData.Snapshot != null)
             return;
 
-        var chest = ChestData.GetChest();
-        if (chest is null)
-            return;
-
-        var items = chest.Items
+        var items = ChestData.ChestRef.Items
             .Select(i => i.QualifiedItemId)
             .Distinct();
 
         foreach (var key in items)
         {
             if (!ChestData.Accepts(key))
-                ChestData.ToggleItem(key);
+                ChestData.Toggle(key);
         }
 
         RefreshToggleStatus();
@@ -147,7 +146,7 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
             if (sender is not NewSnapshotSubMenu menu)
                 return;
 
-            var snapshot = SnapshotManager.CreateNewSnapshot(menu.TextBox.Text, ChestData.AcceptedItemKinds);
+            var snapshot = SnapshotManager.CreateNewSnapshot(menu.TextBox.Text, ChestData.AcceptedItems);
             SnapshotManager.Add(snapshot);
         }
     }
@@ -168,7 +167,7 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
 
         void UnlinkSnapshotExecute(SubMenu sender)
         {
-            ChestData.AcceptedItemKinds = ChestData.Snapshot.AcceptedItemKinds;
+            ChestData.AcceptedItems = ChestData.Snapshot.AcceptedItems;
             ChestData.Snapshot = null;
             if (_warning is null)
                 return;

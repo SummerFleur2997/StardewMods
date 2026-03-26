@@ -85,11 +85,11 @@ internal class AliasSetMenu : SubMenu
         _itemPicker = new GridMenu(X - 408, y + 8, 384, 384, 64);
         _itemPicker.Background = itemPickerBackground;
 
-        var buttons = _chestData.GetChest()?.Items
+        var buttons = _chestData.ChestRef.Items
             .DistinctBy(i => i.QualifiedItemId)
             .Select(i => new ItemButton(i.QualifiedItemId))
             .Append(ItemButton.GetANullInstance()) // add a null button for no item icon, which texture is a red X
-            .ToList() ?? new List<ItemButton>();
+            .ToList();
 
         foreach (var button in buttons)
             button.OnPress += () =>
@@ -108,8 +108,8 @@ internal class AliasSetMenu : SubMenu
     /// <param name="s">The event sender.</param>
     private void SetAlias(SubMenu s)
     {
-        _chestData.SetAlias(_textBox.Text);
-        _chestData.SetIcon(_itemIconButton.Item);
+        _chestData.Alias = _textBox.Text;
+        _chestData.ItemIcon = _itemIconButton.Item;
         AliasForChestsModule.Instance.ForceUpdateOnce = true;
     }
 

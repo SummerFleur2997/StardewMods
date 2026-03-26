@@ -1,5 +1,3 @@
-using ConvenientChests.Framework.DataService;
-using ConvenientChests.Framework.DataStructs;
 using Microsoft.Xna.Framework;
 using StardewValley.Inventories;
 using StardewValley.Locations;
@@ -73,12 +71,6 @@ public static class ChestExtension
         return items.Select(item => sourceInventory.TryMoveItemToChest(chest, item))
             .OfType<Item>()
             .ToList();
-    }
-
-    internal static ChestEntry ToChestEntry(this Chest chest, ChestAddress address)
-    {
-        var data = chest.GetChestData();
-        return new ChestEntry(data, address);
     }
 
     ///  <summary>

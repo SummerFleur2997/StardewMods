@@ -7,8 +7,8 @@ using ConvenientChests.CraftFromChests;
 using ConvenientChests.Framework;
 using ConvenientChests.Framework.DataService;
 using ConvenientChests.Framework.IntegrationService;
+using ConvenientChests.Framework.MigrateService;
 using ConvenientChests.Framework.MultiplayerService;
-using ConvenientChests.Framework.SaveService;
 using ConvenientChests.Framework.UserInterfaceService;
 using ConvenientChests.StashToChests;
 using JetBrains.Annotations;
@@ -55,7 +55,6 @@ internal class ModEntry : Mod
         helper.Events.GameLoop.GameLaunched += OnGameLaunched;
         helper.Events.GameLoop.SaveLoaded += OnSaveLoaded;
         helper.Events.GameLoop.ReturnedToTitle += OnReturnedToTitle;
-        helper.Events.GameLoop.Saving += OnSaving;
         helper.Events.Display.MenuChanged += OnMenuChanged;
 
         I18n.Init(Helper.Translation);
@@ -169,7 +168,6 @@ internal class ModEntry : Mod
     {
         GenericModConfigMenuIntegration.Register(Manifest, ModHelper.ModRegistry, ResetConfig, SaveConfig);
         ConvenientInventoryIntegration.Register();
-        QuickSaveIntegration.Register();
         UIHelper.Initialize();
         SnapshotManager.Load();
         StashToChestsModule.RegisterHarmonyPatch();
@@ -205,16 +203,6 @@ internal class ModEntry : Mod
                 MenuManager.CreateMenu(itemGrabMenu);
                 break;
         }
-    }
-
-    /// <summary>
-    /// 在游戏向存档文件写入数据前触发（除了新建存档时）。
-    /// Raised before the game begins writes data to the save file (except the initial save creation).
-    /// </summary>
-    private static void OnSaving(object sender, SavingEventArgs e)
-    {
-        SaveManager.Save();
-        SnapshotManager.Save();
     }
 
     /// <summary>
