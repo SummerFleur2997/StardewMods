@@ -35,6 +35,19 @@ individual mods for documentation and release notes.
   _Useful prompts that can enhance your mining experience in the mine 
   and skull cavern._
 
+### Unpublished mods:
+
+These mods are not yet released due to they are all purpose-built mods, they are not yet
+ready to be published, but you can build and test them yourself, but please be aware that
+they may not be stable, and may contain bugs.
+
+* **Bin There Save That** <small>([source](BinThereSavedThat))</small>  
+  _Keep your trashed items in a shop to retrieve them if in need. Never feel regret next time
+  when you trash your items by accident._
+* **Role Recovery** <small>([source](RoleRecovery))</small>  
+  _Recover your character from multiplayer games and continue playing in singleplayer. This mod
+  is a tailor-made, CLI-only mod, and only support Simplified Chinese._
+
 ### Mods under develop:
 
 * **Custom Sort**  
