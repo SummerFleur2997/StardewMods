@@ -24,10 +24,12 @@ internal static class ChestManager
         switch (which)
         {
             case 0:
-                chest.GetChestData().UpdateAcceptedItems();
+                chest.GetChestData().Dirty = true;
+                ModEntry.Log($"Synced new accept item list for chest at {chestAddress}.");
                 break;
             case 1:
                 AliasForChestsModule.Instance.ForceUpdateOnce = true;
+                ModEntry.Log("Forced update the chest alias once.");
                 break;
         }
     }
@@ -40,7 +42,12 @@ internal static class ChestManager
     {
         // Lazy load the chest data
         if (Table.TryGetValue(chest, out var data))
+        {
+            if (data.Dirty)
+                data.UpdateAcceptedItems();
+
             return data;
+        }
 
         var acceptedItems = chest.ReadModDataAsEnumerable(AcceptedItemsKey).ToHashSet();
         var snapshotId = chest.ReadModDataAsInt64(SnapshotKey) ?? 0;

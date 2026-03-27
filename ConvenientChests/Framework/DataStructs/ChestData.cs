@@ -62,7 +62,7 @@ internal class ChestData : IChestData
     /// Whether the <see cref="AcceptedItems"/> was modified
     /// in the multiplayer and needs to be synced.
     /// </summary>
-    public bool Dirty { get; private set; }
+    public bool Dirty { get; set; }
 
     /// <summary>
     /// Whether the chest is using a snapshot. This property
@@ -119,6 +119,7 @@ internal class ChestData : IChestData
             return;
 
         _acceptedItems = ChestRef.ReadModDataAsEnumerable(AcceptedItemsKey).ToHashSet();
+        Dirty = false;
     }
 
     public void MigrateDataFromOldChest(Chest oldChest)

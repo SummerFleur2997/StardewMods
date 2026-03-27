@@ -148,6 +148,14 @@ internal class ChestAddress
         error = $"Can't find chest in {location.Name} at {Tile}";
         return false;
     }
+
+    public override string ToString() => LocationType switch
+    {
+        ChestLocationType.Normal => $"{LocationName} at {Tile}",
+        ChestLocationType.Building => $"{LocationName} in {BuildingName} at {Tile}",
+        ChestLocationType.Refrigerator => $"The refrigerator of {LocationName}",
+        _ => throw new ArgumentOutOfRangeException()
+    };
 }
 
 internal enum ChestLocationType

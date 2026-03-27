@@ -88,6 +88,7 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
             MultiplayerServer.SendChestUpdateReq(ChestData.ChestRef, 0);
         }
 
+        ChestData.Dirty = false;
         base.OnExit();
     }
 
