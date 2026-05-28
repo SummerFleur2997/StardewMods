@@ -1,6 +1,7 @@
 ﻿using Common;
 using ConvenientChests.Framework.DataService;
 using ConvenientChests.Framework.DataStructs;
+using Newtonsoft.Json;
 using StardewModdingAPI.Events;
 using StardewValley.Objects;
 
@@ -65,21 +66,40 @@ internal class MultiplayerServer : IModule
     /// </summary>
     private static void OnMessageReceived(object? sender, ModMessageReceivedEventArgs e)
     {
-        var syncChestData = e.ReadAs<ChestAddress>();
-        switch (e.Type)
+        try
         {
-            // When receiving the "MultiplayerChestSync_0" message from other players, sync ChestData.AcceptItems
-            // 收到其他玩家的 MultiplayerChestSync_0 消息后，同步 ChestData.AcceptItems
-            case "MultiplayerChestSync_0":
-                ModEntry.Log($"Received chest sync request from {e.FromPlayerID}.");
-                ReceiveChestData(syncChestData, 0);
-                break;
-            // When receiving the "MultiplayerChestSync_1" message from other players, sync ChestData.Alias
-            // 收到其他玩家的 MultiplayerChestSync_1 消息后，同步 ChestData.Alias
-            case "MultiplayerChestSync_1":
-                ModEntry.Log($"Received chest sync request from {e.FromPlayerID}.");
-                ReceiveChestData(syncChestData, 1);
-                break;
+            if (e.FromModID != ModEntry.Manifest.UniqueID)
+            {
+                ModEntry.Log($"Received message from other mod ({e.FromModID}), ignore it.");
+                return;
+            }
+
+            var syncChestData = e.ReadAs<ChestAddress>();
+            switch (e.Type)
+            {
+                // When receiving the "MultiplayerChestSync_0" message from other players, sync ChestData.AcceptItems
+                // 收到其他玩家的 MultiplayerChestSync_0 消息后，同步 ChestData.AcceptItems
+                case "MultiplayerChestSync_0":
+                    ModEntry.Log($"Received chest sync request from {e.FromPlayerID}.");
+                    ReceiveChestData(syncChestData, 0);
+                    break;
+                // When receiving the "MultiplayerChestSync_1" message from other players, sync ChestData.Alias
+                // 收到其他玩家的 MultiplayerChestSync_1 消息后，同步 ChestData.Alias
+                case "MultiplayerChestSync_1":
+                    ModEntry.Log($"Received chest sync request from {e.FromPlayerID}.");
+                    ReceiveChestData(syncChestData, 1);
+                    break;
+            }
+        }
+        catch (JsonSerializationException ex)
+        {
+            ModEntry.Log($"Failed to deserialize message to chestAddress: {ex}", LogLevel.Error);
+            ModEntry.Log(ex.StackTrace);
+        }
+        catch (Exception ex)
+        {
+            ModEntry.Log($"An error occured when receiving sync message: {ex}", LogLevel.Error);
+            ModEntry.Log(ex.StackTrace);
         }
     }
 }

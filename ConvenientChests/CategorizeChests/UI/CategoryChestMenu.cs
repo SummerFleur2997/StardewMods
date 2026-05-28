@@ -75,6 +75,7 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
     /// </summary>
     public void SetSnapshot(ChestDataSnapshot snapshot)
     {
+        ChestData.Snapshot = null;
         ChestData.AcceptedItems.Clear();
         ChestData.Snapshot = snapshot;
         AddSnapshotWarning();
@@ -108,7 +109,10 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
             : I18n.UI_Snapshot_Warning_Edit(snapshotName);
 
         var parsedText = Game1.parseText(text, Game1.smallFont, width / 2);
-        if (_warning is not null) return;
+        if (_warning is not null)
+        {
+            RemoveChild(_warning);
+        }
         _warning = new TextLabel(parsedText, Color.Black, Game1.smallFont, drawShadow: true);
         _warning.SetInCenterOfTheBounds(Bounds);
         AddChild(_warning);

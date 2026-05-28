@@ -4,11 +4,11 @@ namespace ConvenientChests.Framework.IntegrationService;
 
 public static class ConvenientInventoryIntegration
 {
-    public static IConvenientInventoryAPI? CIApi;
+    public static IConvenientInventoryApi? CIApi;
 
     public static void Register()
     {
-        var api = IntegrationHelper.GetValidatedApi<IConvenientInventoryAPI>(
+        var api = IntegrationHelper.GetValidatedApi<IConvenientInventoryApi>(
             "Convenient Inventory",
             "gaussfire.ConvenientInventory",
             "1.6.1",

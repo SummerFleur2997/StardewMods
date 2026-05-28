@@ -1,5 +1,4 @@
 using Microsoft.Xna.Framework;
-using StardewValley.Inventories;
 using StardewValley.Locations;
 using StardewValley.Objects;
 using Object = StardewValley.Object;
@@ -56,55 +55,6 @@ public static class ChestExtension
 
         foreach (var chest in buildings.SelectMany(building => building.buildingChests))
             yield return chest;
-    }
-
-    ///  <summary>
-    ///  Attempt to move as much as possible of the player's inventory into the given chest
-    ///  </summary>
-    /// <param name="chest">The chest to put the items in.</param>
-    /// <param name="sourceInventory"></param>
-    /// <param name="items">Items to put in</param>
-    /// <returns>List of Items that were successfully moved into the chest</returns>
-    public static IEnumerable<Item> DumpItemsToChest(this Inventory sourceInventory, Chest chest,
-        IEnumerable<Item> items)
-    {
-        return items.Select(item => sourceInventory.TryMoveItemToChest(chest, item))
-            .OfType<Item>()
-            .ToList();
-    }
-
-    ///  <summary>
-    ///  Attempt to move as much as possible of the given item stack into the chest.
-    ///  </summary>
-    ///  <param name="sourceInventory"></param>
-    ///  <param name="chest">The chest to put the items in.</param>
-    ///  <param name="item">The items to put in the chest.</param>
-    ///  <returns>True if at least some of the stack was moved into the chest.</returns>
-    private static Item? TryMoveItemToChest(this IInventory sourceInventory, Chest chest, Item item)
-    {
-        var original = item.Stack;
-        var remainder = chest.addItem(item);
-
-        // nothing remains -> remove item
-        if (remainder == null)
-        {
-            var index = sourceInventory.IndexOf(item);
-            sourceInventory[index] = null;
-            // item.Stack = original;
-            return item;
-        }
-
-        // nothing changed
-        if (remainder.Stack == item.Stack)
-            return null;
-
-        // update stack count
-        item.Stack = remainder.Stack;
-
-        // return copy for moved item
-        var copy = item.Copy();
-        copy.Stack = original - remainder.Stack;
-        return copy;
     }
 
     private static IEnumerable<T> GetNearbyObjects<T>(GameLocation location, Vector2 point, int radius)

@@ -1,4 +1,5 @@
 ﻿using ConvenientChests.Framework.DataService;
+using ConvenientChests.Framework.Extensions;
 using StardewValley.Objects;
 
 namespace ConvenientChests.API;
@@ -8,6 +9,9 @@ public class ChestAPI : IConvenientChestAPI
     /// <inheritdoc/>
     public bool ChestAcceptThisItem(Chest chest, Item item) =>
         chest.GetChestData().AcceptedItems.Any(k => k == item.QualifiedItemId);
+
+    /// <inheritdoc/>
+    public bool InventoryLockThisItem(Item item) => item.LockedInInventory();
 
     /// <inheritdoc/>
     public List<string> GetSelectedChestData(Chest chest) =>

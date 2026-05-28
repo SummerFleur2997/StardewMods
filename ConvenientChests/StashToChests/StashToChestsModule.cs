@@ -5,8 +5,10 @@ using ConvenientChests.Framework.DataStructs;
 using ConvenientChests.Framework.Extensions;
 using ConvenientChests.Framework.IntegrationService;
 using ConvenientChests.Framework.UserInterfaceService;
+using ConvenientChests.StashToChests.Framework;
 using HarmonyLib;
 using StardewModdingAPI.Events;
+using StardewValley.Buildings;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
@@ -40,13 +42,13 @@ internal class StashToChestsModule : IModule
     /// 存储至附近的箱子功能是否启用。
     /// Whether stash to nearby function is enabled.
     /// </summary>
-    private bool IsStashToNearbyActive { get; set; }
+    private static bool IsStashToNearbyActive => ModEntry.Config.StashToNearby;
 
     /// <summary>
     /// 存储至附近的箱子功能是否启用。
     /// Whether stash anywhere function is enabled.
     /// </summary>
-    private bool IsStashAnywhereActive { get; set; }
+    private static bool IsStashAnywhereActive => ModEntry.Config.StashAnywhere;
 
     private StashToChestsModule() { }
 
@@ -54,7 +56,6 @@ internal class StashToChestsModule : IModule
     public void Activate()
     {
         IsActive = true;
-        RefreshConfig();
         // 初始化存储逻辑函数
         // Init the stack logic function.
         CreateJudgementFunction();
@@ -67,7 +68,6 @@ internal class StashToChestsModule : IModule
     public void Deactivate()
     {
         IsActive = false;
-        RefreshConfig();
         AcceptingFunc = (_, _) => false;
         RejectingFunc = _ => true;
         ModEntry.ModHelper.Events.Input.ButtonPressed -= OnButtonPressed;
@@ -196,7 +196,7 @@ internal class StashToChestsModule : IModule
             return locked;
 
         var itemIndex = Game1.player.Items.IndexOf(item);
-        return locked || ConvenientInventoryIntegration.CIApi.IsFavouriteItem(itemIndex);
+        return locked || ConvenientInventoryIntegration.CIApi.IsFavoriteItemSlot(itemIndex);
     }
 
     /// <summary>
@@ -231,10 +231,28 @@ internal class StashToChestsModule : IModule
         return InventoryLocksItem;
     }
 
-    private void RefreshConfig()
+    /// <summary>
+    /// Recursive find every indoor area of given location.
+    /// </summary>
+    private static IEnumerable<GameLocation> GetAllIndoors(GameLocation? location)
     {
-        IsStashToNearbyActive = ModEntry.Config.StashToNearby;
-        IsStashAnywhereActive = ModEntry.Config.StashAnywhere;
+        if (location is null || !location.buildings.Any())
+            yield break;
+
+        foreach (var building in location.buildings)
+        {
+            if (building.GetIndoorsType() != IndoorsType.Instanced)
+                continue;
+
+            var indoors = building.GetIndoors();
+            if (indoors == null)
+                continue;
+
+            yield return indoors;
+
+            foreach (var indoorIndoor in GetAllIndoors(indoors))
+                yield return indoorIndoor;
+        }
     }
 
     /// <summary>
@@ -242,14 +260,11 @@ internal class StashToChestsModule : IModule
     /// </summary>
     private static IEnumerable<GameLocation> GetLocations()
     {
-        return Game1.locations
-            .Concat(
-                from location in Game1.locations
-                where location is not null
-                from building in location.buildings
-                where building.indoors.Value != null
-                select building.indoors.Value
-            );
+        var indoors = Game1.locations
+            .Select(GetAllIndoors)
+            .SelectMany(indoor => indoor);
+
+        return Game1.locations.Concat(indoors);
     }
 
     /// <summary>
@@ -271,7 +286,10 @@ internal class StashToChestsModule : IModule
         // 未打开箱子时，将物品存储至附近的箱子。
         // While no chests is opening, stash items into nearby chests.
         else if (IsStashToNearbyActive)
-            StashToNearbyChests(ModEntry.Config.StashRadius, AcceptingFunc, RejectingFunc);
+        {
+            var chests = Game1.player.GetNearbyChests(ModEntry.Config.StashRadius);
+            StashToNearbyChests(chests, AcceptingFunc, RejectingFunc);
+        }
     }
 
     /// <summary>
@@ -286,17 +304,11 @@ internal class StashToChestsModule : IModule
             success |= StashToChest(fridge, AcceptingFunc, RejectingFunc);
 
         // try to find all chests by location
-        if (Game1.player.currentLocation == null)
-            return;
-
         var chests = GetLocations()
-            .SelectMany(location => location.Objects.Pairs)
-            .Select(pair => pair.Value)
-            .OfType<Chest>()
-            .ToList();
+            .SelectMany(location => location.Objects.Values.OfType<Chest>());
 
         // stash by category
-        success |= StashToGivenChests(chests, AcceptingFunc, RejectingFunc);
+        success |= StashLogic.StashToChests(chests, AcceptingFunc, RejectingFunc);
 
         if (success)
             Game1.playSound(StashCueName);
