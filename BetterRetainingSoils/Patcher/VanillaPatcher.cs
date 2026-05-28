@@ -1,6 +1,7 @@
 ﻿using BetterRetainingSoils.Framework;
 using HarmonyLib;
 using StardewValley.TerrainFeatures;
+using StardewValley.Tools;
 
 namespace BetterRetainingSoils.Patcher;
 
@@ -21,18 +22,42 @@ internal static class VanillaPatcher
         __result = Math.Abs(__result - 1.0f) < 1e-4f ? 1.0f : 0f;
     }
 
+    /// <summary>
+    /// Patch <see cref="StardewValley.TerrainFeatures.HoeDirt.dayUpdate"/> method.
+    /// </summary>
+    /// <param name="__instance"></param>
     public static void Patch_dayUpdate(HoeDirt __instance) => __instance.DayUpdate();
 
     /// <summary>
     /// Patch the ctors of <see cref="StardewValley.TerrainFeatures.HoeDirt"/> to listen
     /// the state change event.
     /// </summary>
-    public static void Patch_Constructors(HoeDirt __instance) =>
+    public static void Patch_Constructors(HoeDirt __instance)
+    {
         __instance.state.fieldChangeVisibleEvent += (_, _, newValue) =>
         {
-            if (newValue == HoeDirt.watered)
+            if (Context.IsWorldReady && newValue == HoeDirt.watered)
                 __instance.RefreshStatus();
         };
+    }
+
+    /// <summary>
+    /// Patch <see cref="StardewValley.TerrainFeatures.HoeDirt.performToolAction"/> method.
+    /// 应用自定义浇水事件。Use custom watering event.
+    /// </summary>
+    /// <param name="__instance">引用的耕地。 Referred soil.</param>
+    /// <param name="t">使用的工具。 Used tool.</param>
+    /// <returns>始终需要进一步处理，因此总是返回 true 并使用原方法。
+    /// Always true to proceed with the original method.</returns>
+    public static bool Patch_performToolAction(HoeDirt __instance, Tool t)
+    {
+        if (t is WateringCan)
+        {
+            __instance.RefreshStatus();
+        }
+
+        return true;
+    }
 
     public static void RegisterHarmonyPatches(Harmony harmony)
     {
@@ -53,6 +78,12 @@ internal static class VanillaPatcher
             var postfixM3 = AccessTools.Method(typeof(VanillaPatcher), nameof(Patch_Constructors));
             harmony.Patch(originalM3, postfix: new HarmonyMethod(postfixM3));
             ModEntry.Log("Patched HoeDirt constructors successfully.");
+
+            var originalM4 = AccessTools.Method(typeof(HoeDirt), "performToolAction");
+            var prefixM4 = AccessTools.Method(
+                typeof(VanillaPatcher), nameof(Patch_performToolAction));
+            harmony.Patch(originalM4, new HarmonyMethod(prefixM4));
+            ModEntry.Log("Patched HoeDirt.performToolAction successfully.");
         }
         catch (Exception ex)
         {

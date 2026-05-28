@@ -1,4 +1,4 @@
-﻿using System.IO;
+﻿using StardewModdingAPI.Events;
 using StardewValley.TerrainFeatures;
 
 namespace BetterRetainingSoils.Framework;
@@ -11,6 +11,8 @@ internal static class ModDataManager
 {
     private const string ModID = "SummerFleur.BetterRetainingSoils";
 
+    private static readonly Queue<HoeDirt> ToUpdate = new();
+
     /// <summary>
     /// Generate save data and write it to the save path.
     /// </summary>
@@ -19,7 +21,12 @@ internal static class ModDataManager
             ? day
             : 0;
 
-    private static void SetWaterRemainDays(this HoeDirt dirt, int? days = null)
+    /// <summary>
+    /// Set the number of days the retaining soil can maintain moisture.
+    /// </summary>
+    /// <param name="dirt">The target dirt.</param>
+    /// <param name="days">The remain days of moisure.</param>
+    public static void SetWaterRemainDays(this HoeDirt dirt, int? days = null)
     {
         try
         {
@@ -37,25 +44,69 @@ internal static class ModDataManager
         }
     }
 
+    /// <summary>
+    /// Refresh the water remain days of dirt.
+    /// </summary>
+    /// <param name="dirt">The target dirt.</param>
     public static void RefreshStatus(this HoeDirt dirt)
     {
         var days = dirt.GetMaxWaterRemainDays();
         dirt.SetWaterRemainDays(days);
     }
 
+    /// <summary>
+    /// Check if the dirt should be updated.
+    /// </summary>
+    /// <param name="dirt">The dirt instance.</param>
     public static void DayUpdate(this HoeDirt dirt)
     {
-        var days = dirt.GetWaterRemainDays() - 1;
-        switch (days)
+        if (dirt.GetMaxWaterRemainDays() > 0)
+            ToUpdate.Enqueue(dirt);
+    }
+
+    public static void OnSaveLoaded(object s, SaveLoadedEventArgs e)
+    {
+        Game1.locations
+            .Select(l => l.terrainFeatures.Values.OfType<HoeDirt>())
+            .SelectMany(dirts => dirts.Where(d => d.GetMaxWaterRemainDays() > 0))
+            .ToList()
+            .ForEach(l => ToUpdate.Enqueue(l));
+    }
+
+    /// <summary>
+    /// Update dirts after <see cref="Game1.OnDayStarted"/> to ensure
+    /// everything is in ready state.
+    /// </summary>
+    public static void OnDayStarted(object s, DayStartedEventArgs e)
+    {
+        while (ToUpdate.TryDequeue(out var dirt))
         {
-            case < 0:
-                return;
-            case > 0:
-                dirt.state.Set(HoeDirt.watered);
-                break;
+            try
+            {
+                var days = dirt.state.Value == 1
+                    ? dirt.GetMaxWaterRemainDays()
+                    : dirt.GetWaterRemainDays() - 1;
+
+                switch (days)
+                {
+                    case < 0:
+                        continue;
+                    case > 0:
+                        dirt.state.Set(HoeDirt.watered);
+                        break;
+                }
+
+                dirt.SetWaterRemainDays(days);
+            }
+            catch (Exception exception)
+            {
+                ModEntry.Log($"Failed to update dirt at {dirt.Location.NameOrUniqueName} {dirt.Tile}", LogLevel.Error);
+                ModEntry.Log(exception.ToString(), LogLevel.Error);
+            }
         }
 
-        dirt.SetWaterRemainDays(days);
+        ToUpdate.Clear();
+        
     }
 
     /// <summary>
@@ -72,18 +123,5 @@ internal static class ModDataManager
             return ModEntry.Config.BasicSoilRemainDays;
 
         return -1;
-    }
-
-    /// <summary>
-    /// 清理旧版本的存档缓存文件。
-    /// Clean up the cache files of the old version.
-    /// </summary>
-    public static void TryCleanLegacyCache()
-    {
-        var dirPath = Path.Combine(ModEntry.ModHelper.DirectoryPath, "savedata");
-        if (!Directory.Exists(dirPath))
-            return;
-
-        Directory.Delete(dirPath, true);
     }
 }

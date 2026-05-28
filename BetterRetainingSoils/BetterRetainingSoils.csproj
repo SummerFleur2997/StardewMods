@@ -3,7 +3,7 @@
         <AssemblyTitle>BetterRetainingSoils</AssemblyTitle>
         <ModFolderName>BetterRetainingSoils</ModFolderName>
         <Product>BetterRetainingSoils</Product>
-        <Version>1.1.0</Version>
+        <Version>1.1.1</Version>
         <EnableHarmony>true</EnableHarmony>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">

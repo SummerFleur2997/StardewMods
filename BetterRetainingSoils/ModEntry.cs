@@ -1,4 +1,5 @@
-﻿using BetterRetainingSoils.API;
+﻿using System.IO;
+using BetterRetainingSoils.API;
 using BetterRetainingSoils.Framework;
 using BetterRetainingSoils.Patcher;
 using HarmonyLib;
@@ -35,6 +36,8 @@ internal class ModEntry : Mod
         ModHelper = Helper;
 
         helper.Events.GameLoop.GameLaunched += OnGameLaunched;
+        helper.Events.GameLoop.SaveLoaded += ModDataManager.OnSaveLoaded;
+        helper.Events.GameLoop.DayStarted += ModDataManager.OnDayStarted;
 
         I18n.Init(Helper.Translation);
         Config = helper.ReadConfig<ModConfig>();
@@ -73,7 +76,12 @@ internal class ModEntry : Mod
         VanillaPatcher.RegisterHarmonyPatches(harmony);
         OtherModsPatcher.RegisterHarmonyPatchesToUI2(harmony);
 
-        ModDataManager.TryCleanLegacyCache();
+        // Clean up the cache files of the old version.
+        var dirPath = Path.Combine(ModHelper.DirectoryPath, "savedata");
+        if (!Directory.Exists(dirPath))
+            return;
+
+        Directory.Delete(dirPath, true);
     }
 
     #endregion
