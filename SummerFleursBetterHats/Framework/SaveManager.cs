@@ -5,6 +5,8 @@ namespace SummerFleursBetterHats.Framework;
 
 internal static class SaveManager
 {
+    private const string DataKey = "SummerFleur.SummerFleursBetterHats.Status";
+
     /// <summary>
     /// 存档数据的存储路径，位于 mod 文件夹下的 savedata 文件夹中。
     /// The path to the mod's save data file, relative to the mod folder.
@@ -21,7 +23,7 @@ internal static class SaveManager
     /// Dictionary to store various status with player IDs as keys
     /// and uint values as flags.
     /// </summary>
-    internal static Dictionary<long, uint> WorldStatus { get; set; }
+    private static uint Status { get; set; }
 
     public static void RegisterEvents()
     {
@@ -33,55 +35,63 @@ internal static class SaveManager
     /// <summary>
     /// Extension method to attempt to modify world status for a player.
     /// </summary>
-    public static bool TryEditWorldStatus(long who, uint mask)
+    public static bool TryEditLocalPlayerStatus(uint mask)
     {
-        // Try to get existing world status for the player
-        if (!WorldStatus.TryGetValue(who, out var tradeInfo))
+        try
+        {
+            Status |= mask;
+            if (Context.IsMultiplayer && !Context.IsMainPlayer)
+            {
+                Game1.player.modData[DataKey] = Status.ToString();
+            }
+
+            return true;
+        }
+        catch (Exception)
+        {
             return false;
-
-        // Update the world status using bitwise OR operation with the mask
-        WorldStatus[who] = tradeInfo | mask;
-        if (Context.IsMultiplayer && !Context.IsMainPlayer)
-            MultiplayerServer.Instance.SendEditRequest(mask);
-
-        return true;
+        }
     }
 
     /// <summary>
     /// Extension method to check specific world status for a player.
     /// </summary>
-    public static bool TryGetWorldStatus(this Farmer player, uint mask)
-    {
-        var id = player.UniqueMultiplayerID;
+    public static bool TryGetLocalPlayerStatus(uint mask) =>
         // use the binary mask to check specific world status
-        if (WorldStatus.TryGetValue(id, out var data))
-            return (data & mask) != 0;
-
-        // if there are no data for the player, add a new entry
-        WorldStatus[id] = 0;
-        return false;
-    }
+        (Status & mask) != 0;
 
     /// <summary>
     /// Load save data from the save path.
     /// </summary>
     private static void Load()
     {
-        if (!Context.IsMainPlayer) return;
+        var raw = Game1.player.modData.GetValueOrDefault(DataKey, "0");
+        Status = uint.TryParse(raw, out var num) ? num : 0;
+
         if (!File.Exists(AbsoluteSavePath))
-        {
-            WorldStatus = new Dictionary<long, uint>();
             return;
-        }
 
         try
         {
-            WorldStatus = ModEntry.ModHelper.Data.ReadJsonFile<Dictionary<long, uint>>(SavePath);
+            var dict = ModEntry.ModHelper.Data.ReadJsonFile<Dictionary<long, uint>>(SavePath);
+            if (dict == null)
+                return;
+
+            foreach (var (id, status) in dict)
+            {
+                var player = Game1.GetPlayer(id);
+                if (player == null)
+                    continue;
+
+                if (player == Game1.player)
+                    Status = status;
+
+                player.modData[DataKey] = status.ToString();
+            }
         }
         catch (Exception ex)
         {
-            WorldStatus = new Dictionary<long, uint>();
-            ModEntry.Log($"Error loading data from {SavePath}, an empty data is created instead.", LogLevel.Error);
+            ModEntry.Log($"Error migrate data from {SavePath}.", LogLevel.Error);
             ModEntry.Log(ex.ToString(), LogLevel.Error);
         }
     }
@@ -91,16 +101,9 @@ internal static class SaveManager
     /// </summary>
     private static void Save()
     {
-        if (!Context.IsMainPlayer) return;
-        try
-        {
-            ModEntry.ModHelper.Data.WriteJsonFile(SavePath, WorldStatus);
-        }
-        catch (Exception ex)
-        {
-            ModEntry.Log($"Error saving data to {SavePath}", LogLevel.Error);
-            ModEntry.Log(ex.ToString(), LogLevel.Error);
-        }
+        Game1.player.modData[DataKey] = Status.ToString();
+        if (!Context.IsMainPlayer || !File.Exists(AbsoluteSavePath)) return;
+        File.Delete(AbsoluteSavePath);
     }
 
     /// <summary>
@@ -112,29 +115,17 @@ internal static class SaveManager
         // Clear the mid-higher 8 bits of the info (monthly flags)
         if (Game1.Date.DayOfMonth == 1)
         {
-            foreach (var player in WorldStatus.Keys)
-            {
-                var newValue = WorldStatus[player] & 0x00FFFF;
-                WorldStatus[player] = newValue;
-            }
+            Status &= 0x00FFFF;
         }
 
         // Clear the mid-lower 8 bits of the info (weekly flags)
         if (Game1.Date.DayOfWeek == DayOfWeek.Sunday)
         {
-            foreach (var player in WorldStatus.Keys)
-            {
-                var newValue = WorldStatus[player] & 0xFF00FF;
-                WorldStatus[player] = newValue;
-            }
+            Status &= 0xFF00FF;
         }
 
         // Clear the lower 4 bits of the info (daily flags)
-        foreach (var player in WorldStatus.Keys)
-        {
-            var newValue = WorldStatus[player] & 0xFFFF00;
-            WorldStatus[player] = newValue;
-        }
+        Status &= 0xFFFF00;
     }
 
     /// <summary>

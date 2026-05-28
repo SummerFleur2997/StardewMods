@@ -37,7 +37,7 @@ public partial class HatRelyOnEvents
 
         // 如果玩家已经使用过了图腾面具，退出并显示消息
         // return and show a message if the player has already used the mask today
-        if (player.TryGetWorldStatus(TotemMaskMask))
+        if (SaveManager.TryGetLocalPlayerStatus(TotemMaskMask))
         {
             Game1.showRedMessage(I18n.String_Hat_Used(PlayerHat()!.DisplayName));
             return;
@@ -59,7 +59,7 @@ public partial class HatRelyOnEvents
         player.freezePause = 2000;
         Game1.flashAlpha = 1f;
         DelayedAction.fadeAfterDelay(Warp, 1000);
-        SaveManager.TryEditWorldStatus(player.UniqueMultiplayerID, TotemMaskMask);
+        SaveManager.TryEditLocalPlayerStatus(TotemMaskMask);
 
         return;
 

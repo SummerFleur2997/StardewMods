@@ -29,8 +29,7 @@ public partial class HatRelyOnEvents
 
         // 如果玩家已经使用过了效果，退出并显示消息
         // return and show a message if the player has already used the delicate bow today
-        var player = Game1.player;
-        if (player.TryGetWorldStatus(DelicateBowMask))
+        if (SaveManager.TryGetLocalPlayerStatus(DelicateBowMask))
         {
             Game1.showRedMessage(I18n.String_Hat_Used(PlayerHat()!.DisplayName));
             return;
@@ -40,7 +39,7 @@ public partial class HatRelyOnEvents
         _lastTriggeredTime = 0;
         Game1.playSound("healSound");
         ModEvents.GameLoop.OneSecondUpdateTicked += DelicateBowHeal;
-        SaveManager.TryEditWorldStatus(player.UniqueMultiplayerID, DelicateBowMask);
+        SaveManager.TryEditLocalPlayerStatus(DelicateBowMask);
     }
 
     private static void DelicateBowHeal(object s, OneSecondUpdateTickedEventArgs e)

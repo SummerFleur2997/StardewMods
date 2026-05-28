@@ -27,7 +27,7 @@ public static class GameExtensions
             return false;
 
         var player = Game1.player;
-        if (SaveManager.TryEditWorldStatus(player.UniqueMultiplayerID, (uint)mask))
+        if (SaveManager.TryEditLocalPlayerStatus((uint)mask))
         {
             ModEntry.Log($"Successfully modified trade info for player {player.Name} in {shopID}.");
             return true;

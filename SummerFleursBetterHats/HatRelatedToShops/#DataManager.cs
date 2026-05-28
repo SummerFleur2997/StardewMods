@@ -84,7 +84,7 @@ public static partial class HatRelatedToShops
         }
 
         // Check if player has already visited this shop in the current period
-        if (Game1.player.TryGetWorldStatus(mask) || _hasAddedAnItem)
+        if (SaveManager.TryGetLocalPlayerStatus(mask) || _hasAddedAnItem)
             return;
 
         // Generate a random item for the shop, then add the item to the shop for sale

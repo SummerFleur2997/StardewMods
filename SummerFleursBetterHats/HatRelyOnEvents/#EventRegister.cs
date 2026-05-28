@@ -109,7 +109,7 @@ public static partial class HatRelyOnEvents
             case MummyMaskID:
                 UpdateForThisLocationWhenDisable();
                 break;
-            case GilsHatID when Game1.player.TryGetWorldStatus(GilsHatMask):
+            case GilsHatID when SaveManager.TryGetLocalPlayerStatus(GilsHatMask):
                 Game1.player.team.calicoEggSkullCavernRating.Value -= ExtraEggScore;
                 break;
 

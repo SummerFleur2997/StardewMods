@@ -29,10 +29,10 @@ public partial class HatRelyOnEvents
         // whether the effect has been triggered today
         var player = Game1.player;
         var desertFestivalDate = Utility.GetDayOfPassiveFestival("DesertFestival");
-        if (desertFestivalDate <= 0 || player.TryGetWorldStatus(GilsHatMask))
+        if (desertFestivalDate <= 0 || SaveManager.TryGetLocalPlayerStatus(GilsHatMask))
             return;
 
         player.team.calicoEggSkullCavernRating.Value += ExtraEggScore;
-        SaveManager.TryEditWorldStatus(player.UniqueMultiplayerID, GilsHatMask);
+        SaveManager.TryEditLocalPlayerStatus(GilsHatMask);
     }
 }

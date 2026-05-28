@@ -3,9 +3,7 @@
         <AssemblyTitle>SummerFleursBetterHats</AssemblyTitle>
         <ModFolderName>SummerFleursBetterHats</ModFolderName>
         <Product>SummerFleursBetterHats</Product>
-        <Version>1.0.1</Version>
-        <AssemblyVersion>1.0.1</AssemblyVersion>
-        <FileVersion>1.0.1</FileVersion>
+        <Version>1.0.2</Version>
         <EnableHarmony>true</EnableHarmony>
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
