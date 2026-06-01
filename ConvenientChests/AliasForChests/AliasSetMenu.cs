@@ -87,8 +87,9 @@ internal class AliasSetMenu : SubMenu
         _itemPicker.Background = itemPickerBackground;
 
         var buttons = _chestData.ChestRef.Items
-            .DistinctBy(i => i.QualifiedItemId)
-            .Select(i => new ItemButton(i.QualifiedItemId))
+            .Where(i => i != null) // IEnumerable<Item> - filter out potential null items
+            .DistinctBy(i => i.QualifiedItemId) // IEnumerable<Item> - remove duplicate items
+            .Select(i => new ItemButton(i.QualifiedItemId)) // IEnumerable<ItemButton> - convert to buttons
             .Append(ItemButton.GetANullInstance()) // add a null button for no item icon, which texture is a red X
             .ToList();
 
@@ -149,20 +150,25 @@ internal class AliasSetMenu : SubMenu
     public override bool ReceiveKeyPress(Keys key)
     {
         if (_itemPickerOn || _textBox.Selected)
+        {
             switch (key)
             {
+                // close the item picker or deselect the textbox
                 case Keys.Escape:
                     _itemPickerOn = false;
                     _textBox.Selected = false;
                     Game1.playSound("bigDeSelect");
                     return true;
+                // save the alias
                 case Keys.Enter:
                     _itemPickerOn = false;
                     _textBox.Selected = false;
                     break; // fall back to base method to handle enter key
+                // otherwise, suppress the game from handling the key
                 default:
                     return true;
             }
+        }
 
         return base.ReceiveKeyPress(key);
     }
@@ -181,9 +187,10 @@ internal class AliasSetMenu : SubMenu
     {
         base.Draw(b);
 
-        if (!_itemPickerOn) return;
-
-        _itemPicker.Draw(b);
+        if (_itemPickerOn)
+        {
+            _itemPicker.Draw(b);
+        }
     }
 
     public override void Dispose()

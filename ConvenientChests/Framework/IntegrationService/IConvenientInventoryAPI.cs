@@ -1,7 +1,7 @@
 ﻿namespace ConvenientChests.Framework.IntegrationService;
 
 /// <summary>
-/// The API provided by the Convenient Inventory mod.
+/// The API provided by the Convenient Inventory mod, for version 1.6.1+
 /// </summary>
 public interface IConvenientInventoryApi
 {
