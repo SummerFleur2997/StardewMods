@@ -68,6 +68,19 @@ will be fully compatible with this mod, ensuring mutual compatibility.
 
 ## Update logs
 
+### 2.0.1 / 2.0.2
+
+**Compatibility Improve**
+
+- Realize the compatibility design with mod *Convenient Inventory* 1.6.1+.
+
+**Bug Fixes**
+
+- Fix a bug that causing repeated red text (Cannot deserialize the current JSON array) 
+  on multiplayer mode;
+- Fix a bug that causing the chest alias menu not worked;
+- Fix a bug which may ruin the snapshot file.
+
 ### 2.0.0
 
 **New Features**
