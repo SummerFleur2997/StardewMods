@@ -72,8 +72,8 @@ body:
   - type: textarea
     id: expected
     attributes:
-      label: 期望的结果
-      description: 请详细描述您期望看到的结果。
+      label: 问题描述与期望的结果
+      description: 请详细描述 Bug 是如何发生的，以及您期望看到的结果。
     validations:
       required: true
 

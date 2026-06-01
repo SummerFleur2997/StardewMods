@@ -51,7 +51,7 @@ body:
   - type: dropdown
     id: os
     attributes:
-      label: operating system
+      label: Operating system
       description: choose your operating system
       options:
         - Windows
@@ -72,8 +72,8 @@ body:
   - type: textarea
     id: expected
     attributes:
-      label: Expected behavior
-      description: A clear and concise description of what you expected to happen.
+      label: Bug description and expected behavior
+      description: A clear and concise description of what happened and what you expected to happen.
     validations:
       required: true
 
