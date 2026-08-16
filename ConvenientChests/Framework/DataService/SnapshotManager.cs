@@ -66,14 +66,22 @@ internal static class SnapshotManager
         return new ChestDataSnapshot(alias, id, acceptedItemKinds ?? new HashSet<string>());
     }
 
+    /// <summary>
+    /// Generates a valid alias by ensuring its unique among all existing snapshots
+    /// </summary>
+    /// <param name="alias">The desired alias to validate</param>
+    /// <param name="id">The unique ID of the current item (to exclude it from duplicate check)</param>
+    /// <returns>A valid unique alias string</returns>
     public static string GetAValidAlias(string? alias, long id)
     {
+        // Check if the provided alias is valid and not duplicated (excluding current snapshots)
         if (!_snapshots.Values.Any(x => x.Alias == alias && x.UniqueID != id) &&
             !string.IsNullOrWhiteSpace(alias))
         {
             return alias;
         }
 
+        // If alias is null or whitespace, create a new unnamed alias with a number suffix
         var i = 0;
         if (string.IsNullOrWhiteSpace(alias))
         {
@@ -85,6 +93,7 @@ internal static class SnapshotManager
             return $"{I18n.UI_Unnamed()} {i}";
         }
 
+        // If alias already exists but is not empty, append a number suffix in parentheses
         i++;
         do
         {

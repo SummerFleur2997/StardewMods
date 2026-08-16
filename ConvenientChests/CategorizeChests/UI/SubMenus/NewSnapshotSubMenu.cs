@@ -37,7 +37,7 @@ internal class NewSnapshotSubMenu : SubMenu, IHaveParentMenu
     /// <inheritdoc/>
     public override bool ReceiveKeyPress(Keys key)
     {
-        if (!TextBox.Selected)
+        if (TextBox.Selected)
         {
             switch (key)
             {

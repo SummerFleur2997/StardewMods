@@ -52,16 +52,6 @@ internal class MultiplayerServer : IModule
     }
 
     /// <summary>
-    /// Receive the chest data from other players when a chest is modified.
-    /// </summary>
-    /// <param name="chestAddress">The address of which chest was modified.</param>
-    /// <param name="attr">Which attribute need to update, 0 = AcceptItems, 1 = Alias.</param>
-    private static void ReceiveChestData(ChestAddress chestAddress, int attr)
-    {
-        ChestManager.UpdateChest(chestAddress, attr);
-    }
-
-    /// <summary>
     /// Handle messages.
     /// </summary>
     private static void OnMessageReceived(object? sender, ModMessageReceivedEventArgs e)
@@ -81,13 +71,13 @@ internal class MultiplayerServer : IModule
                 // 收到其他玩家的 MultiplayerChestSync_0 消息后，同步 ChestData.AcceptItems
                 case "MultiplayerChestSync_0":
                     ModEntry.Log($"Received chest sync request from {e.FromPlayerID}.");
-                    ReceiveChestData(syncChestData, 0);
+                    ChestManager.UpdateChest(syncChestData, 0);
                     break;
                 // When receiving the "MultiplayerChestSync_1" message from other players, sync ChestData.Alias
                 // 收到其他玩家的 MultiplayerChestSync_1 消息后，同步 ChestData.Alias
                 case "MultiplayerChestSync_1":
                     ModEntry.Log($"Received chest sync request from {e.FromPlayerID}.");
-                    ReceiveChestData(syncChestData, 1);
+                    ChestManager.UpdateChest(syncChestData, 1);
                     break;
             }
         }

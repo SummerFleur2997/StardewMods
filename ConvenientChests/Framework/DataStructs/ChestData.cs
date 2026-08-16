@@ -58,6 +58,8 @@ internal class ChestData : IChestData
 
     private HashSet<string> _acceptedItems;
 
+    public List<List<string>> AcceptedContextTags { get; } = new();
+
     /// <summary>
     /// Whether the <see cref="AcceptedItems"/> was modified
     /// in the multiplayer and needs to be synced.

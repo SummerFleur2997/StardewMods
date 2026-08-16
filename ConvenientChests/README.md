@@ -68,11 +68,24 @@ will be fully compatible with this mod, ensuring mutual compatibility.
 
 ## Update logs
 
+### 2.0.3
+
+**Optimizations**
+
+- Slightly optimized the algorithm for finding the chests anywhere, it may improve the
+  performance when you use the "Stash anywhere" feature.
+
+**Bug Fixes**
+
+- Fix a bug that pressing E cause the *Save as snapshot* menu be closed unexpectedly;
+- Fix a bug that causing duplicated categories in dropdown menu.
+
 ### 2.0.1 / 2.0.2
 
 **Compatibility Improve**
 
-- Realize the compatibility design with mod *Convenient Inventory* 1.6.1+.
+- Realize the compatibility design with mod *Convenient Inventory* 1.6.1+, thanks to
+  [Alanperrow](https://github.com/alanperrow) (the author of Convenient Inventory)!
 
 **Bug Fixes**
 

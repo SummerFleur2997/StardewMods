@@ -1,5 +1,4 @@
-﻿using ConvenientChests.CategorizeChests.Framework;
-using ConvenientChests.CategorizeChests.UI.SubMenus;
+﻿using ConvenientChests.CategorizeChests.UI.SubMenus;
 using ConvenientChests.Framework.DataService;
 using ConvenientChests.Framework.DataStructs;
 using ConvenientChests.Framework.MultiplayerService;
@@ -49,11 +48,6 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
         var unlinkSnapshotButton = UIHelper.SideButton(x, y, SideButtonVariant.Unlink);
         unlinkSnapshotButton.OnPress += UnlinkSnapshot;
         AddChild(unlinkSnapshotButton);
-
-        // Get all the item categories, then link them with the drop-down.
-        var categories = CategoryDataManager.GetCategories();
-        foreach (var category in categories)
-            TopRow.CategorySelector.AddOption(category.DisplayName, category);
 
         // add the grid menu in front of the top row to ensure
         // that the drop-down in the top row is handled first.

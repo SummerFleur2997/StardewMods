@@ -30,13 +30,13 @@ internal class StashToChestsModule : IModule
     /// 判断箱子接受物品的函数。
     /// The function to determine whether the chest accepts the item.
     /// </summary>
-    public AcceptingFunc AcceptingFunc { get; private set; } = (_, _) => false;
+    private AcceptingFunc AcceptingFunc { get; set; } = (_, _) => false;
 
     /// <summary>
     /// 判断箱子拒绝物品的函数。
     /// The function to determine whether the chest rejects the item.
     /// </summary>
-    public RejectingFunc RejectingFunc { get; private set; } = _ => false;
+    private RejectingFunc RejectingFunc { get; set; } = _ => false;
 
     /// <summary>
     /// 存储至附近的箱子功能是否启用。
@@ -258,13 +258,17 @@ internal class StashToChestsModule : IModule
     /// <summary>
     /// Get all game locations.
     /// </summary>
-    private static IEnumerable<GameLocation> GetLocations()
+    private static IEnumerable<Chest> GetLocationChests()
     {
-        var indoors = Game1.locations
-            .Select(GetAllIndoors)
-            .SelectMany(indoor => indoor);
+        foreach (var location in Game1.locations)
+        {
+            foreach (var chest in location.Objects.Values.OfType<Chest>())
+                yield return chest;
 
-        return Game1.locations.Concat(indoors);
+            foreach (var indoor in GetAllIndoors(location))
+            foreach (var chest in indoor.Objects.Values.OfType<Chest>())
+                yield return chest;
+        }
     }
 
     /// <summary>
@@ -304,8 +308,7 @@ internal class StashToChestsModule : IModule
             success |= StashToChest(fridge, AcceptingFunc, RejectingFunc);
 
         // try to find all chests by location
-        var chests = GetLocations()
-            .SelectMany(location => location.Objects.Values.OfType<Chest>());
+        var chests = GetLocationChests();
 
         // stash by category
         success |= StashLogic.StashToChests(chests, AcceptingFunc, RejectingFunc);

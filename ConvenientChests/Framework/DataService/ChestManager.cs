@@ -13,6 +13,11 @@ internal static class ChestManager
 {
     private static readonly Dictionary<Chest, ChestData> Table = new();
 
+    /// <summary>
+    /// Receive the chest data from other players when a chest was modified.
+    /// </summary>
+    /// <param name="chestAddress">The address of which chest was modified.</param>
+    /// <param name="which">Which attribute need to update, 0 = AcceptItems, 1 = Alias.</param>
     public static void UpdateChest(ChestAddress chestAddress, int which)
     {
         if (!chestAddress.GetChestByAddress(out var chest, out var error))
@@ -23,6 +28,7 @@ internal static class ChestManager
 
         switch (which)
         {
+            // Lazy update, mark the chest data as dirty
             case 0:
                 chest.GetChestData().Dirty = true;
                 ModEntry.Log($"Synced new accept item list for chest at {chestAddress}.");

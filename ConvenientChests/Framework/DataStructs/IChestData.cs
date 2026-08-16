@@ -5,7 +5,7 @@ namespace ConvenientChests.Framework.DataStructs;
 
 internal interface IChestData
 {
-    HashSet<string> AcceptedItems { get; set; }
+    HashSet<string> AcceptedItems { get; }
 
     void Toggle(string item);
 }

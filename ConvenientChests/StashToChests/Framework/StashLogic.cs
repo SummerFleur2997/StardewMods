@@ -1,6 +1,4 @@
-﻿using ConvenientChests.Framework.Extensions;
-using StardewValley.Inventories;
-using StardewValley.Objects;
+﻿using StardewValley.Objects;
 
 namespace ConvenientChests.StashToChests.Framework;
 
@@ -22,12 +20,11 @@ internal static class StashLogic
     /// <returns>是否存储成功 Stashed successfully?</returns>
     public static bool StashToChest(Chest chest, AcceptingFunc af, RejectingFunc rf)
     {
-        // try to move items to the chest
-        var moved = Game1.player.Items
-            .DumpItemsToChest(chest, af, rf)
+        var stashableItems = Game1.player.Items
+            .Where(item => item is not null && !rf(item))
             .ToList();
 
-        if (!moved.Any())
+        if (!DumpItemsToChest(chest, stashableItems, af, out var moved))
             return false;
 
         var which = string.Join(", ", moved.Select(i => $"{i.Name} * {i.Stack}"));
@@ -84,28 +81,42 @@ internal static class StashLogic
     /// <summary>
     /// Attempt to move as much as possible of the player's inventory into the given chest
     /// </summary>
-    /// <param name="sourceInventory">The player's inventory</param>
     /// <param name="chest">The chest to put the items in.</param>
+    /// <param name="stashableItems">Items not locked.</param>
     /// <param name="af">Accepting rules.</param>
-    /// <param name="rf">Rejecting rules.</param>
-    /// <returns>List of Items that were successfully moved into the chest</returns>
-    private static IEnumerable<Item> DumpItemsToChest(this Inventory sourceInventory, Chest chest,
-        AcceptingFunc af, RejectingFunc rf)
+    /// <param name="moved">The items that successfully moved to chests.</param>
+    /// <returns>True if at least some of the items were moved, false otherwise</returns>
+    private static bool DumpItemsToChest(Chest chest, List<Item> stashableItems, AcceptingFunc af,
+        out List<(string Name, int Stack)> moved)
     {
-        return sourceInventory
-            .Where(i => i != null && af(chest, i) && !rf(i))
-            .Select(item => sourceInventory.TryMoveItemToChest(chest, item))
-            .OfType<Item>();
+        moved = new List<(string Name, int Stack)>();
+
+        for (var i = stashableItems.Count - 1; i >= 0; i--)
+        {
+            var item = stashableItems[i];
+            if (!Game1.player.Items.Contains(item) || !af(chest, item))
+                continue;
+
+            var result = item.TryMoveTo(chest);
+            if (result.Stack <= 0)
+                continue;
+
+            moved.Add(result);
+
+            if (!Game1.player.Items.Contains(item))
+                stashableItems.RemoveAt(i);
+        }
+
+        return moved.Count > 0;
     }
 
     /// <summary>
     /// Attempt to move as much as possible of the given item stack into the chest.
     /// </summary>
-    /// <param name="sourceInventory">The player's inventory</param>
     /// <param name="chest">The chest to put the items in.</param>
     /// <param name="item">The items to put in the chest.</param>
     /// <returns>True if at least some of the stack was moved into the chest.</returns>
-    private static Item? TryMoveItemToChest(this IInventory sourceInventory, Chest chest, Item item)
+    private static (string Name, int Stack) TryMoveTo(this Item item, Chest chest)
     {
         var original = item.Stack;
         var remainder = chest.addItem(item);
@@ -113,22 +124,20 @@ internal static class StashLogic
         // nothing remains -> remove item
         if (remainder == null)
         {
-            var index = sourceInventory.IndexOf(item);
-            sourceInventory[index] = null;
+            var index = Game1.player.Items.IndexOf(item);
+            Game1.player.Items[index] = null;
             // item.Stack = original;
-            return item;
+            return (item.Name, item.Stack);
         }
 
         // nothing changed
         if (remainder.Stack == item.Stack)
-            return null;
+            return ("", -1);
 
         // update stack count
         item.Stack = remainder.Stack;
 
         // return copy for moved item
-        var copy = item.Copy();
-        copy.Stack = original - remainder.Stack;
-        return copy;
+        return (item.Name, original - remainder.Stack);
     }
 }
