@@ -1,4 +1,5 @@
-﻿using StardewValley.Objects;
+﻿using StardewValley.Locations;
+using StardewValley.Objects;
 
 namespace ConvenientChests.API;
 
@@ -39,7 +40,8 @@ public interface IConvenientChestAPI
     public List<string> GetSelectedChestData(Chest chest);
 
     /// <summary>
-    /// Get the accepted item lists of all chests.
+    /// Get the accepted item lists of all chests. Notes: The main-fridges in
+    /// the <see cref="FarmHouse"/> or <see cref="Cabin"/> will NOT be included.
     /// </summary>
     /// <returns>
     /// A dictionary formated like

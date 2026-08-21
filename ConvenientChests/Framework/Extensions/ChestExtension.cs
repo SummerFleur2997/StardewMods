@@ -1,4 +1,5 @@
 using Microsoft.Xna.Framework;
+using StardewValley.Buildings;
 using StardewValley.Locations;
 using StardewValley.Objects;
 using Object = StardewValley.Object;
@@ -55,6 +56,52 @@ public static class ChestExtension
 
         foreach (var chest in buildings.SelectMany(building => building.buildingChests))
             yield return chest;
+    }
+
+    /// <summary>
+    /// Get all chests in all game locations.
+    /// </summary>
+    public static IEnumerable<Chest> GetLocationChests()
+    {
+        foreach (var location in Game1.locations)
+        {
+            foreach (var chest in location.Objects.Values.OfType<Chest>())
+            {
+                if (!chest.giftbox.Value && chest.playerChest.Value)
+                    yield return chest;
+            }
+
+            foreach (var indoor in GetAllIndoors(location))
+            foreach (var chest in indoor.Objects.Values.OfType<Chest>())
+            {
+                if (!chest.giftbox.Value && chest.playerChest.Value)
+                    yield return chest;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Recursive find every indoor area of given location.
+    /// </summary>
+    private static IEnumerable<GameLocation> GetAllIndoors(GameLocation? location)
+    {
+        if (location is null || !location.buildings.Any())
+            yield break;
+
+        foreach (var building in location.buildings)
+        {
+            if (building.GetIndoorsType() != IndoorsType.Instanced)
+                continue;
+
+            var indoors = building.GetIndoors();
+            if (indoors == null)
+                continue;
+
+            yield return indoors;
+
+            foreach (var indoorIndoor in GetAllIndoors(indoors))
+                yield return indoorIndoor;
+        }
     }
 
     private static IEnumerable<T> GetNearbyObjects<T>(GameLocation location, Vector2 point, int radius)

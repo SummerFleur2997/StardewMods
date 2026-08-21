@@ -15,8 +15,12 @@ internal static class MenuManager
 
     public static void CreateMenu(ItemGrabMenu itemGrabMenu)
     {
-        // Ensure that the menu is for a chest, and not an enricher.
-        if (itemGrabMenu.context is not Chest { SpecialChestType: not Chest.SpecialChestTypes.Enricher } chest)
+        // Ensure that the menu is for a chest
+        if (itemGrabMenu.context is not Chest chest)
+            return;
+
+        // And not an enricher or mini shipping bin
+        if (chest.SpecialChestType is Chest.SpecialChestTypes.Enricher or Chest.SpecialChestTypes.MiniShippingBin)
             return;
 
         ScreenWidgetHost.Value?.Dispose();

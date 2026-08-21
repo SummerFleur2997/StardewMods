@@ -68,6 +68,13 @@ will be fully compatible with this mod, ensuring mutual compatibility.
 
 ## Update logs
 
+### 2.0.4
+
+**Bug Fixes**
+
+- Fix a bug that caused the red text (null ref) when opening the mini shipping-bin;
+- Fix a historical problem that caused the prize tickets vanished inexplicably.
+
 ### 2.0.3
 
 **Optimizations**

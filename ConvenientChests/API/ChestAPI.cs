@@ -14,38 +14,21 @@ public class ChestAPI : IConvenientChestAPI
     public bool InventoryLockThisItem(Item item) => item.LockedInInventory();
 
     /// <inheritdoc/>
-    public List<string> GetSelectedChestData(Chest chest) =>
-        chest.GetChestData().AcceptedItems.ToList();
+    public List<string> GetSelectedChestData(Chest chest) => chest.GetChestData().AcceptedItems.ToList();
 
     /// <inheritdoc/>
-    public Dictionary<Chest, List<string>> GetAllChestData() => AllChests()
-        .ToDictionary(
+    public Dictionary<Chest, List<string>> GetAllChestData()
+    {
+        return ChestExtension.GetLocationChests().ToDictionary(
             c => c,
             c => c.GetChestData().AcceptedItems.ToList());
-
-    /// <inheritdoc/>
-    public Dictionary<string, List<string>> GetAllChestDataWithStringFormat() => AllChests()
-        .ToDictionary(FormatChestLocation, c => c.GetChestData().AcceptedItems.ToList());
-
-    /// <summary>
-    /// Get all chests in all locations.
-    /// </summary>
-    private static List<Chest> AllChests()
-    {
-        var chests = new List<Chest>();
-        foreach (var location in Game1.locations)
-        {
-            chests.AddRange(location.Objects.Values.OfType<Chest>());
-            foreach (var building in location.buildings.Where(b => b.indoors.Value != null))
-                chests.AddRange(building.indoors.Value.Objects.Values.OfType<Chest>());
-        }
-
-        return chests;
     }
 
-    /// <summary>
-    /// Formats a chest to a string.
-    /// </summary>
-    private static string FormatChestLocation(Chest chest) =>
-        $"{chest.Location.NameOrUniqueName} {chest.TileLocation.X} {chest.TileLocation.Y}";
+    /// <inheritdoc/>
+    public Dictionary<string, List<string>> GetAllChestDataWithStringFormat()
+    {
+        return ChestExtension.GetLocationChests().ToDictionary(
+            c => $"{c.Location.NameOrUniqueName} {c.TileLocation.X} {c.TileLocation.Y}",
+            c => c.GetChestData().AcceptedItems.ToList());
+    }
 }

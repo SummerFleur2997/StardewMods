@@ -8,7 +8,6 @@ using ConvenientChests.Framework.UserInterfaceService;
 using ConvenientChests.StashToChests.Framework;
 using HarmonyLib;
 using StardewModdingAPI.Events;
-using StardewValley.Buildings;
 using StardewValley.Locations;
 using StardewValley.Menus;
 using StardewValley.Objects;
@@ -232,46 +231,6 @@ internal class StashToChestsModule : IModule
     }
 
     /// <summary>
-    /// Recursive find every indoor area of given location.
-    /// </summary>
-    private static IEnumerable<GameLocation> GetAllIndoors(GameLocation? location)
-    {
-        if (location is null || !location.buildings.Any())
-            yield break;
-
-        foreach (var building in location.buildings)
-        {
-            if (building.GetIndoorsType() != IndoorsType.Instanced)
-                continue;
-
-            var indoors = building.GetIndoors();
-            if (indoors == null)
-                continue;
-
-            yield return indoors;
-
-            foreach (var indoorIndoor in GetAllIndoors(indoors))
-                yield return indoorIndoor;
-        }
-    }
-
-    /// <summary>
-    /// Get all game locations.
-    /// </summary>
-    private static IEnumerable<Chest> GetLocationChests()
-    {
-        foreach (var location in Game1.locations)
-        {
-            foreach (var chest in location.Objects.Values.OfType<Chest>())
-                yield return chest;
-
-            foreach (var indoor in GetAllIndoors(location))
-            foreach (var chest in indoor.Objects.Values.OfType<Chest>())
-                yield return chest;
-        }
-    }
-
-    /// <summary>
     /// 将物品存储至箱子中。
     /// Stash items to nearby chest(s).
     /// </summary>
@@ -308,7 +267,7 @@ internal class StashToChestsModule : IModule
             success |= StashToChest(fridge, AcceptingFunc, RejectingFunc);
 
         // try to find all chests by location
-        var chests = GetLocationChests();
+        var chests = ChestExtension.GetLocationChests();
 
         // stash by category
         success |= StashLogic.StashToChests(chests, AcceptingFunc, RejectingFunc);
