@@ -61,10 +61,16 @@ internal class ChestData : IChestData
     public List<List<string>> AcceptedContextTags { get; } = new();
 
     /// <summary>
-    /// Whether the <see cref="AcceptedItems"/> was modified
-    /// in the multiplayer and needs to be synced.
+    /// Whether another player modified the <see cref="AcceptedItems"/>
+    /// in the multiplayer and they need to be reloaded from mod data.
     /// </summary>
     public bool Dirty { get; set; }
+
+    /// <summary>
+    /// Whether this player modified the <see cref="AcceptedItems"/>
+    /// in the multiplayer and other players need to be notified.
+    /// </summary>
+    public bool HasUnsyncedChanges { get; set; }
 
     /// <summary>
     /// Whether the chest is using a snapshot. This property
@@ -96,8 +102,11 @@ internal class ChestData : IChestData
         else
             this.AddAccepted(item);
 
+        // Write immediately, so a reload from mod data can't discard this change.
+        SetAcceptedItemAndWriteToModData();
+
         if (Context.IsMultiplayer)
-            Dirty = true;
+            HasUnsyncedChanges = true;
     }
 
     /// <summary>
