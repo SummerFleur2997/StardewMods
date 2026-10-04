@@ -23,6 +23,7 @@ internal class InventoryOverlay : IOverlay<GameMenu>
         if (RootMenu.GetCurrentPage() is not InventoryPage inventoryPage)
             return;
 
+        _lockItemMenu.AnimateHover(Game1.getMouseX(true), Game1.getMouseY(true));
         _lockItemMenu.Draw(b, inventoryPage.inventory);
         RootMenu.drawMouse(b);
     }

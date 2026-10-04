@@ -40,9 +40,11 @@ internal class ChestOverlay : IOverlay<ItemGrabMenu>
         // them on the right side of the chest interface, matching the original UI.
         // LockButton = UIHelper.SideButton(0, 0, SideButtonVariant.Lock);
         AliasButton = UIHelper.SideButton(0, 0, SideButtonVariant.Alias);
+        AliasButton.HoverGrowth = UIHelper.GameButtonHoverGrowth;
         AliasButton.OnPress += OpenAliasMenu;
 
         CategorizeButton = UIHelper.SideButton(0, 0, SideButtonVariant.Categorize);
+        CategorizeButton.HoverGrowth = UIHelper.GameButtonHoverGrowth;
         CategorizeButton.OnPress += OpenCategoryMenu;
 
         /* Old logic for android compatibility
@@ -77,6 +79,13 @@ internal class ChestOverlay : IOverlay<ItemGrabMenu>
     {
         if (Chest.SpecialChestType == Chest.SpecialChestTypes.Enricher)
             return;
+
+        // grow the buttons under the cursor, as the game does for its buttons beside them
+        var mouseX = Game1.getMouseX(true);
+        var mouseY = Game1.getMouseY(true);
+        AliasButton.ReceiveCursorHover(mouseX, mouseY);
+        CategorizeButton.ReceiveCursorHover(mouseX, mouseY);
+        _lockItemMenu.AnimateHover(mouseX, mouseY);
 
         var drawTooltip = true;
         if (!ModEntry.Config.HideSideTab)

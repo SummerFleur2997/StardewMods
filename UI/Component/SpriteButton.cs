@@ -46,7 +46,23 @@ public class SpriteButton : IClickableComponent, IHaveTooltip, IDisposable
         this.SetDestination(destination);
     }
 
-    public virtual void Draw(SpriteBatch b) => Texture.Draw(b, Bounds);
+    /// <summary>
+    /// How much bigger the button gets while hovered, e.g. 0.0625 for 6.25% like the game's own
+    /// buttons. 0 keeps it at its size.
+    /// </summary>
+    public float HoverGrowth;
+
+    public virtual void Draw(SpriteBatch b) => Texture.Draw(b, HoverGrowth > 0 ? GrownBounds() : Bounds);
+
+    /// <summary>
+    /// The bounds scaled by <see cref="Scale"/>, grown around the center.
+    /// </summary>
+    private Rectangle GrownBounds()
+    {
+        var width = (int)(Width * Scale);
+        var height = (int)(Height * Scale);
+        return new Rectangle(X - (width - Width) / 2, Y - (height - Height) / 2, width, height);
+    }
 
     public virtual bool ReceiveLeftClick(int x, int y)
     {
@@ -60,13 +76,17 @@ public class SpriteButton : IClickableComponent, IHaveTooltip, IDisposable
 
     public virtual bool ReceiveCursorHover(int x, int y)
     {
+        // with HoverGrowth set, grow at the game's pace: 0.04 per frame at its scale of 4
+        var step = HoverGrowth > 0 ? 0.01f : 0.04f;
+        var max = HoverGrowth > 0 ? 1 + HoverGrowth : 1.125f;
+
         if (!Bounds.Contains(x, y))
         {
-            Scale = Math.Max(Scale - 0.04f, 1f);
+            Scale = Math.Max(Scale - step, 1f);
             return false;
         }
 
-        Scale = Math.Min(Scale + 0.04f, 1.125f);
+        Scale = Math.Min(Scale + step, max);
         OnHover?.Invoke();
         return true;
     }

@@ -37,6 +37,11 @@ internal static class UIHelper
     }
 
     /// <summary>
+    /// How much the game's side buttons in the chest menu grow on hover: scale 4 to 4.25.
+    /// </summary>
+    public const float GameButtonHoverGrowth = 0.0625f;
+
+    /// <summary>
     /// Create a button with a sprite.
     /// </summary>
     /// <param name="x">The left position of the component in pixels.</param>

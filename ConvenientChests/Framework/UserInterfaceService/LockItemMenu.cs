@@ -41,6 +41,7 @@ public class LockItemMenu : IHaveTooltip
     public LockItemMenu(int x, int y)
     {
         LockButton = UIHelper.SideButton(0, 0, SideButtonVariant.Lock);
+        LockButton.HoverGrowth = UIHelper.GameButtonHoverGrowth;
 
         _editTooltip = new Tooltip(desc: I18n.UI_LockItems_Desc());
         _lockSprite = LockButton.Texture;
@@ -51,6 +52,12 @@ public class LockItemMenu : IHaveTooltip
         LockButton.OnPress += () => EditMode = !EditMode;
         _lockFrame = new TextureRegion(UIHelper.Texture, 112, UIHelper.YOffset, 16, 16);
     }
+
+    /// <summary>
+    /// Grow or shrink the lock button for the cursor's position. Call it every frame,
+    /// as the game does for its own buttons.
+    /// </summary>
+    public void AnimateHover(int x, int y) => LockButton.ReceiveCursorHover(x, y);
 
     public void Draw(SpriteBatch b, InventoryMenu playerInventory, InventoryMenu? chestInventory = null)
     {
