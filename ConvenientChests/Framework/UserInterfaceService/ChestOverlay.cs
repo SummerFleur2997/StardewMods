@@ -61,14 +61,21 @@ internal class ChestOverlay : IOverlay<ItemGrabMenu>
             _ => 112
         };*/
 
-        var x = RootMenu.fillStacksButton.bounds.X + 80;
-        var y = RootMenu.fillStacksButton.bounds.Y - 80;
+        // Use the game's spacing between its own side buttons, which is 80 px, or 72 px when the
+        // menu has four or more of them, so our column lines up with theirs as a grid.
+        var fillStacks = RootMenu.fillStacksButton.bounds;
+        var step = RootMenu.organizeButton is null ? 0 : Math.Abs(RootMenu.organizeButton.bounds.Y - fillStacks.Y);
+        if (step == 0)
+            step = 80;
+
+        var x = fillStacks.X + step;
+        var y = fillStacks.Y - step;
         _lockItemMenu = new LockItemMenu(x, y);
 
-        y += 80;
+        y += step;
         AliasButton.SetPosition(x, y);
 
-        y += 80;
+        y += step;
         CategorizeButton.SetPosition(x, y);
     }
 
