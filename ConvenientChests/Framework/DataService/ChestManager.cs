@@ -34,8 +34,8 @@ internal static class ChestManager
                 ModEntry.Log($"Synced new accept item list for chest at {chestAddress}.");
                 break;
             case 1:
-                AliasForChestsModule.Instance.ForceUpdateOnce = true;
-                ModEntry.Log("Forced update the chest alias once.");
+                AliasForChestsModule.Instance.ForceUpdate();
+                ModEntry.Log("Forced update the chest alias.");
                 break;
         }
     }

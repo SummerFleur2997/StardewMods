@@ -3,6 +3,8 @@
 
   "Config.Alias.Title": "Chest alias",
   "Config.Alias.desc": "Set alias for chests, the alias will show in a bubble when hover your mouse above the chest.",
+  "Config.Alias.Facing": "Show when facing",
+  "Config.Alias.Facing.desc": "Also show the bubble of the chest your character is facing.",
 
   "Config.Categorize.Title": "Categorize chests",
   "Config.Categorize.desc": "Categorize your chests by items.",

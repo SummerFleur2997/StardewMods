@@ -37,6 +37,16 @@ internal static class GenericModConfigMenuIntegration
             setValue: value => ModEntry.Config.AliasForChests = value
         );
 
+        // 【选项】面向时显示 - 同时显示角色正面对的箱子的气泡
+        // [Checkbox] Show when facing - Also show the bubble of the chest the player is facing
+        api.AddBoolOption(
+            manifest,
+            name: I18n.Config_Alias_Facing,
+            tooltip: I18n.Config_Alias_Facing_Desc,
+            getValue: () => ModEntry.Config.ShowAliasWhenFacing,
+            setValue: value => ModEntry.Config.ShowAliasWhenFacing = value
+        );
+
         // 【标题】存储归类 - 对箱子的内容物进行归类
         // [Title] Categorize chests - Categorize your chests by items
         api.AddSectionTitle(manifest, I18n.Config_Categorize_Title, I18n.Config_Categorize_Desc);
