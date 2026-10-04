@@ -77,13 +77,13 @@ internal class CategoryChestMenu : CategoryMenu<ChestData>
 
     public override void OnExit()
     {
-        if (Context.IsMultiplayer && ChestData.Dirty)
+        if (Context.IsMultiplayer && ChestData.HasUnsyncedChanges)
         {
             ChestData.SetAcceptedItemAndWriteToModData();
             MultiplayerServer.SendChestUpdateReq(ChestData.ChestRef, 0);
         }
 
-        ChestData.Dirty = false;
+        ChestData.HasUnsyncedChanges = false;
         base.OnExit();
     }
 

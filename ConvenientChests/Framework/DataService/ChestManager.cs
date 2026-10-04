@@ -71,6 +71,10 @@ internal static class ChestManager
     {
         foreach (var data in Table.Values)
         {
+            // Pick up changes synced from other players before writing.
+            if (data.Dirty)
+                data.UpdateAcceptedItems();
+
             data.SetAcceptedItemAndWriteToModData();
         }
     }
