@@ -97,8 +97,15 @@ internal class ChestOverlay : IOverlay<ItemGrabMenu>
         else if (DrawNativeTooltip())
             IClickableMenu.drawHoverText(b, RootMenu.hoverText, Game1.smallFont);
 
-        if (drawTooltip)
-            Tooltip?.Draw(b);
+        // one line, like the game's own buttons beside the chest
+        if (drawTooltip && Tooltip is not null)
+        {
+            // the stored text is word-wrapped, so join a long name back into one line
+            var text = string.IsNullOrWhiteSpace(Tooltip.Name) ? Tooltip.Description : Tooltip.Name;
+            var label = string.Join(' ', (text ?? "").Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries));
+            if (label.Length > 0)
+                IClickableMenu.drawHoverText(b, label, Game1.smallFont);
+        }
 
         RootMenu.drawMouse(b);
     }

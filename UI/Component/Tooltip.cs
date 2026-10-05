@@ -18,8 +18,9 @@ public class Tooltip
 
     public Tooltip(string? name = null, string? desc = null, int maxWidth = 320)
     {
-        Name = Game1.parseText(name ?? "", Game1.dialogueFont, maxWidth);
-        Description = Game1.parseText(desc ?? "", Game1.smallFont, maxWidth);
+        // word wrapping leaves a trailing space, which widens the tooltip box
+        Name = Game1.parseText(name ?? "", Game1.dialogueFont, maxWidth).TrimEnd();
+        Description = Game1.parseText(desc ?? "", Game1.smallFont, maxWidth).TrimEnd();
     }
 
     public Tooltip(Item item)
