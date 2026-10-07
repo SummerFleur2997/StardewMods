@@ -28,6 +28,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Menu\DropDownMenu.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menu\GridMenu.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menu\IClickableMenu.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Menu\SearchBox.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Menu\StackPanel.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sprite\SpriteHelper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Sprite\TextureRegion.cs" />

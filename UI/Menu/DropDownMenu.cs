@@ -104,11 +104,18 @@ public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
     public bool Expanded;
 
     private int _selectedIndex = -1;
-    private int _hoveredOptionIndex = -1;
+    private int _hoveredIndex = -1;
     private int _firstVisibleIndex;
     private Vector2 _labelPosition;
 
+    /// <summary>
+    /// The value of the currently selected result, or <c>default</c> if none.
+    /// </summary>
     public T? SelectedValue => _selectedIndex >= 0 ? Options[_selectedIndex].Value : default;
+
+    /// <summary>
+    /// The label of the currently selected result, or an empty string if none.
+    /// </summary>
     public string SelectedLabel => _selectedIndex >= 0 ? Options[_selectedIndex].Label : "";
 
     /// <summary>
@@ -243,7 +250,7 @@ public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
                 b.Draw(ActiveBackground.Texture, optionBounds, ActiveBackground.Region, Color.White * 0.5f);
 
             // 绘制悬停效果
-            else if (optionIndex == _hoveredOptionIndex)
+            else if (optionIndex == _hoveredIndex)
                 b.Draw(HoverBackground.Texture, optionBounds, HoverBackground.Region, Color.White * 0.5f);
 
             // 绘制选项文本
@@ -296,12 +303,12 @@ public sealed class DropDownMenu<T> : IClickableMenu, IClickableComponent
         var optionsBounds = new Rectangle(X, Y + _height, Width, Height - _height);
         if (Expanded && optionsBounds.Contains(x, y))
         {
-            _hoveredOptionIndex = _firstVisibleIndex + (y - optionsBounds.Y) / ItemHeight;
+            _hoveredIndex = _firstVisibleIndex + (y - optionsBounds.Y) / ItemHeight;
             return true;
         }
 
         // !Expanded || !optionsBounds.Contains(x, y)
-        _hoveredOptionIndex = -1;
+        _hoveredIndex = -1;
         return false;
     }
 
