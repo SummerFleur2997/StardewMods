@@ -113,7 +113,7 @@ internal class AliasSetMenu : SubMenu
         var text = _textBox.Text;
         _chestData.Alias = string.IsNullOrWhiteSpace(text) ? null : text;
         _chestData.ItemIcon = _itemIconButton.Item;
-        AliasForChestsModule.Instance.ForceUpdateOnce = true;
+        AliasForChestsModule.Instance.ForceUpdate();
 
         if (Context.IsMultiplayer)
         {

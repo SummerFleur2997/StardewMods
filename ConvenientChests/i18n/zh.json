@@ -3,6 +3,8 @@
 
   "Config.Alias.Title": "箱子备注",
   "Config.Alias.desc": "为箱子添加备注。添加后，当把鼠标放到箱子上时，将会出现一个气泡显示备注。",
+  "Config.Alias.Facing": "面向时显示",
+  "Config.Alias.Facing.desc": "同时显示角色正面对的箱子的气泡。",
 
   "Config.Categorize.Title": "存储归类",
   "Config.Categorize.desc": "对箱子的内容物进行归类。",
