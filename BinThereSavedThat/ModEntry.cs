@@ -55,7 +55,9 @@ internal class ModEntry : Mod
 
     private static void OnButtonPressed(object sender, ButtonPressedEventArgs e)
     {
+        if (Game1.activeClickableMenu != null) return;
         if (!Config.OpenItemRecallMenu.JustPressed()) return;
+
         if (ItemSaver.TryToCreateShopMenu(out var shopMenu))
             Game1.activeClickableMenu = shopMenu;
     }
