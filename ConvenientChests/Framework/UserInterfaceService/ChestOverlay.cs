@@ -61,14 +61,16 @@ internal class ChestOverlay : IOverlay<ItemGrabMenu>
             _ => 112
         };*/
 
-        var x = RootMenu.fillStacksButton.bounds.X + 80;
-        var y = RootMenu.fillStacksButton.bounds.Y - 80;
+        var stepSize = RootMenu.organizeButton.bounds.Y - RootMenu.fillStacksButton.bounds.Y;
+
+        var x = RootMenu.fillStacksButton.bounds.X + stepSize + ModEntry.Config.XOffset;
+        var y = RootMenu.fillStacksButton.bounds.Y - stepSize;
         _lockItemMenu = new LockItemMenu(x, y);
 
-        y += 80;
+        y += stepSize;
         AliasButton.SetPosition(x, y);
 
-        y += 80;
+        y += stepSize;
         CategorizeButton.SetPosition(x, y);
     }
 

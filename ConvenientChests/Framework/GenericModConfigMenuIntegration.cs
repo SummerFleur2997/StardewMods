@@ -223,14 +223,27 @@ internal static class GenericModConfigMenuIntegration
         // [Title] Other settings
         api.AddSectionTitle(manifest, I18n.Config_Other_Title);
 
-        // 【选项】火山地牢 - 位于火山地牢时启用自动存储
-        // [Checkbox] Volcano Dungeon - Active auto stash while in the Volcano Dungeon
+        // 【选项】隐藏侧边按钮 - 隐藏箱子界面左侧的三个按钮
+        // [Checkbox] Hide side tab - Hide the three buttons on the left side
         api.AddBoolOption(
             manifest,
             name: I18n.Config_HideSideTab,
             tooltip: I18n.Config_HideSideTab_Desc,
             getValue: () => ModEntry.Config.HideSideTab,
             setValue: value => ModEntry.Config.HideSideTab = value
+        );
+
+        // 【选项】侧边按钮偏移 - 调整左侧的三个按钮的位置
+        // [Checkbox] Side tab x offset - Adjust the offset of the three buttons on the left side
+        api.AddNumberOption(
+            manifest,
+            name: I18n.Config_XOffset,
+            tooltip: I18n.Config_XOffset_Desc,
+            getValue: () => ModEntry.Config.XOffset,
+            setValue: value => ModEntry.Config.XOffset = value,
+            min: 0,
+            max: 1000,
+            interval: 20
         );
 
         // if (ModEntry.IsAndroid)

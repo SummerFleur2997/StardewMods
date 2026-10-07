@@ -3,8 +3,8 @@
 
   "Config.Alias.Title": "箱子备注",
   "Config.Alias.desc": "为箱子添加备注。添加后，当把鼠标放到箱子上时，将会出现一个气泡显示备注。",
-  "Config.Alias.Facing": "面向时显示",
-  "Config.Alias.Facing.desc": "同时显示角色正面对的箱子的气泡。",
+  "Config.Alias.Facing": "面朝时显示",
+  "Config.Alias.Facing.desc": "当角色面朝某个箱子时显示其气泡。",
 
   "Config.Categorize.Title": "存储归类",
   "Config.Categorize.desc": "对箱子的内容物进行归类。",
@@ -48,6 +48,8 @@
   "Config.Other.Title": "其它设置",
   "Config.HideSideTab": "隐藏侧边按钮",
   "Config.HideSideTab.desc": "隐藏箱子界面左侧的“分类”、“存储”按钮和物品栏左侧的“锁定”按钮，但仍可通过点击对应位置来触发按钮。",
+  "Config.XOffset": "侧边按钮偏移量",
+  "Config.XOffset.desc": "调整物品栏左侧三个按钮的位置，当其他模组在相同位置放置了按钮时可调整此选项以避免按钮重叠。",
 //  "Config.Mobile.Title": "移动端适配",
 //  "Config.Mobile.Offset": "侧边按钮偏移量",
 //  "Config.Mobile.Offset.desc": "调整物品栏左侧按钮的位置，以适配移动端设备。",

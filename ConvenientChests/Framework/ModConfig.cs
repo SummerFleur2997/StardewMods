@@ -15,11 +15,13 @@ public class ModConfig
     public bool StashToNearby { get; set; } = true;
     public bool StashAnywhere { get; set; }
 
+    public bool WhereIsMyItem { get; set; } = true;
+
     public int StashRadius { get; set; } = 5;
 
     public KeybindList StashToNearbyKey { get; set; } = KeybindList.Parse("Q");
     public KeybindList StashAnywhereKey { get; set; } = KeybindList.Parse("Z");
-    public SButton? StashButton = SButton.RightStick;
+    public KeybindList WhereIsMyItemKey { get; set; } = KeybindList.Parse("LeftControl + F");
 
     public bool StashToExistingStacks { get; set; } = true;
     public bool StashAnywhereToFridge { get; set; } = true;
@@ -31,4 +33,5 @@ public class ModConfig
     public bool AutoStashInSkullCavern { get; set; }
     public bool AutoStashInVolcanoDungeon { get; set; }
     public bool HideSideTab { get; set; }
+    public int XOffset { get; set; }
 }
