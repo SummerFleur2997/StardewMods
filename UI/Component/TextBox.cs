@@ -37,7 +37,17 @@ public class TextBox : IClickableComponent, IKeyboardSubscriber, IDisposable
     /// </summary>
     public string Text { get; set; }
 
+    /// <summary>
+    /// The hint text displayed when the text box is empty and not selected.
+    /// </summary>
+    public string? Placeholder;
+
     public event Action<TextBox>? OnEnterPressed;
+
+    /// <summary>
+    /// Raised whenever the <see cref="Text"/> is changed by the player.
+    /// </summary>
+    public event Action<TextBox>? OnTextChanged;
 
     private readonly IComponent? _background;
     private readonly SpriteFont _font = Game1.smallFont;
@@ -64,6 +74,14 @@ public class TextBox : IClickableComponent, IKeyboardSubscriber, IDisposable
     public void Draw(SpriteBatch b)
     {
         _background?.Draw(b);
+
+        // 空且未选中时，显示占位提示文字
+        if (Text.Length == 0 && !Selected && !string.IsNullOrEmpty(Placeholder))
+        {
+            b.DrawString(_font, Placeholder, new Vector2(X + _offset, Y + _offset), Color.Gray);
+            return;
+        }
+
         var caretVisible = Game1.currentGameTime.TotalGameTime.TotalMilliseconds % 1000.0 >= 500.0;
 
         var toDraw = Text;
@@ -83,12 +101,14 @@ public class TextBox : IClickableComponent, IKeyboardSubscriber, IDisposable
     {
         if (!Selected) return;
         Text += inputChar;
+        OnTextChanged?.Invoke(this);
     }
 
     public void RecieveTextInput(string text)
     {
         if (!Selected) return;
         Text += text;
+        OnTextChanged?.Invoke(this);
     }
 
     public void RecieveCommandInput(char command)
@@ -102,6 +122,7 @@ public class TextBox : IClickableComponent, IKeyboardSubscriber, IDisposable
                     return;
 
                 Text = Text[..^1];
+                OnTextChanged?.Invoke(this);
                 return;
             case '\r':
                 OnEnterPressed?.Invoke(this);
@@ -114,6 +135,7 @@ public class TextBox : IClickableComponent, IKeyboardSubscriber, IDisposable
     public void Dispose()
     {
         OnEnterPressed = null;
+        OnTextChanged = null;
         Game1.keyboardDispatcher.Subscriber = null;
         GC.SuppressFinalize(this);
     }
