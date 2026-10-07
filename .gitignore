@@ -332,3 +332,6 @@ ASALocalRun/
 
 # Photoshop files
 *.psd
+
+# agent system hint files
+.github/agents
