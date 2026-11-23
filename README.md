@@ -8,6 +8,12 @@
 This repository contains my SMAPI mods for Stardew Valley. See the 
 individual mods for documentation and release notes.
 
+## AI Policy / AI disclosure
+
+For AI policies of this repo, please click [here](AI_POLICY.md).
+
+For AI disclosure of each mods, see the READMEs of them. (WIP)
+
 ## Mods
 ### Active mods:
 
